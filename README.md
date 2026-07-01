@@ -101,6 +101,25 @@ Deployment files:
 - `buildspec.yml`: CodeBuild build/test/package steps for an AWS CodePipeline GitHub source connection.
 - `docs/deployment.md`: pipeline setup and deployment notes.
 
+Set up AWS in this order:
+
+1. Choose one AWS region and use it for every deployment resource.
+2. Create a private S3 artifact bucket in that region, for example `county-news-api-artifacts-<account-id>-<region>`.
+3. Create the GitHub CodeConnections connection in the same region.
+4. Create a CodePipeline from `Continuous integration` -> `CI Build NodeJS`.
+5. Configure CodeBuild to use this repo's `buildspec.yml`.
+6. Add this CodeBuild environment variable:
+
+```text
+ARTIFACT_BUCKET=<your-artifact-bucket-name>
+```
+
+7. Run the build stage and confirm it produces `packaged.yaml`.
+8. Add a CloudFormation deploy stage that uses the CodeBuild output artifact and deploys `packaged.yaml`.
+9. After deploy succeeds, open the `county-news-api` CloudFormation stack and copy `Outputs` -> `NewsApiUrl`.
+
+Do not deploy raw `template.yaml` directly through CloudFormation. CodeBuild must run `sam package` first so `packaged.yaml` contains S3-backed Lambda code references.
+
 The first deployment target is an ARM64 Node.js 20 Lambda with a Function URL. Add CloudFront later if traffic grows or edge caching becomes important.
 
 ## Frontend Integration Notes
