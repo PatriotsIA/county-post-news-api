@@ -14,7 +14,7 @@ phases:
     commands:
       - npm run build
       - sam build
-      - sam package --s3-bucket "$ARTIFACT_BUCKET" --output-template-file packaged.yaml
+      - sam package --template-file .aws-sam/build/template.yaml --s3-bucket "$ARTIFACT_BUCKET" --output-template-file packaged.yaml
 
 artifacts:
   files:

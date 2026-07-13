@@ -56,7 +56,7 @@ npm run typecheck
 npm test
 npm run build
 sam build
-sam package --s3-bucket "$ARTIFACT_BUCKET" --output-template-file packaged.yaml
+sam package --template-file .aws-sam/build/template.yaml --s3-bucket "$ARTIFACT_BUCKET" --output-template-file packaged.yaml
 ```
 
 ## Step 2: Create Or Choose An Artifact Bucket
