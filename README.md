@@ -2,6 +2,15 @@
 
 A Node.js/AWS Lambda API that aggregates national, state, and county news into JSON for The County Post frontend. It is designed for a low-cost first deployment with a Lambda Function URL and no database.
 
+## Documentation
+
+Start here:
+
+- `docs/comprehensive-guide.md`: complete architecture, data flow, endpoint, configuration, deployment, operations, troubleshooting, and roadmap reference with diagrams and tables.
+- `docs/deployment.md`: focused AWS CodePipeline, CodeBuild, CloudFormation, CORS, and frontend deployment walkthrough.
+- `docs/news-coverage-strategy.md`: coverage model, sparse-county strategy, and future provider/source expansion plan.
+- `docs/roadmap.md`: shorter implementation roadmap.
+
 ## Why This Exists
 
 The frontend should not build and fetch many upstream RSS/search URLs in the browser. This service moves provider fan-out, freshness filtering, dedupe, topic filtering, and county/state fallback server-side. The frontend can request one page endpoint and render sectioned results.
@@ -100,7 +109,8 @@ Deployment files:
 
 - `template.yaml`: SAM template for Lambda Function URL deployment.
 - `buildspec.yml`: CodeBuild build/test/package steps for an AWS CodePipeline GitHub source connection.
-- `docs/deployment.md`: pipeline setup and deployment notes.
+- `docs/comprehensive-guide.md`: full deployment shape and operational reference.
+- `docs/deployment.md`: step-by-step pipeline setup and troubleshooting notes.
 
 Set up AWS in this order:
 
@@ -139,4 +149,4 @@ Set the deployed URL in the frontend as:
 VITE_NEWS_API_URL=https://<function-url-id>.lambda-url.<region>.on.aws/
 ```
 
-See `docs/news-coverage-strategy.md`, `docs/deployment.md`, and `docs/roadmap.md` for more detail.
+See `docs/comprehensive-guide.md` for the full architecture and operations reference. Use `docs/deployment.md` for the step-by-step AWS console walkthrough.
