@@ -43,7 +43,6 @@ Resources:
             - https://www.thecountypost.com
           AllowMethods:
             - GET
-            - OPTIONS
           AllowHeaders:
             - content-type
 
