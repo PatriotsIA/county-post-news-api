@@ -79,6 +79,7 @@ Copy `.env.example` into your environment provider or shell:
 - `GDELT_ENABLED`: set to `false` to disable GDELT, default `true`.
 - `GDELT_MAX_RECORDS`: max GDELT records per query, default `100`.
 - `BING_NEWS_ENABLED`: set to `false` to disable Bing News RSS, default `true`.
+- `PAGE_SECTION_CONCURRENCY`: max page sections aggregated at once, default `2`.
 - `UPSTREAM_CONCURRENCY`: max concurrent upstream requests per provider group, default `12`.
 - `MAX_RSS_URLS_PER_FEED`: RSS/provider URL cap per section, default `18`.
 - `MAX_ARTICLE_QUERIES_PER_FEED`: article-search query cap per section, default `6`.

@@ -15,6 +15,7 @@ export const config = {
   gdeltDocApi: "https://api.gdeltproject.org/api/v2/doc/doc",
   bingNewsEnabled: process.env.BING_NEWS_ENABLED !== "false",
   bingNewsSearch: "https://www.bing.com/news/search",
+  pageSectionConcurrency: Number(process.env.PAGE_SECTION_CONCURRENCY || 2),
   upstreamConcurrency: Number(process.env.UPSTREAM_CONCURRENCY || 12),
   maxRssUrlsPerFeed: Number(process.env.MAX_RSS_URLS_PER_FEED || 18),
   maxArticleQueriesPerFeed: Number(process.env.MAX_ARTICLE_QUERIES_PER_FEED || 6),

@@ -90,9 +90,7 @@ async function settleLimited<T, R>(items: T[], load: (item: T) => Promise<R>): P
 
 export async function getPage(scope: FeedScope, sectionNames: string[], limit: number): Promise<PageResponse> {
   const selectedSections = normalizeSections(sectionNames, scope);
-  const entries = await Promise.all(
-    selectedSections.map(async ([section, topic]) => [section, await getFeed(scope, topic, limit)] as const),
-  );
+  const entries = await loadPageEntries(selectedSections, scope, limit);
   const sections = Object.fromEntries(entries);
   const count = Object.values(sections).reduce((total, section) => total + section.meta.count, 0);
 
@@ -101,6 +99,55 @@ export async function getPage(scope: FeedScope, sectionNames: string[], limit: n
     sections,
     meta: {
       count,
+      fetchedAt: new Date().toISOString(),
+      cacheTtlSeconds: config.cacheTtlSeconds,
+    },
+  };
+}
+
+async function loadPageEntries(
+  selectedSections: [string, Topic][],
+  scope: FeedScope,
+  limit: number,
+): Promise<[string, FeedResponse][]> {
+  const entries = new Array<[string, FeedResponse]>(selectedSections.length);
+  let cursor = 0;
+  const workerCount = Math.max(1, Math.min(config.pageSectionConcurrency, selectedSections.length));
+
+  await Promise.all(
+    Array.from({ length: workerCount }, async () => {
+      while (cursor < selectedSections.length) {
+        const index = cursor;
+        cursor += 1;
+        const [section, topic] = selectedSections[index];
+        try {
+          entries[index] = [section, await getFeed(scope, topic, limit)];
+        } catch (reason) {
+          console.warn(
+            JSON.stringify({
+              event: "api.page.section_failed",
+              section,
+              topic,
+              error: reason instanceof Error ? reason.message : String(reason),
+            }),
+          );
+          entries[index] = [section, emptyFeed(scope, topic)];
+        }
+      }
+    }),
+  );
+
+  return entries;
+}
+
+function emptyFeed(scope: FeedScope, topic: Topic): FeedResponse {
+  return {
+    scope: scopePayload(scope),
+    topic,
+    items: [],
+    meta: {
+      count: 0,
+      sourcesUsed: ["error:page-section"],
       fetchedAt: new Date().toISOString(),
       cacheTtlSeconds: config.cacheTtlSeconds,
     },

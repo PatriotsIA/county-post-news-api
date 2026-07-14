@@ -126,10 +126,9 @@ The deployed API should only allow requests from frontend origins that should ca
 https://main.d2z6lt4e5q50in.amplifyapp.com,https://thecountypost.com,https://www.thecountypost.com
 ```
 
-These origins are configured in two places:
+These origins are configured with the `template.yaml` `CORS_ORIGINS` environment variable. The API response code echoes one matching origin from that allowlist.
 
-- `template.yaml` `CORS_ORIGINS` environment variable.
-- `template.yaml` `FunctionUrlConfig.Cors.AllowOrigins`.
+Do not also configure Lambda Function URL CORS for this API. Adding CORS at both the Function URL layer and in the API response can produce duplicate `Access-Control-Allow-Origin` headers, which browsers reject.
 
 Do not include trailing slashes in CORS origins. Browser `Origin` headers look like `https://thecountypost.com`, not `https://thecountypost.com/`.
 

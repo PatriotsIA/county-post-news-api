@@ -7,8 +7,8 @@ Globals:
     Runtime: nodejs20.x
     Architectures:
       - arm64
-    Timeout: 30
-    MemorySize: 512
+    Timeout: 60
+    MemorySize: 1024
     Environment:
       Variables:
         CACHE_TTL_SECONDS: "30"
@@ -23,6 +23,7 @@ Globals:
         GDELT_ENABLED: "true"
         GDELT_MAX_RECORDS: "100"
         BING_NEWS_ENABLED: "true"
+        PAGE_SECTION_CONCURRENCY: "2"
         UPSTREAM_CONCURRENCY: "12"
         MAX_RSS_URLS_PER_FEED: "18"
         MAX_ARTICLE_QUERIES_PER_FEED: "6"
@@ -36,15 +37,6 @@ Resources:
       Handler: dist/src/handler.handler
       FunctionUrlConfig:
         AuthType: NONE
-        Cors:
-          AllowOrigins:
-            - https://main.d2z6lt4e5q50in.amplifyapp.com
-            - https://thecountypost.com
-            - https://www.thecountypost.com
-          AllowMethods:
-            - GET
-          AllowHeaders:
-            - content-type
 
 Outputs:
   NewsApiUrl:
