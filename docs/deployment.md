@@ -108,7 +108,7 @@ After the CI pipeline exists, edit it and add a deploy stage:
    - Input artifact: the CodeBuild output artifact
    - Template file: `packaged.yaml`
    - Stack name: `county-news-api`
-   - Capabilities: `CAPABILITY_IAM`
+   - Capabilities: `CAPABILITY_IAM` and `CAPABILITY_AUTO_EXPAND`
 
 Do not point this deploy action at raw `template.yaml`. Raw `template.yaml` has `CodeUri: .`, which causes this error:
 
@@ -118,7 +118,22 @@ CodeUri is not a valid S3 Uri
 
 Only deploy `packaged.yaml`.
 
-## Step 5: CloudFormation Permissions
+## Step 5: Confirm CORS Origins
+
+The deployed API should only allow requests from frontend origins that should call it. The current production allowlist is:
+
+```text
+https://main.d2z6lt4e5q50in.amplifyapp.com,https://thecountypost.com,https://www.thecountypost.com
+```
+
+These origins are configured in two places:
+
+- `template.yaml` `CORS_ORIGINS` environment variable.
+- `template.yaml` `FunctionUrlConfig.Cors.AllowOrigins`.
+
+Do not include trailing slashes in CORS origins. Browser `Origin` headers look like `https://thecountypost.com`, not `https://thecountypost.com/`.
+
+## Step 6: CloudFormation Permissions
 
 For the first deployment, the CloudFormation deploy role needs permission to create/update:
 
@@ -153,7 +168,7 @@ If the AWS console asks for `CloudFormationResourcePermissions`, this broad firs
 
 This should be tightened after the first successful deployment.
 
-## Step 6: Run The Pipeline
+## Step 7: Run The Pipeline
 
 Run or release a new pipeline change.
 
@@ -175,7 +190,7 @@ CloudFormation > Stacks > county-news-api > Events
 
 Look for the first red `CREATE_FAILED` or `UPDATE_FAILED` event. Later rollback messages usually hide the real cause.
 
-## Step 7: Find The API URL
+## Step 8: Find The API URL
 
 After the CloudFormation deploy succeeds:
 
@@ -200,7 +215,7 @@ curl "https://<function-url-id>.lambda-url.<region>.on.aws/health"
 curl "https://<function-url-id>.lambda-url.<region>.on.aws/v1/pages/counties/arkansas/polk?limit=48"
 ```
 
-## Step 8: Configure The Frontend
+## Step 9: Configure The Frontend
 
 Set this environment variable in the frontend deployment:
 

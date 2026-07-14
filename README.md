@@ -66,7 +66,7 @@ npm run build
 
 Copy `.env.example` into your environment provider or shell:
 
-- `CORS_ORIGIN`: frontend origin. Use `*` for local testing.
+- `CORS_ORIGINS`: comma-separated frontend origin allowlist. Use `*` for local testing only.
 - `CACHE_TTL_SECONDS`: warm Lambda in-memory cache TTL, default `30`.
 - `REQUEST_TIMEOUT_MS`: upstream fetch timeout, default `3500`.
 - `DEFAULT_LIMIT`: default items per section, default `48`.

@@ -53,8 +53,9 @@ export async function handleRequest(request: ApiRequest): Promise<ApiResponse> {
     response = json(status, { error: message, durationMs: Date.now() - startedAt });
   }
 
-  logRequest(request, path, response, Date.now() - startedAt, errorMessage);
-  return response;
+  const corsResponse = withCorsHeaders(response, request.headers);
+  logRequest(request, path, corsResponse, Date.now() - startedAt, errorMessage);
+  return corsResponse;
 }
 
 async function handleFeed(parts: string[], query: URLSearchParams) {
@@ -142,11 +143,29 @@ function json(statusCode: number, body: unknown): ApiResponse {
 function responseHeaders() {
   return {
     "content-type": "application/json; charset=utf-8",
-    "access-control-allow-origin": config.corsOrigin,
     "access-control-allow-methods": "GET, OPTIONS",
     "access-control-allow-headers": "content-type, authorization",
     "cache-control": `public, max-age=${config.cacheTtlSeconds}, s-maxage=${config.cacheTtlSeconds}`,
   };
+}
+
+function withCorsHeaders(response: ApiResponse, headers?: Record<string, string | undefined>): ApiResponse {
+  const origin = normalizeHeaders(headers).origin?.replace(/\/+$/g, "");
+  const allowedOrigin = allowedCorsOrigin(origin);
+  return {
+    ...response,
+    headers: {
+      ...response.headers,
+      "access-control-allow-origin": allowedOrigin,
+      vary: "Origin",
+    },
+  };
+}
+
+function allowedCorsOrigin(origin?: string) {
+  if (config.corsOrigins.includes("*")) return "*";
+  if (origin && config.corsOrigins.includes(origin)) return origin;
+  return config.corsOrigins[0] || "*";
 }
 
 function logRequest(request: ApiRequest, path: string, response: ApiResponse, durationMs: number, errorMessage?: string) {

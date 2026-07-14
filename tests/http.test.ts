@@ -1,5 +1,6 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { clearCache } from "../src/cache.js";
+import { config } from "../src/config.js";
 import { buildFeedPlan } from "../src/feed-builders.js";
 import { filterItems } from "../src/filter.js";
 import { getCounty, getCountyMarketCities } from "../src/geo.js";
@@ -108,8 +109,11 @@ const gdelt = {
   ],
 };
 
+const defaultCorsOrigins = [...config.corsOrigins];
+
 describe("handleRequest", () => {
   afterEach(() => {
+    config.corsOrigins = [...defaultCorsOrigins];
     vi.restoreAllMocks();
   });
 
@@ -117,6 +121,21 @@ describe("handleRequest", () => {
     const response = await handleRequest({ method: "GET", path: "/health", query: new URLSearchParams() });
     expect(response.statusCode).toBe(200);
     expect(JSON.parse(response.body)).toMatchObject({ ok: true, service: "county-post-news-api" });
+  });
+
+  it("echoes an allowed CORS origin", async () => {
+    config.corsOrigins = ["https://main.d2z6lt4e5q50in.amplifyapp.com", "https://thecountypost.com"];
+
+    const response = await handleRequest({
+      method: "GET",
+      path: "/health",
+      query: new URLSearchParams(),
+      headers: { origin: "https://main.d2z6lt4e5q50in.amplifyapp.com" },
+    });
+
+    expect(response.statusCode).toBe(200);
+    expect(response.headers["access-control-allow-origin"]).toBe("https://main.d2z6lt4e5q50in.amplifyapp.com");
+    expect(response.headers.vary).toBe("Origin");
   });
 
   it("returns filtered county feed items", async () => {

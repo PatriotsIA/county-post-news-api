@@ -1,6 +1,6 @@
 export const config = {
   port: Number(process.env.PORT || 8787),
-  corsOrigin: process.env.CORS_ORIGIN || "*",
+  corsOrigins: parseCorsOrigins(process.env.CORS_ORIGINS || process.env.CORS_ORIGIN || "*"),
   cacheTtlSeconds: Number(process.env.CACHE_TTL_SECONDS || 30),
   requestTimeoutMs: Number(process.env.REQUEST_TIMEOUT_MS || 3500),
   defaultLimit: Number(process.env.DEFAULT_LIMIT || 48),
@@ -20,3 +20,10 @@ export const config = {
   maxArticleQueriesPerFeed: Number(process.env.MAX_ARTICLE_QUERIES_PER_FEED || 6),
   googleNewsRssSearch: "https://news.google.com/rss/search",
 };
+
+function parseCorsOrigins(value: string) {
+  return value
+    .split(",")
+    .map((origin) => origin.trim().replace(/\/+$/g, ""))
+    .filter(Boolean);
+}
