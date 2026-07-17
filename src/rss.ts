@@ -39,11 +39,12 @@ function parseRss(xml: string, options: RssOptions): NewsFeedItem[] {
     return rssItems.map((raw, index) => {
       const item = raw as RssItem;
       const description = textValue(item.description);
+      const title = decodeEntities(stripHtml(textValue(item.title) || "Untitled update"));
       return {
         id: textValue(item.guid) || textValue(item.link) || `${textValue(item.title) || "item"}-${index}`,
-        title: decodeEntities(stripHtml(textValue(item.title) || "Untitled update")),
+        title,
         link: textValue(item.link) || "#",
-        source: options.source || textValue(item.source) || textValue(document.rss?.channel?.title),
+        source: publicationSource(options.source || textValue(item.source) || textValue(document.rss?.channel?.title), title),
         publishedAt: textValue(item.pubDate),
         description: decodeEntities(stripHtml(description)).slice(0, 240),
         imageUrl: imageFromItem(item, description),
@@ -56,11 +57,12 @@ function parseRss(xml: string, options: RssOptions): NewsFeedItem[] {
     const entry = raw as AtomEntry;
     const link = atomLink(entry.link);
     const description = textValue(entry.summary) || textValue(entry.content);
+    const title = decodeEntities(stripHtml(textValue(entry.title) || "Untitled update"));
     return {
       id: textValue(entry.id) || link || `${textValue(entry.title) || "entry"}-${index}`,
-      title: decodeEntities(stripHtml(textValue(entry.title) || "Untitled update")),
+      title,
       link: link || "#",
-      source: options.source || textValue(entry.source?.title) || textValue(entry.author?.name) || textValue(document.feed?.title),
+      source: publicationSource(options.source || textValue(entry.source?.title) || textValue(entry.author?.name) || textValue(document.feed?.title), title),
       publishedAt: textValue(entry.published) || textValue(entry.updated),
       description: decodeEntities(stripHtml(description)).slice(0, 240),
       imageUrl: "",
@@ -113,6 +115,17 @@ function textValue(value: unknown): string {
 function imageFromItem(item: RssItem, description: string) {
   if (item.enclosure?.["@_type"]?.startsWith("image/")) return item.enclosure["@_url"] || "";
   return description.match(/<img[^>]+src=["']([^"']+)["']/i)?.[1] || "";
+}
+
+function publicationSource(source: string, title: string) {
+  if (source && !isAggregatorSource(source)) return source;
+  const titleParts = title.split(/\s[-–—]\s/).map((part) => part.trim()).filter(Boolean);
+  return titleParts.length > 1 ? titleParts.at(-1) || source : source;
+}
+
+function isAggregatorSource(source: string) {
+  const normalized = source.toLowerCase();
+  return normalized.includes("google news") || normalized.includes("bing news") || normalized.includes("news.google.com");
 }
 
 function stripHtml(value: string) {

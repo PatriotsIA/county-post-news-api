@@ -1,4 +1,5 @@
 import { cached } from "./cache.js";
+import { enrichArticleImages } from "./article-images.js";
 import { config } from "./config.js";
 import { buildFeedPlan, topics } from "./feed-builders.js";
 import { filterItems } from "./filter.js";
@@ -17,7 +18,7 @@ export async function getFeed(scope: FeedScope, topic: Topic, limit: number): Pr
       settleLimited(plan.articleQueries, (query) => fetchGdeltItems(query)),
     ]);
     const items = [...settledItems(rssResults), ...settledItems(directResults), ...settledItems(gdeltResults)];
-    const filtered = newest(dedupeItems(filterItems(recentItems(items), topic, scope)), config.maxLimit);
+    const filtered = await enrichArticleImages(newest(dedupeItems(filterItems(recentItems(items), topic, scope)), config.maxLimit));
     const fetchedAt = new Date().toISOString();
 
     return {
