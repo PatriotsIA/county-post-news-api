@@ -233,10 +233,11 @@ Page endpoints aggregate several sections. To avoid overloading Lambda with too 
 
 | Control | Default | Effect |
 | --- | ---: | --- |
-| `CACHE_TTL_SECONDS` | `30` | How long warm Lambda memory keeps feed results. |
+| `CACHE_TTL_SECONDS` | `300` | How long warm Lambda memory keeps feed results in production. |
 | `REQUEST_TIMEOUT_MS` | `3500` | Per-provider fetch timeout. |
-| `PAGE_SECTION_CONCURRENCY` | `2` | Number of page sections aggregated at once. |
+| `PAGE_SECTION_CONCURRENCY` | `4` | Number of page sections aggregated at once. |
 | `UPSTREAM_CONCURRENCY` | `12` | Concurrent provider fetches within each provider group. |
+| `ARTICLE_IMAGE_LOOKUP_LIMIT` | `4` | Article pages scraped for missing images per feed. Lower values improve first-load latency. |
 | `MAX_RSS_URLS_PER_FEED` | `18` | RSS/search URL cap per section. |
 | `MAX_ARTICLE_QUERIES_PER_FEED` | `6` | GDELT query cap per section. |
 | `DEFAULT_LIMIT` | `48` | Default returned items per section. |

@@ -76,7 +76,7 @@ npm run build
 Copy `.env.example` into your environment provider or shell:
 
 - `CORS_ORIGINS`: comma-separated frontend origin allowlist. Use `*` for local testing only.
-- `CACHE_TTL_SECONDS`: warm Lambda in-memory cache TTL, default `30`.
+- `CACHE_TTL_SECONDS`: warm Lambda in-memory cache TTL, production default `300`.
 - `REQUEST_TIMEOUT_MS`: upstream fetch timeout, default `3500`.
 - `DEFAULT_LIMIT`: default items per section, default `48`.
 - `MAX_LIMIT`: hard cap, default `200`.
@@ -88,8 +88,9 @@ Copy `.env.example` into your environment provider or shell:
 - `GDELT_ENABLED`: set to `false` to disable GDELT, default `true`.
 - `GDELT_MAX_RECORDS`: max GDELT records per query, default `100`.
 - `BING_NEWS_ENABLED`: set to `false` to disable Bing News RSS, default `true`.
-- `PAGE_SECTION_CONCURRENCY`: max page sections aggregated at once, default `2`.
+- `PAGE_SECTION_CONCURRENCY`: max page sections aggregated at once, production default `4`.
 - `UPSTREAM_CONCURRENCY`: max concurrent upstream requests per provider group, default `12`.
+- `ARTICLE_IMAGE_LOOKUP_LIMIT`: max article pages scraped for missing images per feed, production default `4`.
 - `MAX_RSS_URLS_PER_FEED`: RSS/provider URL cap per section, default `18`.
 - `MAX_ARTICLE_QUERIES_PER_FEED`: article-search query cap per section, default `6`.
 
