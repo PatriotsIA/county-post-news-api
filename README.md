@@ -47,6 +47,8 @@ type NewsFeedItem = {
 - `GET /v1/pages/national?sections=general,sports,politics&limit=48`
 - `GET /v1/pages/states/:stateSlug?sections=general,sports,politics&limit=48`
 - `GET /v1/pages/counties/:stateSlug/:countySlug?sections=localNews,localSports,politics,economy,crime,obituaries,opinion&limit=48`
+- `GET /v1/markets/metals`
+- `GET /v1/markets/cattle`
 
 Topics are `general`, `sports`, `politics`, `economy`, `crime`, `obituaries`, and `opinion`.
 
@@ -93,6 +95,9 @@ Copy `.env.example` into your environment provider or shell:
 - `ARTICLE_IMAGE_LOOKUP_LIMIT`: max article pages scraped for missing images per feed, production default `4`.
 - `MAX_RSS_URLS_PER_FEED`: RSS/provider URL cap per section, default `18`.
 - `MAX_ARTICLE_QUERIES_PER_FEED`: article-search query cap per section, default `6`.
+- `METALS_API_KEY`: Metals.dev API key. Set this only in the API runtime, never in a `VITE_*` frontend variable.
+- `METALS_CACHE_TTL_SECONDS`: shared Metals.dev response cache duration, default `60`.
+- `USDA_MARS_API_KEY`: USDA MyMarketNews MARS API key for the cattle ticker. `MARS_API_KEY` is also accepted as a local alias.
 
 ## Request Logs
 

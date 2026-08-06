@@ -110,10 +110,15 @@ const gdelt = {
 };
 
 const defaultCorsOrigins = [...config.corsOrigins];
+const defaultMetalsApiKey = config.metalsApiKey;
+const defaultUsdaMarsApiKey = config.usdaMarsApiKey;
 
 describe("handleRequest", () => {
   afterEach(() => {
+    clearCache();
     config.corsOrigins = [...defaultCorsOrigins];
+    config.metalsApiKey = defaultMetalsApiKey;
+    config.usdaMarsApiKey = defaultUsdaMarsApiKey;
     vi.restoreAllMocks();
   });
 
@@ -121,6 +126,89 @@ describe("handleRequest", () => {
     const response = await handleRequest({ method: "GET", path: "/health", query: new URLSearchParams() });
     expect(response.statusCode).toBe(200);
     expect(JSON.parse(response.body)).toMatchObject({ ok: true, service: "county-post-news-api" });
+  });
+
+  it("returns current precious metal prices through the protected server-side provider", async () => {
+    config.metalsApiKey = "test-key";
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async () =>
+        new Response(
+          JSON.stringify({
+            currency: "USD",
+            unit: "toz",
+            timestamp: "2026-08-06T18:00:00.000Z",
+            metals: { gold: 3400.5, silver: 38.2, platinum: 1400, palladium: 1125 },
+          }),
+          { status: 200, headers: { "content-type": "application/json" } },
+        ),
+      ),
+    );
+
+    const response = await handleRequest({ method: "GET", path: "/v1/markets/metals", query: new URLSearchParams() });
+
+    expect(response.statusCode).toBe(200);
+    expect(JSON.parse(response.body)).toMatchObject({
+      currency: "USD",
+      unit: "toz",
+      items: [
+        { key: "gold", price: 3400.5 },
+        { key: "silver", price: 38.2 },
+        { key: "platinum", price: 1400 },
+        { key: "palladium", price: 1125 },
+      ],
+    });
+  });
+
+  it("returns current cattle prices through USDA MARS", async () => {
+    config.usdaMarsApiKey = "test-mars-key";
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async (url: URL | string) => {
+        const value = String(url);
+        const rows = value.includes("/1280")
+          ? [
+              {
+                report_date: "08/03/2026",
+                market_location_name: "Oklahoma National Stockyards Market",
+                commodity: "Feeder Cattle",
+                price_unit: "Per Cwt",
+                head_count: 10,
+                avg_price: 390,
+              },
+              {
+                report_date: "08/03/2026",
+                market_location_name: "Oklahoma National Stockyards Market",
+                commodity: "Feeder Cattle",
+                price_unit: "Per Cwt",
+                head_count: 20,
+                avg_price: 405,
+              },
+            ]
+          : [
+              {
+                report_date: "08/06/2026",
+                market_location_name: "Sheldon Livestock Auction",
+                commodity: "Slaughter Cattle",
+                price_unit: "Per Cwt",
+                head_count: 5,
+                avg_price: 244.98,
+              },
+            ];
+        return new Response(JSON.stringify({ results: rows }), { status: 200, headers: { "content-type": "application/json" } });
+      }),
+    );
+
+    const response = await handleRequest({ method: "GET", path: "/v1/markets/cattle", query: new URLSearchParams() });
+
+    expect(response.statusCode).toBe(200);
+    expect(JSON.parse(response.body)).toMatchObject({
+      updatedAt: "08/06/2026",
+      items: [
+        { key: "feeder-cattle", label: "Feeder cattle", price: 400, unit: "Per Cwt", sampleSize: 2 },
+        { key: "slaughter-cattle", label: "Slaughter cattle", price: 244.98, unit: "Per Cwt", sampleSize: 1 },
+      ],
+    });
   });
 
   it("echoes an allowed CORS origin", async () => {

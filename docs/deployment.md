@@ -109,6 +109,7 @@ After the CI pipeline exists, edit it and add a deploy stage:
    - Template file: `packaged.yaml`
    - Stack name: `county-news-api`
    - Capabilities: `CAPABILITY_IAM` and `CAPABILITY_AUTO_EXPAND`
+   - Parameter overrides: set `MetalsApiKey` to the Metals.dev key and `UsdaMarsApiKey` to the USDA MARS key.
 
 Do not point this deploy action at raw `template.yaml`. Raw `template.yaml` has `CodeUri: .`, which causes this error:
 

@@ -21,6 +21,10 @@ export const config = {
   maxRssUrlsPerFeed: Number(process.env.MAX_RSS_URLS_PER_FEED || 18),
   maxArticleQueriesPerFeed: Number(process.env.MAX_ARTICLE_QUERIES_PER_FEED || 6),
   googleNewsRssSearch: "https://news.google.com/rss/search",
+  metalsApiKey: process.env.METALS_API_KEY || "",
+  metalsApiUrl: "https://api.metals.dev/v1/latest",
+  metalsCacheTtlSeconds: Number(process.env.METALS_CACHE_TTL_SECONDS || 60),
+  usdaMarsApiKey: process.env.USDA_MARS_API_KEY || process.env.MARS_API_KEY || "",
 };
 
 function parseCorsOrigins(value: string) {

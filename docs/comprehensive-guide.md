@@ -102,6 +102,8 @@ sequenceDiagram
 | `GET /v1/pages/national` | Multiple national sections. | National homepage load. |
 | `GET /v1/pages/states/:stateSlug` | Multiple state sections. | State page load. |
 | `GET /v1/pages/counties/:stateSlug/:countySlug` | Multiple county sections. | County page load. |
+| `GET /v1/markets/metals` | Precious metals prices from Metals.dev. | Top ticker. |
+| `GET /v1/markets/cattle` | Feeder/slaughter cattle prices from USDA MARS. | Top ticker. |
 
 Supported topics:
 
@@ -242,6 +244,8 @@ Page endpoints aggregate several sections. To avoid overloading Lambda with too 
 | `MAX_ARTICLE_QUERIES_PER_FEED` | `6` | GDELT query cap per section. |
 | `DEFAULT_LIMIT` | `48` | Default returned items per section. |
 | `MAX_LIMIT` | `200` | Hard returned item cap. |
+| `METALS_API_KEY` | unset | Server-side Metals.dev key for `/v1/markets/metals`. |
+| `USDA_MARS_API_KEY` | unset | Server-side USDA MARS key for `/v1/markets/cattle`; `MARS_API_KEY` is accepted locally as an alias. |
 
 ## CORS Model
 

@@ -2,6 +2,7 @@ import { config } from "./config.js";
 import { getCounty, getState, states } from "./geo.js";
 import { getFeed, getPage } from "./news-service.js";
 import { topics } from "./feed-builders.js";
+import { getCattleTicker, getMetalsTicker, MarketServiceError } from "./markets-service.js";
 import type { FeedScope, Topic } from "./types.js";
 
 export type ApiRequest = {
@@ -42,14 +43,18 @@ export async function handleRequest(request: ApiRequest): Promise<ApiResponse> {
         response = await handleFeed(parts.slice(2), request.query);
       } else if (parts[1] === "pages") {
         response = await handlePage(parts.slice(2), request.query);
+      } else if (parts[1] === "markets" && parts[2] === "metals" && parts.length === 3) {
+        response = json(200, await getMetalsTicker());
+      } else if (parts[1] === "markets" && parts[2] === "cattle" && parts.length === 3) {
+        response = json(200, await getCattleTicker());
       } else {
         response = json(404, { error: "Not found" });
       }
     }
   } catch (error) {
     errorMessage = error instanceof Error ? error.message : "Unknown error";
-    const message = error instanceof ApiError ? error.message : "Internal server error";
-    const status = error instanceof ApiError ? error.statusCode : 500;
+    const message = error instanceof ApiError || error instanceof MarketServiceError ? error.message : "Internal server error";
+    const status = error instanceof ApiError || error instanceof MarketServiceError ? error.statusCode : 500;
     response = json(status, { error: message, durationMs: Date.now() - startedAt });
   }
 
