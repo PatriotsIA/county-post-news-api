@@ -37,6 +37,14 @@ type MarsReportRow = {
   price_unit?: string;
   head_count?: number | string;
   avg_price?: number | string;
+  weight_break_low?: number | string;
+  weight_break_high?: number | string;
+};
+
+type FeederCattleBreakdown = {
+  label: string;
+  price: number;
+  unit: string;
 };
 
 type CattleTickerItem = {
@@ -47,6 +55,7 @@ type CattleTickerItem = {
   market?: string;
   reportDate?: string;
   sampleSize: number;
+  breakdown?: FeederCattleBreakdown[];
 };
 
 export type CattleTickerResponse = {
@@ -159,7 +168,28 @@ async function fetchMarsCattleReport(report: {
     market: mostCommon(rows.map((row) => row.market_location_name).filter(Boolean)),
     reportDate: newestValue(rows.map((row) => row.report_date)),
     sampleSize: rows.length,
+    breakdown: report.key === "feeder-cattle" ? feederCattleBreakdown(rows) : undefined,
   };
+}
+
+function feederCattleBreakdown(rows: MarsReportRow[]): FeederCattleBreakdown[] {
+  const featuredBreaks = [
+    { className: "Steers", low: 500, high: 550 },
+    { className: "Steers", low: 600, high: 650 },
+    { className: "Heifers", low: 500, high: 550 },
+  ];
+
+  return featuredBreaks.flatMap(({ className, low, high }) => {
+    const matchingRows = rows.filter(
+      (row) => row.class === className && Number(row.weight_break_low) === low && Number(row.weight_break_high) === high,
+    );
+    if (!matchingRows.length) return [];
+    return [{
+      label: `${className} ${low}–${high - 1}`,
+      price: weightedAverage(matchingRows),
+      unit: mostCommon(matchingRows.map((row) => row.price_unit).filter(Boolean)) || "Per Cwt",
+    }];
+  });
 }
 
 function recentMarsDateWindow(days: number) {
