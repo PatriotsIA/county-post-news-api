@@ -49,8 +49,31 @@ type NewsFeedItem = {
 - `GET /v1/pages/counties/:stateSlug/:countySlug?sections=localNews,localSports,politics,economy,crime,obituaries,opinion&limit=48`
 - `GET /v1/markets/metals`
 - `GET /v1/markets/cattle`
+- `GET /v1/counties/:stateSlug/:countySlug/population`
+- `POST /v1/advertising/creatives/upload`
+- `POST /v1/checkout/sessions`
 
-Topics are `general`, `sports`, `politics`, `economy`, `crime`, `obituaries`, and `opinion`.
+Core topics are `general`, `sports`, `politics`, `economy`, `crime`, `obituaries`, and `opinion`. Editorial desk subcategories are `monetary-policy`, `markets-investing`, `jobs-business`, `property-taxes`, `municipal-bonds`, `budgets-levies`, `voting-systems`, `election-administration`, `audits-recounts`, and `open-records`.
+
+`POST /v1/checkout/sessions` creates a hosted Stripe Checkout subscription for a County Post color card or section sponsorship. The API calculates the price from the server-side rate card; it rejects client-provided amounts. The response contains only a Stripe Checkout URL and session ID.
+
+```json
+{
+  "placement": "color-card",
+  "billing": "annual",
+  "counties": [
+    { "stateSlug": "texas", "countySlug": "potter" }
+  ],
+  "customerEmail": "advertiser@example.com",
+  "businessName": "Example Business"
+}
+```
+
+Annual checkout charges ten times the monthly rate and renews annually. The highest-priced county is charged at full rate; additional counties are charged at half their tier rate. Population tiers are calculated from the bundled U.S. Census Bureau Vintage 2025 county estimates; refresh them annually with `npm run update:populations`. Inventory remains subject to sales review until reservations are backed by a database.
+
+The county population endpoint returns the same 2025 Census estimate and pricing tier used by Checkout, so the frontend can show a quote before creating a payment session. The 3,144-county lookup is bundled with the Lambda, requiring no public Census key or runtime Census request.
+
+`POST /v1/advertising/creatives/upload` accepts an advertised JPG or PNG file name, MIME type, and byte size and returns a 15-minute S3 presigned POST form. The browser uploads the creative directly to a private, encrypted S3 bucket before Stripe Checkout starts. Stripe Checkout itself does not support file-upload fields. The resulting private asset key is attached to the Checkout Session for the sales team.
 
 ## Local Development
 
@@ -98,6 +121,12 @@ Copy `.env.example` into your environment provider or shell:
 - `METALS_API_KEY`: Metals.dev API key. Set this only in the API runtime, never in a `VITE_*` frontend variable.
 - `METALS_CACHE_TTL_SECONDS`: shared Metals.dev response cache duration, default `60`.
 - `USDA_MARS_API_KEY`: USDA MyMarketNews MARS API key for the cattle ticker. `MARS_API_KEY` is also accepted as a local alias.
+- `STRIPE_SK_KEY`: Stripe secret key used only by the API to create hosted Checkout sessions. Never expose this value to the frontend.
+- `STRIPE_PK_KEY`: Stripe publishable key. It is not required for redirect Checkout, but may be used by a future embedded Checkout flow.
+- `STRIPE_CHECKOUT_SUCCESS_URL`: absolute URL Stripe redirects to after a successful payment.
+- `STRIPE_CHECKOUT_CANCEL_URL`: absolute URL Stripe redirects to after a cancelled Checkout.
+- `ADVERTISING_CREATIVE_BUCKET`: private S3 bucket used for advertiser creative uploads. The SAM stack provisions this automatically; set it only for local development with an existing bucket and AWS credentials.
+- `ADVERTISING_CREATIVE_MAX_BYTES`: creative upload cap, default `10485760` (10 MB).
 
 ## Request Logs
 

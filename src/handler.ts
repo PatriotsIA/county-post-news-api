@@ -7,6 +7,7 @@ export async function handler(event: APIGatewayProxyEventV2): Promise<APIGateway
     path: event.rawPath || "/",
     query: new URLSearchParams(event.rawQueryString || ""),
     headers: event.headers,
+    body: event.body ? (event.isBase64Encoded ? Buffer.from(event.body, "base64").toString("utf8") : event.body) : undefined,
     remoteAddress: event.requestContext.http.sourceIp,
     requestId: event.requestContext.requestId,
   });

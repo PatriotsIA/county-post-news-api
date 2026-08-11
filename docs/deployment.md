@@ -109,7 +109,7 @@ After the CI pipeline exists, edit it and add a deploy stage:
    - Template file: `packaged.yaml`
    - Stack name: `county-news-api`
    - Capabilities: `CAPABILITY_IAM` and `CAPABILITY_AUTO_EXPAND`
-   - Parameter overrides: set `MetalsApiKey` to the Metals.dev key and `UsdaMarsApiKey` to the USDA MARS key.
+   - Parameter overrides: set `MetalsApiKey` to the Metals.dev key, `UsdaMarsApiKey` to the USDA MARS key, and `StripeSecretKey` to the Stripe secret key. Set `StripeCheckoutSuccessUrl` and `StripeCheckoutCancelUrl` to the deployed frontend payment URLs.
 
 Do not point this deploy action at raw `template.yaml`. Raw `template.yaml` has `CodeUri: .`, which causes this error:
 
@@ -119,12 +119,14 @@ CodeUri is not a valid S3 Uri
 
 Only deploy `packaged.yaml`.
 
+The stack also provisions a private, encrypted `AdvertisingCreativeBucket`. Browser uploads use short-lived, size-limited presigned S3 POST forms; do not make this bucket public.
+
 ## Step 5: Confirm CORS Origins
 
 The deployed API should only allow requests from frontend origins that should call it. The current production allowlist is:
 
 ```text
-https://main.d2z6lt4e5q50in.amplifyapp.com,https://thecountypost.com,https://www.thecountypost.com
+https://main.d2z6lt4e5q50in.amplifyapp.com,https://advertiser-preview.d2z6lt4e5q50in.amplifyapp.com,https://thecountypost.com,https://www.thecountypost.com
 ```
 
 These origins are configured with the `template.yaml` `CORS_ORIGINS` environment variable. The API response code echoes one matching origin from that allowlist.

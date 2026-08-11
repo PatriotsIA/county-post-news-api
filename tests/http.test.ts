@@ -128,6 +128,22 @@ describe("handleRequest", () => {
     expect(JSON.parse(response.body)).toMatchObject({ ok: true, service: "county-post-news-api" });
   });
 
+  it("serves neutral editorial subcategory feeds through the API", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async () => new Response(rss, { status: 200, headers: { "content-type": "application/rss+xml" } })),
+    );
+
+    const response = await handleRequest({
+      method: "GET",
+      path: "/v1/feeds/national/monetary-policy",
+      query: new URLSearchParams("limit=10"),
+    });
+
+    expect(response.statusCode).toBe(200);
+    expect(JSON.parse(response.body).topic).toBe("monetary-policy");
+  });
+
   it("returns current precious metal prices through the protected server-side provider", async () => {
     config.metalsApiKey = "test-key";
     vi.stubGlobal(

@@ -13,6 +13,19 @@ Parameters:
     NoEcho: true
     Default: ""
     Description: USDA MARS API key for the cattle and agriculture ticker.
+  StripeSecretKey:
+    Type: String
+    NoEcho: true
+    Default: ""
+    Description: Stripe secret key used only to create hosted Checkout sessions.
+  StripeCheckoutSuccessUrl:
+    Type: String
+    Default: "https://thecountypost.com/payments?checkout=success"
+    Description: Frontend URL Stripe redirects to after a successful payment.
+  StripeCheckoutCancelUrl:
+    Type: String
+    Default: "https://thecountypost.com/payments?checkout=cancelled"
+    Description: Frontend URL Stripe redirects to when Checkout is cancelled.
 
 Globals:
   Function:
@@ -40,11 +53,16 @@ Globals:
         ARTICLE_IMAGE_LOOKUP_LIMIT: "4"
         MAX_RSS_URLS_PER_FEED: "18"
         MAX_ARTICLE_QUERIES_PER_FEED: "6"
-        CORS_ORIGINS: "https://main.d2z6lt4e5q50in.amplifyapp.com,https://thecountypost.com,https://www.thecountypost.com"
+        CORS_ORIGINS: "https://main.d2z6lt4e5q50in.amplifyapp.com,https://advertiser-preview.d2z6lt4e5q50in.amplifyapp.com,https://thecountypost.com,https://www.thecountypost.com"
         METALS_API_KEY: !Ref MetalsApiKey
         METALS_CACHE_TTL_SECONDS: "60"
         USDA_MARS_API_KEY: !Ref UsdaMarsApiKey
         MARS_API_KEY: !Ref UsdaMarsApiKey
+        STRIPE_SK_KEY: !Ref StripeSecretKey
+        STRIPE_CHECKOUT_SUCCESS_URL: !Ref StripeCheckoutSuccessUrl
+        STRIPE_CHECKOUT_CANCEL_URL: !Ref StripeCheckoutCancelUrl
+        ADVERTISING_CREATIVE_BUCKET: !Ref AdvertisingCreativeBucket
+        ADVERTISING_CREATIVE_MAX_BYTES: "10485760"
 
 Resources:
   NewsApiFunction:
@@ -52,8 +70,40 @@ Resources:
     Properties:
       CodeUri: .
       Handler: dist/src/handler.handler
+      Policies:
+        - S3WritePolicy:
+            BucketName: !Ref AdvertisingCreativeBucket
       FunctionUrlConfig:
         AuthType: NONE
+
+  AdvertisingCreativeBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+      OwnershipControls:
+        Rules:
+          - ObjectOwnership: BucketOwnerEnforced
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      CorsConfiguration:
+        CorsRules:
+          - AllowedHeaders:
+              - "*"
+            AllowedMethods:
+              - POST
+            AllowedOrigins:
+              - http://localhost:5173
+              - https://main.d2z6lt4e5q50in.amplifyapp.com
+              - https://advertiser-preview.d2z6lt4e5q50in.amplifyapp.com
+              - https://thecountypost.com
+              - https://www.thecountypost.com
+            MaxAge: 300
 
 Outputs:
   NewsApiUrl:

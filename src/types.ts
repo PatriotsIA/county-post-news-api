@@ -1,4 +1,21 @@
-export type Topic = "general" | "sports" | "politics" | "economy" | "crime" | "obituaries" | "opinion";
+export type Topic =
+  | "general"
+  | "sports"
+  | "politics"
+  | "economy"
+  | "crime"
+  | "obituaries"
+  | "opinion"
+  | "monetary-policy"
+  | "markets-investing"
+  | "jobs-business"
+  | "property-taxes"
+  | "municipal-bonds"
+  | "budgets-levies"
+  | "voting-systems"
+  | "election-administration"
+  | "audits-recounts"
+  | "open-records";
 
 export type ScopeLevel = "national" | "state" | "county";
 

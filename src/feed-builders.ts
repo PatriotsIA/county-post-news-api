@@ -10,7 +10,12 @@ type FeedPlan = {
   sourcesUsed: string[];
 };
 
-export const topics: Topic[] = ["general", "sports", "politics", "economy", "crime", "obituaries", "opinion"];
+export const topics: Topic[] = [
+  "general", "sports", "politics", "economy", "crime", "obituaries", "opinion",
+  "monetary-policy", "markets-investing", "jobs-business",
+  "property-taxes", "municipal-bonds", "budgets-levies",
+  "voting-systems", "election-administration", "audits-recounts", "open-records",
+];
 
 const topicQueries: Record<Topic, string[]> = {
   general: ["news", "breaking news", "top stories", "local news"],
@@ -20,6 +25,16 @@ const topicQueries: Record<Topic, string[]> = {
   crime: ["crime", "courts", "police", "sheriff", "arrests", "trial"],
   obituaries: ["obituaries", "obituary", "funeral home", "death notice"],
   opinion: ["opinion", "editorial", "column", "commentary", "op-ed"],
+  "monetary-policy": ["inflation", "interest rates", "Federal Reserve", "central bank", "currency policy"],
+  "markets-investing": ["markets", "commodities", "stocks", "bonds", "investing", "business cycle"],
+  "jobs-business": ["jobs", "employment", "employer", "small business", "industry", "economic development"],
+  "property-taxes": ["property taxes", "tax assessment", "appraisal", "tax levy", "homestead exemption"],
+  "municipal-bonds": ["municipal bond", "school bond", "bond election", "public debt", "bond proposal"],
+  "budgets-levies": ["public budget", "county budget", "city budget", "school budget", "tax rate", "public finance"],
+  "voting-systems": ["voting systems", "ballot processing", "voting equipment", "ballot certification", "election technology"],
+  "election-administration": ["election administration", "election office", "polling place", "voter registration", "election date"],
+  "audits-recounts": ["election audit", "recount", "canvass", "post-election review", "election results certification"],
+  "open-records": ["public records", "open records", "freedom of information", "FOIA", "government transparency"],
 };
 
 const nationalQueries: Record<Topic, string[]> = {
@@ -30,6 +45,16 @@ const nationalQueries: Record<Topic, string[]> = {
   crime: ["United States crime", "courts", "justice department", "police", "public safety"],
   obituaries: ["United States obituaries", "obituary", "funeral", "death notice"],
   opinion: ["United States opinion", "editorial", "column", "commentary", "op-ed"],
+  "monetary-policy": ["United States inflation", "interest rates", "Federal Reserve", "central bank", "currency policy"],
+  "markets-investing": ["United States markets", "commodities", "stocks", "bonds", "investing"],
+  "jobs-business": ["United States jobs", "employment", "small business", "industry", "economic development"],
+  "property-taxes": ["United States property taxes", "tax assessment", "appraisal", "homestead exemption"],
+  "municipal-bonds": ["municipal bonds", "school bonds", "public debt", "bond elections"],
+  "budgets-levies": ["public budgets", "local government finance", "tax rates", "school finance"],
+  "voting-systems": ["United States voting systems", "ballot processing", "voting equipment", "election certification"],
+  "election-administration": ["United States election administration", "voter registration", "polling places", "election offices"],
+  "audits-recounts": ["United States election audits", "recounts", "canvass", "election certification"],
+  "open-records": ["United States public records", "open records", "FOIA", "government transparency"],
 };
 
 export function buildFeedPlan(scope: FeedScope, topic: Topic): FeedPlan {

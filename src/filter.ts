@@ -11,6 +11,16 @@ const categoryRules: Record<Topic, { include?: string[]; exclude?: string[] }> =
   crime: { include: ["crime", "police", "sheriff", "court", "arrest", "charged", "indicted", "trial", "sentenced"], exclude: obituaryTerms },
   obituaries: { include: obituaryTerms, exclude: ["arrest", "charged", "crime", "police", "sheriff", "election", "sports", "football", "basketball"] },
   opinion: { include: ["opinion", "editorial", "column", "letter to the editor", "commentary", "op-ed", "op ed"], exclude: obituaryTerms },
+  "monetary-policy": { include: ["inflation", "interest rate", "federal reserve", "central bank", "currency", "monetary policy"], exclude: obituaryTerms },
+  "markets-investing": { include: ["market", "markets", "commodity", "commodities", "stock", "stocks", "bond", "bonds", "investing"], exclude: obituaryTerms },
+  "jobs-business": { include: ["job", "jobs", "employment", "employer", "business", "industry", "economic development"], exclude: obituaryTerms },
+  "property-taxes": { include: ["property tax", "property taxes", "assessment", "appraisal", "tax levy", "homestead exemption"], exclude: obituaryTerms },
+  "municipal-bonds": { include: ["municipal bond", "school bond", "bond election", "bond proposal", "public debt"], exclude: obituaryTerms },
+  "budgets-levies": { include: ["public budget", "county budget", "city budget", "school budget", "tax rate", "public finance"], exclude: obituaryTerms },
+  "voting-systems": { include: ["voting system", "ballot processing", "voting equipment", "ballot certification", "election technology"], exclude: obituaryTerms },
+  "election-administration": { include: ["election administration", "election office", "polling place", "voter registration", "election date"], exclude: obituaryTerms },
+  "audits-recounts": { include: ["election audit", "recount", "canvass", "post-election review", "election results certification"], exclude: obituaryTerms },
+  "open-records": { include: ["public records", "open records", "freedom of information", "foia", "government transparency"], exclude: obituaryTerms },
 };
 
 const stateNames = [

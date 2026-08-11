@@ -3,6 +3,9 @@ import { getCounty, getState, states } from "./geo.js";
 import { getFeed, getPage } from "./news-service.js";
 import { topics } from "./feed-builders.js";
 import { getCattleTicker, getMetalsTicker, MarketServiceError } from "./markets-service.js";
+import { CheckoutError, createCheckoutSession } from "./stripe-service.js";
+import { getCountyPopulation, PopulationError } from "./population-service.js";
+import { AdCreativeError, createAdCreativeUpload } from "./ad-creative-service.js";
 import type { FeedScope, Topic } from "./types.js";
 
 export type ApiRequest = {
@@ -10,6 +13,7 @@ export type ApiRequest = {
   path: string;
   query: URLSearchParams;
   headers?: Record<string, string | undefined>;
+  body?: string;
   remoteAddress?: string;
   requestId?: string;
 };
@@ -29,6 +33,10 @@ export async function handleRequest(request: ApiRequest): Promise<ApiResponse> {
   try {
     if (request.method === "OPTIONS") {
       response = empty(204);
+    } else if (request.method === "POST" && path === "/v1/advertising/creatives/upload") {
+      response = json(201, await createAdCreativeUpload(parseJsonBody(request.body)), "no-store");
+    } else if (request.method === "POST" && path === "/v1/checkout/sessions") {
+      response = json(201, await createCheckoutSession(parseJsonBody(request.body)), "no-store");
     } else if (request.method !== "GET") {
       response = json(405, { error: "Method not allowed" });
     } else if (path === "/health") {
@@ -39,6 +47,8 @@ export async function handleRequest(request: ApiRequest): Promise<ApiResponse> {
       const parts = path.split("/").filter(Boolean);
       if (parts[0] !== "v1") {
         response = json(404, { error: "Not found" });
+      } else if (parts[1] === "counties" && parts[2] && parts[3] && parts[4] === "population" && parts.length === 5) {
+        response = json(200, getCountyPopulation(parts[2], parts[3]));
       } else if (parts[1] === "feeds") {
         response = await handleFeed(parts.slice(2), request.query);
       } else if (parts[1] === "pages") {
@@ -53,9 +63,11 @@ export async function handleRequest(request: ApiRequest): Promise<ApiResponse> {
     }
   } catch (error) {
     errorMessage = error instanceof Error ? error.message : "Unknown error";
-    const message = error instanceof ApiError || error instanceof MarketServiceError ? error.message : "Internal server error";
-    const status = error instanceof ApiError || error instanceof MarketServiceError ? error.statusCode : 500;
-    response = json(status, { error: message, durationMs: Date.now() - startedAt });
+    const isExpectedError =
+      error instanceof ApiError || error instanceof MarketServiceError || error instanceof CheckoutError || error instanceof PopulationError || error instanceof AdCreativeError;
+    const message = isExpectedError ? error.message : "Internal server error";
+    const status = isExpectedError ? error.statusCode : 500;
+    response = json(status, { error: message, durationMs: Date.now() - startedAt }, request.method === "POST" ? "no-store" : undefined);
   }
 
   const corsResponse = withCorsHeaders(response, request.headers);
@@ -137,21 +149,30 @@ function empty(statusCode: number): ApiResponse {
   return { statusCode, headers: responseHeaders(), body: "" };
 }
 
-function json(statusCode: number, body: unknown): ApiResponse {
+function json(statusCode: number, body: unknown, cacheControl?: string): ApiResponse {
   return {
     statusCode,
-    headers: responseHeaders(),
+    headers: responseHeaders(cacheControl),
     body: JSON.stringify(body),
   };
 }
 
-function responseHeaders() {
+function responseHeaders(cacheControl?: string) {
   return {
     "content-type": "application/json; charset=utf-8",
-    "access-control-allow-methods": "GET, OPTIONS",
+    "access-control-allow-methods": "GET, POST, OPTIONS",
     "access-control-allow-headers": "content-type, authorization",
-    "cache-control": `public, max-age=${config.cacheTtlSeconds}, s-maxage=${config.cacheTtlSeconds}`,
+    "cache-control": cacheControl || `public, max-age=${config.cacheTtlSeconds}, s-maxage=${config.cacheTtlSeconds}`,
   };
+}
+
+function parseJsonBody(body?: string) {
+  if (!body) throw new ApiError(400, "Checkout details are required.");
+  try {
+    return JSON.parse(body) as unknown;
+  } catch {
+    throw new ApiError(400, "Checkout details must be valid JSON.");
+  }
 }
 
 function withCorsHeaders(response: ApiResponse, headers?: Record<string, string | undefined>): ApiResponse {

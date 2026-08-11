@@ -1,3 +1,5 @@
+import "dotenv/config";
+
 export const config = {
   port: Number(process.env.PORT || 8787),
   corsOrigins: parseCorsOrigins(process.env.CORS_ORIGINS || process.env.CORS_ORIGIN || "*"),
@@ -25,6 +27,12 @@ export const config = {
   metalsApiUrl: "https://api.metals.dev/v1/latest",
   metalsCacheTtlSeconds: Number(process.env.METALS_CACHE_TTL_SECONDS || 60),
   usdaMarsApiKey: process.env.USDA_MARS_API_KEY || process.env.MARS_API_KEY || "",
+  stripePublishableKey: process.env.STRIPE_PK_KEY || "",
+  stripeSecretKey: process.env.STRIPE_SK_KEY || "",
+  checkoutSuccessUrl: process.env.STRIPE_CHECKOUT_SUCCESS_URL || "",
+  checkoutCancelUrl: process.env.STRIPE_CHECKOUT_CANCEL_URL || "",
+  advertisingCreativeBucket: process.env.ADVERTISING_CREATIVE_BUCKET || "",
+  advertisingCreativeMaxBytes: Number(process.env.ADVERTISING_CREATIVE_MAX_BYTES || 10 * 1024 * 1024),
 };
 
 function parseCorsOrigins(value: string) {
