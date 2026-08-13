@@ -322,6 +322,36 @@ export function getCountyMarketCities(county: CountySite, limit = 2) {
   return Array.from(new Set(sortedHubs.map((hub) => hub.city))).slice(0, limit);
 }
 
+export function getNearbyCounties(county: CountySite, limit = 3) {
+  if (county.latitude === undefined || county.longitude === undefined) return [];
+
+  return getCountyByState(county.state.name)
+    .flatMap((record) => {
+      if (record.FIPS === county.fips) return [];
+      const centroid = getCountyCentroid(record.FIPS);
+      if (!centroid) return [];
+
+      return [
+        {
+          name: record.name,
+          slug: slugify(record.name),
+          fips: record.FIPS,
+          displayName: `${record.name} County`,
+          state: county.state,
+          localCities: [],
+          latitude: centroid[0],
+          longitude: centroid[1],
+        } satisfies CountySite,
+      ];
+    })
+    .sort(
+      (a, b) =>
+        haversineMiles(county.latitude!, county.longitude!, a.latitude!, a.longitude!) -
+        haversineMiles(county.latitude!, county.longitude!, b.latitude!, b.longitude!),
+    )
+    .slice(0, limit);
+}
+
 function sortedStateHubsForCounty(state: StateSite, latitude: number, longitude: number) {
   return [...(stateNewsHubs[state.slug] || [])].sort(
     (a, b) =>

@@ -3,7 +3,7 @@ import { clearCache } from "../src/cache.js";
 import { config } from "../src/config.js";
 import { buildFeedPlan } from "../src/feed-builders.js";
 import { filterItems } from "../src/filter.js";
-import { getCounty, getCountyMarketCities } from "../src/geo.js";
+import { getCounty, getNearbyCounties } from "../src/geo.js";
 import { handleRequest } from "../src/http.js";
 
 const rss = `<?xml version="1.0" encoding="UTF-8"?>
@@ -74,6 +74,29 @@ const arkansasRss = `<?xml version="1.0" encoding="UTF-8"?>
   </channel>
 </rss>`;
 
+const duplicateTitleRss = `<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>Duplicate News</title>
+    <item>
+      <guid>duplicate-one</guid>
+      <title>Polk County Arkansas approves new road project</title>
+      <link>https://publisher-one.example/polk-road-project</link>
+      <source>Publisher One</source>
+      <pubDate>Mon, 29 Jun 2026 12:00:00 GMT</pubDate>
+      <description>Polk County Arkansas officials approved the project.</description>
+    </item>
+    <item>
+      <guid>duplicate-two</guid>
+      <title>Polk County Arkansas approves new road project</title>
+      <link>https://publisher-two.example/polk-road-project</link>
+      <source>Publisher Two</source>
+      <pubDate>Mon, 29 Jun 2026 13:00:00 GMT</pubDate>
+      <description>Polk County Arkansas officials approved the project.</description>
+    </item>
+  </channel>
+</rss>`;
+
 const bingRedirectRss = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0">
   <channel>
@@ -101,7 +124,7 @@ const gdelt = {
   articles: [
     {
       url: "https://gdelt.example.com/story",
-      title: "Randall County jobs expansion reported in Amarillo",
+      title: "Randall County Texas jobs expansion reported in Amarillo",
       seendate: "20260629131500",
       domain: "gdelt.example.com",
       socialimage: "https://gdelt.example.com/image.jpg",
@@ -307,13 +330,17 @@ describe("handleRequest", () => {
     );
   });
 
-  it("fills sparse county feeds from state topic fallback", async () => {
+  it("fills sparse county feeds from the nearest same-state counties", async () => {
     clearCache();
+    const polk = getCounty("arkansas", "polk");
+    const nearbyCounty = getNearbyCounties(polk!, 1)[0];
+    expect(nearbyCounty).toBeDefined();
+
     vi.stubGlobal(
       "fetch",
-      vi.fn(async (url: URL | string) => {
-        const value = decodeURIComponent(String(url));
-        return new Response(value.includes("Polk") ? emptyRss : arkansasRss, {
+      vi.fn(async () => {
+        const nearbyRss = arkansasRss.replaceAll("Arkansas", `${nearbyCounty.displayName} Arkansas`);
+        return new Response(nearbyRss, {
           status: 200,
           headers: { "content-type": "application/rss+xml" },
         });
@@ -329,9 +356,63 @@ describe("handleRequest", () => {
 
     expect(response.statusCode).toBe(200);
     expect(body.items.map((item: { title: string }) => item.title)).toContain(
-      "Arkansas launches new rural broadband program",
+      `${nearbyCounty.displayName} Arkansas launches new rural broadband program`,
     );
-    expect(body.meta.sourcesUsed).toContain("fallback:state");
+    expect(body.meta.sourcesUsed).toContain("county:fallback-nearby");
+  });
+
+  it("rejects same-name county stories from another state and requires a county state match", () => {
+    const polk = getCounty("arkansas", "polk");
+    expect(polk).toBeDefined();
+
+    const items = filterItems(
+      [
+        {
+          id: "polk-florida",
+          title: "Polk County Florida opens emergency shelter",
+          link: "https://example.com/polk-florida",
+          source: "Florida Daily",
+          publishedAt: new Date().toISOString(),
+        },
+        {
+          id: "polk-no-state",
+          title: "Polk County opens emergency shelter",
+          link: "https://example.com/polk-no-state",
+          source: "Local Daily",
+          publishedAt: new Date().toISOString(),
+        },
+        {
+          id: "polk-arkansas",
+          title: "Polk County Arkansas opens emergency shelter",
+          link: "https://example.com/polk-arkansas",
+          source: "Arkansas Daily",
+          publishedAt: new Date().toISOString(),
+        },
+      ],
+      "general",
+      { level: "county", state: polk!.state, county: polk! },
+    );
+
+    expect(items.map((item) => item.id)).toEqual(["polk-arkansas"]);
+  });
+
+  it("keeps only one story when publishers use the same title", async () => {
+    clearCache();
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async () => new Response(duplicateTitleRss, { status: 200, headers: { "content-type": "application/rss+xml" } })),
+    );
+
+    const response = await handleRequest({
+      method: "GET",
+      path: "/v1/feeds/counties/arkansas/polk/general",
+      query: new URLSearchParams("limit=10"),
+    });
+    const body = JSON.parse(response.body);
+
+    expect(response.statusCode).toBe(200);
+    expect(body.items).toHaveLength(1);
+    expect(body.items[0].title).toBe("Polk County Arkansas approves new road project");
   });
 
   it("returns a county page batch", async () => {
@@ -395,7 +476,7 @@ describe("handleRequest", () => {
     expect(body.meta.sourcesUsed).toContain("provider:gdelt");
   });
 
-  it("builds broad Potter County and Amarillo local query coverage", () => {
+  it("builds state-qualified primary county query coverage", () => {
     const county = getCounty("texas", "potter");
     expect(county).toBeDefined();
 
@@ -403,16 +484,14 @@ describe("handleRequest", () => {
     const decodedUrls = plan.rssUrls.map((url) => decodeURIComponent(url).replace(/\+/g, " "));
 
     expect(plan.sourcesUsed).toContain("provider:bing-news-rss");
-    expect(decodedUrls.some((url) => url.includes("Potter County") && url.includes("Amarillo"))).toBe(true);
+    expect(plan.sourcesUsed).toContain("county:primary");
+    expect(decodedUrls.every((url) => url.includes("Potter County") && url.includes("Texas"))).toBe(true);
     expect(decodedUrls.some((url) => url.includes("www.bing.com/news/search"))).toBe(true);
-    expect(decodedUrls.some((url) => url.includes("Amarillo") && url.includes("local news"))).toBe(true);
     expect(decodedUrls.some((url) => url.includes("when:7d"))).toBe(true);
     expect(plan.rssUrls.length).toBeLessThanOrEqual(18);
     expect(plan.articleQueries.length).toBeLessThanOrEqual(6);
-    expect(plan.articleQueries.some((query) => query.includes("Potter County") && query.includes("Amarillo"))).toBe(true);
-    expect(plan.directSources.map((source) => source.name)).toEqual(
-      expect.arrayContaining(["ABC7 Amarillo Local", "ABC7 Amarillo Video", "MyHighPlains Local News", "MyHighPlains Podcasts"]),
-    );
+    expect(plan.articleQueries.every((query) => query.includes("Potter County") && query.includes("Texas"))).toBe(true);
+    expect(plan.directSources.some((source) => source.counties?.includes("texas/potter"))).toBe(true);
   });
 
   it("rejects unknown counties instead of creating guessed county feeds", async () => {
@@ -456,24 +535,17 @@ describe("handleRequest", () => {
     );
   });
 
-  it("uses nearest Tyler market and Tyler sources for Wood County Texas", () => {
+  it("does not use broad nearby-market sources in a primary county feed", () => {
     const county = getCounty("texas", "wood");
     expect(county).toBeDefined();
 
-    const markets = getCountyMarketCities(county!, 3);
     const plan = buildFeedPlan({ level: "county", state: county!.state, county: county! }, "general");
 
-    expect(markets[0]).toBe("Tyler");
-    expect(markets).not.toContain("Amarillo");
-    expect(plan.sourcesUsed).toContain("market:Tyler");
-    expect(plan.sourcesUsed).not.toContain("market:Amarillo");
     expect(plan.directSources.some((source) => source.name.includes("Amarillo"))).toBe(false);
-    expect(plan.directSources.map((source) => source.name)).toEqual(
-      expect.arrayContaining(["KLTV East Texas News", "CBS19 Tyler News", "KETK Local News"]),
-    );
+    expect(plan.directSources.some((source) => source.name.includes("Tyler"))).toBe(false);
   });
 
-  it("filters Texas-only Panhandle stories out of Wood County local headlines", () => {
+  it("keeps a primary county feed limited to its explicitly named county", () => {
     const county = getCounty("texas", "wood");
     expect(county).toBeDefined();
 
@@ -498,7 +570,7 @@ describe("handleRequest", () => {
       { level: "county", state: county!.state, county: county! },
     );
 
-    expect(items.map((item) => item.id)).toEqual(["tyler-local"]);
+    expect(items).toEqual([]);
   });
 
   it("logs request success and failure metadata", async () => {

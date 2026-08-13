@@ -1,4 +1,4 @@
-import type { FeedScope, NewsFeedItem, Topic } from "./types.js";
+import type { CountySite, FeedScope, NewsFeedItem, StateSite, Topic } from "./types.js";
 
 const obituaryTerms = ["obituary", "obituaries", "death notice", "funeral", "memorial service", "celebration of life", "passed away", "died"];
 const sportsTerms = ["sports", "football", "basketball", "baseball", "softball", "volleyball", "soccer", "athletics", "score"];
@@ -33,35 +33,57 @@ const stateNames = [
 ];
 
 export function filterItems(items: NewsFeedItem[], topic: Topic, scope: FeedScope) {
-  const rules = categoryRules[topic];
-  return items.filter((item) => {
-    const contentHaystack = `${item.title} ${item.description || ""}`.toLowerCase();
-    const fullHaystack = `${contentHaystack} ${item.source || ""}`.toLowerCase();
-    if (rules.exclude?.some((term) => includesTerm(fullHaystack, term))) return false;
-    if (rules.include?.length && !rules.include.some((term) => includesTerm(fullHaystack, term))) return false;
-    return matchesScope(contentHaystack, fullHaystack, scope);
-  });
+  return items.filter((item) => matchesCategory(item, topic) && matchesScope(item, scope));
 }
 
-function matchesScope(contentHaystack: string, fullHaystack: string, scope: FeedScope) {
+export function filterCountyFallbackItems(
+  items: NewsFeedItem[],
+  topic: Topic,
+  scope: Extract<FeedScope, { level: "county" }>,
+  nearbyCounties: CountySite[],
+) {
+  return items.filter((item) => matchesCategory(item, topic) && matchesCountyScope(item, scope.state, nearbyCounties));
+}
+
+function matchesCategory(item: NewsFeedItem, topic: Topic) {
+  const rules = categoryRules[topic];
+  const fullHaystack = itemHaystack(item);
+  if (rules.exclude?.some((term) => includesTerm(fullHaystack, term))) return false;
+  if (rules.include?.length && !rules.include.some((term) => includesTerm(fullHaystack, term))) return false;
+  return true;
+}
+
+function matchesScope(item: NewsFeedItem, scope: FeedScope) {
   if (scope.level === "national") return true;
 
+  const contentHaystack = itemContent(item);
+  const fullHaystack = itemHaystack(item);
   const state = scope.state;
   const mentionsOtherState = stateNames.some((stateName) => stateName !== state.name.toLowerCase() && includesTerm(contentHaystack, stateName));
   if (mentionsOtherState) return false;
 
-  const terms =
-    scope.level === "state"
-      ? [state.name, state.abbr]
-      : [
-          scope.county.name,
-          `${scope.county.name} county`,
-          scope.county.displayName,
-          scope.county.primaryCity,
-          ...scope.county.localCities,
-        ].filter((term): term is string => Boolean(term));
+  if (scope.level === "state") {
+    return includesTerm(fullHaystack, state.name.toLowerCase()) || includesTerm(fullHaystack, state.abbr.toLowerCase());
+  }
 
-  return terms.some((term) => includesTerm(fullHaystack, term.toLowerCase()));
+  return matchesCountyScope(item, state, [scope.county]);
+}
+
+function matchesCountyScope(item: NewsFeedItem, state: StateSite, counties: CountySite[]) {
+  const contentHaystack = itemContent(item);
+  const fullHaystack = itemHaystack(item);
+  const mentionsOtherState = stateNames.some((stateName) => stateName !== state.name.toLowerCase() && includesTerm(contentHaystack, stateName));
+  if (mentionsOtherState || !includesTerm(fullHaystack, state.name.toLowerCase())) return false;
+
+  return counties.some((county) => includesTerm(fullHaystack, `${county.name.toLowerCase()} county`));
+}
+
+function itemContent(item: NewsFeedItem) {
+  return `${item.title} ${item.description || ""}`.toLowerCase();
+}
+
+function itemHaystack(item: NewsFeedItem) {
+  return `${itemContent(item)} ${item.source || ""}`.toLowerCase();
 }
 
 function includesTerm(value: string, term: string) {

@@ -1,9 +1,10 @@
 import { cached } from "./cache.js";
 import { enrichArticleImages } from "./article-images.js";
 import { config } from "./config.js";
-import { buildFeedPlan, topics } from "./feed-builders.js";
-import { filterItems } from "./filter.js";
+import { buildCountyFallbackPlan, buildFeedPlan, topics } from "./feed-builders.js";
+import { filterCountyFallbackItems, filterItems } from "./filter.js";
 import { fetchGdeltItems } from "./gdelt.js";
+import { getNearbyCounties } from "./geo.js";
 import { fetchRssItems } from "./rss.js";
 import type { FeedResponse, FeedScope, NewsFeedItem, PageResponse, Topic } from "./types.js";
 
@@ -12,16 +13,11 @@ export async function getFeed(scope: FeedScope, topic: Topic, limit: number): Pr
   const cacheKey = `feed:${scopeKey(scope)}:${topic}`;
   const feed = await cached(cacheKey, config.cacheTtlSeconds, async () => {
     const plan = buildFeedPlan(scope, topic);
-    const [rssResults, directResults, gdeltResults] = await Promise.all([
-      settleLimited(plan.rssUrls, (url) => fetchRssItems(url)),
-      settleLimited(plan.directSources, (source) => fetchRssItems(source.url, { source: source.name, mediaType: source.mediaType })),
-      settleLimited(plan.articleQueries, (query) => fetchGdeltItems(query)),
-    ]);
-    const items = [...settledItems(rssResults), ...settledItems(directResults), ...settledItems(gdeltResults)];
+    const items = await loadPlanItems(plan);
     const filtered = await enrichArticleImages(newest(dedupeItems(filterItems(recentItems(items), topic, scope)), config.maxLimit));
     const fetchedAt = new Date().toISOString();
 
-    return {
+    const primaryFeed = {
       scope: scopePayload(scope),
       topic,
       items: filtered,
@@ -32,14 +28,14 @@ export async function getFeed(scope: FeedScope, topic: Topic, limit: number): Pr
         cacheTtlSeconds: config.cacheTtlSeconds,
       },
     };
+    return withCountyFallback(primaryFeed, scope, topic, config.maxLimit);
   });
-  const enriched = await withCountyFallback(feed, scope, topic, cappedLimit);
-  const sliced = enriched.items.slice(0, cappedLimit);
+  const sliced = feed.items.slice(0, cappedLimit);
   return {
-    ...enriched,
+    ...feed,
     items: sliced,
     meta: {
-      ...enriched.meta,
+      ...feed.meta,
       count: sliced.length,
     },
   };
@@ -50,17 +46,34 @@ async function withCountyFallback(feed: FeedResponse, scope: FeedScope, topic: T
     return feed;
   }
 
-  const stateFeed = await getFeed({ level: "state", state: scope.state }, topic, Math.max(limit, config.countyFallbackMinItems));
-  const items = prioritizeUniqueItems(feed.items, stateFeed.items, limit);
+  const nearbyCounties = getNearbyCounties(scope.county, config.countyMarketLimit);
+  if (!nearbyCounties.length) return feed;
+
+  const fallbackPlan = buildCountyFallbackPlan(scope.county, nearbyCounties, topic);
+  const fallbackItems = await loadPlanItems(fallbackPlan);
+  const nearbyItems = newest(
+    dedupeItems(filterCountyFallbackItems(recentItems(fallbackItems), topic, scope, nearbyCounties)),
+    config.maxLimit,
+  );
+  const items = await enrichArticleImages(prioritizeUniqueItems(feed.items, nearbyItems, limit));
   return {
     ...feed,
     items,
     meta: {
       ...feed.meta,
       count: items.length,
-      sourcesUsed: Array.from(new Set([...feed.meta.sourcesUsed, "fallback:state", ...stateFeed.meta.sourcesUsed])),
+      sourcesUsed: Array.from(new Set([...feed.meta.sourcesUsed, ...fallbackPlan.sourcesUsed])),
     },
   };
+}
+
+async function loadPlanItems(plan: ReturnType<typeof buildFeedPlan>) {
+  const [rssResults, directResults, gdeltResults] = await Promise.all([
+    settleLimited(plan.rssUrls, (url) => fetchRssItems(url)),
+    settleLimited(plan.directSources, (source) => fetchRssItems(source.url, { source: source.name, mediaType: source.mediaType })),
+    settleLimited(plan.articleQueries, (query) => fetchGdeltItems(query)),
+  ]);
+  return [...settledItems(rssResults), ...settledItems(directResults), ...settledItems(gdeltResults)];
 }
 
 function settledItems(results: PromiseSettledResult<NewsFeedItem[]>[]) {
@@ -207,7 +220,7 @@ function recentItems(items: NewsFeedItem[]) {
 function dedupeItems(items: NewsFeedItem[]) {
   const seen = new Set<string>();
   return items.filter((item) => {
-    const key = normalizeDedupeKey(item.link || item.title);
+    const key = normalizeTitle(item.title, item.source) || normalizeDedupeKey(item.link);
     if (seen.has(key)) return false;
     seen.add(key);
     return true;
@@ -217,12 +230,22 @@ function dedupeItems(items: NewsFeedItem[]) {
 function prioritizeUniqueItems(primaryItems: NewsFeedItem[], fallbackItems: NewsFeedItem[], maxItems: number) {
   const seen = new Set<string>();
   const addUnique = (item: NewsFeedItem) => {
-    const key = normalizeDedupeKey(item.link || item.title);
+    const key = normalizeTitle(item.title, item.source) || normalizeDedupeKey(item.link);
     if (seen.has(key)) return false;
     seen.add(key);
     return true;
   };
   return [...primaryItems.filter(addUnique), ...fallbackItems.filter(addUnique)].slice(0, maxItems);
+}
+
+function normalizeTitle(value: string, source?: string) {
+  const sourceSuffix = source ? ` - ${source}`.toLowerCase() : "";
+  const withoutSource = sourceSuffix && value.toLowerCase().endsWith(sourceSuffix) ? value.slice(0, -sourceSuffix.length) : value;
+  return withoutSource
+    .toLowerCase()
+    .replace(/[’']/g, "")
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
 }
 
 function normalizeDedupeKey(value: string) {

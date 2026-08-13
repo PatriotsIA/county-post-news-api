@@ -1,5 +1,5 @@
 import { config } from "./config.js";
-import { getCountyMarketCities, getStateMarketCities } from "./geo.js";
+import { getStateMarketCities } from "./geo.js";
 import { getDirectSources, type DirectSource } from "./source-registry.js";
 import type { CountySite, FeedScope, StateSite, Topic } from "./types.js";
 
@@ -111,43 +111,39 @@ function buildStatePlan(state: StateSite, topic: Topic): FeedPlan {
 
 function buildCountyPlan(county: CountySite, topic: Topic): FeedPlan {
   const countyTopic = countyTopicQueries(topic).join(" OR ");
-  const marketCities = getCountyMarketCities(county, config.countyMarketLimit);
-  const queries = buildCountyQueries(county, marketCities, countyTopic);
-  const directSources = getDirectSources({ level: "county", state: county.state, county }, topic, marketCities);
+  const queries = buildCountyQueries(county, countyTopic);
+  const directSources = getDirectSources({ level: "county", state: county.state, county }, topic, []);
 
   return {
     rssUrls: urlsForQueries(queries),
     directSources,
     articleQueries: queriesForArticleSearch(queries),
-    sourcesUsed: ["county", ...marketCities.map((city) => `market:${city}`), "provider:google-news-rss", "provider:bing-news-rss", "provider:gdelt", ...directSources.map((source) => `direct:${source.name}`)],
+    sourcesUsed: ["county:primary", "provider:google-news-rss", "provider:bing-news-rss", "provider:gdelt", ...directSources.map((source) => `direct:${source.name}`)],
   };
 }
 
-function buildCountyQueries(county: CountySite, marketCities: string[], countyTopic: string) {
-  const state = county.state;
-  const currentTerms = `"latest" OR "today" OR "breaking" OR "local news" OR "community" OR "public safety"`;
-  const countyNames = [
-    `"${county.name} County"`,
-    `"${county.name} County ${state.name}"`,
-    `"${county.name} County ${state.abbr}"`,
-    `"${county.name} ${state.abbr}"`,
-  ];
-
-  const countyQueries = [
-    `(${countyNames.join(" OR ")}) (${countyTopic})`,
-    `(${countyNames.join(" OR ")}) ("breaking news" OR "local news" OR "community" OR "public safety" OR "business")`,
-    `(${countyNames.join(" OR ")}) (${currentTerms})`,
-    `("${county.displayName}" "${state.name}")`,
-    `("${county.displayName}" "${state.abbr}")`,
-  ];
-
-  const marketQueries = marketCities.flatMap((city) => [
-    `("${city}" "${county.name} County")`,
-    `("${city} ${state.name}" OR "${city} ${state.abbr}") (${countyTopic})`,
-    `("${city}" "${state.abbr}" ("local news" OR "breaking news"))`,
+export function buildCountyFallbackPlan(county: CountySite, nearbyCounties: CountySite[], topic: Topic): FeedPlan {
+  const countyTopic = countyTopicQueries(topic).join(" OR ");
+  const queries = nearbyCounties.flatMap((nearbyCounty) => [
+    `("${nearbyCounty.displayName}" "${county.state.name}") (${countyTopic})`,
+    `("${nearbyCounty.displayName}" "${county.state.name}") ("breaking news" OR "local news" OR "community" OR "public safety" OR "business")`,
   ]);
 
-  return Array.from(new Set([...countyQueries.slice(0, 2), ...marketQueries, ...countyQueries.slice(2)]));
+  return {
+    rssUrls: urlsForQueries(queries),
+    directSources: [],
+    articleQueries: queriesForArticleSearch(queries),
+    sourcesUsed: ["county:fallback-nearby", ...nearbyCounties.map((nearbyCounty) => `nearby:${nearbyCounty.slug}`), "provider:google-news-rss", "provider:bing-news-rss", "provider:gdelt"],
+  };
+}
+
+function buildCountyQueries(county: CountySite, countyTopic: string) {
+  const state = county.state;
+  return [
+    `("${county.displayName}" "${state.name}") (${countyTopic})`,
+    `("${county.displayName}" "${state.name}") ("breaking news" OR "local news" OR "community" OR "public safety" OR "business")`,
+    `("${county.displayName}" "${state.name}")`,
+  ];
 }
 
 function countyTopicQueries(topic: Topic) {
