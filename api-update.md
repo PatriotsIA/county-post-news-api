@@ -16,11 +16,12 @@ County feeds now prioritize articles explicitly tied to the requested county and
 
 - All API feeds deduplicate by normalized title before returning results.
 - The same title from separate links or publishers appears only once in a feed.
+- Near-title matches are also collapsed when their meaningful title words substantially overlap. DVIDS image items additionally use their normalized captions to collapse multiple image records for the same article.
 - URL-based deduplication remains as a fallback only when an item has no title.
 
 ## Client fallback protections
 
-The website RSS fallback now uses state-qualified county searches, requires an explicit state match for county items, and deduplicates normalized titles before rendering. This keeps the fallback behavior aligned with the API if the API is unavailable.
+The website RSS fallback now uses state-qualified county searches, requires an explicit state match for county items, and applies the same near-title and DVIDS-caption deduplication before rendering. This keeps the fallback behavior aligned with the API if the API is unavailable.
 
 ## Validation
 
@@ -30,3 +31,4 @@ API tests cover:
 - Rejecting a county story with no explicit state match.
 - Filling sparse county feeds from nearest same-state counties.
 - Suppressing same-title stories from different publishers.
+- Suppressing near-duplicate DVIDS image items.

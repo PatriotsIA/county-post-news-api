@@ -218,21 +218,23 @@ function recentItems(items: NewsFeedItem[]) {
 }
 
 function dedupeItems(items: NewsFeedItem[]) {
-  const seen = new Set<string>();
+  const accepted: Array<{ link: string; title: string; item: NewsFeedItem }> = [];
   return items.filter((item) => {
-    const key = normalizeTitle(item.title, item.source) || normalizeDedupeKey(item.link);
-    if (seen.has(key)) return false;
-    seen.add(key);
+    const title = normalizeTitle(item.title, item.source);
+    const link = normalizeDedupeKey(item.link);
+    if (accepted.some((existing) => existing.link === link || isNearDuplicate(item, title, existing.item, existing.title))) return false;
+    accepted.push({ link, title, item });
     return true;
   });
 }
 
 function prioritizeUniqueItems(primaryItems: NewsFeedItem[], fallbackItems: NewsFeedItem[], maxItems: number) {
-  const seen = new Set<string>();
+  const accepted: Array<{ link: string; title: string; item: NewsFeedItem }> = [];
   const addUnique = (item: NewsFeedItem) => {
-    const key = normalizeTitle(item.title, item.source) || normalizeDedupeKey(item.link);
-    if (seen.has(key)) return false;
-    seen.add(key);
+    const title = normalizeTitle(item.title, item.source);
+    const link = normalizeDedupeKey(item.link);
+    if (accepted.some((existing) => existing.link === link || isNearDuplicate(item, title, existing.item, existing.title))) return false;
+    accepted.push({ link, title, item });
     return true;
   };
   return [...primaryItems.filter(addUnique), ...fallbackItems.filter(addUnique)].slice(0, maxItems);
@@ -246,6 +248,32 @@ function normalizeTitle(value: string, source?: string) {
     .replace(/[’']/g, "")
     .replace(/[^a-z0-9]+/g, " ")
     .trim();
+}
+
+function isNearDuplicate(item: NewsFeedItem, title: string, existingItem: NewsFeedItem, existingTitle: string) {
+  if (!title || !existingTitle) return false;
+  if (title === existingTitle || title.includes(existingTitle) || existingTitle.includes(title)) return true;
+
+  const titleSimilarity = tokenSimilarity(title, existingTitle);
+  if (titleSimilarity >= 0.82) return true;
+
+  if (!isDvidsItem(item) || !isDvidsItem(existingItem)) return false;
+  const description = normalizeTitle(item.description || "");
+  const existingDescription = normalizeTitle(existingItem.description || "");
+  return description.length >= 36 && existingDescription.length >= 36 && tokenSimilarity(description, existingDescription) >= 0.72;
+}
+
+function tokenSimilarity(left: string, right: string) {
+  const leftTokens = new Set(left.split(" ").filter((token) => token.length > 2));
+  const rightTokens = new Set(right.split(" ").filter((token) => token.length > 2));
+  if (!leftTokens.size || !rightTokens.size) return 0;
+
+  const shared = [...leftTokens].filter((token) => rightTokens.has(token)).length;
+  return shared / (leftTokens.size + rightTokens.size - shared);
+}
+
+function isDvidsItem(item: NewsFeedItem) {
+  return Boolean(item.source?.toLowerCase().includes("dvids") || item.link.toLowerCase().includes("dvidshub.net"));
 }
 
 function normalizeDedupeKey(value: string) {

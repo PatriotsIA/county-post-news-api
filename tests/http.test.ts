@@ -97,6 +97,29 @@ const duplicateTitleRss = `<?xml version="1.0" encoding="UTF-8"?>
   </channel>
 </rss>`;
 
+const nearDuplicateTitleRss = `<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>DVIDS</title>
+    <item>
+      <guid>dvids-one</guid>
+      <title>Polk County Arkansas approves road project after public hearing</title>
+      <link>https://www.dvidshub.net/image/1001</link>
+      <source>DVIDS</source>
+      <pubDate>Mon, 29 Jun 2026 12:00:00 GMT</pubDate>
+      <description>Polk County Arkansas officials approved the road project after the public hearing.</description>
+    </item>
+    <item>
+      <guid>dvids-two</guid>
+      <title>Polk County Arkansas approves the road project after public hearing</title>
+      <link>https://www.dvidshub.net/image/1002</link>
+      <source>DVIDS</source>
+      <pubDate>Mon, 29 Jun 2026 13:00:00 GMT</pubDate>
+      <description>Polk County Arkansas officials approved the road project after the public hearing.</description>
+    </item>
+  </channel>
+</rss>`;
+
 const bingRedirectRss = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0">
   <channel>
@@ -413,6 +436,25 @@ describe("handleRequest", () => {
     expect(response.statusCode).toBe(200);
     expect(body.items).toHaveLength(1);
     expect(body.items[0].title).toBe("Polk County Arkansas approves new road project");
+  });
+
+  it("keeps only one DVIDS item when image titles are near duplicates", async () => {
+    clearCache();
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async () => new Response(nearDuplicateTitleRss, { status: 200, headers: { "content-type": "application/rss+xml" } })),
+    );
+
+    const response = await handleRequest({
+      method: "GET",
+      path: "/v1/feeds/counties/arkansas/polk/general",
+      query: new URLSearchParams("limit=10"),
+    });
+    const body = JSON.parse(response.body);
+
+    expect(response.statusCode).toBe(200);
+    expect(body.items).toHaveLength(1);
+    expect(body.items[0].link).toBe("https://www.dvidshub.net/image/1001");
   });
 
   it("returns a county page batch", async () => {
