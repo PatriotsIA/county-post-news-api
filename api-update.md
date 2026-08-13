@@ -2,15 +2,19 @@
 
 ## Purpose
 
-County feeds now prioritize articles explicitly tied to the requested county and state, then expand only to the nearest counties in that same state when local coverage is sparse.
+County feeds now use an ordered, locality-safe expansion pipeline: strict requested-county coverage first, configured local places and trusted market sources only when sparse, then nearest same-state counties only if still sparse.
 
 ## Locality rules
 
 - Primary county queries require both the county display name (for example, `Polk County`) and the full state name.
 - County feed filtering also requires an item to identify the full requested state and requested county. This prevents a same-name county in another state from appearing in the feed.
-- If the primary county produces fewer than `COUNTY_FALLBACK_MIN_ITEMS`, the API queries the nearest counties by centroid distance within the same state.
-- The fallback is restricted to those nearby county names plus the requested state. It does not use a broad state-wide feed.
-- `meta.sourcesUsed` identifies this expansion with `county:fallback-nearby` and the nearby county slugs.
+- Primary queries always contain the requested county display name and full state name. Optional county-agency queries remain state-qualified.
+- If the primary county produces fewer than `COUNTY_FALLBACK_MIN_ITEMS`, the API can query configured local places and registered trusted market publishers. Market items still need the requested state plus an exact county, configured local place, or trusted publisher match.
+- If that market tier is still sparse, the API queries the nearest counties by centroid distance within the same state.
+- The nearby fallback is restricted to those county names plus the requested state. It does not use a broad state-wide feed.
+- `meta.sourcesUsed` identifies activated tiers with `county:primary`, `county:market`, and `county:fallback-nearby`, plus configured markets and nearby county slugs.
+- `feed.sparse_county` structured logs record primary, market, nearby, and final result counts for rollout tuning.
+- `COUNTY_MARKET_TIER_ENABLED`, `COUNTY_AGENCY_QUERY_ENABLED`, `COUNTY_PRIMARY_QUERY_LIMIT`, `COUNTY_MARKET_QUERY_LIMIT`, and `COUNTY_NEARBY_LIMIT` make the expansion reversible and bounded.
 
 ## Duplicate handling
 
@@ -32,6 +36,9 @@ API tests cover:
 - Rejecting same-name county stories from another state.
 - Rejecting a county story with no explicit state match.
 - Filling sparse county feeds from nearest same-state counties.
+- Filling sparse feeds from state-qualified configured county places before nearby counties.
+- Rejecting wrong-state market results and accepting only configured places or trusted market publishers.
+- Keeping primary, market, and nearby results in priority order and enforcing tier query budgets.
 - Suppressing same-title stories from different publishers.
 - Suppressing near-duplicate DVIDS image items.
 - Suppressing distinct-title records that reuse the same article image.

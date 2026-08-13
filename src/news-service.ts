@@ -1,10 +1,10 @@
 import { cached } from "./cache.js";
 import { enrichArticleImages } from "./article-images.js";
 import { config } from "./config.js";
-import { buildCountyFallbackPlan, buildFeedPlan, topics } from "./feed-builders.js";
-import { filterCountyFallbackItems, filterItems } from "./filter.js";
+import { buildCountyFallbackPlan, buildCountyMarketPlan, buildFeedPlan, topics } from "./feed-builders.js";
+import { filterCountyFallbackItems, filterItems, filterMarketItems } from "./filter.js";
 import { fetchGdeltItems } from "./gdelt.js";
-import { getNearbyCounties } from "./geo.js";
+import { getCountyPlaceTerms, getNearbyCounties } from "./geo.js";
 import { fetchRssItems } from "./rss.js";
 import type { FeedResponse, FeedScope, NewsFeedItem, PageResponse, Topic } from "./types.js";
 
@@ -30,7 +30,7 @@ export async function getFeed(scope: FeedScope, topic: Topic, limit: number): Pr
         cacheTtlSeconds: config.cacheTtlSeconds,
       },
     };
-    return withCountyFallback(primaryFeed, scope, topic, config.maxLimit);
+    return withCountyCoverage(primaryFeed, scope, topic, config.maxLimit);
   });
   const sliced = feed.items.slice(0, cappedLimit);
   return {
@@ -43,28 +43,75 @@ export async function getFeed(scope: FeedScope, topic: Topic, limit: number): Pr
   };
 }
 
-async function withCountyFallback(feed: FeedResponse, scope: FeedScope, topic: Topic, limit: number) {
+async function withCountyCoverage(feed: FeedResponse, scope: FeedScope, topic: Topic, limit: number) {
   if (scope.level !== "county" || feed.items.length >= Math.min(limit, config.countyFallbackMinItems)) {
     return feed;
   }
 
-  const nearbyCounties = getNearbyCounties(scope.county, config.countyMarketLimit);
-  if (!nearbyCounties.length) return feed;
+  let items = feed.items;
+  let sourcesUsed = feed.meta.sourcesUsed;
+  let marketCount = 0;
 
-  const fallbackPlan = buildCountyFallbackPlan(scope.county, nearbyCounties, topic);
-  const fallbackItems = await loadPlanItems(fallbackPlan);
-  const nearbyItems = newest(
-    dedupeItems(filterCountyFallbackItems(recentItems(fallbackItems), topic, scope, nearbyCounties)),
-    config.maxLimit,
-  );
-  const items = dedupeItems(await enrichArticleImages(prioritizeUniqueItems(feed.items, nearbyItems, limit)));
+  if (config.countyMarketTierEnabled) {
+    const marketPlan = buildCountyMarketPlan(scope.county, topic);
+    const marketItems = dedupeItems(
+      await enrichArticleImages(
+        newest(
+          dedupeItems(
+            filterMarketItems(
+              recentItems(await loadPlanItems(marketPlan)),
+              topic,
+              scope,
+              getCountyPlaceTerms(scope.county, config.countyMarketLimit),
+              marketPlan.directSources,
+            ),
+          ),
+          config.maxLimit,
+        ),
+      ),
+    );
+    marketCount = marketItems.length;
+    items = dedupeItems(await enrichArticleImages(prioritizeUniqueItems(items, marketItems, limit)));
+    sourcesUsed = Array.from(new Set([...sourcesUsed, ...marketPlan.sourcesUsed]));
+  }
+
+  let nearbyCount = 0;
+  if (items.length < Math.min(limit, config.countyFallbackMinItems)) {
+    const nearbyCounties = getNearbyCounties(scope.county, config.countyNearbyLimit);
+    if (nearbyCounties.length) {
+      const fallbackPlan = buildCountyFallbackPlan(scope.county, nearbyCounties, topic);
+      const fallbackItems = await loadPlanItems(fallbackPlan);
+      const nearbyItems = newest(
+        dedupeItems(filterCountyFallbackItems(recentItems(fallbackItems), topic, scope, nearbyCounties)),
+        config.maxLimit,
+      );
+      nearbyCount = nearbyItems.length;
+      items = dedupeItems(await enrichArticleImages(prioritizeUniqueItems(items, nearbyItems, limit)));
+      sourcesUsed = Array.from(new Set([...sourcesUsed, ...fallbackPlan.sourcesUsed]));
+    }
+  }
+
+  if (marketCount || nearbyCount) {
+    console.info(
+      JSON.stringify({
+        event: "feed.sparse_county",
+        scope: `${scope.state.slug}/${scope.county.slug}`,
+        topic,
+        primaryCount: feed.items.length,
+        marketCount,
+        nearbyCount,
+        finalCount: items.length,
+      }),
+    );
+  }
+
   return {
     ...feed,
     items,
     meta: {
       ...feed.meta,
       count: items.length,
-      sourcesUsed: Array.from(new Set([...feed.meta.sourcesUsed, ...fallbackPlan.sourcesUsed])),
+      sourcesUsed,
     },
   };
 }

@@ -24,42 +24,33 @@ Current volume policy:
 
 - Default per-section limit is `48`.
 - Hard cap is `200`.
-- Sparse county sections fall back to state-topic inventory until `COUNTY_FALLBACK_MIN_ITEMS`, default `12`.
+- A county section only expands when primary results are below `COUNTY_FALLBACK_MIN_ITEMS`, default `12`.
+- County tiers are bounded by `COUNTY_PRIMARY_QUERY_LIMIT`, `COUNTY_MARKET_QUERY_LIMIT`, `COUNTY_NEARBY_LIMIT`, and the existing RSS/article-query caps.
 - Cache TTL is `30` seconds.
 - Upstream provider calls are concurrency-limited by `UPSTREAM_CONCURRENCY`, default `12`.
 
 ## County Coverage Approach
 
-County feeds are now intentionally broader than exact county-name searches. Local publishers often write about nearby cities, school districts, police departments, courts, businesses, hospitals, and events without putting the county name in the headline.
+County feeds use three ordered tiers. This expands useful coverage without letting a same-name county in another state leak into a local feed.
 
-County markets are selected by distance. The API resolves each county by FIPS, loads a county centroid, and sorts that state's news hubs by miles from the centroid. This keeps expansion local-first: Wood County, TX resolves to Tyler before larger or more distant Texas hubs, while Potter County still resolves to Amarillo.
+1. `county:primary` uses the requested `County` name and full state name, county-keyed direct sources, and optional county-agency queries. Primary filtering requires both the county and full state.
+2. `county:market` runs only if primary inventory is sparse and `COUNTY_MARKET_TIER_ENABLED` is enabled. It uses county place overrides/local cities and nearby market cities, all state-qualified. Its filter requires the requested state and accepts an exact county, configured local place, or trusted source-registry publisher.
+3. `county:fallback-nearby` runs only if the market tier is still sparse. It queries the closest counties in the same state by centroid distance and requires those county names plus the requested state.
 
-For each county and topic, the API searches:
+The selection order is preserved after URL, image, near-title, DVIDS-caption, and related-event deduplication. `meta.sourcesUsed` returns tier and source markers. When expansion occurs, a `feed.sparse_county` structured log records each tier's contribution for tuning.
 
-- Exact county names, including state-qualified variants.
-- County names plus local/breaking/community/public-safety/business terms.
-- Nearby market cities plus county names.
-- Nearby market cities plus topic terms.
-- Nearby market cities plus state-local-news terms.
-- Short-window current terms like `latest`, `today`, and `breaking`.
+County place overrides address ambiguous or misleading markets. For example, Polk County, Arkansas starts with Mena-area terms while Polk County, Florida starts with Lakeland/Winter Haven/Bartow-area terms. The system never emits a bare same-name county query.
 
-For Potter County, this means feeds include both direct Potter County searches and Amarillo searches, so local stories from Amarillo-area publishers have more chances to appear.
+## Safe rollout
 
-For sparse counties, county-specific results remain first. If a section has too few county matches, the API appends state-topic fallback stories so small counties still render useful context instead of empty sections.
+- Deploy with `COUNTY_MARKET_TIER_ENABLED=false` to verify primary and nearby behavior first.
+- Enable the market tier for pilot counties, then inspect `meta.sourcesUsed` and `feed.sparse_county` records for cross-state leakage or excessive request volume.
+- Keep the query and nearby limits low while adding direct-source registry entries; increase only with provider-cost and latency evidence.
+- Add known-good city and publisher metadata to `src/geo.ts` and `src/source-registry.ts` rather than widening generic searches.
 
-Potter/Randall direct sources currently include:
+## Current curated markets
 
-- ABC7 Amarillo local news
-- ABC7 Amarillo video feeds
-- MyHighPlains news/local-news/today-in-Amarillo feeds
-- MyHighPlains podcasts
-- Amarillo Tribune
-
-Tyler/East Texas direct sources currently include:
-
-- KLTV East Texas news
-- CBS19 Tyler news
-- KETK East Texas feeds
+The source registry contains curated direct feeds for the Amarillo, Tyler/East Texas, and Denver markets. The registry is intentionally not a claim of nationwide source coverage: it is a reviewed set of trusted publishers that can be expanded incrementally.
 
 ## Known Limitations
 

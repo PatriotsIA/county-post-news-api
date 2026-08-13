@@ -8,6 +8,7 @@ export type DirectSource = {
   states?: string[];
   markets?: string[];
   counties?: string[];
+  trustedForMarketTier?: boolean;
 };
 
 const directSources: DirectSource[] = [
@@ -162,6 +163,24 @@ export function getDirectSources(scope: FeedScope, topic: Topic, marketCities: s
   return directSources.filter((source) => sourceMatchesTopic(source, topic) && sourceMatchesScope(source, scope, marketCities));
 }
 
+export function getMarketSourcesForCounty(county: CountySite, topic: Topic, marketCities: string[]) {
+  const markets = marketCities.map((city) => city.toLowerCase());
+  return directSources.filter(
+    (source) =>
+      sourceMatchesTopic(source, topic) &&
+      source.trustedForMarketTier !== false &&
+      source.states?.includes(county.state.slug) === true &&
+      source.markets?.some((market) => markets.includes(market.toLowerCase())) === true,
+  );
+}
+
+export function isTrustedMarketSource(item: NewsFeedItem, sources: DirectSource[]) {
+  const sourceName = item.source?.trim().toLowerCase();
+  if (sourceName && sources.some((source) => source.name.toLowerCase() === sourceName)) return true;
+  const itemDomain = hostname(item.link);
+  return Boolean(itemDomain && sources.some((source) => hostname(source.url) === itemDomain));
+}
+
 function sourceMatchesTopic(source: DirectSource, topic: Topic) {
   return !source.topics?.length || source.topics.includes(topic);
 }
@@ -182,6 +201,14 @@ function sourceMatchesScope(source: DirectSource, scope: FeedScope, marketCities
   }
 
   return false;
+}
+
+function hostname(value: string) {
+  try {
+    return new URL(value).hostname.toLowerCase().replace(/^www\./, "");
+  } catch {
+    return "";
+  }
 }
 
 function countySourceKey(county: CountySite) {

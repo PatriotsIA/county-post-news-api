@@ -1,9 +1,9 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { clearCache } from "../src/cache.js";
 import { config } from "../src/config.js";
-import { buildFeedPlan } from "../src/feed-builders.js";
-import { filterItems } from "../src/filter.js";
-import { getCounty, getNearbyCounties } from "../src/geo.js";
+import { buildCountyMarketPlan, buildFeedPlan } from "../src/feed-builders.js";
+import { filterItems, filterMarketItems } from "../src/filter.js";
+import { getCounty, getCountyPlaceTerms, getNearbyCounties } from "../src/geo.js";
 import { handleRequest } from "../src/http.js";
 
 const rss = `<?xml version="1.0" encoding="UTF-8"?>
@@ -206,6 +206,10 @@ const gdelt = {
 const defaultCorsOrigins = [...config.corsOrigins];
 const defaultMetalsApiKey = config.metalsApiKey;
 const defaultUsdaMarsApiKey = config.usdaMarsApiKey;
+const defaultCountyMarketTierEnabled = config.countyMarketTierEnabled;
+const defaultCountyPrimaryQueryLimit = config.countyPrimaryQueryLimit;
+const defaultCountyMarketQueryLimit = config.countyMarketQueryLimit;
+const defaultCountyNearbyLimit = config.countyNearbyLimit;
 
 describe("handleRequest", () => {
   afterEach(() => {
@@ -213,6 +217,10 @@ describe("handleRequest", () => {
     config.corsOrigins = [...defaultCorsOrigins];
     config.metalsApiKey = defaultMetalsApiKey;
     config.usdaMarsApiKey = defaultUsdaMarsApiKey;
+    config.countyMarketTierEnabled = defaultCountyMarketTierEnabled;
+    config.countyPrimaryQueryLimit = defaultCountyPrimaryQueryLimit;
+    config.countyMarketQueryLimit = defaultCountyMarketQueryLimit;
+    config.countyNearbyLimit = defaultCountyNearbyLimit;
     vi.restoreAllMocks();
   });
 
@@ -602,6 +610,103 @@ describe("handleRequest", () => {
     expect(response.statusCode).toBe(200);
     expect(body.items.some((item: { link: string }) => item.link === "https://gdelt.example.com/story")).toBe(true);
     expect(body.meta.sourcesUsed).toContain("provider:gdelt");
+  });
+
+  it("merges sparse county coverage in primary then market order", async () => {
+    clearCache();
+    const primaryRss = rss.replaceAll("Randall County", "Polk County").replaceAll("Amarillo", "Arkansas").replaceAll("Texas", "Arkansas");
+    const marketRss = `<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"><channel><title>Mena News</title><item>
+  <guid>mena</guid><title>Mena Arkansas opens a new community center</title>
+  <link>https://example.com/mena-community</link><source>Mena News</source>
+  <pubDate>Mon, 29 Jun 2026 14:00:00 GMT</pubDate>
+  <description>Mena Arkansas local news and community updates.</description>
+</item></channel></rss>`;
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async (url: URL | string) => {
+        const value = decodeURIComponent(String(url));
+        if (value.includes("api.gdeltproject.org")) {
+          return new Response(JSON.stringify({ articles: [] }), { status: 200, headers: { "content-type": "application/json" } });
+        }
+        return new Response(value.includes("Mena") ? marketRss : primaryRss, {
+          status: 200,
+          headers: { "content-type": "application/rss+xml" },
+        });
+      }),
+    );
+
+    const response = await handleRequest({
+      method: "GET",
+      path: "/v1/feeds/counties/arkansas/polk/general",
+      query: new URLSearchParams("limit=10"),
+    });
+    const body = JSON.parse(response.body);
+
+    expect(body.items.map((item: { title: string }) => item.title)).toEqual(
+      expect.arrayContaining(["Polk County business development opens in Arkansas", "Mena Arkansas opens a new community center"]),
+    );
+    expect(body.items[0].title).toBe("Polk County business development opens in Arkansas");
+    expect(body.meta.sourcesUsed).toEqual(expect.arrayContaining(["county:primary", "county:market", "market:Mena"]));
+  });
+
+  it("accepts state-qualified local places and trusted market publishers only", () => {
+    const wood = getCounty("texas", "wood");
+    expect(wood).toBeDefined();
+    const marketPlan = buildCountyMarketPlan(wood!, "general");
+    const items = filterMarketItems(
+      [
+        {
+          id: "trusted",
+          title: "Texas officials announce regional transportation update",
+          link: "https://www.cbs19.tv/trusted",
+          source: "Regional Wire",
+          publishedAt: new Date().toISOString(),
+        },
+        {
+          id: "place",
+          title: "Tyler Texas opens a new regional service center",
+          link: "https://example.com/place",
+          source: "Regional Wire",
+          publishedAt: new Date().toISOString(),
+        },
+        {
+          id: "wrong-state",
+          title: "Tyler Florida opens a new regional service center",
+          link: "https://example.com/wrong-state",
+          source: "CBS19 Tyler News",
+          publishedAt: new Date().toISOString(),
+        },
+        {
+          id: "untrusted",
+          title: "Texas officials announce regional transportation update",
+          link: "https://example.com/untrusted",
+          source: "Regional Wire",
+          publishedAt: new Date().toISOString(),
+        },
+      ],
+      "general",
+      { level: "county", state: wood!.state, county: wood! },
+      getCountyPlaceTerms(wood!, config.countyMarketLimit),
+      marketPlan.directSources,
+    );
+
+    expect(items.map((item) => item.id)).toEqual(["trusted", "place"]);
+  });
+
+  it("bounds primary and market county query plans with configurable budgets", () => {
+    const county = getCounty("texas", "wood");
+    expect(county).toBeDefined();
+    config.countyPrimaryQueryLimit = 1;
+    config.countyMarketQueryLimit = 1;
+
+    const primaryPlan = buildFeedPlan({ level: "county", state: county!.state, county: county! }, "general");
+    const marketPlan = buildCountyMarketPlan(county!, "general");
+
+    expect(primaryPlan.articleQueries).toHaveLength(1);
+    expect(marketPlan.articleQueries).toHaveLength(1);
+    expect(primaryPlan.rssUrls.length).toBeLessThanOrEqual(config.maxRssUrlsPerFeed);
+    expect(marketPlan.rssUrls.length).toBeLessThanOrEqual(config.maxRssUrlsPerFeed);
   });
 
   it("builds state-qualified primary county query coverage", () => {

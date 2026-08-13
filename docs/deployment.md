@@ -135,6 +135,16 @@ Do not also configure Lambda Function URL CORS for this API. Adding CORS at both
 
 Do not include trailing slashes in CORS origins. Browser `Origin` headers look like `https://thecountypost.com`, not `https://thecountypost.com/`.
 
+## County coverage rollout
+
+The SAM template ships the bounded county expansion settings. For the first production verification, deploy with `COUNTY_MARKET_TIER_ENABLED=false` if you need to isolate the strict-primary and nearby-county behavior. Then enable it after inspecting:
+
+- county response `meta.sourcesUsed` for `county:primary`, `county:market`, and `county:fallback-nearby`;
+- CloudWatch `feed.sparse_county` log records for primary, market, nearby, and final counts;
+- pilot responses for ambiguous names such as `/v1/feeds/counties/arkansas/polk/general` and `/v1/feeds/counties/florida/polk/general`.
+
+Keep `COUNTY_PRIMARY_QUERY_LIMIT`, `COUNTY_MARKET_QUERY_LIMIT`, and `COUNTY_NEARBY_LIMIT` at their template defaults unless measured coverage and latency justify changing them.
+
 ## Step 6: CloudFormation Permissions
 
 For the first deployment, the CloudFormation deploy role needs permission to create/update:

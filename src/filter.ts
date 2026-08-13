@@ -1,4 +1,5 @@
 import type { CountySite, FeedScope, NewsFeedItem, StateSite, Topic } from "./types.js";
+import { isTrustedMarketSource, type DirectSource } from "./source-registry.js";
 
 const obituaryTerms = ["obituary", "obituaries", "death notice", "funeral", "memorial service", "celebration of life", "passed away", "died"];
 const sportsTerms = ["sports", "football", "basketball", "baseball", "softball", "volleyball", "soccer", "athletics", "score"];
@@ -45,6 +46,16 @@ export function filterCountyFallbackItems(
   return items.filter((item) => matchesCategory(item, topic) && matchesCountyScope(item, scope.state, nearbyCounties));
 }
 
+export function filterMarketItems(
+  items: NewsFeedItem[],
+  topic: Topic,
+  scope: Extract<FeedScope, { level: "county" }>,
+  places: string[],
+  trustedSources: DirectSource[],
+) {
+  return items.filter((item) => matchesCategory(item, topic) && matchesMarketScope(item, scope, places, trustedSources));
+}
+
 function matchesCategory(item: NewsFeedItem, topic: Topic) {
   const rules = categoryRules[topic];
   const fullHaystack = itemHaystack(item);
@@ -76,6 +87,24 @@ function matchesCountyScope(item: NewsFeedItem, state: StateSite, counties: Coun
   if (mentionsOtherState || !includesTerm(fullHaystack, state.name.toLowerCase())) return false;
 
   return counties.some((county) => includesTerm(fullHaystack, `${county.name.toLowerCase()} county`));
+}
+
+function matchesMarketScope(
+  item: NewsFeedItem,
+  scope: Extract<FeedScope, { level: "county" }>,
+  places: string[],
+  trustedSources: DirectSource[],
+) {
+  const contentHaystack = itemContent(item);
+  const fullHaystack = itemHaystack(item);
+  const stateName = scope.state.name.toLowerCase();
+  const mentionsOtherState = stateNames.some((stateNameCandidate) => stateNameCandidate !== stateName && includesTerm(contentHaystack, stateNameCandidate));
+  if (mentionsOtherState) return false;
+
+  if (!includesTerm(fullHaystack, stateName)) return false;
+  const hasCounty = includesTerm(fullHaystack, `${scope.county.name.toLowerCase()} county`);
+  const hasPlace = places.some((place) => includesTerm(fullHaystack, place.toLowerCase()));
+  return hasCounty || hasPlace || isTrustedMarketSource(item, trustedSources);
 }
 
 function itemContent(item: NewsFeedItem) {

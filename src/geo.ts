@@ -264,6 +264,8 @@ const stateNewsHubs: Record<string, StateNewsHub[]> = {
 };
 
 const countyOverrides: Record<string, Pick<CountySite, "primaryCity" | "localCities">> = {
+  "arkansas/polk": { primaryCity: "Mena", localCities: ["Mena", "Cove", "Grannis", "Hatfield"] },
+  "florida/polk": { primaryCity: "Lakeland", localCities: ["Lakeland", "Winter Haven", "Bartow", "Haines City"] },
   "texas/potter": { primaryCity: "Amarillo", localCities: ["Amarillo", "Bushland", "Bishop Hills"] },
   "texas/randall": { primaryCity: "Amarillo", localCities: ["Amarillo", "Canyon", "Lake Tanglewood", "Palisades", "Timbercreek Canyon"] },
 };
@@ -320,6 +322,10 @@ export function getCountyMarketCities(county: CountySite, limit = 2) {
       : stateNewsHubs[county.state.slug] || [];
 
   return Array.from(new Set(sortedHubs.map((hub) => hub.city))).slice(0, limit);
+}
+
+export function getCountyPlaceTerms(county: CountySite, limit = 4) {
+  return Array.from(new Set([county.primaryCity, ...county.localCities, ...getCountyMarketCities(county, limit)].filter(Boolean) as string[])).slice(0, limit);
 }
 
 export function getNearbyCounties(county: CountySite, limit = 3) {

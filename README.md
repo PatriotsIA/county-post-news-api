@@ -22,7 +22,7 @@ Current providers:
 - GDELT Document API
 - Direct publisher RSS/Atom feeds from the source registry
 
-County feeds intentionally search beyond exact county names. The API expands through nearby in-state news markets selected by county centroid distance, then falls back to state-topic inventory when a small county has too few direct matches.
+County coverage is tiered and locality-safe: strict county/state coverage is always first; a sparse section then adds state-qualified configured places and trusted local-market sources; only then can it add nearest same-state county coverage. It never falls back to broad state-topic inventory for a county route.
 
 ```ts
 type NewsFeedItem = {
@@ -105,11 +105,16 @@ Copy `.env.example` into your environment provider or shell:
 - `REQUEST_TIMEOUT_MS`: upstream fetch timeout, default `3500`.
 - `DEFAULT_LIMIT`: default items per section, default `48`.
 - `MAX_LIMIT`: hard cap, default `200`.
-- `COUNTY_FALLBACK_MIN_ITEMS`: minimum county section inventory before state-topic fallback fills the response, default `12`.
+- `COUNTY_FALLBACK_MIN_ITEMS`: minimum county section inventory before the next county-coverage tier is loaded, default `12`.
 - `ARTICLE_MAX_AGE_DAYS`: hard article cutoff, default `183`.
 - `FRESHNESS_FOCUS_DAYS`: freshness sort focus window, default `14`.
 - `STATE_MARKET_LIMIT`: nearby state markets to search, default `4`.
-- `COUNTY_MARKET_LIMIT`: nearby county markets to search, default `3`.
+- `COUNTY_MARKET_LIMIT`: configured/local market places included in a sparse county's market tier, default `3`.
+- `COUNTY_NEARBY_LIMIT`: nearest same-state counties used as the final sparse-coverage tier, default `3`.
+- `COUNTY_MARKET_TIER_ENABLED`: set `false` to skip the configured-place and trusted-market tier during a cautious rollout; default `true`.
+- `COUNTY_AGENCY_QUERY_ENABLED`: set `false` to omit state-qualified county-agency searches; default `true`.
+- `COUNTY_PRIMARY_QUERY_LIMIT`: bounded strict county query count, default `4`.
+- `COUNTY_MARKET_QUERY_LIMIT`: bounded market/place query count, default `4`.
 - `GDELT_ENABLED`: set to `false` to disable GDELT, default `true`.
 - `GDELT_MAX_RECORDS`: max GDELT records per query, default `100`.
 - `BING_NEWS_ENABLED`: set to `false` to disable Bing News RSS, default `true`.
@@ -135,6 +140,8 @@ Every request logs one structured JSON line. Successful requests use `console.lo
 ```json
 {"event":"api.request","ok":true,"method":"GET","path":"/v1/pages/counties/texas/potter","query":"limit=48","statusCode":200,"durationMs":842,"origin":"http://localhost:5173","referer":"http://localhost:5173/texas/potter"}
 ```
+
+When a county needs coverage beyond strict primary results, the service additionally logs a `feed.sparse_county` JSON line with primary, market, nearby, and final counts. `meta.sourcesUsed` records the activated tiers as `county:primary`, `county:market`, and/or `county:fallback-nearby`.
 
 ## AWS Deployment
 
