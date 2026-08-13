@@ -17,6 +17,8 @@ County feeds now prioritize articles explicitly tied to the requested county and
 - All API feeds deduplicate by normalized title before returning results.
 - The same title from separate links or publishers appears only once in a feed.
 - Near-title matches are also collapsed when their meaningful title words substantially overlap. DVIDS image items additionally use their normalized captions to collapse multiple image records for the same article.
+- Records that resolve to the same image URL are collapsed after image enrichment, including resized variants that differ only by URL query parameters.
+- Related updates from the same publisher family are collapsed when they share a county/event context, even if their headlines use slightly different wording.
 - URL-based deduplication remains as a fallback only when an item has no title.
 
 ## Client fallback protections
@@ -32,3 +34,5 @@ API tests cover:
 - Filling sparse county feeds from nearest same-state counties.
 - Suppressing same-title stories from different publishers.
 - Suppressing near-duplicate DVIDS image items.
+- Suppressing distinct-title records that reuse the same article image.
+- Suppressing same-publisher county-event updates that describe the same incident with different headlines.

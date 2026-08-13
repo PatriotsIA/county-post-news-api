@@ -14,7 +14,9 @@ export async function getFeed(scope: FeedScope, topic: Topic, limit: number): Pr
   const feed = await cached(cacheKey, config.cacheTtlSeconds, async () => {
     const plan = buildFeedPlan(scope, topic);
     const items = await loadPlanItems(plan);
-    const filtered = await enrichArticleImages(newest(dedupeItems(filterItems(recentItems(items), topic, scope)), config.maxLimit));
+    const filtered = dedupeItems(
+      await enrichArticleImages(newest(dedupeItems(filterItems(recentItems(items), topic, scope)), config.maxLimit)),
+    );
     const fetchedAt = new Date().toISOString();
 
     const primaryFeed = {
@@ -55,7 +57,7 @@ async function withCountyFallback(feed: FeedResponse, scope: FeedScope, topic: T
     dedupeItems(filterCountyFallbackItems(recentItems(fallbackItems), topic, scope, nearbyCounties)),
     config.maxLimit,
   );
-  const items = await enrichArticleImages(prioritizeUniqueItems(feed.items, nearbyItems, limit));
+  const items = dedupeItems(await enrichArticleImages(prioritizeUniqueItems(feed.items, nearbyItems, limit)));
   return {
     ...feed,
     items,
@@ -218,23 +220,25 @@ function recentItems(items: NewsFeedItem[]) {
 }
 
 function dedupeItems(items: NewsFeedItem[]) {
-  const accepted: Array<{ link: string; title: string; item: NewsFeedItem }> = [];
+  const accepted: Array<{ link: string; title: string; image: string; item: NewsFeedItem }> = [];
   return items.filter((item) => {
     const title = normalizeTitle(item.title, item.source);
     const link = normalizeDedupeKey(item.link);
-    if (accepted.some((existing) => existing.link === link || isNearDuplicate(item, title, existing.item, existing.title))) return false;
-    accepted.push({ link, title, item });
+    const image = normalizeImageKey(item.imageUrl);
+    if (accepted.some((existing) => existing.link === link || (image && existing.image === image) || isNearDuplicate(item, title, existing.item, existing.title))) return false;
+    accepted.push({ link, title, image, item });
     return true;
   });
 }
 
 function prioritizeUniqueItems(primaryItems: NewsFeedItem[], fallbackItems: NewsFeedItem[], maxItems: number) {
-  const accepted: Array<{ link: string; title: string; item: NewsFeedItem }> = [];
+  const accepted: Array<{ link: string; title: string; image: string; item: NewsFeedItem }> = [];
   const addUnique = (item: NewsFeedItem) => {
     const title = normalizeTitle(item.title, item.source);
     const link = normalizeDedupeKey(item.link);
-    if (accepted.some((existing) => existing.link === link || isNearDuplicate(item, title, existing.item, existing.title))) return false;
-    accepted.push({ link, title, item });
+    const image = normalizeImageKey(item.imageUrl);
+    if (accepted.some((existing) => existing.link === link || (image && existing.image === image) || isNearDuplicate(item, title, existing.item, existing.title))) return false;
+    accepted.push({ link, title, image, item });
     return true;
   };
   return [...primaryItems.filter(addUnique), ...fallbackItems.filter(addUnique)].slice(0, maxItems);
@@ -243,7 +247,8 @@ function prioritizeUniqueItems(primaryItems: NewsFeedItem[], fallbackItems: News
 function normalizeTitle(value: string, source?: string) {
   const sourceSuffix = source ? ` - ${source}`.toLowerCase() : "";
   const withoutSource = sourceSuffix && value.toLowerCase().endsWith(sourceSuffix) ? value.slice(0, -sourceSuffix.length) : value;
-  return withoutSource
+  const headline = withoutSource.split(/\s[-–—]\s/)[0] || withoutSource;
+  return headline
     .toLowerCase()
     .replace(/[’']/g, "")
     .replace(/[^a-z0-9]+/g, " ")
@@ -256,6 +261,7 @@ function isNearDuplicate(item: NewsFeedItem, title: string, existingItem: NewsFe
 
   const titleSimilarity = tokenSimilarity(title, existingTitle);
   if (titleSimilarity >= 0.82) return true;
+  if (samePublisher(item, existingItem) && sharesEventContext(title, existingTitle)) return true;
 
   if (!isDvidsItem(item) || !isDvidsItem(existingItem)) return false;
   const description = normalizeTitle(item.description || "");
@@ -272,8 +278,48 @@ function tokenSimilarity(left: string, right: string) {
   return shared / (leftTokens.size + rightTokens.size - shared);
 }
 
+function sharesEventContext(left: string, right: string) {
+  const leftTokens = new Set(left.split(" ").map(stemToken).filter((token) => token.length > 2));
+  const rightTokens = new Set(right.split(" ").map(stemToken).filter((token) => token.length > 2));
+  const shared = [...leftTokens].filter((token) => rightTokens.has(token));
+  return shared.length >= 3 && shared.some((token) => !genericStoryTokens.has(token));
+}
+
+function stemToken(token: string) {
+  if (token.startsWith("escape")) return "escape";
+  return token.replace(/(ing|ed|es|s)$/u, "");
+}
+
+const genericStoryTokens = new Set(["county", "local", "news", "official", "officials", "report", "update", "today"]);
+
+function samePublisher(left: NewsFeedItem, right: NewsFeedItem) {
+  const leftPublisher = publisherKey(left.source);
+  const rightPublisher = publisherKey(right.source);
+  return Boolean(leftPublisher && leftPublisher === rightPublisher);
+}
+
+function publisherKey(value?: string) {
+  return (value || "")
+    .toLowerCase()
+    .replace(/\b(the|north|south|east|west|northeast|northwest|southeast|southwest)\b/g, "")
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+}
+
 function isDvidsItem(item: NewsFeedItem) {
   return Boolean(item.source?.toLowerCase().includes("dvids") || item.link.toLowerCase().includes("dvidshub.net"));
+}
+
+function normalizeImageKey(value?: string) {
+  if (!value) return "";
+  try {
+    const url = new URL(value);
+    url.search = "";
+    url.hash = "";
+    return url.toString();
+  } catch {
+    return value.toLowerCase().replace(/\s+/g, "");
+  }
 }
 
 function normalizeDedupeKey(value: string) {

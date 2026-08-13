@@ -120,6 +120,54 @@ const nearDuplicateTitleRss = `<?xml version="1.0" encoding="UTF-8"?>
   </channel>
 </rss>`;
 
+const duplicateImageRss = `<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>Arkansas Daily</title>
+    <item>
+      <guid>image-one</guid>
+      <title>Polk County Arkansas road construction begins Monday</title>
+      <link>https://publisher-one.example/road-construction</link>
+      <source>Arkansas Daily</source>
+      <pubDate>Mon, 29 Jun 2026 12:00:00 GMT</pubDate>
+      <description>Polk County Arkansas construction begins Monday.</description>
+      <enclosure url="https://images.example.com/polk-road.jpg?width=1200" type="image/jpeg" />
+    </item>
+    <item>
+      <guid>image-two</guid>
+      <title>Polk County Arkansas commission schedules road work update</title>
+      <link>https://publisher-two.example/road-work-update</link>
+      <source>Arkansas Daily</source>
+      <pubDate>Mon, 29 Jun 2026 13:00:00 GMT</pubDate>
+      <description>Polk County Arkansas road work update.</description>
+      <enclosure url="https://images.example.com/polk-road.jpg?width=600" type="image/jpeg" />
+    </item>
+  </channel>
+</rss>`;
+
+const relatedStoryRss = `<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>Arkansas Democrat-Gazette</title>
+    <item>
+      <guid>related-one</guid>
+      <title>Polk County jail escapee taken back into custody - The Arkansas Democrat-Gazette</title>
+      <link>https://publisher.example/jail-escapee-custody</link>
+      <source>The Arkansas Democrat-Gazette</source>
+      <pubDate>Mon, 29 Jun 2026 12:00:00 GMT</pubDate>
+      <description>Polk County Arkansas jail escapee was taken back into custody.</description>
+    </item>
+    <item>
+      <guid>related-two</guid>
+      <title>Search begins for escaped Polk County inmate - Northwest Arkansas Democrat-Gazette</title>
+      <link>https://publisher.example/escaped-polk-inmate</link>
+      <source>Northwest Arkansas Democrat-Gazette</source>
+      <pubDate>Mon, 29 Jun 2026 13:00:00 GMT</pubDate>
+      <description>Search begins for an escaped Polk County Arkansas inmate.</description>
+    </item>
+  </channel>
+</rss>`;
+
 const bingRedirectRss = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0">
   <channel>
@@ -455,6 +503,44 @@ describe("handleRequest", () => {
     expect(response.statusCode).toBe(200);
     expect(body.items).toHaveLength(1);
     expect(body.items[0].link).toBe("https://www.dvidshub.net/image/1001");
+  });
+
+  it("keeps only one item when multiple records use the same article image", async () => {
+    clearCache();
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async () => new Response(duplicateImageRss, { status: 200, headers: { "content-type": "application/rss+xml" } })),
+    );
+
+    const response = await handleRequest({
+      method: "GET",
+      path: "/v1/feeds/counties/arkansas/polk/general",
+      query: new URLSearchParams("limit=10"),
+    });
+    const body = JSON.parse(response.body);
+
+    expect(response.statusCode).toBe(200);
+    expect(body.items).toHaveLength(1);
+    expect(body.items[0].link).toBe("https://publisher-one.example/road-construction");
+  });
+
+  it("collapses related updates from the same publisher family", async () => {
+    clearCache();
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async () => new Response(relatedStoryRss, { status: 200, headers: { "content-type": "application/rss+xml" } })),
+    );
+
+    const response = await handleRequest({
+      method: "GET",
+      path: "/v1/feeds/counties/arkansas/polk/general",
+      query: new URLSearchParams("limit=10"),
+    });
+    const body = JSON.parse(response.body);
+
+    expect(response.statusCode).toBe(200);
+    expect(body.items).toHaveLength(1);
+    expect(body.items[0].link).toBe("https://publisher.example/jail-escapee-custody");
   });
 
   it("returns a county page batch", async () => {
