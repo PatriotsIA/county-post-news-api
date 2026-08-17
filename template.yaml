@@ -339,13 +339,13 @@ Resources:
   AtlasStaleDataAlarm:
     Type: AWS::CloudWatch::Alarm
     Properties:
-      AlarmDescription: No successful validated atlas publication has been observed for fourteen days.
+      AlarmDescription: No successful validated atlas publication has been observed for seven days.
       Namespace: CountyPost/Atlas
       MetricName: SuccessfulPublish
       Statistic: Sum
       Period: 86400
-      EvaluationPeriods: 14
-      DatapointsToAlarm: 14
+      EvaluationPeriods: 7
+      DatapointsToAlarm: 7
       Threshold: 1
       ComparisonOperator: LessThanThreshold
       TreatMissingData: breaching
