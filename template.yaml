@@ -37,7 +37,7 @@ Parameters:
     Description: Git branch, tag, or commit used for atlas ingestion.
   AtlasIngestionSchedule:
     Type: String
-    Default: "rate(7 days)"
+    Default: "rate(5 days)"
     Description: EventBridge schedule for validated atlas snapshot refreshes.
   StripeSecretKey:
     Type: String
@@ -339,13 +339,13 @@ Resources:
   AtlasStaleDataAlarm:
     Type: AWS::CloudWatch::Alarm
     Properties:
-      AlarmDescription: No successful validated atlas publication has been observed for seven days.
+      AlarmDescription: No successful validated atlas publication has been observed for six days.
       Namespace: CountyPost/Atlas
       MetricName: SuccessfulPublish
       Statistic: Sum
       Period: 86400
-      EvaluationPeriods: 7
-      DatapointsToAlarm: 7
+      EvaluationPeriods: 6
+      DatapointsToAlarm: 6
       Threshold: 1
       ComparisonOperator: LessThanThreshold
       TreatMissingData: breaching

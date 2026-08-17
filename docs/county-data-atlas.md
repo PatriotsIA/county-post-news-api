@@ -63,11 +63,11 @@ Never place source credentials in frontend variables or snapshot documents.
 
 ## Refresh and publication
 
-The default EventBridge schedule starts the atlas CodeBuild project every seven days so release changes are picked up promptly, while each metric still reports its actual official vintage. The regular API build and deployment do not download source datasets.
+The default EventBridge schedule starts the atlas CodeBuild project every five days so release changes are picked up before the stale-publication alarm window, while each metric still reports its actual official vintage. The regular API build and deployment do not download source datasets.
 
 CodeBuild runs typechecking and atlas tests, ingests enabled adapters, uploads immutable JSON with long cache metadata, and writes `manifest/current.json` last. The S3 bucket is private, encrypted with S3-managed keys, versioned, blocked from public access, and retained if the stack is deleted. The API Lambda receives read-only access; the ingestion role receives object read/write but no delete permission.
 
-CloudWatch retains ingestion logs for 30 days. Alarms cover failed builds, EventBridge target failures, and absence of a successful build for seven days, the maximum evaluation window CloudWatch permits for this daily-period alarm. Alarm actions (SNS, PagerDuty, and so on) are intentionally account-specific and must be attached after deployment.
+CloudWatch retains ingestion logs for 30 days. Alarms cover failed builds, EventBridge target failures, and absence of a successful build for six days. This stays below CloudWatch's seven-day maximum while leaving one day of buffer after the normal five-day refresh. Alarm actions (SNS, PagerDuty, and so on) are intentionally account-specific and must be attached after deployment.
 
 ## API behavior and caveats
 
