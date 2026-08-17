@@ -206,6 +206,7 @@ const gdelt = {
 const defaultCorsOrigins = [...config.corsOrigins];
 const defaultMetalsApiKey = config.metalsApiKey;
 const defaultUsdaMarsApiKey = config.usdaMarsApiKey;
+const defaultFredApiKey = config.fredApiKey;
 const defaultCountyMarketTierEnabled = config.countyMarketTierEnabled;
 const defaultCountyPrimaryQueryLimit = config.countyPrimaryQueryLimit;
 const defaultCountyMarketQueryLimit = config.countyMarketQueryLimit;
@@ -217,6 +218,7 @@ describe("handleRequest", () => {
     config.corsOrigins = [...defaultCorsOrigins];
     config.metalsApiKey = defaultMetalsApiKey;
     config.usdaMarsApiKey = defaultUsdaMarsApiKey;
+    config.fredApiKey = defaultFredApiKey;
     config.countyMarketTierEnabled = defaultCountyMarketTierEnabled;
     config.countyPrimaryQueryLimit = defaultCountyPrimaryQueryLimit;
     config.countyMarketQueryLimit = defaultCountyMarketQueryLimit;
@@ -327,6 +329,49 @@ describe("handleRequest", () => {
         { key: "slaughter-cattle", label: "Slaughter cattle", price: 244.98, unit: "Per Cwt", sampleSize: 1 },
       ],
     });
+  });
+
+  it("returns cached FRED economic data for a county", async () => {
+    config.fredApiKey = "test-fred-key";
+    const fetchMock = vi.fn(async (url: URL | string) => {
+      const seriesId = new URL(String(url)).searchParams.get("series_id") || "";
+      const latestValue = seriesId.includes("000000003A") ? "4.2" : seriesId.startsWith("MHI") ? "52100" : "64500";
+      return new Response(
+        JSON.stringify({
+          observations: [
+            { date: "2024-01-01", value: latestValue },
+            { date: "2023-01-01", value: "4" },
+          ],
+        }),
+        { status: 200, headers: { "content-type": "application/json" } },
+      );
+    });
+    vi.stubGlobal("fetch", fetchMock);
+
+    const first = await handleRequest({
+      method: "GET",
+      path: "/v1/counties/arkansas/polk/economic-data",
+      query: new URLSearchParams(),
+    });
+    const second = await handleRequest({
+      method: "GET",
+      path: "/v1/counties/arkansas/polk/economic-data",
+      query: new URLSearchParams(),
+    });
+    const body = JSON.parse(first.body);
+
+    expect(first.statusCode).toBe(200);
+    expect(first.headers["cache-control"]).toContain("s-maxage=");
+    expect(body.county).toMatchObject({ displayName: "Polk County", fips: "05113", stateAbbr: "AR" });
+    expect(body.metrics).toHaveLength(5);
+    expect(body.metrics[0]).toMatchObject({
+      key: "unemployment-rate",
+      seriesId: "LAUCN051130000000003A",
+      latest: { date: "2024-01-01", value: 4.2 },
+    });
+    expect(body.meta.source).toBe("FRED");
+    expect(second.statusCode).toBe(200);
+    expect(fetchMock).toHaveBeenCalledTimes(5);
   });
 
   it("echoes an allowed CORS origin", async () => {

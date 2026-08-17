@@ -13,6 +13,11 @@ Parameters:
     NoEcho: true
     Default: ""
     Description: USDA MARS API key for the cattle and agriculture ticker.
+  FredApiKey:
+    Type: String
+    NoEcho: true
+    Default: ""
+    Description: FRED API key for county economic data.
   StripeSecretKey:
     Type: String
     NoEcho: true
@@ -63,6 +68,8 @@ Globals:
         METALS_CACHE_TTL_SECONDS: "60"
         USDA_MARS_API_KEY: !Ref UsdaMarsApiKey
         MARS_API_KEY: !Ref UsdaMarsApiKey
+        FRED_API_KEY: !Ref FredApiKey
+        FRED_CACHE_TTL_SECONDS: "21600"
         STRIPE_SK_KEY: !Ref StripeSecretKey
         STRIPE_CHECKOUT_SUCCESS_URL: !Ref StripeCheckoutSuccessUrl
         STRIPE_CHECKOUT_CANCEL_URL: !Ref StripeCheckoutCancelUrl

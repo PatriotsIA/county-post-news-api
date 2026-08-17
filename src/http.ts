@@ -6,6 +6,7 @@ import { getCattleTicker, getMetalsTicker, MarketServiceError } from "./markets-
 import { CheckoutError, createCheckoutSession } from "./stripe-service.js";
 import { getCountyPopulation, PopulationError } from "./population-service.js";
 import { AdCreativeError, createAdCreativeUpload } from "./ad-creative-service.js";
+import { FredServiceError, getCountyFredData } from "./fred-service.js";
 import type { FeedScope, Topic } from "./types.js";
 
 export type ApiRequest = {
@@ -49,6 +50,14 @@ export async function handleRequest(request: ApiRequest): Promise<ApiResponse> {
         response = json(404, { error: "Not found" });
       } else if (parts[1] === "counties" && parts[2] && parts[3] && parts[4] === "population" && parts.length === 5) {
         response = json(200, getCountyPopulation(parts[2], parts[3]));
+      } else if (parts[1] === "counties" && parts[2] && parts[3] && parts[4] === "economic-data" && parts.length === 5) {
+        const county = getCounty(parts[2], parts[3]);
+        if (!county) throw new ApiError(404, "Unknown county");
+        response = json(
+          200,
+          await getCountyFredData(county),
+          `public, max-age=1800, s-maxage=${config.fredCacheTtlSeconds}`,
+        );
       } else if (parts[1] === "feeds") {
         response = await handleFeed(parts.slice(2), request.query);
       } else if (parts[1] === "pages") {
@@ -64,7 +73,12 @@ export async function handleRequest(request: ApiRequest): Promise<ApiResponse> {
   } catch (error) {
     errorMessage = error instanceof Error ? error.message : "Unknown error";
     const isExpectedError =
-      error instanceof ApiError || error instanceof MarketServiceError || error instanceof CheckoutError || error instanceof PopulationError || error instanceof AdCreativeError;
+      error instanceof ApiError ||
+      error instanceof MarketServiceError ||
+      error instanceof CheckoutError ||
+      error instanceof PopulationError ||
+      error instanceof AdCreativeError ||
+      error instanceof FredServiceError;
     const message = isExpectedError ? error.message : "Internal server error";
     const status = isExpectedError ? error.statusCode : 500;
     response = json(status, { error: message, durationMs: Date.now() - startedAt }, request.method === "POST" ? "no-store" : undefined);
