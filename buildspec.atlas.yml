@@ -1,0 +1,18 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 22
+    commands:
+      - npm ci
+  pre_build:
+    commands:
+      - npm run typecheck
+      - npm run atlas:test
+  build:
+    commands:
+      - npm run atlas:ingest -- --publish
+  post_build:
+    commands:
+      - if [ "$CODEBUILD_BUILD_SUCCEEDING" = "1" ]; then aws cloudwatch put-metric-data --namespace CountyPost/Atlas --metric-data MetricName=SuccessfulPublish,Value=1,Unit=Count; fi

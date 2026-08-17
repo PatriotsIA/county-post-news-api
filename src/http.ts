@@ -7,6 +7,11 @@ import { CheckoutError, createCheckoutSession } from "./stripe-service.js";
 import { getCountyPopulation, PopulationError } from "./population-service.js";
 import { AdCreativeError, createAdCreativeUpload } from "./ad-creative-service.js";
 import { FredServiceError, getCountyFredData } from "./fred-service.js";
+import {
+  AtlasServiceError,
+  getCountyAtlasDomain,
+  getCountyAtlasOverview,
+} from "./atlas-service.js";
 import type { FeedScope, Topic } from "./types.js";
 
 export type ApiRequest = {
@@ -58,6 +63,10 @@ export async function handleRequest(request: ApiRequest): Promise<ApiResponse> {
           await getCountyFredData(county),
           `public, max-age=1800, s-maxage=${config.fredCacheTtlSeconds}`,
         );
+      } else if (parts[1] === "counties" && parts[2] && parts[3] && parts[4] === "atlas" && parts.length === 5) {
+        response = json(200, await getCountyAtlasOverview(parts[2], parts[3]), atlasCacheControl());
+      } else if (parts[1] === "counties" && parts[2] && parts[3] && parts[4] === "atlas" && parts[5] && parts.length === 6) {
+        response = json(200, await getCountyAtlasDomain(parts[2], parts[3], parts[5]), atlasCacheControl());
       } else if (parts[1] === "feeds") {
         response = await handleFeed(parts.slice(2), request.query);
       } else if (parts[1] === "pages") {
@@ -78,7 +87,8 @@ export async function handleRequest(request: ApiRequest): Promise<ApiResponse> {
       error instanceof CheckoutError ||
       error instanceof PopulationError ||
       error instanceof AdCreativeError ||
-      error instanceof FredServiceError;
+      error instanceof FredServiceError ||
+      error instanceof AtlasServiceError;
     const message = isExpectedError ? error.message : "Internal server error";
     const status = isExpectedError ? error.statusCode : 500;
     response = json(status, { error: message, durationMs: Date.now() - startedAt }, request.method === "POST" ? "no-store" : undefined);
@@ -178,6 +188,10 @@ function responseHeaders(cacheControl?: string) {
     "access-control-allow-headers": "content-type, authorization",
     "cache-control": cacheControl || `public, max-age=${config.cacheTtlSeconds}, s-maxage=${config.cacheTtlSeconds}`,
   };
+}
+
+function atlasCacheControl() {
+  return `public, max-age=3600, s-maxage=${config.atlasPublicCacheTtlSeconds}, stale-while-revalidate=604800`;
 }
 
 function parseJsonBody(body?: string) {

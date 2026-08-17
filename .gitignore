@@ -3,3 +3,4 @@ dist/
 .aws-sam/
 .env
 coverage/
+.atlas-output/

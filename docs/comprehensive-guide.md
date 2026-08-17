@@ -6,11 +6,11 @@ This document is the main technical reference for The County Post News API. It e
 
 The County Post News API is a low-cost server-side aggregation layer for national, state, and county news. It exists so the React frontend does not need to make dozens of browser-side RSS and search requests for each page load.
 
-The API currently runs as a Node.js 20 AWS Lambda behind a public Lambda Function URL. It aggregates from Google News RSS, Bing News RSS, GDELT, and direct publisher RSS/Atom feeds, then filters, deduplicates, sorts, caches, and returns sectioned JSON to the frontend.
+The API currently runs as a Node.js 22 AWS Lambda behind a public Lambda Function URL. It aggregates from Google News RSS, Bing News RSS, GDELT, and direct publisher RSS/Atom feeds, then filters, deduplicates, sorts, caches, and returns sectioned JSON to the frontend.
 
 | Area | Current Shape | Why It Matters |
 | --- | --- | --- |
-| Runtime | Node.js 20 Lambda, ARM64 | Low-cost serverless deployment with no always-on server. |
+| Runtime | Node.js 22 Lambda, ARM64 | Low-cost serverless deployment with no always-on server. |
 | Public entry point | Lambda Function URL | Simple HTTPS URL for the frontend. |
 | Storage | Warm in-memory cache only | Cheap first deployment; cache is lost on cold starts. |
 | Providers | Google News RSS, Bing News RSS, GDELT, direct feeds | Gives broad coverage without paid provider keys. |
@@ -305,7 +305,7 @@ The build pipeline must deploy `packaged.yaml`, not raw `template.yaml`. Raw `te
 | --- | --- |
 | CodeConnections connection | Must point to the GitHub repo and branch. |
 | CodePipeline | Source -> Build -> Deploy. |
-| CodeBuild project | Uses Node.js 20 and this repo's `buildspec.yml`. |
+| CodeBuild project | Uses Node.js 22 and this repo's `buildspec.yml`. |
 | Artifact bucket | Same region as pipeline and CodeBuild. |
 | CloudFormation deploy role | Needs permission to create/update Lambda, IAM, logs, S3, and stack resources. |
 | Lambda execution role | Created/managed by CloudFormation/SAM. |

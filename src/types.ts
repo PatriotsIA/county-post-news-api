@@ -74,3 +74,146 @@ export type PageResponse = {
     cacheTtlSeconds: number;
   };
 };
+
+export const countyAtlasDomains = [
+  "demographics",
+  "economy",
+  "housing",
+  "jobs-business",
+  "education",
+  "health",
+  "civic-elections",
+  "public-safety",
+  "agriculture",
+  "environment-disasters",
+  "government-finance",
+  "infrastructure",
+] as const;
+
+export type CountyAtlasDomain = (typeof countyAtlasDomains)[number];
+export type CountyAtlasValueKind = "number" | "percent" | "currency" | "index" | "duration" | "text";
+export type CountyAtlasChartKind = "trend" | "comparison" | "distribution" | "composition" | "none";
+
+export type CountyAtlasSource = {
+  id: string;
+  name: string;
+  agency: string;
+  url: string;
+  cadence: string;
+  methodology?: string;
+  licenseNote?: string;
+};
+
+export type CountyAtlasObservation = {
+  date: string;
+  value: number;
+};
+
+export type CountyAtlasBenchmark = {
+  geography: "state" | "nation";
+  label: string;
+  value: number;
+};
+
+export type CountyAtlasDistributionItem = {
+  key: string;
+  label: string;
+  value: number;
+  unit?: string;
+};
+
+export type CountyAtlasMetric = {
+  key: string;
+  domain: CountyAtlasDomain;
+  label: string;
+  description: string;
+  unit: string;
+  valueKind: CountyAtlasValueKind;
+  chart: CountyAtlasChartKind;
+  value?: number;
+  displayValue?: string;
+  date?: string;
+  vintage?: string;
+  retrievedAt?: string;
+  geographyVintage?: string;
+  marginOfError?: number;
+  suppressed?: boolean;
+  suppressionReason?: string;
+  modeledEstimate?: boolean;
+  preliminary?: boolean;
+  revisionStatus?: "preliminary" | "revised" | "final" | "not-applicable";
+  coveragePercent?: number;
+  coverageNumerator?: number;
+  coverageDenominator?: number;
+  source: CountyAtlasSource;
+  observations?: CountyAtlasObservation[];
+  benchmarks?: CountyAtlasBenchmark[];
+  distribution?: CountyAtlasDistributionItem[];
+};
+
+export type CountyAtlasDomainInfo = {
+  slug: CountyAtlasDomain;
+  label: string;
+  shortLabel: string;
+  description: string;
+  sourceIds: string[];
+  metricKeys: string[];
+};
+
+export type CountyAtlasCounty = {
+  name: string;
+  displayName: string;
+  slug: string;
+  fips: string;
+  stateName: string;
+  stateSlug: string;
+  stateAbbr: string;
+};
+
+export type CountyAtlasDomainDocument = {
+  county: CountyAtlasCounty;
+  domain: CountyAtlasDomainInfo;
+  metrics: CountyAtlasMetric[];
+  warnings: string[];
+  meta: {
+    version: string;
+    generatedAt: string;
+    retrievedAt: string;
+    sources: CountyAtlasSource[];
+    partial: boolean;
+    cacheTtlSeconds: number;
+  };
+};
+
+export type CountyAtlasOverview = {
+  county: CountyAtlasCounty;
+  domains: Array<{
+    domain: CountyAtlasDomainInfo;
+    featuredMetrics: CountyAtlasMetric[];
+    available: boolean;
+    warnings: string[];
+  }>;
+  meta: {
+    version: string;
+    generatedAt: string;
+    retrievedAt: string;
+    sources: CountyAtlasSource[];
+    partial: boolean;
+    cacheTtlSeconds: number;
+  };
+};
+
+export type CountyAtlasManifest = {
+  version: string;
+  generatedAt: string;
+  geographyVintage: string;
+  activePrefix: string;
+  domains: CountyAtlasDomain[];
+  sources: Array<{
+    id: string;
+    vintage: string;
+    retrievedAt: string;
+    status: "current" | "stale" | "partial";
+  }>;
+  countyCount: number;
+};

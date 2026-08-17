@@ -3,14 +3,16 @@
   "version": "1.0.0",
   "description": "Cheap AWS Lambda news aggregation API for The County Post.",
   "type": "module",
-  "main": "dist/handler.js",
+  "main": "dist/src/handler.js",
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "dev": "tsx src/local-server.ts",
-    "start": "node dist/local-server.js",
+    "start": "node dist/src/local-server.js",
     "test": "vitest run",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "update:populations": "node scripts/update-county-populations.mjs"
+    "update:populations": "node scripts/update-county-populations.mjs",
+    "atlas:ingest": "tsx scripts/atlas/cli.ts",
+    "atlas:test": "vitest run tests/atlas-ingestion.test.ts tests/atlas-service.test.ts"
   },
   "keywords": [
     "aws-lambda",

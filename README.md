@@ -9,6 +9,7 @@ Start here:
 - `docs/comprehensive-guide.md`: complete architecture, data flow, endpoint, configuration, deployment, operations, troubleshooting, and roadmap reference with diagrams and tables.
 - `docs/deployment.md`: focused AWS CodePipeline, CodeBuild, CloudFormation, CORS, and frontend deployment walkthrough.
 - `docs/news-coverage-strategy.md`: coverage model, sparse-county strategy, and future provider/source expansion plan.
+- `docs/county-data-atlas.md`: atlas source catalog, methodology, caveats, refresh cadence, and publication contract.
 - `docs/roadmap.md`: shorter implementation roadmap.
 
 ## Why This Exists
@@ -51,6 +52,8 @@ type NewsFeedItem = {
 - `GET /v1/markets/cattle`
 - `GET /v1/counties/:stateSlug/:countySlug/population`
 - `GET /v1/counties/:stateSlug/:countySlug/economic-data`
+- `GET /v1/counties/:stateSlug/:countySlug/atlas`
+- `GET /v1/counties/:stateSlug/:countySlug/atlas/:domain`
 - `POST /v1/advertising/creatives/upload`
 - `POST /v1/checkout/sessions`
 
@@ -76,6 +79,8 @@ The county population endpoint returns the same 2025 Census estimate and pricing
 
 The county economic-data endpoint uses the FRED API to return recent county unemployment, household income, per-capita income, current-dollar GDP, and real GDP observations. Series are derived from the county FIPS code, fetched concurrently, and cached for six hours. Individual unavailable series are omitted without failing the rest of the county response.
 
+The County Data Atlas endpoints read validated, immutable county snapshots through an S3 `manifest/current.json` pointer. The overview includes every registered domain with explicit availability; a known sparse domain returns an empty partial document rather than invented values. Until a published object exists, local development truthfully falls back to bundled Census population and optional live FRED economy metrics. See `docs/county-data-atlas.md`.
+
 `POST /v1/advertising/creatives/upload` accepts an advertised JPG or PNG file name, MIME type, and byte size and returns a 15-minute S3 presigned POST form. The browser uploads the creative directly to a private, encrypted S3 bucket before Stripe Checkout starts. Stripe Checkout itself does not support file-upload fields. The resulting private asset key is attached to the Checkout Session for the sales team.
 
 ## Local Development
@@ -97,6 +102,12 @@ Run checks before deployment:
 npm run typecheck
 npm test
 npm run build
+```
+
+Run deterministic Atlas ingestion with the checked-in Census fixture:
+
+```bash
+npm run atlas:ingest -- --fixture tests/fixtures/atlas/census-acs.json --output .atlas-output
 ```
 
 ## Configuration
@@ -131,6 +142,14 @@ Copy `.env.example` into your environment provider or shell:
 - `USDA_MARS_API_KEY`: USDA MyMarketNews MARS API key for the cattle ticker. `MARS_API_KEY` is also accepted as a local alias.
 - `FRED_API_KEY`: FRED API key used only by the API for county economic data.
 - `FRED_CACHE_TTL_SECONDS`: county FRED response cache duration, default `21600` (six hours).
+- `ATLAS_DATA_BUCKET`: private S3 snapshot bucket. Leave unset for the truthful development fallback.
+- `ATLAS_DATA_PREFIX`: optional key prefix before `manifest/current.json` and `versions/`.
+- `ATLAS_CACHE_TTL_SECONDS`: warm-process atlas document cache, default `3600`.
+- `ATLAS_MANIFEST_CACHE_TTL_SECONDS`: active-manifest cache, default `300`.
+- `ATLAS_PUBLIC_CACHE_TTL_SECONDS`: shared-cache duration sent by atlas endpoints, default `86400`.
+- `CENSUS_API_KEY`: free Census API key required for live scheduled ingestion as of May 2026.
+- `ATLAS_CENSUS_YEAR`: ACS 5-year release used by ingestion, default `2024`.
+- `ATLAS_OUTPUT_DIR` / `ATLAS_FIXTURE_PATH`: local/offline ingestion controls.
 - `STRIPE_SK_KEY`: Stripe secret key used only by the API to create hosted Checkout sessions. Never expose this value to the frontend.
 - `STRIPE_PK_KEY`: Stripe publishable key. It is not required for redirect Checkout, but may be used by a future embedded Checkout flow.
 - `STRIPE_CHECKOUT_SUCCESS_URL`: absolute URL Stripe redirects to after a successful payment.
@@ -156,6 +175,7 @@ Deployment files:
 
 - `template.yaml`: SAM template for Lambda Function URL deployment.
 - `buildspec.yml`: CodeBuild build/test/package steps for an AWS CodePipeline GitHub source connection.
+- `buildspec.atlas.yml`: independent scheduled CodeBuild ingestion and atomic atlas publication.
 - `docs/comprehensive-guide.md`: full deployment shape and operational reference.
 - `docs/deployment.md`: step-by-step pipeline setup and troubleshooting notes.
 
@@ -178,7 +198,7 @@ ARTIFACT_BUCKET=<your-artifact-bucket-name>
 
 Do not deploy raw `template.yaml` directly through CloudFormation. CodeBuild must run `sam package` first so `packaged.yaml` contains S3-backed Lambda code references.
 
-The first deployment target is an ARM64 Node.js 20 Lambda with a Function URL. Add CloudFront later if traffic grows or edge caching becomes important.
+The first deployment target is an ARM64 Node.js 22 Lambda with a Function URL. Add CloudFront later if traffic grows or edge caching becomes important.
 
 ## Frontend Integration Notes
 
