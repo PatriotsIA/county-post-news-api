@@ -3,11 +3,6 @@ Transform: AWS::Serverless-2016-10-31
 Description: County Post News API on a low-cost Lambda Function URL.
 
 Parameters:
-  MetalsApiKey:
-    Type: String
-    NoEcho: true
-    Default: ""
-    Description: Metals.dev API key for the precious-metals ticker.
   UsdaMarsApiKey:
     Type: String
     NoEcho: true
@@ -85,8 +80,8 @@ Globals:
         MAX_RSS_URLS_PER_FEED: "18"
         MAX_ARTICLE_QUERIES_PER_FEED: "6"
         CORS_ORIGINS: "https://main.d2z6lt4e5q50in.amplifyapp.com,https://advertiser-preview.d2z6lt4e5q50in.amplifyapp.com,https://thecountypost.com,https://www.thecountypost.com"
-        METALS_API_KEY: !Ref MetalsApiKey
-        METALS_CACHE_TTL_SECONDS: "60"
+        METALS_PROVIDER_URL: "https://mintedmetal.com/api/prices.json"
+        METALS_CACHE_TTL_SECONDS: "900"
         USDA_MARS_API_KEY: !Ref UsdaMarsApiKey
         MARS_API_KEY: !Ref UsdaMarsApiKey
         FRED_API_KEY: !Ref FredApiKey

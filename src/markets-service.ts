@@ -5,24 +5,32 @@ const metalNames = ["gold", "silver", "platinum", "palladium"] as const;
 
 type MetalName = (typeof metalNames)[number];
 
-type MetalsDevResponse = {
-  status?: string;
-  currency?: string;
-  unit?: string;
-  timestamp?: string;
-  metals?: Record<string, number | undefined>;
+type MintedMetalResponse = {
+  updatedAt?: string;
+  metals?: Partial<Record<MetalName, {
+    price?: number;
+    currency?: string;
+    unit?: string;
+  }>>;
 };
 
 export type MetalsTickerResponse = {
   currency: string;
   unit: string;
   updatedAt?: string;
+  provider: {
+    name: string;
+    url: string;
+  };
+  stale?: boolean;
   items: Array<{
     key: MetalName;
     label: string;
     price: number;
   }>;
 };
+
+let lastMetalsTicker: MetalsTickerResponse | undefined;
 
 type MarsReportResponse = {
   results?: MarsReportRow[];
@@ -73,41 +81,45 @@ export class MarketServiceError extends Error {
 }
 
 export function getMetalsTicker() {
-  if (!config.metalsApiKey) {
-    throw new MarketServiceError(503, "Metals ticker is not configured.");
-  }
-
   return cached("markets:metals:usd:toz", config.metalsCacheTtlSeconds, async () => {
-    const url = new URL(config.metalsApiUrl);
-    url.searchParams.set("api_key", config.metalsApiKey);
-    url.searchParams.set("currency", "USD");
-    url.searchParams.set("unit", "toz");
+    try {
+      const response = await fetch(config.metalsProviderUrl, {
+        headers: { accept: "application/json" },
+        signal: AbortSignal.timeout(config.requestTimeoutMs),
+      });
+      if (!response.ok) {
+        throw new MarketServiceError(502, "Metals price provider is unavailable.");
+      }
 
-    const response = await fetch(url, {
-      headers: { accept: "application/json" },
-      signal: AbortSignal.timeout(config.requestTimeoutMs),
-    });
-    if (!response.ok) {
+      const data = (await response.json()) as MintedMetalResponse;
+      const items = metalNames.flatMap((key) => {
+        const metal = data.metals?.[key];
+        return typeof metal?.price === "number"
+          ? [{ key, label: key[0].toUpperCase() + key.slice(1), price: metal.price }]
+          : [];
+      });
+      if (items.length !== metalNames.length) {
+        throw new MarketServiceError(502, "Metals price provider returned incomplete data.");
+      }
+
+      const firstMetal = data.metals?.gold;
+      const ticker = {
+        currency: firstMetal?.currency || "USD",
+        unit: firstMetal?.unit || "troy oz",
+        updatedAt: data.updatedAt,
+        provider: {
+          name: "Minted Metal",
+          url: "https://mintedmetal.com",
+        },
+        items,
+      };
+      lastMetalsTicker = ticker;
+      return ticker;
+    } catch (error) {
+      if (lastMetalsTicker) return { ...lastMetalsTicker, stale: true };
+      if (error instanceof MarketServiceError) throw error;
       throw new MarketServiceError(502, "Metals price provider is unavailable.");
     }
-
-    const data = (await response.json()) as MetalsDevResponse;
-    const items = metalNames.flatMap((key) => {
-      const price = data.metals?.[key];
-      return typeof price === "number"
-        ? [{ key, label: key[0].toUpperCase() + key.slice(1), price }]
-        : [];
-    });
-    if (items.length !== metalNames.length) {
-      throw new MarketServiceError(502, "Metals price provider returned incomplete data.");
-    }
-
-    return {
-      currency: data.currency || "USD",
-      unit: data.unit || "toz",
-      updatedAt: data.timestamp,
-      items,
-    };
   });
 }
 

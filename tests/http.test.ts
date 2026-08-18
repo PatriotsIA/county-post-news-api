@@ -204,7 +204,7 @@ const gdelt = {
 };
 
 const defaultCorsOrigins = [...config.corsOrigins];
-const defaultMetalsApiKey = config.metalsApiKey;
+const defaultMetalsProviderUrl = config.metalsProviderUrl;
 const defaultUsdaMarsApiKey = config.usdaMarsApiKey;
 const defaultFredApiKey = config.fredApiKey;
 const defaultCountyMarketTierEnabled = config.countyMarketTierEnabled;
@@ -216,7 +216,7 @@ describe("handleRequest", () => {
   afterEach(() => {
     clearCache();
     config.corsOrigins = [...defaultCorsOrigins];
-    config.metalsApiKey = defaultMetalsApiKey;
+    config.metalsProviderUrl = defaultMetalsProviderUrl;
     config.usdaMarsApiKey = defaultUsdaMarsApiKey;
     config.fredApiKey = defaultFredApiKey;
     config.countyMarketTierEnabled = defaultCountyMarketTierEnabled;
@@ -248,17 +248,19 @@ describe("handleRequest", () => {
     expect(JSON.parse(response.body).topic).toBe("monetary-policy");
   });
 
-  it("returns current precious metal prices through the protected server-side provider", async () => {
-    config.metalsApiKey = "test-key";
+  it("returns cached no-key LBMA benchmark metal prices through the server-side provider", async () => {
     vi.stubGlobal(
       "fetch",
       vi.fn(async () =>
         new Response(
           JSON.stringify({
-            currency: "USD",
-            unit: "toz",
-            timestamp: "2026-08-06T18:00:00.000Z",
-            metals: { gold: 3400.5, silver: 38.2, platinum: 1400, palladium: 1125 },
+            updatedAt: "2026-08-06T18:00:00.000Z",
+            metals: {
+              gold: { price: 3400.5, currency: "USD", unit: "troy oz" },
+              silver: { price: 38.2, currency: "USD", unit: "troy oz" },
+              platinum: { price: 1400, currency: "USD", unit: "troy oz" },
+              palladium: { price: 1125, currency: "USD", unit: "troy oz" },
+            },
           }),
           { status: 200, headers: { "content-type": "application/json" } },
         ),
@@ -270,7 +272,8 @@ describe("handleRequest", () => {
     expect(response.statusCode).toBe(200);
     expect(JSON.parse(response.body)).toMatchObject({
       currency: "USD",
-      unit: "toz",
+      unit: "troy oz",
+      provider: { name: "Minted Metal", url: "https://mintedmetal.com" },
       items: [
         { key: "gold", price: 3400.5 },
         { key: "silver", price: 38.2 },
