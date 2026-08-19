@@ -41,6 +41,8 @@ export const config = {
   weatherPointsCacheTtlSeconds: Number(process.env.WEATHER_POINTS_CACHE_TTL_SECONDS || 86400),
   weatherResponseCacheTtlSeconds: Number(process.env.WEATHER_RESPONSE_CACHE_TTL_SECONDS || 600),
   weatherAlertsCacheTtlSeconds: Number(process.env.WEATHER_ALERTS_CACHE_TTL_SECONDS || 180),
+  usdmApiBase: process.env.USDM_API_BASE || "https://usdmdataservices.unl.edu",
+  droughtCacheTtlSeconds: Number(process.env.DROUGHT_CACHE_TTL_SECONDS || 21600),
   weatherTimeoutMs: Number(process.env.WEATHER_TIMEOUT_MS || 5000),
   atlasDataBucket: process.env.ATLAS_DATA_BUCKET || "",
   atlasDataPrefix: process.env.ATLAS_DATA_PREFIX || "",

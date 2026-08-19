@@ -91,6 +91,8 @@ Globals:
         WEATHER_POINTS_CACHE_TTL_SECONDS: "86400"
         WEATHER_RESPONSE_CACHE_TTL_SECONDS: "600"
         WEATHER_ALERTS_CACHE_TTL_SECONDS: "180"
+        USDM_API_BASE: "https://usdmdataservices.unl.edu"
+        DROUGHT_CACHE_TTL_SECONDS: "21600"
         WEATHER_TIMEOUT_MS: "5000"
         ATLAS_DATA_BUCKET: !Ref AtlasDataBucket
         ATLAS_DATA_PREFIX: ""

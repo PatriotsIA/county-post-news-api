@@ -6,7 +6,7 @@ This document is the main technical reference for The County Post News API. It e
 
 The County Post News API is a low-cost server-side aggregation layer for national, state, and county news. It exists so the React frontend does not need to make dozens of browser-side RSS and search requests for each page load.
 
-The API currently runs as a Node.js 22 AWS Lambda behind a public Lambda Function URL. It aggregates from Google News RSS, Bing News RSS, GDELT, and direct publisher RSS/Atom feeds, then filters, deduplicates, sorts, caches, and returns sectioned JSON to the frontend. A separate county weather service uses the official National Weather Service API for observations, forecasts, and alerts.
+The API currently runs as a Node.js 22 AWS Lambda behind a public Lambda Function URL. It aggregates from Google News RSS, Bing News RSS, GDELT, and direct publisher RSS/Atom feeds, then filters, deduplicates, sorts, caches, and returns sectioned JSON to the frontend. A separate county weather service uses the official National Weather Service API for observations, forecasts, and active alerts and the U.S. Drought Monitor for weekly county drought conditions.
 
 | Area | Current Shape | Why It Matters |
 | --- | --- | --- |
@@ -38,7 +38,9 @@ flowchart LR
   Dedupe --> Sort[Freshness-Aware Sort]
   Sort --> Response[FeedResponse or PageResponse JSON]
   WeatherService --> NWS[api.weather.gov]
+  WeatherService --> USDM[U.S. Drought Monitor]
   NWS --> Response
+  USDM --> Response
   Response --> Browser
 ```
 
@@ -108,7 +110,7 @@ sequenceDiagram
 | `GET /v1/pages/counties/:stateSlug/:countySlug` | Multiple county sections. | County page load. |
 | `GET /v1/markets/metals` | Cached LBMA benchmark precious-metal prices via Minted Metal. | Top ticker. |
 | `GET /v1/markets/cattle` | Feeder/slaughter cattle prices from USDA MARS. | Top ticker. |
-| `GET /v1/counties/:stateSlug/:countySlug/weather` | NWS observation, forecast, hourly forecast, and deduplicated point/zone alerts. | Dedicated county weather page. |
+| `GET /v1/counties/:stateSlug/:countySlug/weather` | NWS observation, forecast, hourly forecast, deduplicated point/zone alerts, and weekly USDM drought conditions. | Dedicated county weather page and navigation notices. |
 
 Supported topics:
 
@@ -255,15 +257,19 @@ Page endpoints aggregate several sections. To avoid overloading Lambda with too 
 | `WEATHER_POINTS_CACHE_TTL_SECONDS` | `86400` | Long-lived NWS point-to-grid and zone mapping. |
 | `WEATHER_RESPONSE_CACHE_TTL_SECONDS` | `600` | Forecast and current-observation cache. |
 | `WEATHER_ALERTS_CACHE_TTL_SECONDS` | `180` | Alert cache and public weather response freshness ceiling. |
+| `USDM_API_BASE` | `https://usdmdataservices.unl.edu` | Official U.S. Drought Monitor REST-service root. |
+| `DROUGHT_CACHE_TTL_SECONDS` | `21600` | County drought statistics cache; the source updates weekly. |
 | `WEATHER_TIMEOUT_MS` | `5000` | Timeout for each NWS request. |
 
 ## National Weather Service Data
 
 `GET /v1/counties/:stateSlug/:countySlug/weather` resolves a known county through the same county/FIPS registry used elsewhere and sends its centroid to NWS `/points`. It follows the returned forecast, hourly, observation-station, forecast-zone, and county-zone links. Alerts are unioned across the point and both zones, deduplicated by alert ID, and ordered by severity. Forecasts are capped at about 14 periods and hourly data at about 24 periods.
 
-The point lookup is mandatory. Forecast, hourly, current-observation, and alert work runs independently; a failed subresource produces a warning and `meta.partial: true`, while failure of every meaningful subresource returns `502`. Temperatures, wind speeds, and precipitation probabilities are normalized to Fahrenheit, mph, and percent, with original NWS values/unit codes retained in measurement source metadata.
+The same request queries the official U.S. Drought Monitor REST service by five-digit county FIPS. Its cumulative area percentages identify the highest D1–D4 category affecting any part of the county and the share affected. This is returned as `droughtCondition`, not added to `alerts`: drought classification is a weekly condition, while NWS CAP entries are current watches, warnings, and advisories.
 
-Every NWS request sends JSON/GeoJSON accept headers and the configurable, identifying `NWS_USER_AGENT`. The integration uses no API key, no forecast pseudo-articles, and no extra CORS or IAM configuration. References: [NWS API documentation](https://www.weather.gov/documentation/services-web-api) and [NWS alerts documentation](https://www.weather.gov/documentation/services-web-alerts).
+The point lookup is mandatory. Forecast, hourly, current-observation, alert, and drought work runs independently; a failed subresource produces a warning and `meta.partial: true`, while failure of every meaningful subresource returns `502`. Temperatures, wind speeds, and precipitation probabilities are normalized to Fahrenheit, mph, and percent, with original NWS values/unit codes retained in measurement source metadata.
+
+Every official-source request sends an identifying `NWS_USER_AGENT`; NWS requests also send JSON/GeoJSON accept headers. The integration uses no API key, no forecast pseudo-articles, and no extra CORS or IAM configuration. References: [NWS API documentation](https://www.weather.gov/documentation/services-web-api), [NWS alerts documentation](https://www.weather.gov/documentation/services-web-alerts), and [U.S. Drought Monitor web-service documentation](https://www.droughtmonitor.unl.edu/DmData/DataDownload/WebServiceInfo.aspx).
 
 ## CORS Model
 

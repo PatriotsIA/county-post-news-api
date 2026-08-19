@@ -72,11 +72,53 @@ describe("county weather", () => {
 
     const pointsCalls = fetchMock.mock.calls.filter(([url]) => String(url).includes("/points/"));
     expect(pointsCalls).toHaveLength(1);
-    for (const [, init] of fetchMock.mock.calls) {
+    for (const [url, init] of fetchMock.mock.calls) {
       const headers = new Headers(init?.headers);
       expect(headers.get("user-agent")).toBe(config.nwsUserAgent);
-      expect(headers.get("accept")).toContain("application/geo+json");
+      if (new URL(String(url)).hostname === "api.weather.gov") {
+        expect(headers.get("accept")).toContain("application/geo+json");
+      }
     }
+  });
+
+  it("reports weekly drought conditions separately from active NWS alerts", async () => {
+    vi.stubGlobal("fetch", createNwsFetch({
+      noAlerts: true,
+      droughtRows: [{
+        mapDate: "2026-08-11T00:00:00",
+        fips: "48375",
+        county: "Potter County",
+        state: "TX",
+        none: 0,
+        d0: 100,
+        d1: 100,
+        d2: 100,
+        d3: 68.51,
+        d4: 0,
+        validStart: "2026-08-11T00:00:00",
+        validEnd: "2026-08-17T23:59:59",
+      }],
+    }));
+
+    const response = await weatherRequest("texas", "potter");
+    const body = JSON.parse(response.body);
+
+    expect(response.statusCode).toBe(200);
+    expect(body.alerts).toHaveLength(0);
+    expect(body.droughtCondition).toMatchObject({
+      category: "D3",
+      label: "Extreme Drought",
+      areaPercent: 68.51,
+      totalDroughtPercent: 100,
+      categories: { d1: 100, d2: 100, d3: 68.51, d4: 0 },
+      source: {
+        name: "U.S. Drought Monitor",
+        agency: "National Drought Mitigation Center, NOAA, and USDA",
+      },
+    });
+    expect(body.droughtCondition.source.countyUrl).toBe(
+      "https://www.drought.gov/states/Texas/county/Potter",
+    );
   });
 
   it("returns successful subresources with warnings when one NWS resource fails", async () => {
@@ -195,16 +237,22 @@ describe("weather news topic", () => {
   });
 });
 
-function weatherRequest() {
+function weatherRequest(stateSlug = "arkansas", countySlug = "polk") {
   return handleRequest({
     method: "GET",
-    path: "/v1/counties/arkansas/polk/weather",
+    path: `/v1/counties/${stateSlug}/${countySlug}/weather`,
     query: new URLSearchParams(),
   });
 }
 
 function createNwsFetch(
-  options: { failHourly?: boolean; failAllResources?: boolean; failPoints?: boolean } = {},
+  options: {
+    droughtRows?: unknown[];
+    failHourly?: boolean;
+    failAllResources?: boolean;
+    failPoints?: boolean;
+    noAlerts?: boolean;
+  } = {},
 ) {
   return vi.fn(async (input: string | URL | Request, init?: RequestInit) => {
     const url = new URL(String(input));
@@ -213,6 +261,7 @@ function createNwsFetch(
     }
     if (url.pathname.startsWith("/points/")) return jsonResponse(pointsFixture);
     if (options.failAllResources) return jsonResponse({ title: "Unavailable" }, 503);
+    if (url.hostname === "usdmdataservices.unl.edu") return jsonResponse(options.droughtRows || []);
     if (url.pathname === "/gridpoints/LZK/12,34/forecast/hourly" && options.failHourly) {
       return jsonResponse({ title: "Unavailable" }, 503);
     }
@@ -220,6 +269,7 @@ function createNwsFetch(
     if (url.pathname === "/gridpoints/LZK/12,34/forecast") return jsonResponse(forecastFixture("Tonight"));
     if (url.pathname === "/gridpoints/LZK/12,34/stations") return jsonResponse(stationsFixture);
     if (url.pathname === "/stations/KMEZ/observations/latest") return jsonResponse(observationFixture);
+    if (url.pathname === "/alerts/active" && options.noAlerts) return jsonResponse(alertCollection([]));
     if (url.pathname === "/alerts/active" && url.searchParams.has("point")) {
       return jsonResponse(alertCollection([moderateAlert, severeAlert]));
     }

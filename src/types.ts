@@ -134,6 +134,31 @@ export type WeatherZone = {
   link: string;
 };
 
+export type DroughtCategory = "D1" | "D2" | "D3" | "D4";
+
+export type CountyDroughtCondition = {
+  category: DroughtCategory;
+  label: "Moderate Drought" | "Severe Drought" | "Extreme Drought" | "Exceptional Drought";
+  areaPercent: number;
+  totalDroughtPercent: number;
+  categories: {
+    d0: number;
+    d1: number;
+    d2: number;
+    d3: number;
+    d4: number;
+  };
+  mapDate: string;
+  validStart?: string;
+  validEnd?: string;
+  source: {
+    name: "U.S. Drought Monitor";
+    agency: string;
+    url: string;
+    countyUrl: string;
+  };
+};
+
 export type CountyWeatherResponse = {
   county: {
     name: string;
@@ -162,6 +187,7 @@ export type CountyWeatherResponse = {
   forecast: WeatherForecastPeriod[];
   hourly: WeatherForecastPeriod[];
   alerts: WeatherAlert[];
+  droughtCondition?: CountyDroughtCondition;
   warnings: string[];
   meta: {
     fetchedAt: string;

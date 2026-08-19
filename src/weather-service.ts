@@ -2,6 +2,7 @@ import { cached } from "./cache.js";
 import { config } from "./config.js";
 import { getCounty } from "./geo.js";
 import type {
+  CountyDroughtCondition,
   CountySite,
   CountyWeatherResponse,
   WeatherAlert,
@@ -80,15 +81,17 @@ export async function getCountyWeather(stateSlug: string, countySlug: string): P
     hourly: loadForecast(points.hourlyLink, 24),
     observation: loadObservation(points.observationStationsLink),
     alerts: loadAlerts(latitude, longitude, points.forecastZone, points.countyZone),
+    drought: loadDroughtCondition(county),
   };
-  const [forecastResult, hourlyResult, observationResult, alertsResult] = await Promise.allSettled([
+  const [forecastResult, hourlyResult, observationResult, alertsResult, droughtResult] = await Promise.allSettled([
     tasks.forecast,
     tasks.hourly,
     tasks.observation,
     tasks.alerts,
+    tasks.drought,
   ]);
 
-  const results = [forecastResult, hourlyResult, observationResult, alertsResult];
+  const results = [forecastResult, hourlyResult, observationResult, alertsResult, droughtResult];
   if (results.every((result) => result.status === "rejected")) {
     throw new WeatherServiceError(502, "National Weather Service weather resources are unavailable");
   }
@@ -98,6 +101,7 @@ export async function getCountyWeather(stateSlug: string, countySlug: string): P
   if (hourlyResult.status === "rejected") warnings.push("Hourly forecast is temporarily unavailable.");
   if (observationResult.status === "rejected") warnings.push("Current observation is temporarily unavailable.");
   if (alertsResult.status === "rejected") warnings.push("Active alerts are temporarily unavailable.");
+  if (droughtResult.status === "rejected") warnings.push("Current U.S. Drought Monitor conditions are temporarily unavailable.");
   if (alertsResult.status === "fulfilled") warnings.push(...alertsResult.value.warnings);
 
   const observation = observationResult.status === "fulfilled" ? observationResult.value : undefined;
@@ -126,6 +130,7 @@ export async function getCountyWeather(stateSlug: string, countySlug: string): P
     forecast: forecastResult.status === "fulfilled" ? forecastResult.value : [],
     hourly: hourlyResult.status === "fulfilled" ? hourlyResult.value : [],
     alerts: alertsResult.status === "fulfilled" ? alertsResult.value.alerts : [],
+    droughtCondition: droughtResult.status === "fulfilled" ? droughtResult.value : undefined,
     warnings,
     meta: {
       fetchedAt: new Date().toISOString(),
@@ -153,6 +158,73 @@ export async function getCountyWeather(stateSlug: string, countySlug: string): P
       },
     },
   };
+}
+
+async function loadDroughtCondition(county: CountySite): Promise<CountyDroughtCondition | undefined> {
+  if (!county.fips) return undefined;
+  return cached(`weather:drought:${county.fips}`, config.droughtCacheTtlSeconds, async () => {
+    const endDate = new Date();
+    const startDate = new Date(endDate);
+    startDate.setUTCDate(startDate.getUTCDate() - 28);
+    const url = new URL(
+      "/api/CountyStatistics/GetDroughtSeverityStatisticsByAreaPercent",
+      `${config.usdmApiBase.replace(/\/+$/u, "")}/`,
+    );
+    url.search = new URLSearchParams({
+      aoi: county.fips!,
+      startdate: isoDate(startDate),
+      enddate: isoDate(endDate),
+      statisticsType: "1",
+    }).toString();
+
+    const json = await fetchJson(url.toString(), "U.S. Drought Monitor");
+    if (!Array.isArray(json)) throw new Error("U.S. Drought Monitor returned an invalid response");
+    const latest = json
+      .map(asObject)
+      .filter((record): record is JsonObject => Boolean(record))
+      .filter((record) => stringValue(record, "fips") === county.fips)
+      .sort((left, right) => timestamp(stringValue(right, "mapDate")) - timestamp(stringValue(left, "mapDate")))[0];
+    if (!latest) return undefined;
+
+    const categories = {
+      d0: percentageValue(latest, "d0"),
+      d1: percentageValue(latest, "d1"),
+      d2: percentageValue(latest, "d2"),
+      d3: percentageValue(latest, "d3"),
+      d4: percentageValue(latest, "d4"),
+    };
+    const category =
+      categories.d4 > 0 ? "D4"
+        : categories.d3 > 0 ? "D3"
+          : categories.d2 > 0 ? "D2"
+            : categories.d1 > 0 ? "D1"
+              : undefined;
+    if (!category) return undefined;
+
+    const categoryDetails = {
+      D1: { label: "Moderate Drought", areaPercent: categories.d1 },
+      D2: { label: "Severe Drought", areaPercent: categories.d2 },
+      D3: { label: "Extreme Drought", areaPercent: categories.d3 },
+      D4: { label: "Exceptional Drought", areaPercent: categories.d4 },
+    } as const;
+    const details = categoryDetails[category];
+    return {
+      category,
+      label: details.label,
+      areaPercent: details.areaPercent,
+      totalDroughtPercent: categories.d1,
+      categories,
+      mapDate: stringValue(latest, "mapDate") || endDate.toISOString(),
+      validStart: stringValue(latest, "validStart"),
+      validEnd: stringValue(latest, "validEnd"),
+      source: {
+        name: "U.S. Drought Monitor",
+        agency: "National Drought Mitigation Center, NOAA, and USDA",
+        url: url.toString(),
+        countyUrl: droughtCountyUrl(county),
+      },
+    };
+  });
 }
 
 async function loadForecast(link: string | undefined, limit: number) {
@@ -373,21 +445,29 @@ function convertValue(
 }
 
 async function fetchNwsJson(url: string): Promise<JsonObject> {
+  const json = await fetchJson(
+    apiUrl(url),
+    "NWS",
+    "application/geo+json, application/json",
+  );
+  const object = asObject(json);
+  if (!object) throw new Error("NWS returned an invalid JSON response");
+  return object;
+}
+
+async function fetchJson(url: string, sourceName: string, accept = "application/json"): Promise<unknown> {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), config.weatherTimeoutMs);
   try {
-    const response = await fetch(apiUrl(url), {
+    const response = await fetch(url, {
       headers: {
-        accept: "application/geo+json, application/json",
+        accept,
         "user-agent": config.nwsUserAgent,
       },
       signal: controller.signal,
     });
-    if (!response.ok) throw new Error(`NWS request failed (${response.status})`);
-    const json = await response.json();
-    const object = asObject(json);
-    if (!object) throw new Error("NWS returned an invalid JSON response");
-    return object;
+    if (!response.ok) throw new Error(`${sourceName} request failed (${response.status})`);
+    return response.json();
   } finally {
     clearTimeout(timeout);
   }
@@ -477,6 +557,10 @@ function numberValue(object: JsonObject | undefined, key: string) {
   return typeof object?.[key] === "number" && Number.isFinite(object[key]) ? object[key] as number : undefined;
 }
 
+function percentageValue(object: JsonObject, key: string) {
+  return round(Math.min(100, Math.max(0, numberValue(object, key) || 0)), 2);
+}
+
 function asObject(value: unknown): JsonObject | undefined {
   return value !== null && typeof value === "object" && !Array.isArray(value) ? value as JsonObject : undefined;
 }
@@ -488,6 +572,16 @@ function formatCoordinate(value: number) {
 function round(value: number, digits: number) {
   const factor = 10 ** digits;
   return Math.round(value * factor) / factor;
+}
+
+function isoDate(value: Date) {
+  return value.toISOString().slice(0, 10);
+}
+
+function droughtCountyUrl(county: CountySite) {
+  const statePath = encodeURIComponent(county.state.name.replace(/\s+/gu, "-"));
+  const countyPath = encodeURIComponent(county.name.replace(/\s+/gu, "-"));
+  return `https://www.drought.gov/states/${statePath}/county/${countyPath}`;
 }
 
 function timestamp(value?: string) {
