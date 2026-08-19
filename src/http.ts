@@ -12,6 +12,7 @@ import {
   getCountyAtlasDomain,
   getCountyAtlasOverview,
 } from "./atlas-service.js";
+import { getCountyWeather, WeatherServiceError } from "./weather-service.js";
 import type { FeedScope, Topic } from "./types.js";
 
 export type ApiRequest = {
@@ -63,6 +64,8 @@ export async function handleRequest(request: ApiRequest): Promise<ApiResponse> {
           await getCountyFredData(county),
           `public, max-age=1800, s-maxage=${config.fredCacheTtlSeconds}`,
         );
+      } else if (parts[1] === "counties" && parts[2] && parts[3] && parts[4] === "weather" && parts.length === 5) {
+        response = json(200, await getCountyWeather(parts[2], parts[3]), weatherCacheControl());
       } else if (parts[1] === "counties" && parts[2] && parts[3] && parts[4] === "atlas" && parts.length === 5) {
         response = json(200, await getCountyAtlasOverview(parts[2], parts[3]), atlasCacheControl());
       } else if (parts[1] === "counties" && parts[2] && parts[3] && parts[4] === "atlas" && parts[5] && parts.length === 6) {
@@ -88,6 +91,7 @@ export async function handleRequest(request: ApiRequest): Promise<ApiResponse> {
       error instanceof PopulationError ||
       error instanceof AdCreativeError ||
       error instanceof FredServiceError ||
+      error instanceof WeatherServiceError ||
       error instanceof AtlasServiceError;
     const message = isExpectedError ? error.message : "Internal server error";
     const status = isExpectedError ? error.statusCode : 500;
@@ -192,6 +196,11 @@ function responseHeaders(cacheControl?: string) {
 
 function atlasCacheControl() {
   return `public, max-age=3600, s-maxage=${config.atlasPublicCacheTtlSeconds}, stale-while-revalidate=604800`;
+}
+
+function weatherCacheControl() {
+  const ttl = Math.min(config.weatherResponseCacheTtlSeconds, config.weatherAlertsCacheTtlSeconds);
+  return `public, max-age=${ttl}, s-maxage=${ttl}, stale-while-revalidate=60`;
 }
 
 function parseJsonBody(body?: string) {

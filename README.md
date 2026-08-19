@@ -23,6 +23,8 @@ Current providers:
 - GDELT Document API
 - Direct publisher RSS/Atom feeds from the source registry
 
+County forecasts, observations, and alerts come separately from the official National Weather Service API. The weather data endpoint follows the [NWS API documentation](https://www.weather.gov/documentation/services-web-api) and [NWS alerts documentation](https://www.weather.gov/documentation/services-web-alerts); it does not turn forecasts into news articles.
+
 County coverage is tiered and locality-safe: strict county/state coverage is always first; a sparse section then adds state-qualified configured places and trusted local-market sources; only then can it add nearest same-state county coverage. It never falls back to broad state-topic inventory for a county route.
 
 ```ts
@@ -52,12 +54,13 @@ type NewsFeedItem = {
 - `GET /v1/markets/cattle`
 - `GET /v1/counties/:stateSlug/:countySlug/population`
 - `GET /v1/counties/:stateSlug/:countySlug/economic-data`
+- `GET /v1/counties/:stateSlug/:countySlug/weather`
 - `GET /v1/counties/:stateSlug/:countySlug/atlas`
 - `GET /v1/counties/:stateSlug/:countySlug/atlas/:domain`
 - `POST /v1/advertising/creatives/upload`
 - `POST /v1/checkout/sessions`
 
-Core topics are `general`, `sports`, `politics`, `economy`, `crime`, `obituaries`, and `opinion`. Editorial desk subcategories are `monetary-policy`, `markets-investing`, `jobs-business`, `property-taxes`, `municipal-bonds`, `budgets-levies`, `voting-systems`, `election-administration`, `audits-recounts`, and `open-records`.
+Core topics are `general`, `sports`, `politics`, `economy`, `crime`, `weather`, `obituaries`, and `opinion`. Editorial desk subcategories are `monetary-policy`, `markets-investing`, `jobs-business`, `property-taxes`, `municipal-bonds`, `budgets-levies`, `voting-systems`, `election-administration`, `audits-recounts`, and `open-records`.
 
 `POST /v1/checkout/sessions` creates a hosted Stripe Checkout subscription for a County Post color card or section sponsorship. The API calculates the price from the server-side rate card; it rejects client-provided amounts. The response contains only a Stripe Checkout URL and session ID.
 
@@ -79,6 +82,8 @@ The county population endpoint returns the same 2025 Census estimate and pricing
 
 The county economic-data endpoint uses the FRED API to return recent county unemployment, household income, per-capita income, current-dollar GDP, and real GDP observations. Series are derived from the county FIPS code, fetched concurrently, and cached for six hours. Individual unavailable series are omitted without failing the rest of the county response.
 
+The county weather endpoint resolves the known county FIPS and centroid, then uses NWS `/points` links for a compact forecast, hourly forecast, latest station observation, and active point/forecast-zone/county-zone alerts. Temperatures and wind speeds are normalized to Fahrenheit and mph while source units remain in each measurement. A subresource failure is reported through `warnings` and `meta.partial`; the point lookup is required. The separate county `weather` feed continues to return real stories from the existing news providers.
+
 The County Data Atlas endpoints read validated, immutable county snapshots through an S3 `manifest/current.json` pointer. The overview includes every registered domain with explicit availability; a known sparse domain returns an empty partial document rather than invented values. Until a published object exists, local development truthfully falls back to bundled Census population and optional live FRED economy metrics. See `docs/county-data-atlas.md`.
 
 `POST /v1/advertising/creatives/upload` accepts an advertised JPG or PNG file name, MIME type, and byte size and returns a 15-minute S3 presigned POST form. The browser uploads the creative directly to a private, encrypted S3 bucket before Stripe Checkout starts. Stripe Checkout itself does not support file-upload fields. The resulting private asset key is attached to the Checkout Session for the sales team.
@@ -94,6 +99,7 @@ Try:
 
 ```bash
 curl "http://localhost:8787/v1/pages/counties/texas/potter?sections=localNews,localSports&limit=48"
+curl "http://localhost:8787/v1/counties/texas/potter/weather"
 ```
 
 Run checks before deployment:
@@ -142,6 +148,12 @@ Copy `.env.example` into your environment provider or shell:
 - `USDA_MARS_API_KEY`: USDA MyMarketNews MARS API key for the cattle ticker. `MARS_API_KEY` is also accepted as a local alias.
 - `FRED_API_KEY`: FRED API key used only by the API for county economic data.
 - `FRED_CACHE_TTL_SECONDS`: county FRED response cache duration, default `21600` (six hours).
+- `NWS_API_BASE`: official NWS API root, default `https://api.weather.gov`.
+- `NWS_USER_AGENT`: identifying NWS request user agent with application domain/contact. NWS requires a meaningful identifier; no API key is used.
+- `WEATHER_POINTS_CACHE_TTL_SECONDS`: NWS point-to-grid/zone mapping cache duration, default `86400`.
+- `WEATHER_RESPONSE_CACHE_TTL_SECONDS`: forecast and observation cache duration, default `600`.
+- `WEATHER_ALERTS_CACHE_TTL_SECONDS`: active-alert cache and public response cache duration, default `180`.
+- `WEATHER_TIMEOUT_MS`: timeout for each NWS request, default `5000`.
 - `ATLAS_DATA_BUCKET`: private S3 snapshot bucket. Leave unset for the truthful development fallback.
 - `ATLAS_DATA_PREFIX`: optional key prefix before `manifest/current.json` and `versions/`.
 - `ATLAS_CACHE_TTL_SECONDS`: warm-process atlas document cache, default `3600`.

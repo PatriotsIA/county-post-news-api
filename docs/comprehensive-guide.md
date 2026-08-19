@@ -6,7 +6,7 @@ This document is the main technical reference for The County Post News API. It e
 
 The County Post News API is a low-cost server-side aggregation layer for national, state, and county news. It exists so the React frontend does not need to make dozens of browser-side RSS and search requests for each page load.
 
-The API currently runs as a Node.js 22 AWS Lambda behind a public Lambda Function URL. It aggregates from Google News RSS, Bing News RSS, GDELT, and direct publisher RSS/Atom feeds, then filters, deduplicates, sorts, caches, and returns sectioned JSON to the frontend.
+The API currently runs as a Node.js 22 AWS Lambda behind a public Lambda Function URL. It aggregates from Google News RSS, Bing News RSS, GDELT, and direct publisher RSS/Atom feeds, then filters, deduplicates, sorts, caches, and returns sectioned JSON to the frontend. A separate county weather service uses the official National Weather Service API for observations, forecasts, and alerts.
 
 | Area | Current Shape | Why It Matters |
 | --- | --- | --- |
@@ -26,6 +26,7 @@ flowchart LR
   LambdaUrl --> Handler[Lambda Handler]
   Handler --> Router[HTTP Router]
   Router --> NewsService[News Service]
+  Router --> WeatherService[Weather Service]
   NewsService --> Cache[Warm Lambda Memory Cache]
   NewsService --> FeedPlan[Feed Plan Builder]
   FeedPlan --> Google[Google News RSS]
@@ -36,6 +37,8 @@ flowchart LR
   Filter --> Dedupe[URL and ID Deduplication]
   Dedupe --> Sort[Freshness-Aware Sort]
   Sort --> Response[FeedResponse or PageResponse JSON]
+  WeatherService --> NWS[api.weather.gov]
+  NWS --> Response
   Response --> Browser
 ```
 
@@ -55,6 +58,7 @@ The core design goal is to make the frontend request one API endpoint per page v
 | `src/source-registry.ts` | Direct source registry for publisher RSS/Atom feeds. |
 | `src/rss.ts` | RSS/Atom fetch and parse logic. |
 | `src/gdelt.ts` | GDELT Document API fetch and normalization. |
+| `src/weather-service.ts` | NWS point mapping, observation, forecast, alert union, conversion, and partial-failure handling. |
 | `src/cache.ts` | Warm-memory cache helper. |
 | `template.yaml` | AWS SAM template for Lambda Function URL deployment. |
 | `buildspec.yml` | CodeBuild install, test, build, SAM package steps. |
@@ -104,6 +108,7 @@ sequenceDiagram
 | `GET /v1/pages/counties/:stateSlug/:countySlug` | Multiple county sections. | County page load. |
 | `GET /v1/markets/metals` | Cached LBMA benchmark precious-metal prices via Minted Metal. | Top ticker. |
 | `GET /v1/markets/cattle` | Feeder/slaughter cattle prices from USDA MARS. | Top ticker. |
+| `GET /v1/counties/:stateSlug/:countySlug/weather` | NWS observation, forecast, hourly forecast, and deduplicated point/zone alerts. | Dedicated county weather page. |
 
 Supported topics:
 
@@ -114,6 +119,7 @@ Supported topics:
 | `politics` | Government, elections, legislature, commissions, councils. |
 | `economy` | Business, jobs, development, housing, markets, industry. |
 | `crime` | Courts, police, sheriff, arrests, public safety, trials. |
+| `weather` | Provider-backed reporting about forecasts, storms, warnings, floods, heat, and other weather events. |
 | `obituaries` | Obituaries, funerals, death notices. |
 | `opinion` | Editorials, columns, commentary, op-eds. |
 
@@ -246,6 +252,18 @@ Page endpoints aggregate several sections. To avoid overloading Lambda with too 
 | `MAX_LIMIT` | `200` | Hard returned item cap. |
 | `METALS_PROVIDER_URL` | Minted Metal endpoint | No-key CC BY/LBMA benchmark provider for `/v1/markets/metals`. |
 | `USDA_MARS_API_KEY` | unset | Server-side USDA MARS key for `/v1/markets/cattle`; `MARS_API_KEY` is accepted locally as an alias. |
+| `WEATHER_POINTS_CACHE_TTL_SECONDS` | `86400` | Long-lived NWS point-to-grid and zone mapping. |
+| `WEATHER_RESPONSE_CACHE_TTL_SECONDS` | `600` | Forecast and current-observation cache. |
+| `WEATHER_ALERTS_CACHE_TTL_SECONDS` | `180` | Alert cache and public weather response freshness ceiling. |
+| `WEATHER_TIMEOUT_MS` | `5000` | Timeout for each NWS request. |
+
+## National Weather Service Data
+
+`GET /v1/counties/:stateSlug/:countySlug/weather` resolves a known county through the same county/FIPS registry used elsewhere and sends its centroid to NWS `/points`. It follows the returned forecast, hourly, observation-station, forecast-zone, and county-zone links. Alerts are unioned across the point and both zones, deduplicated by alert ID, and ordered by severity. Forecasts are capped at about 14 periods and hourly data at about 24 periods.
+
+The point lookup is mandatory. Forecast, hourly, current-observation, and alert work runs independently; a failed subresource produces a warning and `meta.partial: true`, while failure of every meaningful subresource returns `502`. Temperatures, wind speeds, and precipitation probabilities are normalized to Fahrenheit, mph, and percent, with original NWS values/unit codes retained in measurement source metadata.
+
+Every NWS request sends JSON/GeoJSON accept headers and the configurable, identifying `NWS_USER_AGENT`. The integration uses no API key, no forecast pseudo-articles, and no extra CORS or IAM configuration. References: [NWS API documentation](https://www.weather.gov/documentation/services-web-api) and [NWS alerts documentation](https://www.weather.gov/documentation/services-web-alerts).
 
 ## CORS Model
 

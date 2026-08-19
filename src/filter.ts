@@ -10,6 +10,10 @@ const categoryRules: Record<Topic, { include?: string[]; exclude?: string[] }> =
   politics: { include: ["politics", "election", "council", "commission", "ballot", "mayor", "governor", "legislature", "congress"], exclude: [...obituaryTerms, ...sportsTerms] },
   economy: { include: ["economy", "business", "jobs", "unemployment", "housing", "development", "market", "employer", "industry"], exclude: [...obituaryTerms, ...sportsTerms] },
   crime: { include: ["crime", "police", "sheriff", "court", "arrest", "charged", "indicted", "trial", "sentenced"], exclude: obituaryTerms },
+  weather: {
+    include: ["weather", "forecast", "storm", "thunderstorm", "tornado", "hurricane", "flood", "snow", "blizzard", "heat", "drought", "temperature", "warning", "advisory"],
+    exclude: obituaryTerms,
+  },
   obituaries: { include: obituaryTerms, exclude: ["arrest", "charged", "crime", "police", "sheriff", "election", "sports", "football", "basketball"] },
   opinion: { include: ["opinion", "editorial", "column", "letter to the editor", "commentary", "op-ed", "op ed"], exclude: obituaryTerms },
   "monetary-policy": { include: ["inflation", "interest rate", "federal reserve", "central bank", "currency", "monetary policy"], exclude: obituaryTerms },

@@ -229,7 +229,7 @@ function normalizeSections(sectionNames: string[], scope: FeedScope): [string, T
           ["obituaries", "obituaries"],
           ["opinion", "opinion"],
         ]
-      : topics.map((topic) => [topic, topic]);
+      : topics.filter((topic) => topic !== "weather").map((topic) => [topic, topic]);
 
   if (!sectionNames.length) return defaults;
   const defaultMap = new Map(defaults);

@@ -34,6 +34,14 @@ export const config = {
   fredApiKey: process.env.FRED_API_KEY || "",
   fredApiUrl: "https://api.stlouisfed.org/fred",
   fredCacheTtlSeconds: Number(process.env.FRED_CACHE_TTL_SECONDS || 21600),
+  nwsApiBase: process.env.NWS_API_BASE || "https://api.weather.gov",
+  nwsUserAgent:
+    process.env.NWS_USER_AGENT ||
+    "TheCountyPost/1.0 (https://thecountypost.com; contact@thecountypost.com)",
+  weatherPointsCacheTtlSeconds: Number(process.env.WEATHER_POINTS_CACHE_TTL_SECONDS || 86400),
+  weatherResponseCacheTtlSeconds: Number(process.env.WEATHER_RESPONSE_CACHE_TTL_SECONDS || 600),
+  weatherAlertsCacheTtlSeconds: Number(process.env.WEATHER_ALERTS_CACHE_TTL_SECONDS || 180),
+  weatherTimeoutMs: Number(process.env.WEATHER_TIMEOUT_MS || 5000),
   atlasDataBucket: process.env.ATLAS_DATA_BUCKET || "",
   atlasDataPrefix: process.env.ATLAS_DATA_PREFIX || "",
   atlasCacheTtlSeconds: Number(process.env.ATLAS_CACHE_TTL_SECONDS || 3600),

@@ -86,6 +86,12 @@ Globals:
         MARS_API_KEY: !Ref UsdaMarsApiKey
         FRED_API_KEY: !Ref FredApiKey
         FRED_CACHE_TTL_SECONDS: "21600"
+        NWS_API_BASE: "https://api.weather.gov"
+        NWS_USER_AGENT: "TheCountyPost/1.0 (https://thecountypost.com; contact@thecountypost.com)"
+        WEATHER_POINTS_CACHE_TTL_SECONDS: "86400"
+        WEATHER_RESPONSE_CACHE_TTL_SECONDS: "600"
+        WEATHER_ALERTS_CACHE_TTL_SECONDS: "180"
+        WEATHER_TIMEOUT_MS: "5000"
         ATLAS_DATA_BUCKET: !Ref AtlasDataBucket
         ATLAS_DATA_PREFIX: ""
         ATLAS_CACHE_TTL_SECONDS: "3600"

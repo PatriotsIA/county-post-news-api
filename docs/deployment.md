@@ -125,6 +125,8 @@ Only deploy `packaged.yaml`.
 
 The stack also provisions two private encrypted buckets. `AdvertisingCreativeBucket` accepts only short-lived presigned browser uploads. The versioned `AtlasDataBucket` blocks public access, is retained on stack deletion, and can be read by the API Lambda only. Do not make either bucket public.
 
+County weather uses the public, no-key `https://api.weather.gov` service and adds no IAM policy or secret parameter. The SAM environment supplies an identifying `NWS_USER_AGENT`; update its domain/contact if the application identity changes. Defaults are 86,400 seconds for point mappings, 600 seconds for forecasts/observations, 180 seconds for alerts and public weather responses, and 5,000 ms per request. See the official [NWS API documentation](https://www.weather.gov/documentation/services-web-api) and [NWS alerts documentation](https://www.weather.gov/documentation/services-web-alerts).
+
 ## Atlas ingestion setup
 
 The stack creates `${stack-name}-atlas-ingestion`, which clones `AtlasSourceLocation` and runs `buildspec.atlas.yml` independently of the deployment pipeline. The default public repository can be cloned directly. If the source becomes private, configure a CodeBuild GitHub source credential or CodeConnections authorization in the account before enabling the schedule.
@@ -270,6 +272,7 @@ Test it:
 ```bash
 curl "https://<function-url-id>.lambda-url.<region>.on.aws/health"
 curl "https://<function-url-id>.lambda-url.<region>.on.aws/v1/pages/counties/arkansas/polk?limit=48"
+curl "https://<function-url-id>.lambda-url.<region>.on.aws/v1/counties/arkansas/polk/weather"
 curl "https://<function-url-id>.lambda-url.<region>.on.aws/v1/counties/arkansas/polk/atlas"
 ```
 

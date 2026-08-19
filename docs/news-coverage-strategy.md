@@ -11,6 +11,8 @@ Current providers:
 - GDELT Document API
 - Direct publisher RSS/Atom feeds from the source registry
 
+`weather` is a normal news topic in this pipeline: it searches and filters real reporting from these providers. Forecasts, observations, and alerts are not synthesized into articles. A dedicated county endpoint retrieves those separately from the official National Weather Service API using its [API documentation](https://www.weather.gov/documentation/services-web-api) and [alerts documentation](https://www.weather.gov/documentation/services-web-alerts).
+
 Current recency policy:
 
 - Articles older than `ARTICLE_MAX_AGE_DAYS` are dropped. The default is `183` days.

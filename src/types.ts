@@ -4,6 +4,7 @@ export type Topic =
   | "politics"
   | "economy"
   | "crime"
+  | "weather"
   | "obituaries"
   | "opinion"
   | "monetary-policy"
@@ -72,6 +73,120 @@ export type PageResponse = {
     count: number;
     fetchedAt: string;
     cacheTtlSeconds: number;
+  };
+};
+
+export type WeatherMeasurement = {
+  value: number | null;
+  unit: "F" | "mph" | "percent" | "degrees" | "Pa";
+  source: {
+    value: number | null;
+    unitCode?: string;
+    rawValue?: number | string | null;
+  };
+};
+
+export type WeatherForecastPeriod = {
+  number: number;
+  name: string;
+  startTime: string;
+  endTime: string;
+  isDaytime: boolean;
+  temperature: WeatherMeasurement;
+  windSpeed: WeatherMeasurement;
+  windDirection?: string;
+  precipitationProbability?: WeatherMeasurement;
+  shortForecast?: string;
+  detailedForecast?: string;
+  icon?: string;
+};
+
+export type WeatherObservation = {
+  stationId: string;
+  stationName?: string;
+  observedAt?: string;
+  textDescription?: string;
+  icon?: string;
+  temperature?: WeatherMeasurement;
+  relativeHumidity?: WeatherMeasurement;
+  windSpeed?: WeatherMeasurement;
+  windGust?: WeatherMeasurement;
+  windDirection?: WeatherMeasurement;
+  barometricPressure?: WeatherMeasurement;
+};
+
+export type WeatherAlert = {
+  id: string;
+  event: string;
+  headline?: string;
+  description?: string;
+  instruction?: string;
+  severity?: string;
+  urgency?: string;
+  certainty?: string;
+  effective?: string;
+  expires?: string;
+  link?: string;
+};
+
+export type WeatherZone = {
+  id: string;
+  link: string;
+};
+
+export type CountyWeatherResponse = {
+  county: {
+    name: string;
+    displayName: string;
+    slug: string;
+    fips: string;
+    stateName: string;
+    stateSlug: string;
+    stateAbbr: string;
+  };
+  location: {
+    latitude: number;
+    longitude: number;
+    city?: string;
+    state?: string;
+    gridOffice?: string;
+    gridX?: number;
+    gridY?: number;
+    timeZone?: string;
+  };
+  zones: {
+    forecast?: WeatherZone;
+    county?: WeatherZone;
+  };
+  currentObservation?: WeatherObservation;
+  forecast: WeatherForecastPeriod[];
+  hourly: WeatherForecastPeriod[];
+  alerts: WeatherAlert[];
+  warnings: string[];
+  meta: {
+    fetchedAt: string;
+    partial: boolean;
+    cacheTtlSeconds: number;
+    alertsCacheTtlSeconds: number;
+    pointsCacheTtlSeconds: number;
+    units: {
+      temperature: "F";
+      windSpeed: "mph";
+      precipitationProbability: "percent";
+    };
+    source: {
+      name: "National Weather Service";
+      documentation: string;
+      alertsDocumentation: string;
+      links: {
+        points: string;
+        forecast?: string;
+        hourly?: string;
+        observationStations?: string;
+        latestObservation?: string;
+        alerts: string[];
+      };
+    };
   };
 };
 

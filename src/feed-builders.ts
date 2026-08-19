@@ -11,7 +11,7 @@ export type FeedPlan = {
 };
 
 export const topics: Topic[] = [
-  "general", "sports", "politics", "economy", "crime", "obituaries", "opinion",
+  "general", "sports", "politics", "economy", "crime", "weather", "obituaries", "opinion",
   "monetary-policy", "markets-investing", "jobs-business",
   "property-taxes", "municipal-bonds", "budgets-levies",
   "voting-systems", "election-administration", "audits-recounts", "open-records",
@@ -23,6 +23,7 @@ const topicQueries: Record<Topic, string[]> = {
   politics: ["politics", "election", "legislature", "governor", "council", "commission"],
   economy: ["economy", "business", "jobs", "housing market", "development", "industry"],
   crime: ["crime", "courts", "police", "sheriff", "arrests", "trial"],
+  weather: ["weather", "forecast", "storm", "tornado", "hurricane", "flood", "snow", "heat", "drought"],
   obituaries: ["obituaries", "obituary", "funeral home", "death notice"],
   opinion: ["opinion", "editorial", "column", "commentary", "op-ed"],
   "monetary-policy": ["inflation", "interest rates", "Federal Reserve", "central bank", "currency policy"],
@@ -43,6 +44,7 @@ const nationalQueries: Record<Topic, string[]> = {
   politics: ["United States politics", "Congress", "White House", "federal government", "elections"],
   economy: ["United States economy", "business", "jobs", "housing market", "markets", "Federal Reserve"],
   crime: ["United States crime", "courts", "justice department", "police", "public safety"],
+  weather: ["United States weather", "forecast", "storm", "tornado", "hurricane", "flood", "snow", "heat", "drought"],
   obituaries: ["United States obituaries", "obituary", "funeral", "death notice"],
   opinion: ["United States opinion", "editorial", "column", "commentary", "op-ed"],
   "monetary-policy": ["United States inflation", "interest rates", "Federal Reserve", "central bank", "currency policy"],
