@@ -2,15 +2,20 @@
 
 The County Data Atlas publishes FIPS-keyed county snapshots from authoritative public datasets. Scheduled ingestion is separate from API deployment. A refresh writes every document under an immutable `versions/<version>/` prefix, validates the complete result, and updates `manifest/current.json` only after all version objects succeed. A failed build leaves the previous manifest active.
 
-## Current release: Wave 1 ACS
+## Current release: expanded Census ACS baseline
 
 The enabled adapter uses the U.S. Census Bureau American Community Survey 5-year API. It currently publishes validated county measures for:
 
 - Demographics: population, median age, and households.
-- Economy: median household income and poverty rate.
-- Housing: median home value, median gross rent, homeownership, and vacancy.
-- Jobs and business: labor-force participation and mean commute.
-- Education: high-school completion and bachelor's-degree attainment.
+- Economy: median household income, per-capita income, poverty, unemployment, and the Gini index.
+- Housing: median home value, median gross rent, homeownership, vacancy, occupied units, and median year built.
+- Jobs and business: resident employment, labor-force participation, and mean commute.
+- Education: high-school completion, bachelor's-degree attainment, and resident enrollment.
+- Health: disability rate among the civilian noninstitutionalized population.
+- Civic life and elections: voting-age population. This is not a count of eligible or registered voters and is not an election result.
+- Infrastructure and connectivity: household internet subscription and households without a vehicle.
+
+Agriculture, environment and disasters, government finance, and public safety remain unavailable until their dedicated county-level source adapters validate and publish records. This baseline does not relabel ACS estimates as farm, crime, government, or hazard data.
 
 The adapter requests county, state, and national estimates plus 90% margins of error. Comparable county measures include official state and U.S. benchmarks for accessible charts. Ratio and summed-category margins use conservative propagation from published component margins. ACS suppression and missing-value sentinels remain suppressed with a reason; they are never converted to zero. Ratio metrics retain numerator and denominator. Every metric records source, source URL, observation date, release vintage, county-geography vintage, retrieval time, and modeled-estimate status.
 

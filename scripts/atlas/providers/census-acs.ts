@@ -36,6 +36,15 @@ const directVariables = [
   ["median-gross-rent", "B25064_001"],
 ] as const;
 
+const supplementalDirectVariables = [
+  ["per-capita-income", "B19301_001"],
+  ["gini-index", "B19083_001"],
+  ["employment", "B23025_004"],
+  ["school-enrollment", "B14007_001"],
+  ["median-year-built", "B25035_001"],
+  ["occupied-housing-units", "B25002_002"],
+] as const;
+
 const ratioVariables = [
   ["poverty-rate", "B17001_002", "B17001_001", 100],
   ["homeownership-rate", "B25003_002", "B25003_001", 100],
@@ -44,8 +53,18 @@ const ratioVariables = [
   ["mean-commute", "B08013_001", "B08012_001", 1],
 ] as const;
 
+const supplementalRatioVariables = [
+  ["unemployment-rate", "B23025_005", "B23025_003", 100],
+  ["disability-rate", "B18101_002", "B18101_001", 100],
+  ["internet-subscription-rate", "B28002_002", "B28002_001", 100],
+  ["no-vehicle-households-rate", "B08201_002", "B08201_001", 100],
+] as const;
+
 const highSchoolVariables = variableRange("B15003", 17, 25);
 const bachelorsVariables = variableRange("B15003", 22, 25);
+const votingAgeMaleVariables = variableRange("B01001", 7, 25);
+const votingAgeFemaleVariables = variableRange("B01001", 31, 49);
+const votingAgeVariables = [...votingAgeMaleVariables, ...votingAgeFemaleVariables];
 const baseVariables = unique([
   ...directVariables.flatMap(([, variable]) => estimateAndMoe(variable)),
   ...ratioVariables.flatMap(([, numerator, denominator]) => [
@@ -53,6 +72,15 @@ const baseVariables = unique([
     ...estimateAndMoe(denominator),
   ]),
 ]);
+const supplementalVariables = unique([
+  ...supplementalDirectVariables.flatMap(([, variable]) => estimateAndMoe(variable)),
+  ...supplementalRatioVariables.flatMap(([, numerator, denominator]) => [
+    ...estimateAndMoe(numerator),
+    ...estimateAndMoe(denominator),
+  ]),
+]);
+const votingAgeMaleMatrixVariables = votingAgeMaleVariables.flatMap(estimateAndMoe);
+const votingAgeFemaleMatrixVariables = votingAgeFemaleVariables.flatMap(estimateAndMoe);
 const educationVariables = unique([
   ...estimateAndMoe("B15003_001"),
   ...highSchoolVariables.flatMap(estimateAndMoe),
@@ -64,14 +92,25 @@ const definitions: Record<string, MetricDefinition> = {
   households: metric("households", "demographics", "Households", "Estimated occupied household count.", "Households", "number", "comparison", 0, 10_000_000),
   "median-household-income": metric("median-household-income", "economy", "Median household income", "Estimated household income at the midpoint.", "Dollars", "currency", "comparison", 0, 500_000),
   "poverty-rate": metric("poverty-rate", "economy", "Poverty rate", "Population below the Census poverty threshold.", "Percent", "percent", "comparison", 0, 100),
+  "per-capita-income": metric("per-capita-income", "economy", "Per-capita income", "Aggregate income divided by the population for whom income is determined.", "Dollars", "currency", "comparison", 0, 500_000),
+  "gini-index": metric("gini-index", "economy", "Income inequality index", "Census Gini index of income inequality; zero indicates equal income and one indicates maximum inequality.", "Index", "index", "comparison", 0, 1),
+  "unemployment-rate": metric("unemployment-rate", "economy", "Unemployment rate", "Unemployed residents as a share of the civilian labor force.", "Percent", "percent", "comparison", 0, 100),
   "median-home-value": metric("median-home-value", "housing", "Median home value", "Median value of owner-occupied housing units.", "Dollars", "currency", "comparison", 0, 10_000_000),
   "median-gross-rent": metric("median-gross-rent", "housing", "Median gross rent", "Median monthly gross rent for renter-occupied units.", "Dollars", "currency", "comparison", 0, 25_000),
   "homeownership-rate": metric("homeownership-rate", "housing", "Homeownership rate", "Owner-occupied units as a share of occupied housing units.", "Percent", "percent", "comparison", 0, 100),
   "vacancy-rate": metric("vacancy-rate", "housing", "Housing vacancy rate", "Vacant units as a share of all housing units.", "Percent", "percent", "comparison", 0, 100),
+  "median-year-built": metric("median-year-built", "housing", "Median year built", "Median construction year for housing units.", "Year", "number", "comparison", 1600, 2100),
+  "occupied-housing-units": metric("occupied-housing-units", "housing", "Occupied housing units", "Housing units occupied by usual residents.", "Housing units", "number", "comparison", 0, 10_000_000),
+  employment: metric("employment", "jobs-business", "Employment", "Civilian residents age 16 and older who are employed.", "People", "number", "comparison", 0, 20_000_000),
   "labor-force-participation": metric("labor-force-participation", "jobs-business", "Labor-force participation", "Civilian labor force as a share of the civilian population age 16 and older.", "Percent", "percent", "comparison", 0, 100),
   "mean-commute": metric("mean-commute", "jobs-business", "Mean commute", "Aggregate travel time divided by workers with a commute.", "Minutes", "duration", "comparison", 0, 180),
   "high-school-graduate-rate": metric("high-school-graduate-rate", "education", "High school graduate or higher", "Population age 25 and older with at least a high school credential.", "Percent", "percent", "comparison", 0, 100),
   "bachelors-rate": metric("bachelors-rate", "education", "Bachelor's degree or higher", "Population age 25 and older with a bachelor's, graduate, or professional degree.", "Percent", "percent", "comparison", 0, 100),
+  "school-enrollment": metric("school-enrollment", "education", "Residents enrolled in school", "Residents age three and older enrolled in school.", "People", "number", "comparison", 0, 20_000_000),
+  "disability-rate": metric("disability-rate", "health", "Disability rate", "Civilian noninstitutionalized residents reporting a disability.", "Percent", "percent", "comparison", 0, 100),
+  "voting-age-population": metric("voting-age-population", "civic-elections", "Voting-age population", "Residents age 18 and older; this is not a count of eligible or registered voters.", "People", "number", "comparison", 0, 20_000_000),
+  "internet-subscription-rate": metric("internet-subscription-rate", "infrastructure", "Internet subscription", "Households with an internet subscription.", "Percent", "percent", "comparison", 0, 100),
+  "no-vehicle-households-rate": metric("no-vehicle-households-rate", "infrastructure", "Households without a vehicle", "Households with no vehicle available.", "Percent", "percent", "comparison", 0, 100),
 };
 
 export class CensusAcsProvider implements AtlasProviderAdapter {
@@ -129,14 +168,23 @@ async function loadRows(context: AtlasProviderContext): Promise<CensusRows> {
     Promise.all([
       fetchMatrix(context, baseVariables, "county"),
       fetchMatrix(context, educationVariables, "county"),
+      fetchMatrix(context, supplementalVariables, "county"),
+      fetchMatrix(context, votingAgeMaleMatrixVariables, "county"),
+      fetchMatrix(context, votingAgeFemaleMatrixVariables, "county"),
     ]),
     Promise.all([
       fetchMatrix(context, baseVariables, "state"),
       fetchMatrix(context, educationVariables, "state"),
+      fetchMatrix(context, supplementalVariables, "state"),
+      fetchMatrix(context, votingAgeMaleMatrixVariables, "state"),
+      fetchMatrix(context, votingAgeFemaleMatrixVariables, "state"),
     ]),
     Promise.all([
       fetchMatrix(context, baseVariables, "nation"),
       fetchMatrix(context, educationVariables, "nation"),
+      fetchMatrix(context, supplementalVariables, "nation"),
+      fetchMatrix(context, votingAgeMaleMatrixVariables, "nation"),
+      fetchMatrix(context, votingAgeFemaleMatrixVariables, "nation"),
     ]),
   ]);
   return {
@@ -219,11 +267,11 @@ function parseCounty(row: CensusRow): CountyAtlasCounty | undefined {
 }
 
 function buildMetrics(row: CensusRow, context: AtlasProviderContext): CountyAtlasMetric[] {
-  const result = directVariables.map(([key, variable]) =>
+  const result = [...directVariables, ...supplementalDirectVariables].map(([key, variable]) =>
     createMetric(definitions[key], parseEstimate(row, variable), context),
   );
 
-  for (const [key, numerator, denominator, multiplier] of ratioVariables) {
+  for (const [key, numerator, denominator, multiplier] of [...ratioVariables, ...supplementalRatioVariables]) {
     result.push(createMetric(definitions[key], ratioEstimate(row, numerator, denominator, multiplier), context));
   }
 
@@ -236,6 +284,11 @@ function buildMetrics(row: CensusRow, context: AtlasProviderContext): CountyAtla
     createMetric(
       definitions["bachelors-rate"],
       sumRatioEstimate(row, bachelorsVariables, "B15003_001", 100),
+      context,
+    ),
+    createMetric(
+      definitions["voting-age-population"],
+      sumEstimate(row, votingAgeVariables),
       context,
     ),
   );
@@ -319,6 +372,21 @@ function sumRatioEstimate(row: CensusRow, numeratorVariables: string[], denomina
     ),
     coverageNumerator: numerator,
     coverageDenominator: denominator.value,
+  };
+}
+
+function sumEstimate(row: CensusRow, variables: string[]): ParsedEstimate {
+  const estimates = variables.map((variable) => parseEstimate(row, variable));
+  const suppressed = estimates.find((estimate) => estimate.suppressed);
+  if (suppressed || estimates.some((estimate) => estimate.value === undefined)) {
+    return {
+      suppressed: true,
+      suppressionReason: suppressed?.suppressionReason || "Missing component estimate",
+    };
+  }
+  return {
+    value: estimates.reduce((total, estimate) => total + estimate.value!, 0),
+    marginOfError: rootSumSquares(estimates.map((estimate) => estimate.marginOfError)),
   };
 }
 

@@ -1,7 +1,7 @@
 import type { AtlasProviderDefinition } from "./types.js";
 
 export const atlasProviderCatalog = [
-  provider("census-acs", 1, "implemented", ["demographics", "economy", "housing", "jobs-business", "education"], "Annual", {
+  provider("census-acs", 1, "implemented", ["demographics", "economy", "housing", "jobs-business", "education", "health", "civic-elections", "infrastructure"], "Annual", {
     credentialEnv: "CENSUS_API_KEY",
     notes: "ACS 5-year county estimates; the API is free and the key is optional but recommended.",
   }),
