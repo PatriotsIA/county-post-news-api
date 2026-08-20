@@ -2,8 +2,11 @@ import { mkdtemp, readFile, rm } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { afterEach, describe, expect, it, vi } from "vitest";
+import { strToU8, zipSync } from "fflate";
 import { runAtlasIngestion } from "../scripts/atlas/cli.js";
 import { publishSnapshot } from "../scripts/atlas/publish.js";
+import { FemaDeclarationsProvider } from "../scripts/atlas/providers/fema-declarations.js";
+import { NhtsaFarsProvider } from "../scripts/atlas/providers/nhtsa-fars.js";
 
 const fixturePath = path.resolve("tests/fixtures/atlas/census-acs.json");
 const temporaryDirectories: string[] = [];
@@ -128,5 +131,121 @@ describe("atlas ingestion", () => {
         maxCountyCount: 4,
       }),
     ).rejects.toThrow("returned 2 counties; expected 3-4");
+  });
+
+  it("publishes county-level FEMA designations without treating statewide records as county data", async () => {
+    const provider = new FemaDeclarationsProvider();
+    const result = await provider.ingest({
+      retrievedAt: "2026-08-20T00:00:00.000Z",
+      censusYear: 2024,
+      countyRoster: [
+        {
+          name: "Polk",
+          displayName: "Polk County",
+          slug: "polk",
+          fips: "05113",
+          stateName: "Arkansas",
+          stateSlug: "arkansas",
+          stateAbbr: "AR",
+        },
+        {
+          name: "Randall",
+          displayName: "Randall County",
+          slug: "randall",
+          fips: "48381",
+          stateName: "Texas",
+          stateSlug: "texas",
+          stateAbbr: "TX",
+        },
+      ],
+      fetchJson: async () => ({
+        DisasterDeclarationsSummaries: [
+          {
+            disasterNumber: 4780,
+            declarationDate: "2024-05-14T00:00:00.000Z",
+            declarationType: "DR",
+            incidentType: "Severe Storm(s)",
+            fipsStateCode: "05",
+            fipsCountyCode: "113",
+          },
+          {
+            disasterNumber: 4780,
+            declarationDate: "2024-05-14T00:00:00.000Z",
+            declarationType: "DR",
+            incidentType: "Severe Storm(s)",
+            fipsStateCode: "05",
+            fipsCountyCode: "000",
+          },
+          {
+            disasterNumber: 4900,
+            declarationDate: "2018-05-14T00:00:00.000Z",
+            declarationType: "FM",
+            incidentType: "Fire Management",
+            fipsStateCode: "05",
+            fipsCountyCode: "113",
+          },
+        ],
+      }),
+      fetchBytes: async () => new Uint8Array(),
+    });
+
+    const polk = result.counties.find((record) => record.county.fips === "05113")!;
+    const randall = result.counties.find((record) => record.county.fips === "48381")!;
+    expect(polk.metrics.find((metric) => metric.key === "disaster-declarations-5y")).toMatchObject({
+      value: 1,
+      distribution: [{ label: "Severe Storm(s)", value: 1 }],
+    });
+    expect(polk.metrics.find((metric) => metric.key === "major-disaster-declarations-5y")).toMatchObject({ value: 1 });
+    expect(polk.metrics.find((metric) => metric.key === "latest-disaster-declaration")).toMatchObject({
+      displayValue: "May 14, 2024",
+    });
+    expect(randall.metrics.find((metric) => metric.key === "disaster-declarations-5y")).toMatchObject({ value: 0 });
+  });
+
+  it("publishes FARS fatal-crash data by crash-location county and excludes unknown counties", async () => {
+    const provider = new NhtsaFarsProvider();
+    const archive = zipSync({
+      "FARS2024NationalCSV/accident.csv": strToU8(
+        [
+          "STATE,COUNTY,FATALS",
+          "5,113,2",
+          "5,113,1",
+          "48,999,4",
+        ].join("\n"),
+      ),
+    });
+    const result = await provider.ingest({
+      retrievedAt: "2026-08-20T00:00:00.000Z",
+      censusYear: 2024,
+      farsYear: 2024,
+      countyRoster: [
+        {
+          name: "Polk",
+          displayName: "Polk County",
+          slug: "polk",
+          fips: "05113",
+          stateName: "Arkansas",
+          stateSlug: "arkansas",
+          stateAbbr: "AR",
+        },
+        {
+          name: "Randall",
+          displayName: "Randall County",
+          slug: "randall",
+          fips: "48381",
+          stateName: "Texas",
+          stateSlug: "texas",
+          stateAbbr: "TX",
+        },
+      ],
+      fetchJson: async () => ({}),
+      fetchBytes: async () => archive,
+    });
+
+    const polk = result.counties.find((record) => record.county.fips === "05113")!;
+    const randall = result.counties.find((record) => record.county.fips === "48381")!;
+    expect(polk.metrics.find((metric) => metric.key === "traffic-fatal-crashes")).toMatchObject({ value: 2 });
+    expect(polk.metrics.find((metric) => metric.key === "traffic-deaths")).toMatchObject({ value: 3 });
+    expect(randall.metrics.find((metric) => metric.key === "traffic-deaths")).toMatchObject({ value: 0 });
   });
 });

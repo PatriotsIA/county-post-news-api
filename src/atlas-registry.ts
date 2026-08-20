@@ -107,6 +107,15 @@ export const atlasSources = {
     methodology: "Agency reporting is voluntary; coverage and jurisdiction overlap vary by county.",
     licenseNote: "U.S. government open data; attribution requested.",
   },
+  "nhtsa-fars": {
+    id: "nhtsa-fars",
+    name: "Fatality Analysis Reporting System",
+    agency: "National Highway Traffic Safety Administration",
+    url: "https://www.nhtsa.gov/research-data/fatality-analysis-reporting-system-fars",
+    cadence: "Annual",
+    methodology: "A census of motor-vehicle crashes involving a fatality; county is crash-location geography, not a measure of all crime or public-safety incidents.",
+    licenseNote: "U.S. government public data; attribution requested.",
+  },
   medsl: {
     id: "medsl",
     name: "County Presidential Election Returns",
@@ -242,9 +251,9 @@ export const atlasDomains: Record<CountyAtlasDomain, CountyAtlasDomainInfo> = {
     "public-safety",
     "Public Safety",
     "Safety",
-    "Reported crime and agency coverage, with explicit reporting limitations.",
-    ["fbi-cde"],
-    ["violent-crime-rate", "property-crime-rate", "reporting-coverage", "participating-agencies"],
+    "Fatal traffic crashes and deaths, with future crime data published only when county reporting coverage is defensible.",
+    ["nhtsa-fars", "fbi-cde"],
+    ["traffic-fatal-crashes", "traffic-deaths"],
   ),
   agriculture: domain(
     "agriculture",
@@ -260,7 +269,7 @@ export const atlasDomains: Record<CountyAtlasDomain, CountyAtlasDomainInfo> = {
     "Environment",
     "Natural-hazard risk, disaster declarations, regulated facilities, and air-monitor context.",
     ["fema", "epa"],
-    ["national-risk-index", "disaster-declarations", "regulated-facilities", "air-quality-days", "flood-risk"],
+    ["disaster-declarations-5y", "major-disaster-declarations-5y", "latest-disaster-declaration"],
   ),
   "government-finance": domain(
     "government-finance",

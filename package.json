@@ -29,6 +29,7 @@
     "@turf/centroid": "^7.3.5",
     "dotenv": "^17.4.2",
     "fast-xml-parser": "^5.9.3",
+    "fflate": "^0.8.3",
     "stripe": "^22.4.0",
     "topojson-client": "^3.1.0",
     "us-atlas": "^3.0.1"

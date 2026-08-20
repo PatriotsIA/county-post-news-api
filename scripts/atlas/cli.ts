@@ -17,6 +17,7 @@ export type AtlasIngestionOptions = {
   minCountyCount?: number;
   maxCountyCount?: number;
   cacheTtlSeconds?: number;
+  farsYear?: number;
   outputDir?: string;
   bucket?: string;
   prefix?: string;
@@ -25,7 +26,7 @@ export type AtlasIngestionOptions = {
 
 export async function runAtlasIngestion(options: AtlasIngestionOptions = {}): Promise<AtlasSnapshot> {
   const generatedAt = options.generatedAt || new Date().toISOString();
-  const providerIds = options.providerIds || implementedProviderIds();
+  const providerIds = options.providerIds || (options.fixturePath ? ["census-acs"] : implementedProviderIds());
   const selected = providerIds.map((id) => {
     const definition = atlasProviderCatalog.find((candidate) => candidate.id === id);
     if (!definition) throw new Error(`Unknown atlas provider: ${id}.`);
@@ -37,17 +38,27 @@ export async function runAtlasIngestion(options: AtlasIngestionOptions = {}): Pr
     return adapter;
   });
 
-  const results = await Promise.all(
-    selected.map((adapter) =>
-      adapter.ingest({
-        retrievedAt: generatedAt,
-        censusYear: options.censusYear || 2024,
-        censusApiKey: options.censusApiKey,
-        fixturePath: adapter.id === "census-acs" ? options.fixturePath : undefined,
-        fetchJson,
-      }),
-    ),
+  const context = {
+    retrievedAt: generatedAt,
+    censusYear: options.censusYear || 2024,
+    censusApiKey: options.censusApiKey,
+    fetchJson,
+    fetchBytes,
+    farsYear: options.farsYear || Number(process.env.ATLAS_FARS_YEAR || 2024),
+  };
+  const census = selected.find((adapter) => adapter.id === "census-acs");
+  const dependentProviders = selected.filter((adapter) => adapter.id !== "census-acs");
+  if (dependentProviders.length && !census) {
+    throw new Error("County-level Atlas providers require census-acs to establish the validated county roster.");
+  }
+  const censusResult = census
+    ? await census.ingest({ ...context, fixturePath: options.fixturePath })
+    : undefined;
+  const countyRoster = censusResult?.counties.map((record) => record.county);
+  const dependentResults = await Promise.all(
+    dependentProviders.map((adapter) => adapter.ingest({ ...context, countyRoster })),
   );
+  const results = [...(censusResult ? [censusResult] : []), ...dependentResults];
   const minCountyCount = options.minCountyCount ?? (options.fixturePath ? 1 : 3_100);
   const maxCountyCount = options.maxCountyCount ?? (options.fixturePath ? 5_000 : 3_250);
   results.forEach((result) => validateProviderResult(result, { minCountyCount, maxCountyCount }));
@@ -76,6 +87,15 @@ async function fetchJson(url: URL) {
     throw new Error(`Official data request failed (${response.status}): ${details}`);
   }
   return body;
+}
+
+async function fetchBytes(url: URL) {
+  const response = await fetch(url, {
+    headers: { accept: "application/zip,application/octet-stream;q=0.9,*/*;q=0.8", "user-agent": "county-post-news-api-atlas/1.0" },
+    signal: AbortSignal.timeout(60_000),
+  });
+  if (!response.ok) throw new Error(`Official data download failed (${response.status}): ${response.statusText}`);
+  return new Uint8Array(await response.arrayBuffer());
 }
 
 function parseArguments(argv: string[]): AtlasIngestionOptions {
@@ -107,6 +127,7 @@ function parseArguments(argv: string[]): AtlasIngestionOptions {
     minCountyCount: numberValue(process.env.ATLAS_EXPECTED_MIN_COUNTIES),
     maxCountyCount: numberValue(process.env.ATLAS_EXPECTED_MAX_COUNTIES),
     cacheTtlSeconds: numberValue(process.env.ATLAS_PUBLIC_CACHE_TTL_SECONDS),
+    farsYear: numberValue(process.env.ATLAS_FARS_YEAR),
     outputDir: values.get("output") || (!publish ? process.env.ATLAS_OUTPUT_DIR || ".atlas-output" : undefined),
     bucket,
     prefix: values.get("prefix") || process.env.ATLAS_DATA_PREFIX,

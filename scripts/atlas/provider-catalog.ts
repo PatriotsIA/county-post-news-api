@@ -43,8 +43,11 @@ export const atlasProviderCatalog = [
   provider("fcc", 2, "planned", ["infrastructure"], "Twice yearly", {
     notes: "Restricted Broadband Fabric records are explicitly excluded.",
   }),
-  provider("fema", 2, "planned", ["environment-disasters"], "Continuous and release-based", {
-    notes: "OpenFEMA county attribution and statewide declarations require separate measures.",
+  provider("fema-declarations", 2, "implemented", ["environment-disasters"], "Continuous; rolling five-year window", {
+    notes: "OpenFEMA county designations are declaration counts, not measured disaster losses or countywide impacts.",
+  }),
+  provider("fema-nri", 2, "planned", ["environment-disasters"], "Release-based", {
+    notes: "National Risk Index releases must be pinned and labeled as modeled relative risk.",
   }),
   provider("epa", 2, "planned", ["environment-disasters"], "Varies by program", {
     notes: "Monitor and facility coverage denominators must accompany EPA metrics.",
@@ -72,6 +75,9 @@ export const atlasProviderCatalog = [
   }),
   provider("fbi-cde", 3, "planned", ["public-safety"], "Monthly and annual", {
     notes: "No crime rate will publish without agency population and reporting coverage.",
+  }),
+  provider("nhtsa-fars", 2, "implemented", ["public-safety"], "Annual", {
+    notes: "Fatal-crash records use crash-location county geography and are not a crime-rate substitute.",
   }),
 ] satisfies AtlasProviderDefinition[];
 

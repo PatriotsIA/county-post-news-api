@@ -25,7 +25,10 @@ export type AtlasProviderContext = {
   censusYear: number;
   censusApiKey?: string;
   fixturePath?: string;
+  countyRoster?: CountyAtlasCounty[];
+  farsYear?: number;
   fetchJson: (url: URL) => Promise<unknown>;
+  fetchBytes: (url: URL) => Promise<Uint8Array>;
 };
 
 export type AtlasCountyRecord = {
