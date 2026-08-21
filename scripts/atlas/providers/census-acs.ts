@@ -43,6 +43,8 @@ const supplementalDirectVariables = [
   ["school-enrollment", "B14007_001"],
   ["median-year-built", "B25035_001"],
   ["occupied-housing-units", "B25002_002"],
+  ["veterans", "B21001_002"],
+  ["median-real-estate-taxes", "B25103_001"],
 ] as const;
 
 const ratioVariables = [
@@ -58,10 +60,15 @@ const supplementalRatioVariables = [
   ["disability-rate", "B18101_002", "B18101_001", 100],
   ["internet-subscription-rate", "B28002_002", "B28002_001", 100],
   ["no-vehicle-households-rate", "B08201_002", "B08201_001", 100],
+  ["work-from-home-rate", "B08301_021", "B08301_001", 100],
+  ["drive-alone-commuter-rate", "B08301_003", "B08301_001", 100],
 ] as const;
 
 const highSchoolVariables = variableRange("B15003", 17, 25);
 const bachelorsVariables = variableRange("B15003", 22, 25);
+const rentBurdenVariables = variableRange("B25070", 8, 10);
+const uninsuredVariables = [5, 8, 11, 14, 17, 20, 23, 26, 29, 33, 36, 39, 42, 45, 48, 51, 54, 57]
+  .map((value) => `B27001_${String(value).padStart(3, "0")}`);
 const votingAgeMaleVariables = variableRange("B01001", 7, 25);
 const votingAgeFemaleVariables = variableRange("B01001", 31, 49);
 const votingAgeVariables = [...votingAgeMaleVariables, ...votingAgeFemaleVariables];
@@ -79,6 +86,16 @@ const supplementalVariables = unique([
     ...estimateAndMoe(denominator),
   ]),
 ]);
+const healthAndHousingVariables = unique([
+  ...rentBurdenVariables.flatMap(estimateAndMoe),
+  ...estimateAndMoe("B25070_001"),
+  ...uninsuredVariables.flatMap(estimateAndMoe),
+  ...estimateAndMoe("B27001_001"),
+]);
+const profileDirectVariables = [
+  ["agriculture-mining-employment", "DP03_0033"],
+] as const;
+const profileVariables = unique(profileDirectVariables.flatMap(([, variable]) => estimateAndMoe(variable)));
 const votingAgeMaleMatrixVariables = votingAgeMaleVariables.flatMap(estimateAndMoe);
 const votingAgeFemaleMatrixVariables = votingAgeFemaleVariables.flatMap(estimateAndMoe);
 const educationVariables = unique([
@@ -101,16 +118,23 @@ const definitions: Record<string, MetricDefinition> = {
   "vacancy-rate": metric("vacancy-rate", "housing", "Housing vacancy rate", "Vacant units as a share of all housing units.", "Percent", "percent", "comparison", 0, 100),
   "median-year-built": metric("median-year-built", "housing", "Median year built", "Median construction year for housing units.", "Year", "number", "comparison", 1600, 2100),
   "occupied-housing-units": metric("occupied-housing-units", "housing", "Occupied housing units", "Housing units occupied by usual residents.", "Housing units", "number", "comparison", 0, 10_000_000),
+  "rent-cost-burden-rate": metric("rent-cost-burden-rate", "housing", "Rent cost burden", "Renter-occupied homes spending 35 percent or more of household income on rent.", "Percent", "percent", "comparison", 0, 100),
+  "median-real-estate-taxes": metric("median-real-estate-taxes", "government-finance", "Median real-estate taxes", "Median annual real-estate taxes paid by owner-occupied homes; this is a household burden indicator, not county-government revenue.", "Dollars", "currency", "comparison", 0, 100_000),
   employment: metric("employment", "jobs-business", "Employment", "Civilian residents age 16 and older who are employed.", "People", "number", "comparison", 0, 20_000_000),
   "labor-force-participation": metric("labor-force-participation", "jobs-business", "Labor-force participation", "Civilian labor force as a share of the civilian population age 16 and older.", "Percent", "percent", "comparison", 0, 100),
   "mean-commute": metric("mean-commute", "jobs-business", "Mean commute", "Aggregate travel time divided by workers with a commute.", "Minutes", "duration", "comparison", 0, 180),
   "high-school-graduate-rate": metric("high-school-graduate-rate", "education", "High school graduate or higher", "Population age 25 and older with at least a high school credential.", "Percent", "percent", "comparison", 0, 100),
   "bachelors-rate": metric("bachelors-rate", "education", "Bachelor's degree or higher", "Population age 25 and older with a bachelor's, graduate, or professional degree.", "Percent", "percent", "comparison", 0, 100),
   "school-enrollment": metric("school-enrollment", "education", "Residents enrolled in school", "Residents age three and older enrolled in school.", "People", "number", "comparison", 0, 20_000_000),
+  veterans: metric("veterans", "demographics", "Veterans", "Civilian residents age 18 and older who have served in the armed forces.", "People", "number", "comparison", 0, 20_000_000),
   "disability-rate": metric("disability-rate", "health", "Disability rate", "Civilian noninstitutionalized residents reporting a disability.", "Percent", "percent", "comparison", 0, 100),
+  "uninsured-rate": metric("uninsured-rate", "health", "Uninsured rate", "Civilian noninstitutionalized residents without health insurance coverage.", "Percent", "percent", "comparison", 0, 100),
+  "agriculture-mining-employment": metric("agriculture-mining-employment", "agriculture", "Agriculture & mining employment", "Civilian workers in agriculture, forestry, fishing, hunting, and mining. This is employment context, not a farm or production count.", "People", "number", "comparison", 0, 20_000_000),
   "voting-age-population": metric("voting-age-population", "civic-elections", "Voting-age population", "Residents age 18 and older; this is not a count of eligible or registered voters.", "People", "number", "comparison", 0, 20_000_000),
   "internet-subscription-rate": metric("internet-subscription-rate", "infrastructure", "Internet subscription", "Households with an internet subscription.", "Percent", "percent", "comparison", 0, 100),
   "no-vehicle-households-rate": metric("no-vehicle-households-rate", "infrastructure", "Households without a vehicle", "Households with no vehicle available.", "Percent", "percent", "comparison", 0, 100),
+  "work-from-home-rate": metric("work-from-home-rate", "infrastructure", "Work from home", "Workers age 16 and older who worked from home.", "Percent", "percent", "comparison", 0, 100),
+  "drive-alone-commuter-rate": metric("drive-alone-commuter-rate", "infrastructure", "Drive-alone commute", "Workers age 16 and older who commuted by driving alone.", "Percent", "percent", "comparison", 0, 100),
 };
 
 export class CensusAcsProvider implements AtlasProviderAdapter {
@@ -169,6 +193,8 @@ async function loadRows(context: AtlasProviderContext): Promise<CensusRows> {
       fetchMatrix(context, baseVariables, "county"),
       fetchMatrix(context, educationVariables, "county"),
       fetchMatrix(context, supplementalVariables, "county"),
+      fetchMatrix(context, healthAndHousingVariables, "county"),
+      fetchMatrix(context, profileVariables, "county", "profile"),
       fetchMatrix(context, votingAgeMaleMatrixVariables, "county"),
       fetchMatrix(context, votingAgeFemaleMatrixVariables, "county"),
     ]),
@@ -176,6 +202,8 @@ async function loadRows(context: AtlasProviderContext): Promise<CensusRows> {
       fetchMatrix(context, baseVariables, "state"),
       fetchMatrix(context, educationVariables, "state"),
       fetchMatrix(context, supplementalVariables, "state"),
+      fetchMatrix(context, healthAndHousingVariables, "state"),
+      fetchMatrix(context, profileVariables, "state", "profile"),
       fetchMatrix(context, votingAgeMaleMatrixVariables, "state"),
       fetchMatrix(context, votingAgeFemaleMatrixVariables, "state"),
     ]),
@@ -183,6 +211,8 @@ async function loadRows(context: AtlasProviderContext): Promise<CensusRows> {
       fetchMatrix(context, baseVariables, "nation"),
       fetchMatrix(context, educationVariables, "nation"),
       fetchMatrix(context, supplementalVariables, "nation"),
+      fetchMatrix(context, healthAndHousingVariables, "nation"),
+      fetchMatrix(context, profileVariables, "nation", "profile"),
       fetchMatrix(context, votingAgeMaleMatrixVariables, "nation"),
       fetchMatrix(context, votingAgeFemaleMatrixVariables, "nation"),
     ]),
@@ -203,8 +233,9 @@ async function fetchMatrix(
   context: AtlasProviderContext,
   variables: string[],
   geography: "county" | "state" | "nation",
+  dataset = "",
 ) {
-  const url = new URL(`https://api.census.gov/data/${context.censusYear}/acs/acs5`);
+  const url = new URL(`https://api.census.gov/data/${context.censusYear}/acs/acs5${dataset ? `/${dataset}` : ""}`);
   url.searchParams.set("get", ["NAME", ...variables].join(","));
   if (geography === "county") {
     url.searchParams.set("for", "county:*");
@@ -267,7 +298,7 @@ function parseCounty(row: CensusRow): CountyAtlasCounty | undefined {
 }
 
 function buildMetrics(row: CensusRow, context: AtlasProviderContext): CountyAtlasMetric[] {
-  const result = [...directVariables, ...supplementalDirectVariables].map(([key, variable]) =>
+  const result = [...directVariables, ...supplementalDirectVariables, ...profileDirectVariables].map(([key, variable]) =>
     createMetric(definitions[key], parseEstimate(row, variable), context),
   );
 
@@ -289,6 +320,16 @@ function buildMetrics(row: CensusRow, context: AtlasProviderContext): CountyAtla
     createMetric(
       definitions["voting-age-population"],
       sumEstimate(row, votingAgeVariables),
+      context,
+    ),
+    createMetric(
+      definitions["rent-cost-burden-rate"],
+      sumRatioEstimate(row, rentBurdenVariables, "B25070_001", 100),
+      context,
+    ),
+    createMetric(
+      definitions["uninsured-rate"],
+      sumRatioEstimate(row, uninsuredVariables, "B27001_001", 100),
       context,
     ),
   );

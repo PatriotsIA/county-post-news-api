@@ -6,18 +6,20 @@ The County Data Atlas publishes FIPS-keyed county snapshots from authoritative p
 
 The enabled adapter uses the U.S. Census Bureau American Community Survey 5-year API. It currently publishes validated county measures for:
 
-- Demographics: population, median age, and households.
+- Demographics: population, median age, households, and veteran population.
 - Economy: median household income, per-capita income, poverty, unemployment, and the Gini index.
-- Housing: median home value, median gross rent, homeownership, vacancy, occupied units, and median year built.
+- Housing: median home value, median gross rent, homeownership, vacancy, occupied units, rent cost burden, and median year built.
 - Jobs and business: resident employment, labor-force participation, and mean commute.
 - Education: high-school completion, bachelor's-degree attainment, and resident enrollment.
-- Health: disability rate among the civilian noninstitutionalized population.
+- Health: disability and uninsured rates among the civilian noninstitutionalized population.
 - Civic life and elections: voting-age population. This is not a count of eligible or registered voters and is not an election result.
-- Infrastructure and connectivity: household internet subscription and households without a vehicle.
+- Infrastructure and connectivity: household internet subscription, households without a vehicle, work-from-home, and drive-alone commute rates.
 - Environment and disasters: rolling five-year counts of FEMA county disaster designations, major-disaster designations, the latest designation date, and incident-type composition. A declaration is a federal designation—not an estimate of local loss, damage, or risk.
 - Public safety: fatal traffic crashes and traffic deaths from NHTSA FARS, attributed to crash-location county. FARS is a fatal-crash census; it is not an all-crime or all-incident measure.
+- Agriculture: ACS employment context for agriculture, forestry, fishing, hunting, and mining. It is not a farm, land, production, or sales count.
+- Government and public finance: median real-estate taxes paid by owner-occupied homes. It is a household burden indicator, not county-government revenue or expenditure.
 
-Agriculture and government finance remain unavailable until their dedicated county-level source adapters validate and publish records. This baseline does not relabel ACS estimates as farm, crime, government, or hazard data.
+Dedicated USDA Census of Agriculture and Census of Governments adapters remain planned for farm operations, land, sales, county-government revenue, expenditure, and debt. This baseline does not relabel ACS estimates as farm, crime, government, or hazard data.
 
 The adapter requests county, state, and national estimates plus 90% margins of error. Comparable county measures include official state and U.S. benchmarks for accessible charts. Ratio and summed-category margins use conservative propagation from published component margins. ACS suppression and missing-value sentinels remain suppressed with a reason; they are never converted to zero. Ratio metrics retain numerator and denominator. Every metric records source, source URL, observation date, release vintage, county-geography vintage, retrieval time, and modeled-estimate status.
 

@@ -197,7 +197,7 @@ export const atlasDomains: Record<CountyAtlasDomain, CountyAtlasDomainInfo> = {
     "People",
     "Population, age, households, race and ethnicity, migration, disability, veterans, and language.",
     ["census-acs", "census-popest"],
-    ["population", "median-age", "households"],
+    ["population", "median-age", "households", "veterans"],
   ),
   economy: domain(
     "economy",
@@ -213,7 +213,7 @@ export const atlasDomains: Record<CountyAtlasDomain, CountyAtlasDomainInfo> = {
     "Housing",
     "Home values, rent, costs, occupancy, vacancy, tenure, and housing supply.",
     ["census-acs", "hud"],
-    ["median-home-value", "median-gross-rent", "homeownership-rate", "vacancy-rate", "median-year-built"],
+    ["median-home-value", "median-gross-rent", "homeownership-rate", "vacancy-rate", "rent-cost-burden-rate", "median-year-built"],
   ),
   "jobs-business": domain(
     "jobs-business",
@@ -237,7 +237,7 @@ export const atlasDomains: Record<CountyAtlasDomain, CountyAtlasDomainInfo> = {
     "Health",
     "Health coverage, disability, chronic conditions, preventive care, and modeled outcomes.",
     ["census-acs", "cdc-places"],
-    ["disability-rate"],
+    ["disability-rate", "uninsured-rate"],
   ),
   "civic-elections": domain(
     "civic-elections",
@@ -260,8 +260,8 @@ export const atlasDomains: Record<CountyAtlasDomain, CountyAtlasDomainInfo> = {
     "Agriculture",
     "Farms",
     "Farms, land, sales, producers, livestock, crops, and disclosure-aware agricultural totals.",
-    ["usda-nass"],
-    ["farms", "land-in-farms", "market-value-products", "cattle-inventory", "average-farm-size"],
+    ["census-acs", "usda-nass"],
+    ["agriculture-mining-employment"],
   ),
   "environment-disasters": domain(
     "environment-disasters",
@@ -276,8 +276,8 @@ export const atlasDomains: Record<CountyAtlasDomain, CountyAtlasDomainInfo> = {
     "Government & Public Finance",
     "Government",
     "Government units, public employment, revenue, spending, and federal awards.",
-    ["census-govs", "usaspending"],
-    ["government-units", "public-employment", "local-revenue", "local-expenditure", "federal-awards"],
+    ["census-acs", "census-govs", "usaspending"],
+    ["median-real-estate-taxes"],
   ),
   infrastructure: domain(
     "infrastructure",
@@ -285,7 +285,7 @@ export const atlasDomains: Record<CountyAtlasDomain, CountyAtlasDomainInfo> = {
     "Infrastructure",
     "Broadband availability, bridges, transportation assets, utilities, and critical facilities.",
     ["census-acs", "fcc", "fhwa"],
-    ["internet-subscription-rate", "no-vehicle-households-rate"],
+    ["internet-subscription-rate", "no-vehicle-households-rate", "work-from-home-rate", "drive-alone-commuter-rate"],
   ),
 };
 
