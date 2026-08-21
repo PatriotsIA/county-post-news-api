@@ -121,6 +121,19 @@ describe("county weather", () => {
     );
   });
 
+  it("removes semantically identical alerts returned with different NWS identifiers", async () => {
+    vi.stubGlobal("fetch", createNwsFetch({ duplicateModerateAlert: true }));
+
+    const response = await weatherRequest();
+    const body = JSON.parse(response.body);
+
+    expect(response.statusCode).toBe(200);
+    expect(body.alerts.map((alert: { id: string }) => alert.id)).toEqual([
+      "https://api.weather.gov/alerts/severe",
+      "https://api.weather.gov/alerts/moderate",
+    ]);
+  });
+
   it("returns successful subresources with warnings when one NWS resource fails", async () => {
     vi.stubGlobal("fetch", createNwsFetch({ failHourly: true }));
 
@@ -252,6 +265,7 @@ function createNwsFetch(
     failAllResources?: boolean;
     failPoints?: boolean;
     noAlerts?: boolean;
+    duplicateModerateAlert?: boolean;
   } = {},
 ) {
   return vi.fn(async (input: string | URL | Request, init?: RequestInit) => {
@@ -274,7 +288,10 @@ function createNwsFetch(
       return jsonResponse(alertCollection([moderateAlert, severeAlert]));
     }
     if (url.pathname === "/alerts/active" && url.searchParams.get("zone") === "ARZ040") {
-      return jsonResponse(alertCollection([moderateAlert]));
+      return jsonResponse(alertCollection([
+        moderateAlert,
+        ...(options.duplicateModerateAlert ? [duplicateModerateAlert] : []),
+      ]));
     }
     if (url.pathname === "/alerts/active" && url.searchParams.get("zone") === "ARC113") {
       return jsonResponse(alertCollection([]));
@@ -386,6 +403,15 @@ const severeAlert = {
     certainty: "Observed",
     effective: "2026-08-19T18:00:00-05:00",
     expires: "2026-08-19T19:00:00-05:00",
+  },
+};
+
+const duplicateModerateAlert = {
+  ...moderateAlert,
+  id: "https://api.weather.gov/alerts/moderate-duplicate",
+  properties: {
+    ...moderateAlert.properties,
+    "@id": "https://api.weather.gov/alerts/moderate-duplicate",
   },
 };
 

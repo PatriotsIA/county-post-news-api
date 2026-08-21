@@ -280,7 +280,9 @@ async function loadAlerts(
     );
     const deduped = new Map<string, WeatherAlert>();
     for (const alert of alerts) {
-      if (!deduped.has(alert.id)) deduped.set(alert.id, alert);
+      const key = alertDeduplicationKey(alert);
+      const existing = deduped.get(key);
+      if (!existing || alertDetailScore(alert) > alertDetailScore(existing)) deduped.set(key, alert);
     }
 
     return {
@@ -522,6 +524,29 @@ function compareAlerts(left: WeatherAlert, right: WeatherAlert) {
     (severityRank.get((right.severity || "unknown").toLowerCase()) ?? 5);
   if (severity) return severity;
   return timestamp(left.effective) - timestamp(right.effective) || left.id.localeCompare(right.id);
+}
+
+function alertDeduplicationKey(alert: WeatherAlert) {
+  return [
+    normalizeAlertText(alert.event),
+    normalizeAlertText(alert.headline),
+    normalizeAlertText(alert.description),
+    timestamp(alert.effective),
+    timestamp(alert.expires),
+  ].join("|");
+}
+
+function alertDetailScore(alert: WeatherAlert) {
+  return [alert.headline, alert.description, alert.instruction, alert.link]
+    .filter(Boolean)
+    .length;
+}
+
+function normalizeAlertText(value: string | undefined) {
+  return (value || "")
+    .toLowerCase()
+    .replace(/\s+/gu, " ")
+    .trim();
 }
 
 function countyPayload(county: CountySite) {
