@@ -10,6 +10,7 @@ Current providers:
 - Bing News RSS search
 - GDELT Document API
 - Direct publisher RSS/Atom feeds from the source registry
+- County-native outlet profiles for domain-targeted searches when a reviewed publisher has no usable feed
 
 `weather` is a normal news topic in this pipeline: it searches and filters real reporting from these providers. Forecasts, observations, and alerts are not synthesized into articles. A dedicated county endpoint retrieves those separately from the official National Weather Service API using its [API documentation](https://www.weather.gov/documentation/services-web-api) and [alerts documentation](https://www.weather.gov/documentation/services-web-alerts).
 
@@ -35,7 +36,7 @@ Current volume policy:
 
 County feeds use three ordered tiers. This expands useful coverage without letting a same-name county in another state leak into a local feed.
 
-1. `county:primary` uses the requested `County` name and full state name, county-keyed direct sources, and optional county-agency queries. Primary filtering requires both the county and full state.
+1. `county:primary` uses the requested `County` name and full state name, county-keyed direct sources, a bounded local-newspaper/radio/television query, reviewed outlet domain searches, and optional county-agency queries. Primary filtering requires both the county and full state unless an item is tied to a reviewed county-native publisher; wrong-state mentions are still rejected.
 2. `county:market` runs only if primary inventory is sparse and `COUNTY_MARKET_TIER_ENABLED` is enabled. It uses county place overrides/local cities and nearby market cities, all state-qualified. Its filter requires the requested state and accepts an exact county, configured local place, or trusted source-registry publisher.
 3. `county:fallback-nearby` runs only if the market tier is still sparse. It queries the closest counties in the same state by centroid distance and requires those county names plus the requested state.
 
@@ -52,7 +53,9 @@ County place overrides address ambiguous or misleading markets. For example, Pol
 
 ## Current curated markets
 
-The source registry contains curated direct feeds for the Amarillo, Tyler/East Texas, and Denver markets. The registry is intentionally not a claim of nationwide source coverage: it is a reviewed set of trusted publishers that can be expanded incrementally.
+The source registry contains curated direct feeds for the Amarillo, Tyler/East Texas, and Denver markets. Polk County, Arkansas also has a direct My Pulse News / KENA feed and reviewed county-native profiles for My Pulse News / KENA and The Mena Star. The Mena Star profile uses domain-targeted search because a dependable current public RSS feed was not verified.
+
+Every county receives a bounded, state-qualified native-publisher search even when it has no reviewed profile. This provides nationwide discovery capability; the reviewed registry remains intentionally conservative because an unverified source must never become a locality bypass.
 
 ## Known Limitations
 
@@ -64,13 +67,13 @@ This is still a search-based aggregator, not a complete local-news index. Search
 - The story is hidden behind social posts, newsletters, PDF police reports, or station video pages.
 - A rural county’s best nearby market is not captured by the current market-city list.
 
-The most important remaining gap is source discovery. To reach “total county news coverage,” the API needs a persistent list of local source domains and feeds by county/media market, not just search queries.
+The most important remaining gap is registry depth. Automated source-focused searches now run nationwide, but direct same-day coverage still depends on adding reviewed local source domains and feeds by county/media market.
 
-## Best Next Implementation Plan
+## Registry Expansion Plan
 
-1. Add a county/source registry.
+1. Expand the county/source registry.
 
-   Store source domains and RSS feeds per state, county, and media market:
+   Continue storing reviewed source domains and RSS feeds per state, county, and media market:
 
    - newspaper sites
    - TV station sites

@@ -1,5 +1,5 @@
 import type { CountySite, FeedScope, NewsFeedItem, StateSite, Topic } from "./types.js";
-import { isTrustedMarketSource, type DirectSource } from "./source-registry.js";
+import { isTrustedCountySource, isTrustedMarketSource, type DirectSource } from "./source-registry.js";
 
 const obituaryTerms = ["obituary", "obituaries", "death notice", "funeral", "memorial service", "celebration of life", "passed away", "died"];
 const sportsTerms = ["sports", "football", "basketball", "baseball", "softball", "volleyball", "soccer", "athletics", "score"];
@@ -37,8 +37,8 @@ const stateNames = [
   "utah", "vermont", "virginia", "washington", "west virginia", "wisconsin", "wyoming",
 ];
 
-export function filterItems(items: NewsFeedItem[], topic: Topic, scope: FeedScope) {
-  return items.filter((item) => matchesCategory(item, topic) && matchesScope(item, scope));
+export function filterItems(items: NewsFeedItem[], topic: Topic, scope: FeedScope, trustedSources: DirectSource[] = []) {
+  return items.filter((item) => matchesCategory(item, topic) && matchesScope(item, scope, trustedSources));
 }
 
 export function filterCountyFallbackItems(
@@ -68,7 +68,7 @@ function matchesCategory(item: NewsFeedItem, topic: Topic) {
   return true;
 }
 
-function matchesScope(item: NewsFeedItem, scope: FeedScope) {
+function matchesScope(item: NewsFeedItem, scope: FeedScope, trustedSources: DirectSource[]) {
   if (scope.level === "national") return true;
 
   const contentHaystack = itemContent(item);
@@ -81,7 +81,7 @@ function matchesScope(item: NewsFeedItem, scope: FeedScope) {
     return includesTerm(fullHaystack, state.name.toLowerCase()) || includesTerm(fullHaystack, state.abbr.toLowerCase());
   }
 
-  return matchesCountyScope(item, state, [scope.county]);
+  return matchesCountyScope(item, state, [scope.county]) || isTrustedCountySource(item, trustedSources, scope.county);
 }
 
 function matchesCountyScope(item: NewsFeedItem, state: StateSite, counties: CountySite[]) {

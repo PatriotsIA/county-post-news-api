@@ -9,7 +9,7 @@ description: Maintains the County Post county-news API locality contract. Use wh
 
 - Plans and queries: `src/feed-builders.ts`
 - County places, FIPS, and nearby geography: `src/geo.ts`
-- Curated direct publishers: `src/source-registry.ts`
+- Curated direct publishers and county-native outlet profiles: `src/source-registry.ts`
 - Topic and locality filtering: `src/filter.ts`
 - Ordered tier orchestration and duplicate suppression: `src/news-service.ts`
 - Runtime knobs: `src/config.ts`, `.env.example`, `template.yaml`
@@ -26,7 +26,7 @@ description: Maintains the County Post county-news API locality contract. Use wh
 ## Source and place changes
 
 - Add known place corrections to `countyOverrides` in `src/geo.ts`.
-- Add only reviewed RSS/Atom publisher feeds to `src/source-registry.ts`, scoped with state, market, and county metadata.
+- Add only reviewed publisher profiles and RSS/Atom feeds to `src/source-registry.ts`, scoped with state, market, and county metadata. Profiles without a usable feed can still provide domain-targeted search.
 - Keep direct-source and market-publisher labels stable because filtering and `meta.sourcesUsed` rely on them.
 - Use bounded configuration instead of widening all-provider queries.
 

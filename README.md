@@ -133,6 +133,7 @@ Copy `.env.example` into your environment provider or shell:
 - `COUNTY_NEARBY_LIMIT`: nearest same-state counties used as the final sparse-coverage tier, default `3`.
 - `COUNTY_MARKET_TIER_ENABLED`: set `false` to skip the configured-place and trusted-market tier during a cautious rollout; default `true`.
 - `COUNTY_AGENCY_QUERY_ENABLED`: set `false` to omit state-qualified county-agency searches; default `true`.
+- `COUNTY_LOCAL_SOURCE_SEARCH_ENABLED`: set `false` to omit bounded, state-qualified searches for county-native newspapers, radio, television, and local newsrooms; default `true`.
 - `COUNTY_PRIMARY_QUERY_LIMIT`: bounded strict county query count, default `4`.
 - `COUNTY_MARKET_QUERY_LIMIT`: bounded market/place query count, default `4`.
 - `GDELT_ENABLED`: set to `false` to disable GDELT, default `true`.

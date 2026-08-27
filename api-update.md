@@ -14,7 +14,17 @@ County feeds now use an ordered, locality-safe expansion pipeline: strict reques
 - The nearby fallback is restricted to those county names plus the requested state. It does not use a broad state-wide feed.
 - `meta.sourcesUsed` identifies activated tiers with `county:primary`, `county:market`, and `county:fallback-nearby`, plus configured markets and nearby county slugs.
 - `feed.sparse_county` structured logs record primary, market, nearby, and final result counts for rollout tuning.
-- `COUNTY_MARKET_TIER_ENABLED`, `COUNTY_AGENCY_QUERY_ENABLED`, `COUNTY_PRIMARY_QUERY_LIMIT`, `COUNTY_MARKET_QUERY_LIMIT`, and `COUNTY_NEARBY_LIMIT` make the expansion reversible and bounded.
+- `COUNTY_MARKET_TIER_ENABLED`, `COUNTY_AGENCY_QUERY_ENABLED`, `COUNTY_LOCAL_SOURCE_SEARCH_ENABLED`, `COUNTY_PRIMARY_QUERY_LIMIT`, `COUNTY_MARKET_QUERY_LIMIT`, and `COUNTY_NEARBY_LIMIT` make the expansion reversible and bounded.
+
+## Local publishers and stations
+
+- Every county primary plan includes a bounded, state-qualified search for reporting from local newspapers, radio stations, television stations, and local newsrooms. This gives all counties a source-discovery path without broadening the locality filter.
+- Reviewed county-native outlet profiles and county-scoped RSS/Atom feeds are curated in `src/source-registry.ts`. Profiles add site-targeted Google News, Bing News, and GDELT searches even when an outlet has no usable public feed.
+- An approved county source may supply a local-city story that does not literally include the county name; it is accepted only when the article domain matches the reviewed outlet, or when a Google/Bing result has a reviewed publisher label, and the item does not identify another state.
+- This preserves same-name county protections while allowing local outlets to report naturally on cities, schools, and community events.
+- Polk County, Arkansas now explicitly targets The Mena Star and My Pulse News / KENA. The verified My Pulse News / KENA feed is fetched directly; The Mena Star is covered through a site-targeted search because no dependable current public RSS feed was verified.
+- The browser fallback mirrors these reviewed profiles, direct feeds, and nationwide source-focused query while retaining the same wrong-state rejection.
+- Add future stations and newspapers only after confirming their domain, county scope, recency, state coverage, and public feed when one exists.
 
 ## Duplicate handling
 
@@ -39,6 +49,7 @@ API tests cover:
 - Filling sparse feeds from state-qualified configured county places before nearby counties.
 - Rejecting wrong-state market results and accepting only configured places or trusted market publishers.
 - Keeping primary, market, and nearby results in priority order and enforcing tier query budgets.
+- Targeting reviewed Polk County outlets while keeping county-native source searches available to every county.
 - Suppressing same-title stories from different publishers.
 - Suppressing near-duplicate DVIDS image items.
 - Suppressing distinct-title records that reuse the same article image.

@@ -179,7 +179,7 @@ The SAM template ships the bounded county expansion settings. For the first prod
 - CloudWatch `feed.sparse_county` log records for primary, market, nearby, and final counts;
 - pilot responses for ambiguous names such as `/v1/feeds/counties/arkansas/polk/general` and `/v1/feeds/counties/florida/polk/general`.
 
-Keep `COUNTY_PRIMARY_QUERY_LIMIT`, `COUNTY_MARKET_QUERY_LIMIT`, and `COUNTY_NEARBY_LIMIT` at their template defaults unless measured coverage and latency justify changing them.
+Keep `COUNTY_LOCAL_SOURCE_SEARCH_ENABLED=true` and leave `COUNTY_PRIMARY_QUERY_LIMIT`, `COUNTY_MARKET_QUERY_LIMIT`, and `COUNTY_NEARBY_LIMIT` at their template defaults unless measured coverage and latency justify changing them. The local-source setting is deployed with the Lambda template and requires no separate AWS resource.
 
 ## Step 6: CloudFormation Permissions
 

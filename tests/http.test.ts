@@ -4,6 +4,7 @@ import { config } from "../src/config.js";
 import { buildCountyMarketPlan, buildFeedPlan } from "../src/feed-builders.js";
 import { filterItems, filterMarketItems } from "../src/filter.js";
 import { getCounty, getCountyPlaceTerms, getNearbyCounties } from "../src/geo.js";
+import { fetchGdeltItems } from "../src/gdelt.js";
 import { handleRequest } from "../src/http.js";
 
 const rss = `<?xml version="1.0" encoding="UTF-8"?>
@@ -208,6 +209,7 @@ const defaultMetalsProviderUrl = config.metalsProviderUrl;
 const defaultUsdaMarsApiKey = config.usdaMarsApiKey;
 const defaultFredApiKey = config.fredApiKey;
 const defaultCountyMarketTierEnabled = config.countyMarketTierEnabled;
+const defaultCountyLocalSourceSearchEnabled = config.countyLocalSourceSearchEnabled;
 const defaultCountyPrimaryQueryLimit = config.countyPrimaryQueryLimit;
 const defaultCountyMarketQueryLimit = config.countyMarketQueryLimit;
 const defaultCountyNearbyLimit = config.countyNearbyLimit;
@@ -220,6 +222,7 @@ describe("handleRequest", () => {
     config.usdaMarsApiKey = defaultUsdaMarsApiKey;
     config.fredApiKey = defaultFredApiKey;
     config.countyMarketTierEnabled = defaultCountyMarketTierEnabled;
+    config.countyLocalSourceSearchEnabled = defaultCountyLocalSourceSearchEnabled;
     config.countyPrimaryQueryLimit = defaultCountyPrimaryQueryLimit;
     config.countyMarketQueryLimit = defaultCountyMarketQueryLimit;
     config.countyNearbyLimit = defaultCountyNearbyLimit;
@@ -584,7 +587,12 @@ describe("handleRequest", () => {
     clearCache();
     vi.stubGlobal(
       "fetch",
-      vi.fn(async () => new Response(relatedStoryRss, { status: 200, headers: { "content-type": "application/rss+xml" } })),
+      vi.fn(async (url: URL | string) => new Response(
+        String(url).includes("mypulsenews.com/feed")
+          ? `<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"><channel><title>Empty</title></channel></rss>`
+          : relatedStoryRss,
+        { status: 200, headers: { "content-type": "application/rss+xml" } },
+      )),
     );
 
     const response = await handleRequest({
@@ -698,6 +706,83 @@ describe("handleRequest", () => {
     expect(body.meta.sourcesUsed).toEqual(expect.arrayContaining(["county:primary", "county:market", "market:Mena"]));
   });
 
+  it("includes approved county-local publisher stories without requiring the county name in every headline", async () => {
+    clearCache();
+    const localRss = `<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"><channel><title>My Pulse News</title><item>
+  <guid>mena-local</guid><title>Mena leaders open a new community center</title>
+  <link>https://mypulsenews.com/mena-community</link><pubDate>Mon, 29 Jun 2026 14:00:00 GMT</pubDate>
+  <description>Local community news from Mena, Arkansas.</description>
+</item><item>
+  <guid>wrong-state</guid><title>Mena Oklahoma opens a community center</title>
+  <link>https://mypulsenews.com/other-state</link><pubDate>Mon, 29 Jun 2026 14:00:00 GMT</pubDate>
+  <description>Oklahoma local news.</description>
+</item></channel></rss>`;
+    const emptyRss = `<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"><channel><title>Empty</title></channel></rss>`;
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async (url: URL | string) => {
+        const value = String(url);
+        if (value.includes("api.gdeltproject.org")) {
+          return new Response(JSON.stringify({ articles: [] }), { status: 200, headers: { "content-type": "application/json" } });
+        }
+        return new Response(value.includes("mypulsenews.com/feed") ? localRss : emptyRss, {
+          status: 200,
+          headers: { "content-type": "application/rss+xml" },
+        });
+      }),
+    );
+
+    const response = await handleRequest({
+      method: "GET",
+      path: "/v1/feeds/counties/arkansas/polk/general",
+      query: new URLSearchParams("limit=10"),
+    });
+    const body = JSON.parse(response.body);
+
+    expect(response.statusCode).toBe(200);
+    expect(body.items.map((item: { title: string }) => item.title)).toEqual(["Mena leaders open a new community center"]);
+    expect(body.meta.sourcesUsed).toContain("direct:My Pulse News / KENA");
+  });
+
+  it("trusts Mena Star search results only for Arkansas Polk County", () => {
+    const polk = getCounty("arkansas", "polk");
+    expect(polk).toBeDefined();
+    const scope = { level: "county" as const, state: polk!.state, county: polk! };
+    const plan = buildFeedPlan(scope, "general");
+
+    const items = filterItems(
+      [
+        {
+          id: "mena-star",
+          title: "School board approves the new academic calendar",
+          link: "https://news.google.com/rss/articles/mena-star",
+          source: "The Mena Star",
+          publishedAt: new Date().toISOString(),
+        },
+        {
+          id: "wrong-state",
+          title: "Oklahoma school board approves the new academic calendar",
+          link: "https://news.google.com/rss/articles/wrong-state",
+          source: "The Mena Star",
+          publishedAt: new Date().toISOString(),
+        },
+        {
+          id: "unregistered",
+          title: "School board approves the new academic calendar",
+          link: "https://news.google.com/rss/articles/unregistered",
+          source: "Unregistered Publisher",
+          publishedAt: new Date().toISOString(),
+        },
+      ],
+      "general",
+      scope,
+      plan.directSources,
+    );
+
+    expect(items.map((item) => item.id)).toEqual(["mena-star"]);
+  });
+
   it("accepts state-qualified local places and trusted market publishers only", () => {
     const wood = getCounty("texas", "wood");
     expect(wood).toBeDefined();
@@ -773,6 +858,47 @@ describe("handleRequest", () => {
     expect(plan.articleQueries.length).toBeLessThanOrEqual(6);
     expect(plan.articleQueries.every((query) => query.includes("Potter County") && query.includes("Texas"))).toBe(true);
     expect(plan.directSources.some((source) => source.counties?.includes("texas/potter"))).toBe(true);
+  });
+
+  it("builds county-native publisher searches nationwide and targets reviewed Polk County outlets", () => {
+    const polk = getCounty("arkansas", "polk");
+    const harris = getCounty("texas", "harris");
+    expect(polk).toBeDefined();
+    expect(harris).toBeDefined();
+
+    const polkPlan = buildFeedPlan({ level: "county", state: polk!.state, county: polk! }, "general");
+    const harrisPlan = buildFeedPlan({ level: "county", state: harris!.state, county: harris! }, "general");
+
+    expect(polkPlan.sourcesUsed).toEqual(
+      expect.arrayContaining([
+        "county:local-source-search",
+        "source-search:The Mena Star",
+        "source-search:My Pulse News / KENA",
+        "direct:My Pulse News / KENA",
+      ]),
+    );
+    expect(polkPlan.articleQueries.some((query) => query.includes("site:menastar.com"))).toBe(true);
+    expect(polkPlan.articleQueries.some((query) => query.includes("site:mypulsenews.com"))).toBe(true);
+    expect(harrisPlan.sourcesUsed).toContain("county:local-source-search");
+    expect(harrisPlan.articleQueries.some((query) => query.includes('"local newspaper"'))).toBe(true);
+    expect(harrisPlan.articleQueries.some((query) => query.includes("site:menastar.com"))).toBe(false);
+  });
+
+  it("converts reviewed site searches to GDELT domain filters", async () => {
+    const fetchMock = vi.fn(async (_url: URL | string) =>
+      new Response(JSON.stringify({ articles: [] }), {
+        status: 200,
+        headers: { "content-type": "application/json" },
+      }),
+    );
+    vi.stubGlobal("fetch", fetchMock);
+
+    await fetchGdeltItems('(site:menastar.com OR site:mypulsenews.com) "Arkansas"');
+
+    const requestedUrl = decodeURIComponent(String(fetchMock.mock.calls[0]?.[0]));
+    expect(requestedUrl).toContain("domain:menastar.com");
+    expect(requestedUrl).toContain("domain:mypulsenews.com");
+    expect(requestedUrl).not.toContain("site:menastar.com");
   });
 
   it("rejects unknown counties instead of creating guessed county feeds", async () => {

@@ -1,6 +1,12 @@
 import { config } from "./config.js";
 import { getCountyPlaceTerms, getStateMarketCities } from "./geo.js";
-import { getDirectSources, getMarketSourcesForCounty, type DirectSource } from "./source-registry.js";
+import {
+  getCountyNativeSources,
+  getDirectSources,
+  getMarketSourcesForCounty,
+  type CountyNativeSource,
+  type DirectSource,
+} from "./source-registry.js";
 import type { CountySite, FeedScope, StateSite, Topic } from "./types.js";
 
 export type FeedPlan = {
@@ -113,14 +119,23 @@ function buildStatePlan(state: StateSite, topic: Topic): FeedPlan {
 
 export function buildCountyPrimaryPlan(county: CountySite, topic: Topic): FeedPlan {
   const countyTopic = countyTopicQueries(topic).join(" OR ");
-  const queries = buildCountyPrimaryQueries(county, countyTopic).slice(0, config.countyPrimaryQueryLimit);
+  const nativeSources = getCountyNativeSources(county, topic);
+  const queries = buildCountyPrimaryQueries(county, countyTopic, nativeSources).slice(0, config.countyPrimaryQueryLimit);
   const directSources = getDirectSources({ level: "county", state: county.state, county }, topic, []);
 
   return {
     rssUrls: urlsForQueries(queries),
     directSources,
     articleQueries: queriesForArticleSearch(queries),
-    sourcesUsed: ["county:primary", "provider:google-news-rss", "provider:bing-news-rss", "provider:gdelt", ...directSources.map((source) => `direct:${source.name}`)],
+    sourcesUsed: [
+      "county:primary",
+      ...(config.countyLocalSourceSearchEnabled ? ["county:local-source-search"] : []),
+      ...(config.countyLocalSourceSearchEnabled ? nativeSources.map((source) => `source-search:${source.name}`) : []),
+      "provider:google-news-rss",
+      "provider:bing-news-rss",
+      "provider:gdelt",
+      ...directSources.map((source) => `direct:${source.name}`),
+    ],
   };
 }
 
@@ -165,15 +180,37 @@ export function buildCountyFallbackPlan(county: CountySite, nearbyCounties: Coun
   };
 }
 
-function buildCountyPrimaryQueries(county: CountySite, countyTopic: string) {
+function buildCountyPrimaryQueries(county: CountySite, countyTopic: string, nativeSources: CountyNativeSource[]) {
   const state = county.state;
   const agencyQuery = `"${county.displayName}" "${state.name}" (sheriff OR police OR courthouse OR "school district" OR "city council" OR commissioners)`;
+  const nativeSourceQueries = config.countyLocalSourceSearchEnabled
+    ? [
+        ...buildReviewedNativeSourceQueries(county, countyTopic, nativeSources),
+        `("${county.displayName}" "${state.name}") (${countyTopic}) ("local newspaper" OR "local radio" OR "local television" OR "local newsroom")`,
+      ]
+    : [];
   return [
     `("${county.displayName}" "${state.name}") (${countyTopic})`,
+    ...nativeSourceQueries,
     `("${county.displayName}" "${state.name}") ("breaking news" OR "local news" OR "community" OR "public safety" OR "business")`,
-    `("${county.displayName}" "${state.name}")`,
     ...(config.countyAgencyQueryEnabled ? [agencyQuery] : []),
+    `("${county.displayName}" "${state.name}")`,
   ];
+}
+
+function buildReviewedNativeSourceQueries(county: CountySite, countyTopic: string, nativeSources: CountyNativeSource[]) {
+  if (!nativeSources.length) return [];
+
+  const siteTerms = nativeSources
+    .map((source) => hostname(source.websiteUrl))
+    .filter(Boolean)
+    .map((domain) => `site:${domain}`);
+  if (!siteTerms.length) return [];
+
+  const places = [county.displayName, ...getCountyPlaceTerms(county, config.countyMarketLimit)]
+    .map((place) => `"${place}"`)
+    .join(" OR ");
+  return [`(${siteTerms.join(" OR ")}) "${county.state.name}" (${places}) (${countyTopic})`];
 }
 
 function countyTopicQueries(topic: Topic) {
@@ -235,4 +272,12 @@ function bingNewsRssUrl(query: string, freshness: string) {
 
 function queriesForArticleSearch(queries: string[]) {
   return Array.from(new Set(queries)).slice(0, config.maxArticleQueriesPerFeed);
+}
+
+function hostname(value: string) {
+  try {
+    return new URL(value).hostname.toLowerCase().replace(/^www\./, "");
+  } catch {
+    return "";
+  }
 }

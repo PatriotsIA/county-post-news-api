@@ -19,7 +19,7 @@ export async function fetchGdeltItems(query: string) {
   const timeout = setTimeout(() => controller.abort(), config.requestTimeoutMs);
   try {
     const url = new URL(config.gdeltDocApi);
-    url.searchParams.set("query", `${query} sourcecountry:US`);
+    url.searchParams.set("query", `${toGdeltQuery(query)} sourcecountry:US`);
     url.searchParams.set("mode", "ArtList");
     url.searchParams.set("format", "json");
     url.searchParams.set("sort", "datedesc");
@@ -47,6 +47,10 @@ export async function fetchGdeltItems(query: string) {
   } finally {
     clearTimeout(timeout);
   }
+}
+
+function toGdeltQuery(query: string) {
+  return query.replace(/\bsite:([a-z0-9.-]+)/gi, "domain:$1");
 }
 
 function parseGdeltDate(value?: string) {

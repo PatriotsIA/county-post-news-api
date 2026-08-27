@@ -15,7 +15,9 @@ export async function getFeed(scope: FeedScope, topic: Topic, limit: number): Pr
     const plan = buildFeedPlan(scope, topic);
     const items = await loadPlanItems(plan);
     const filtered = dedupeItems(
-      await enrichArticleImages(newest(dedupeItems(filterItems(recentItems(items), topic, scope)), config.maxLimit)),
+      await enrichArticleImages(
+        newest(dedupeItems(filterItems(recentItems(items), topic, scope, plan.directSources)), config.maxLimit),
+      ),
     );
     const fetchedAt = new Date().toISOString();
 

@@ -15,6 +15,7 @@ export const config = {
   countyNearbyLimit: Number(process.env.COUNTY_NEARBY_LIMIT || 3),
   countyMarketTierEnabled: process.env.COUNTY_MARKET_TIER_ENABLED !== "false",
   countyAgencyQueryEnabled: process.env.COUNTY_AGENCY_QUERY_ENABLED !== "false",
+  countyLocalSourceSearchEnabled: process.env.COUNTY_LOCAL_SOURCE_SEARCH_ENABLED !== "false",
   countyPrimaryQueryLimit: Number(process.env.COUNTY_PRIMARY_QUERY_LIMIT || 4),
   countyMarketQueryLimit: Number(process.env.COUNTY_MARKET_QUERY_LIMIT || 4),
   gdeltEnabled: process.env.GDELT_ENABLED !== "false",

@@ -11,6 +11,38 @@ export type DirectSource = {
   trustedForMarketTier?: boolean;
 };
 
+export type CountyNativeSource = {
+  name: string;
+  websiteUrl: string;
+  feedUrl?: string;
+  outletTypes: Array<"newspaper" | "radio" | "television" | "digital">;
+  aliases?: string[];
+  topics?: Topic[];
+  counties: string[];
+};
+
+/**
+ * Reviewed county-native outlets. A profile can be used for targeted search
+ * even when the publisher does not expose a usable RSS or Atom feed.
+ */
+const countyNativeSources: CountyNativeSource[] = [
+  {
+    name: "The Mena Star",
+    websiteUrl: "https://www.menastar.com/",
+    outletTypes: ["newspaper"],
+    aliases: ["Mena Star", "MenaStar.com"],
+    counties: ["arkansas/polk"],
+  },
+  {
+    name: "My Pulse News / KENA",
+    websiteUrl: "https://mypulsenews.com/",
+    feedUrl: "https://mypulsenews.com/feed/",
+    outletTypes: ["digital", "radio"],
+    aliases: ["My Pulse News", "MyPulseNews.com", "KENA", "KENA Radio", "KENA 104.1 FM"],
+    counties: ["arkansas/polk"],
+  },
+];
+
 const directSources: DirectSource[] = [
   {
     name: "NPR News",
@@ -160,12 +192,21 @@ const directSources: DirectSource[] = [
 ];
 
 export function getDirectSources(scope: FeedScope, topic: Topic, marketCities: string[] = []) {
-  return directSources.filter((source) => sourceMatchesTopic(source, topic) && sourceMatchesScope(source, scope, marketCities));
+  return allDirectSources().filter(
+    (source) => sourceMatchesTopic(source, topic) && sourceMatchesScope(source, scope, marketCities),
+  );
+}
+
+export function getCountyNativeSources(county: CountySite, topic?: Topic) {
+  const countyKey = countySourceKey(county);
+  return countyNativeSources.filter(
+    (source) => source.counties.includes(countyKey) && (!topic || !source.topics?.length || source.topics.includes(topic)),
+  );
 }
 
 export function getMarketSourcesForCounty(county: CountySite, topic: Topic, marketCities: string[]) {
   const markets = marketCities.map((city) => city.toLowerCase());
-  return directSources.filter(
+  return allDirectSources().filter(
     (source) =>
       sourceMatchesTopic(source, topic) &&
       source.trustedForMarketTier !== false &&
@@ -181,8 +222,46 @@ export function isTrustedMarketSource(item: NewsFeedItem, sources: DirectSource[
   return Boolean(itemDomain && sources.some((source) => hostname(source.url) === itemDomain));
 }
 
+export function isTrustedCountySource(item: NewsFeedItem, sources: DirectSource[], county: CountySite) {
+  const countyKey = countySourceKey(county);
+  const countySources = sources.filter((source) => source.counties?.includes(countyKey));
+  const itemDomain = hostname(item.link);
+  if (itemDomain && countySources.some((source) => hostname(source.url) === itemDomain)) return true;
+
+  const nativeSources = getCountyNativeSources(county);
+  if (itemDomain && nativeSources.some((source) => hostname(source.websiteUrl) === itemDomain)) return true;
+
+  if (!isSearchAggregatorDomain(itemDomain)) return false;
+  const sourceName = normalizePublisherName(item.source);
+  return Boolean(
+    sourceName &&
+      nativeSources.some((source) =>
+        [source.name, ...(source.aliases || [])].some((alias) => normalizePublisherName(alias) === sourceName),
+      ),
+  );
+}
+
 function sourceMatchesTopic(source: DirectSource, topic: Topic) {
   return !source.topics?.length || source.topics.includes(topic);
+}
+
+function allDirectSources(): DirectSource[] {
+  return [
+    ...directSources,
+    ...countyNativeSources.flatMap((source) =>
+      source.feedUrl
+        ? [
+            {
+              name: source.name,
+              url: source.feedUrl,
+              mediaType: "article" as const,
+              topics: source.topics,
+              counties: source.counties,
+            },
+          ]
+        : [],
+    ),
+  ];
 }
 
 function sourceMatchesScope(source: DirectSource, scope: FeedScope, marketCities: string[]) {
@@ -209,6 +288,18 @@ function hostname(value: string) {
   } catch {
     return "";
   }
+}
+
+function isSearchAggregatorDomain(domain: string) {
+  return domain === "news.google.com" || domain === "bing.com" || domain.endsWith(".bing.com");
+}
+
+function normalizePublisherName(value?: string) {
+  return value
+    ?.trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
 }
 
 function countySourceKey(county: CountySite) {
