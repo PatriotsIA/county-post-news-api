@@ -21,13 +21,15 @@ Current recency policy:
 - Google News queries use `when:1d`, `when:7d`, and the configured `ARTICLE_MAX_AGE_DAYS` window.
 - Bing News queries use day and week freshness filters.
 - GDELT queries use a six-month timespan and date-desc sorting.
-- Direct publisher feeds are parsed through the same six-month cutoff and two-week freshness sort.
+- Direct publisher feeds are parsed through the same six-month cutoff and two-week freshness sort unless a reviewed, bounded archive exception is explicitly configured for that endpoint.
 
 Current volume policy:
 
 - Default per-section limit is `48`.
 - Hard cap is `200`.
 - A county section only expands when primary results are below `COUNTY_FALLBACK_MIN_ITEMS`, default `12`.
+- County general news also expands when one publisher exceeds `COUNTY_SINGLE_PUBLISHER_MAX` and fewer than `COUNTY_OTHER_SOURCES_TARGET` alternatives are available.
+- Balanced county general-news responses target at most 25 stories from the dominant publisher and 25 from all other publishers combined.
 - County tiers are bounded by `COUNTY_PRIMARY_QUERY_LIMIT`, `COUNTY_MARKET_QUERY_LIMIT`, `COUNTY_NEARBY_LIMIT`, and the existing RSS/article-query caps.
 - Cache TTL is `30` seconds.
 - Upstream provider calls are concurrency-limited by `UPSTREAM_CONCURRENCY`, default `12`.
@@ -37,12 +39,14 @@ Current volume policy:
 County feeds use three ordered tiers. This expands useful coverage without letting a same-name county in another state leak into a local feed.
 
 1. `county:primary` uses the requested `County` name and full state name, county-keyed direct sources, a bounded local-newspaper/radio/television query, reviewed outlet domain searches, and optional county-agency queries. Primary filtering requires both the county and full state unless an item is tied to a reviewed county-native publisher; wrong-state mentions are still rejected.
-2. `county:market` runs only if primary inventory is sparse and `COUNTY_MARKET_TIER_ENABLED` is enabled. It uses county place overrides/local cities and nearby market cities, all state-qualified. Its filter requires the requested state and accepts an exact county, configured local place, or trusted source-registry publisher.
-3. `county:fallback-nearby` runs only if the market tier is still sparse. It queries the closest counties in the same state by centroid distance and requires those county names plus the requested state.
+2. `county:market` runs if primary inventory is sparse or publisher-diversity expansion is needed and `COUNTY_MARKET_TIER_ENABLED` is enabled. It uses county place overrides/local cities and nearby market cities, all state-qualified. Its filter requires the requested state and accepts an exact county, configured local place, or trusted source-registry publisher.
+3. `county:fallback-nearby` runs if the market tier remains sparse or lacks sufficient publisher diversity. It queries the closest counties in the same state by centroid distance and requires those county names plus the requested state.
 
 The selection order is preserved after URL, image, near-title, DVIDS-caption, and related-event deduplication. `meta.sourcesUsed` returns tier and source markers. When expansion occurs, a `feed.sparse_county` structured log records each tier's contribution for tuning.
 
 County place overrides address ambiguous or misleading markets. For example, Polk County, Arkansas starts with Mena-area terms while Polk County, Florida starts with Lakeland/Winter Haven/Bartow-area terms. The system never emits a bare same-name county query.
+
+The reviewed nationwide source-registry expansion plan is in `docs/nationwide-local-source-discovery-plan.md`.
 
 ## Safe rollout
 
@@ -53,7 +57,7 @@ County place overrides address ambiguous or misleading markets. For example, Pol
 
 ## Current curated markets
 
-The source registry contains curated direct feeds for the Amarillo, Tyler/East Texas, and Denver markets. Polk County, Arkansas also has a direct My Pulse News / KENA feed and reviewed county-native profiles for My Pulse News / KENA and The Mena Star. The Mena Star profile uses domain-targeted search because a dependable current public RSS feed was not verified.
+The source registry contains curated direct feeds for the Amarillo, Tyler/East Texas, and Denver markets. Polk County, Arkansas also has paginated My Pulse News / KENA main feeds, dedicated local-news and sports category feeds, and reviewed county-native profiles for My Pulse News / KENA and The Mena Star. The Mena Star profile uses domain-targeted search because a dependable current public RSS feed was not verified. My Pulse's sports category is inactive after June 2024, so its reviewed sports feed alone may contribute up to eight clearly dated entries through a bounded three-year archive window; other feeds retain the normal recency policy.
 
 Every county receives a bounded, state-qualified native-publisher search even when it has no reviewed profile. This provides nationwide discovery capability; the reviewed registry remains intentionally conservative because an unverified source must never become a locality bypass.
 

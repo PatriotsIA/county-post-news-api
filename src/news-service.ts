@@ -5,7 +5,7 @@ import { buildCountyFallbackPlan, buildCountyMarketPlan, buildFeedPlan, topics }
 import { filterCountyFallbackItems, filterItems, filterMarketItems } from "./filter.js";
 import { fetchGdeltItems } from "./gdelt.js";
 import { getCountyPlaceTerms, getNearbyCounties } from "./geo.js";
-import { fetchRssItems } from "./rss.js";
+import { fetchRssItems, getItemMaxAgeDays } from "./rss.js";
 import type { FeedResponse, FeedScope, NewsFeedItem, PageResponse, Topic } from "./types.js";
 
 export async function getFeed(scope: FeedScope, topic: Topic, limit: number): Promise<FeedResponse> {
@@ -34,24 +34,41 @@ export async function getFeed(scope: FeedScope, topic: Topic, limit: number): Pr
     };
     return withCountyCoverage(primaryFeed, scope, topic, config.maxLimit);
   });
-  const sliced = feed.items.slice(0, cappedLimit);
+  const sliced =
+    scope.level === "county" && topic === "general"
+      ? balanceCountyPublisherMix(feed.items, cappedLimit)
+      : feed.items.slice(0, cappedLimit);
+  const publisherBalanceApplied =
+    scope.level === "county" &&
+    topic === "general" &&
+    config.countyPublisherBalanceEnabled &&
+    publisherConcentration(feed.items).dominantCount > publisherLimit();
   return {
     ...feed,
     items: sliced,
     meta: {
       ...feed.meta,
       count: sliced.length,
+      sourcesUsed: publisherBalanceApplied
+        ? Array.from(new Set([...feed.meta.sourcesUsed, "county:publisher-balanced"]))
+        : feed.meta.sourcesUsed,
     },
   };
 }
 
 async function withCountyCoverage(feed: FeedResponse, scope: FeedScope, topic: Topic, limit: number) {
-  if (scope.level !== "county" || feed.items.length >= Math.min(limit, config.countyFallbackMinItems)) {
+  if (scope.level !== "county") {
     return feed;
   }
 
+  const sparsePrimary = feed.items.length < Math.min(limit, config.countyFallbackMinItems);
+  const diversityPrimary = needsPublisherDiversity(feed.items, topic);
+  if (!sparsePrimary && !diversityPrimary) return feed;
+
   let items = feed.items;
-  let sourcesUsed = feed.meta.sourcesUsed;
+  let sourcesUsed = diversityPrimary
+    ? Array.from(new Set([...feed.meta.sourcesUsed, "county:publisher-diversity"]))
+    : feed.meta.sourcesUsed;
   let marketCount = 0;
 
   if (config.countyMarketTierEnabled) {
@@ -78,7 +95,7 @@ async function withCountyCoverage(feed: FeedResponse, scope: FeedScope, topic: T
   }
 
   let nearbyCount = 0;
-  if (items.length < Math.min(limit, config.countyFallbackMinItems)) {
+  if (needsCountyExpansion(items, topic, limit)) {
     const nearbyCounties = getNearbyCounties(scope.county, config.countyNearbyLimit);
     if (nearbyCounties.length) {
       const fallbackPlan = buildCountyFallbackPlan(scope.county, nearbyCounties, topic);
@@ -93,12 +110,14 @@ async function withCountyCoverage(feed: FeedResponse, scope: FeedScope, topic: T
     }
   }
 
-  if (marketCount || nearbyCount) {
+  if (marketCount || nearbyCount || diversityPrimary) {
     console.info(
       JSON.stringify({
         event: "feed.sparse_county",
         scope: `${scope.state.slug}/${scope.county.slug}`,
         topic,
+        sparsePrimary,
+        diversityPrimary,
         primaryCount: feed.items.length,
         marketCount,
         nearbyCount,
@@ -118,10 +137,97 @@ async function withCountyCoverage(feed: FeedResponse, scope: FeedScope, topic: T
   };
 }
 
+function needsCountyExpansion(items: NewsFeedItem[], topic: Topic, limit: number) {
+  return (
+    items.length < Math.min(limit, config.countyFallbackMinItems) ||
+    needsPublisherDiversity(items, topic)
+  );
+}
+
+function needsPublisherDiversity(items: NewsFeedItem[], topic: Topic) {
+  if (topic !== "general" || !config.countyPublisherBalanceEnabled) return false;
+  const { dominantCount, otherCount } = publisherConcentration(items);
+  return (
+    dominantCount > publisherLimit() &&
+    otherCount < otherSourcesTarget()
+  );
+}
+
+export function balanceCountyPublisherMix(items: NewsFeedItem[], maxItems: number) {
+  const cappedLimit = Math.max(0, Math.floor(maxItems));
+  if (!config.countyPublisherBalanceEnabled || !cappedLimit) return items.slice(0, cappedLimit);
+
+  const groups = publisherGroups(items);
+  const dominant = [...groups.entries()].sort((left, right) => right[1].length - left[1].length)[0];
+  if (!dominant || dominant[1].length <= publisherLimit()) return items.slice(0, cappedLimit);
+
+  const [dominantKey, dominantItems] = dominant;
+  const otherItems = items.filter((item) => itemPublisherKey(item) !== dominantKey);
+  const desiredOtherCount = Math.min(
+    otherSourcesTarget(),
+    otherItems.length,
+    Math.floor(cappedLimit / 2),
+  );
+  const desiredDominantCount = Math.min(
+    publisherLimit(),
+    dominantItems.length,
+    cappedLimit - desiredOtherCount,
+  );
+  const selected = new Set([
+    ...dominantItems.slice(0, desiredDominantCount),
+    ...otherItems.slice(0, desiredOtherCount),
+  ]);
+  return items.filter((item) => selected.has(item)).slice(0, cappedLimit);
+}
+
+function publisherConcentration(items: NewsFeedItem[]) {
+  const counts = [...publisherGroups(items).values()].map((group) => group.length);
+  const dominantCount = counts.length ? Math.max(...counts) : 0;
+  return { dominantCount, otherCount: Math.max(0, items.length - dominantCount) };
+}
+
+function publisherGroups(items: NewsFeedItem[]) {
+  const groups = new Map<string, NewsFeedItem[]>();
+  for (const item of items) {
+    const key = itemPublisherKey(item) || `unknown:${normalizeDedupeKey(item.link)}`;
+    const group = groups.get(key) || [];
+    group.push(item);
+    groups.set(key, group);
+  }
+  return groups;
+}
+
+function itemPublisherKey(item: NewsFeedItem) {
+  try {
+    const domain = new URL(normalizeDedupeKey(item.link)).hostname.toLowerCase().replace(/^www\./, "");
+    if (domain && domain !== "news.google.com" && domain !== "bing.com" && !domain.endsWith(".bing.com")) {
+      return domain;
+    }
+  } catch {
+    // Fall back to the normalized publisher label.
+  }
+  return publisherKey(item.source);
+}
+
+function publisherLimit() {
+  return Math.max(1, Math.floor(config.countySinglePublisherMax));
+}
+
+function otherSourcesTarget() {
+  return Math.max(1, Math.floor(config.countyOtherSourcesTarget));
+}
+
 async function loadPlanItems(plan: ReturnType<typeof buildFeedPlan>) {
   const [rssResults, directResults, gdeltResults] = await Promise.all([
     settleLimited(plan.rssUrls, (url) => fetchRssItems(url)),
-    settleLimited(plan.directSources, (source) => fetchRssItems(source.url, { source: source.name, mediaType: source.mediaType })),
+    settleLimited(plan.directSources, async (source) => {
+      const items = await fetchRssItems(source.url, {
+        source: source.itemSource || source.name,
+        mediaType: source.mediaType,
+        maxAgeDays: source.maxAgeDays,
+      });
+      return source.maxItems ? items.slice(0, source.maxItems) : items;
+    }),
     settleLimited(plan.articleQueries, (query) => fetchGdeltItems(query)),
   ]);
   return [...settledItems(rssResults), ...settledItems(directResults), ...settledItems(gdeltResults)];
@@ -261,10 +367,12 @@ function newest(items: NewsFeedItem[], maxItems: number) {
 }
 
 function recentItems(items: NewsFeedItem[]) {
-  const cutoff = Date.now() - config.articleMaxAgeDays * 24 * 60 * 60 * 1000;
+  const now = Date.now();
   return items.filter((item) => {
     const publishedAt = timestamp(item.publishedAt);
-    return publishedAt !== undefined && publishedAt >= cutoff && publishedAt <= Date.now() + 24 * 60 * 60 * 1000;
+    const maxAgeDays = getItemMaxAgeDays(item) || config.articleMaxAgeDays;
+    const cutoff = now - maxAgeDays * 24 * 60 * 60 * 1000;
+    return publishedAt !== undefined && publishedAt >= cutoff && publishedAt <= now + 24 * 60 * 60 * 1000;
   });
 }
 
@@ -306,6 +414,7 @@ function normalizeTitle(value: string, source?: string) {
 
 function isNearDuplicate(item: NewsFeedItem, title: string, existingItem: NewsFeedItem, existingTitle: string) {
   if (!title || !existingTitle) return false;
+  if (isDistinctRecurringEdition(item, title, existingItem, existingTitle)) return false;
   if (title === existingTitle || title.includes(existingTitle) || existingTitle.includes(title)) return true;
 
   const titleSimilarity = tokenSimilarity(title, existingTitle);
@@ -340,6 +449,29 @@ function stemToken(token: string) {
 }
 
 const genericStoryTokens = new Set(["county", "local", "news", "official", "officials", "report", "update", "today"]);
+const recurringSeriesTokens = new Set(["report", "reports", "log", "logs", "blotter", "briefing", "roundup"]);
+
+function isDistinctRecurringEdition(
+  item: NewsFeedItem,
+  title: string,
+  existingItem: NewsFeedItem,
+  existingTitle: string,
+) {
+  if (!samePublisher(item, existingItem)) return false;
+  const publishedAt = timestamp(item.publishedAt);
+  const existingPublishedAt = timestamp(existingItem.publishedAt);
+  if (publishedAt === undefined || existingPublishedAt === undefined) return false;
+  if (Math.abs(publishedAt - existingPublishedAt) < 48 * 60 * 60 * 1000) return false;
+
+  const titleTokens = title.split(" ");
+  const existingTitleTokens = existingTitle.split(" ");
+  return (
+    title === existingTitle ||
+    [...recurringSeriesTokens].some(
+      (token) => titleTokens.includes(token) && existingTitleTokens.includes(token),
+    )
+  );
+}
 
 function samePublisher(left: NewsFeedItem, right: NewsFeedItem) {
   const leftPublisher = publisherKey(left.source);
@@ -348,11 +480,13 @@ function samePublisher(left: NewsFeedItem, right: NewsFeedItem) {
 }
 
 function publisherKey(value?: string) {
-  return (value || "")
+  const normalized = (value || "")
     .toLowerCase()
     .replace(/\b(the|north|south|east|west|northeast|northwest|southeast|southwest)\b/g, "")
     .replace(/[^a-z0-9]+/g, " ")
     .trim();
+  if (normalized.includes("my pulse news")) return "mypulsenews.com";
+  return normalized;
 }
 
 function isDvidsItem(item: NewsFeedItem) {
@@ -363,6 +497,9 @@ function normalizeImageKey(value?: string) {
   if (!value) return "";
   try {
     const url = new URL(value);
+    if (/(logo|masthead|favicon|placeholder|default[-_]?image|site[-_]?icon)/.test(url.pathname.toLowerCase())) {
+      return "";
+    }
     url.search = "";
     url.hash = "";
     return url.toString();

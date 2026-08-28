@@ -5,7 +5,10 @@ import type { NewsFeedItem } from "./types.js";
 type RssOptions = {
   source?: string;
   mediaType?: NewsFeedItem["mediaType"];
+  maxAgeDays?: number;
 };
+
+const maxAgeDaysKey = Symbol("maxAgeDays");
 
 const parser = new XMLParser({
   ignoreAttributes: false,
@@ -48,7 +51,9 @@ function parseRss(xml: string, options: RssOptions): NewsFeedItem[] {
         publishedAt: textValue(item.pubDate),
         description: decodeEntities(stripHtml(description)).slice(0, 240),
         imageUrl: imageFromItem(item, description),
+        categories: categoryValues(item.category),
         mediaType: options.mediaType,
+        [maxAgeDaysKey]: options.maxAgeDays,
       };
     });
   }
@@ -66,7 +71,9 @@ function parseRss(xml: string, options: RssOptions): NewsFeedItem[] {
       publishedAt: textValue(entry.published) || textValue(entry.updated),
       description: decodeEntities(stripHtml(description)).slice(0, 240),
       imageUrl: "",
+      categories: categoryValues(entry.category),
       mediaType: options.mediaType,
+      [maxAgeDaysKey]: options.maxAgeDays,
     };
   });
 }
@@ -78,6 +85,7 @@ type RssItem = {
   source?: unknown;
   pubDate?: unknown;
   description?: unknown;
+  category?: unknown;
   enclosure?: { "@_url"?: string; "@_type"?: string };
 };
 
@@ -91,6 +99,7 @@ type AtomEntry = {
   updated?: unknown;
   summary?: unknown;
   content?: unknown;
+  category?: unknown;
 };
 
 function asArray(value: unknown) {
@@ -110,6 +119,21 @@ function textValue(value: unknown): string {
   if (typeof value === "string" || typeof value === "number") return String(value).trim();
   if (typeof value === "object" && "#text" in value) return textValue(value["#text"]);
   return "";
+}
+
+function categoryValues(value: unknown) {
+  return asArray(value)
+    .map((category) => {
+      if (category && typeof category === "object" && "@_term" in category) {
+        return textValue(category["@_term"]);
+      }
+      return textValue(category);
+    })
+    .filter(Boolean);
+}
+
+export function getItemMaxAgeDays(item: NewsFeedItem) {
+  return (item as NewsFeedItem & { [maxAgeDaysKey]?: number })[maxAgeDaysKey];
 }
 
 function imageFromItem(item: RssItem, description: string) {
@@ -134,10 +158,17 @@ function stripHtml(value: string) {
 
 function decodeEntities(value: string) {
   return value
+    .replace(/&#x([0-9a-f]+);/gi, (entity, code: string) => decodeNumericEntity(entity, code, 16))
+    .replace(/&#(\d+);/g, (entity, code: string) => decodeNumericEntity(entity, code, 10))
     .replace(/&amp;/g, "&")
     .replace(/&lt;/g, "<")
     .replace(/&gt;/g, ">")
     .replace(/&quot;/g, '"')
     .replace(/&#39;/g, "'")
     .replace(/&nbsp;/g, " ");
+}
+
+function decodeNumericEntity(entity: string, code: string, radix: number) {
+  const value = Number.parseInt(code, radix);
+  return Number.isInteger(value) && value >= 0 && value <= 0x10ffff ? String.fromCodePoint(value) : entity;
 }

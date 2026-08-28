@@ -11,6 +11,8 @@
     "test": "vitest run",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "update:populations": "node scripts/update-county-populations.mjs",
+    "audit:county-news": "tsx scripts/news-coverage/cli.ts",
+    "audit:county-news:canvas": "tsx scripts/news-coverage/generate-canvas.ts",
     "atlas:ingest": "tsx scripts/atlas/cli.ts",
     "atlas:test": "vitest run tests/atlas-ingestion.test.ts tests/atlas-service.test.ts"
   },

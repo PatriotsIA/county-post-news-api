@@ -6,6 +6,7 @@ import { filterItems, filterMarketItems } from "../src/filter.js";
 import { getCounty, getCountyPlaceTerms, getNearbyCounties } from "../src/geo.js";
 import { fetchGdeltItems } from "../src/gdelt.js";
 import { handleRequest } from "../src/http.js";
+import { balanceCountyPublisherMix } from "../src/news-service.js";
 
 const rss = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0">
@@ -210,6 +211,9 @@ const defaultUsdaMarsApiKey = config.usdaMarsApiKey;
 const defaultFredApiKey = config.fredApiKey;
 const defaultCountyMarketTierEnabled = config.countyMarketTierEnabled;
 const defaultCountyLocalSourceSearchEnabled = config.countyLocalSourceSearchEnabled;
+const defaultCountyPublisherBalanceEnabled = config.countyPublisherBalanceEnabled;
+const defaultCountySinglePublisherMax = config.countySinglePublisherMax;
+const defaultCountyOtherSourcesTarget = config.countyOtherSourcesTarget;
 const defaultCountyPrimaryQueryLimit = config.countyPrimaryQueryLimit;
 const defaultCountyMarketQueryLimit = config.countyMarketQueryLimit;
 const defaultCountyNearbyLimit = config.countyNearbyLimit;
@@ -223,6 +227,9 @@ describe("handleRequest", () => {
     config.fredApiKey = defaultFredApiKey;
     config.countyMarketTierEnabled = defaultCountyMarketTierEnabled;
     config.countyLocalSourceSearchEnabled = defaultCountyLocalSourceSearchEnabled;
+    config.countyPublisherBalanceEnabled = defaultCountyPublisherBalanceEnabled;
+    config.countySinglePublisherMax = defaultCountySinglePublisherMax;
+    config.countyOtherSourcesTarget = defaultCountyOtherSourcesTarget;
     config.countyPrimaryQueryLimit = defaultCountyPrimaryQueryLimit;
     config.countyMarketQueryLimit = defaultCountyMarketQueryLimit;
     config.countyNearbyLimit = defaultCountyNearbyLimit;
@@ -588,7 +595,7 @@ describe("handleRequest", () => {
     vi.stubGlobal(
       "fetch",
       vi.fn(async (url: URL | string) => new Response(
-        String(url).includes("mypulsenews.com/feed")
+        String(url).includes("mypulsenews.com")
           ? `<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"><channel><title>Empty</title></channel></rss>`
           : relatedStoryRss,
         { status: 200, headers: { "content-type": "application/rss+xml" } },
@@ -745,6 +752,115 @@ describe("handleRequest", () => {
     expect(body.meta.sourcesUsed).toContain("direct:My Pulse News / KENA");
   });
 
+  it("keeps separately dated editions of a recurring local report", async () => {
+    clearCache();
+    const editionDates = new Map([
+      ["https://mypulsenews.com/feed/", 0],
+      ["https://mypulsenews.com/feed/?paged=2", 7],
+      ["https://mypulsenews.com/feed/?paged=3", 14],
+      ["https://mypulsenews.com/feed/?paged=4", 21],
+    ]);
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async (url: URL | string) => {
+        const value = String(url);
+        if (value.includes("api.gdeltproject.org")) {
+          return new Response(JSON.stringify({ articles: [] }), {
+            status: 200,
+            headers: { "content-type": "application/json" },
+          });
+        }
+
+        const daysAgo = editionDates.get(value);
+        if (daysAgo !== undefined) {
+          const publishedAt = new Date(Date.now() - daysAgo * 24 * 60 * 60 * 1000).toUTCString();
+          const editionRss = `<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"><channel><title>My Pulse News</title><item>
+  <guid>mena-report-${daysAgo}</guid><title>Mena Police Reports</title>
+  <link>https://mypulsenews.com/mena-police-reports-${daysAgo}</link><pubDate>${publishedAt}</pubDate>
+  <category>Police Reports</category><description>Mena Arkansas weekly police activity.</description>
+</item></channel></rss>`;
+          return new Response(editionRss, {
+            status: 200,
+            headers: { "content-type": "application/rss+xml" },
+          });
+        }
+
+        return new Response(emptyRss, {
+          status: 200,
+          headers: { "content-type": "application/rss+xml" },
+        });
+      }),
+    );
+
+    const response = await handleRequest({
+      method: "GET",
+      path: "/v1/feeds/counties/arkansas/polk/general",
+      query: new URLSearchParams("limit=20"),
+    });
+    const body = JSON.parse(response.body);
+
+    expect(response.statusCode).toBe(200);
+    expect(body.items).toHaveLength(4);
+    expect(body.items.every((item: { title: string }) => item.title === "Mena Police Reports")).toBe(true);
+  });
+
+  it("uses the tagged My Pulse sports archive only for Polk County sports", async () => {
+    clearCache();
+    const archivedDate = new Date(Date.now() - 800 * 24 * 60 * 60 * 1000).toUTCString();
+    const secondArchivedDate = new Date(Date.now() - 790 * 24 * 60 * 60 * 1000).toUTCString();
+    const sportsRss = `<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"><channel><title>Sports | My Pulse News</title><item>
+  <guid>local-anglers</guid><title>Lake Wilhelmina anglers prepare for tournament</title>
+  <link>https://mypulsenews.com/lake-wilhelmina-anglers</link><pubDate>${archivedDate}</pubDate>
+  <category>Sports</category><category>Polk County Arkansas</category>
+  <description>Mena anglers gather at Lake Wilhelmina.</description>
+</item><item>
+  <guid>local-basketball</guid><title>Mena Bearcats prepare for basketball season</title>
+  <link>https://mypulsenews.com/mena-bearcats-basketball</link><pubDate>${secondArchivedDate}</pubDate>
+  <category>Sports</category><category>Polk County Arkansas</category>
+  <description>Mena students prepare for a local basketball season.</description>
+</item></channel></rss>`;
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async (url: URL | string) => {
+        const value = String(url);
+        if (value.includes("api.gdeltproject.org")) {
+          return new Response(JSON.stringify({ articles: [] }), {
+            status: 200,
+            headers: { "content-type": "application/json" },
+          });
+        }
+        if (value.includes("mypulsenews.com/lake-") || value.includes("mypulsenews.com/mena-bearcats")) {
+          return new Response(
+            '<html><head><meta property="og:image" content="https://mypulsenews.com/images/my_pulse_news_logo_small.jpg"></head></html>',
+            { status: 200, headers: { "content-type": "text/html" } },
+          );
+        }
+        return new Response(value.includes("/category/sports/feed/") ? sportsRss : emptyRss, {
+          status: 200,
+          headers: { "content-type": "application/rss+xml" },
+        });
+      }),
+    );
+
+    const response = await handleRequest({
+      method: "GET",
+      path: "/v1/feeds/counties/arkansas/polk/sports",
+      query: new URLSearchParams("limit=20"),
+    });
+    const body = JSON.parse(response.body);
+
+    expect(response.statusCode).toBe(200);
+    expect(body.items.map((item: { title: string }) => item.title)).toEqual([
+      "Mena Bearcats prepare for basketball season",
+      "Lake Wilhelmina anglers prepare for tournament",
+    ]);
+    expect(body.items[0].categories).toEqual(["Sports", "Polk County Arkansas"]);
+    expect(body.items.every((item: { imageUrl?: string }) => !item.imageUrl)).toBe(true);
+    expect(body.meta.sourcesUsed).toContain("direct:My Pulse News / KENA sports archive");
+  });
+
   it("trusts Mena Star search results only for Arkansas Polk County", () => {
     const polk = getCounty("arkansas", "polk");
     expect(polk).toBeDefined();
@@ -840,6 +956,77 @@ describe("handleRequest", () => {
     expect(marketPlan.articleQueries).toHaveLength(1);
     expect(primaryPlan.rssUrls.length).toBeLessThanOrEqual(config.maxRssUrlsPerFeed);
     expect(marketPlan.rssUrls.length).toBeLessThanOrEqual(config.maxRssUrlsPerFeed);
+  });
+
+  it("balances a dominant county publisher with up to 25 stories from other publishers", () => {
+    const makeItems = (host: string, source: string, count: number, offset: number) =>
+      Array.from({ length: count }, (_, index) => ({
+        id: `${source}-${index}`,
+        title: `${source} story ${index}`,
+        link: `https://${host}/story-${index}`,
+        source,
+        publishedAt: new Date(Date.now() - (index + offset) * 60_000).toISOString(),
+      }));
+    const dominant = makeItems("mypulsenews.com", "My Pulse News / KENA", 40, 0);
+    const alternatives = [
+      ...makeItems("other-one.example", "Other One", 15, 40),
+      ...makeItems("other-two.example", "Other Two", 15, 55),
+    ];
+
+    const balanced = balanceCountyPublisherMix([...dominant, ...alternatives], 50);
+
+    expect(balanced).toHaveLength(50);
+    expect(balanced.filter((item) => item.link.includes("mypulsenews.com"))).toHaveLength(25);
+    expect(balanced.filter((item) => !item.link.includes("mypulsenews.com"))).toHaveLength(25);
+  });
+
+  it("expands a dense single-publisher county feed before applying its publisher cap", async () => {
+    clearCache();
+    const items = Array.from({ length: 30 }, (_, index) => {
+      const first = String.fromCharCode(97 + (index % 26));
+      const second = String.fromCharCode(97 + Math.floor(index / 26));
+      return `<item>
+  <guid>dominant-${index}</guid><title>${first}${second}${first}${second} bulletin</title>
+  <link>https://mypulsenews.com/dominant-${index}</link>
+  <pubDate>${new Date(Date.now() - index * 60 * 60 * 1000).toUTCString()}</pubDate>
+  <description>Mena Arkansas community reporting.</description>
+</item>`;
+    }).join("");
+    const dominantRss = `<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"><channel><title>My Pulse News</title>${items}</channel></rss>`;
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async (url: URL | string) => {
+        const value = String(url);
+        if (value.includes("api.gdeltproject.org")) {
+          return new Response(JSON.stringify({ articles: [] }), {
+            status: 200,
+            headers: { "content-type": "application/json" },
+          });
+        }
+        return new Response(value.includes("mypulsenews.com") ? dominantRss : emptyRss, {
+          status: 200,
+          headers: { "content-type": "application/rss+xml" },
+        });
+      }),
+    );
+
+    const response = await handleRequest({
+      method: "GET",
+      path: "/v1/feeds/counties/arkansas/polk/general",
+      query: new URLSearchParams("limit=50"),
+    });
+    const body = JSON.parse(response.body);
+
+    expect(response.statusCode).toBe(200);
+    expect(body.items).toHaveLength(25);
+    expect(body.meta.sourcesUsed).toEqual(
+      expect.arrayContaining([
+        "county:publisher-diversity",
+        "county:publisher-balanced",
+        "county:market",
+        "county:fallback-nearby",
+      ]),
+    );
   });
 
   it("builds state-qualified primary county query coverage", () => {

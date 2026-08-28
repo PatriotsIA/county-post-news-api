@@ -110,6 +110,29 @@ npm test
 npm run build
 ```
 
+Audit the deployed 50-story general-news feed for every county in the site
+directory with bounded concurrency and resumable JSONL checkpoints:
+
+```bash
+npm run audit:county-news -- \
+  --base-url "https://<function-url-id>.lambda-url.<region>.on.aws" \
+  --output-dir "coverage/county-news-production" \
+  --limit 50
+```
+
+The ignored `coverage/` output contains a complete JSON report, a county-level
+CSV, a compact summary, and the resumable checkpoint. Counts reflect the
+deployed API after locality filtering, deduplication, age filtering, and county
+coverage expansion.
+
+To refresh an existing coverage canvas with the completed report:
+
+```bash
+npm run audit:county-news:canvas -- \
+  --report "coverage/county-news-production/county-news-coverage.json" \
+  --canvas "/absolute/path/to/county-news-coverage.canvas.tsx"
+```
+
 Run deterministic Atlas ingestion with the checked-in Census fixture:
 
 ```bash
@@ -134,6 +157,9 @@ Copy `.env.example` into your environment provider or shell:
 - `COUNTY_MARKET_TIER_ENABLED`: set `false` to skip the configured-place and trusted-market tier during a cautious rollout; default `true`.
 - `COUNTY_AGENCY_QUERY_ENABLED`: set `false` to omit state-qualified county-agency searches; default `true`.
 - `COUNTY_LOCAL_SOURCE_SEARCH_ENABLED`: set `false` to omit bounded, state-qualified searches for county-native newspapers, radio, television, and local newsrooms; default `true`.
+- `COUNTY_PUBLISHER_BALANCE_ENABLED`: set `false` to disable source-diversity balancing for county general-news feeds; default `true`.
+- `COUNTY_SINGLE_PUBLISHER_MAX`: maximum stories from the dominant publisher in a balanced county general-news response; default `25`.
+- `COUNTY_OTHER_SOURCES_TARGET`: target combined stories from alternative publishers in a balanced county general-news response; default `25`.
 - `COUNTY_PRIMARY_QUERY_LIMIT`: bounded strict county query count, default `4`.
 - `COUNTY_MARKET_QUERY_LIMIT`: bounded market/place query count, default `4`.
 - `GDELT_ENABLED`: set to `false` to disable GDELT, default `true`.

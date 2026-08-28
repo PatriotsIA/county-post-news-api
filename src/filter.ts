@@ -112,7 +112,7 @@ function matchesMarketScope(
 }
 
 function itemContent(item: NewsFeedItem) {
-  return `${item.title} ${item.description || ""}`.toLowerCase();
+  return `${item.title} ${item.description || ""} ${(item.categories || []).join(" ")}`.toLowerCase();
 }
 
 function itemHaystack(item: NewsFeedItem) {

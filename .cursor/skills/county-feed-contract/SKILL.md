@@ -22,13 +22,17 @@ description: Maintains the County Post county-news API locality contract. Use wh
 3. Market results must identify the requested state and an exact county, configured place, or trusted registered publisher.
 4. Never introduce a bare ambiguous county query; state-qualify every county, place, and agency query.
 5. Preserve URL, image, title/near-title, DVIDS caption, and related-event duplicate protections across tier merges.
+6. County general-news responses balance a dominant publisher against alternative publishers; source concentration may activate market and nearby tiers even when raw item count is not sparse.
 
 ## Source and place changes
 
 - Add known place corrections to `countyOverrides` in `src/geo.ts`.
 - Add only reviewed publisher profiles and RSS/Atom feeds to `src/source-registry.ts`, scoped with state, market, and county metadata. Profiles without a usable feed can still provide domain-targeted search.
+- Use source-specific `maxAgeDays` and `maxItems` only for reviewed inactive archives; never widen `ARTICLE_MAX_AGE_DAYS` globally to fill one outlet.
+- Preserve separately dated recurring reports from the same publisher while continuing to collapse same-story, cross-publisher, URL, image, and related-event duplicates.
 - Keep direct-source and market-publisher labels stable because filtering and `meta.sourcesUsed` rely on them.
 - Use bounded configuration instead of widening all-provider queries.
+- Follow `docs/nationwide-local-source-discovery-plan.md` for candidate evidence, human approval, registry snapshots, and national rollout.
 
 ## Validation
 

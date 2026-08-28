@@ -4,17 +4,28 @@ export type DirectSource = {
   name: string;
   url: string;
   mediaType: NonNullable<NewsFeedItem["mediaType"]>;
+  itemSource?: string;
   topics?: Topic[];
   states?: string[];
   markets?: string[];
   counties?: string[];
+  maxAgeDays?: number;
+  maxItems?: number;
   trustedForMarketTier?: boolean;
+};
+
+export type CountyNativeFeed = {
+  name?: string;
+  url: string;
+  topics?: Topic[];
+  maxAgeDays?: number;
+  maxItems?: number;
 };
 
 export type CountyNativeSource = {
   name: string;
   websiteUrl: string;
-  feedUrl?: string;
+  feeds?: CountyNativeFeed[];
   outletTypes: Array<"newspaper" | "radio" | "television" | "digital">;
   aliases?: string[];
   topics?: Topic[];
@@ -36,7 +47,39 @@ const countyNativeSources: CountyNativeSource[] = [
   {
     name: "My Pulse News / KENA",
     websiteUrl: "https://mypulsenews.com/",
-    feedUrl: "https://mypulsenews.com/feed/",
+    feeds: [
+      {
+        url: "https://mypulsenews.com/feed/",
+        topics: ["general", "crime"],
+      },
+      {
+        name: "My Pulse News / KENA page 2",
+        url: "https://mypulsenews.com/feed/?paged=2",
+        topics: ["general", "crime"],
+      },
+      {
+        name: "My Pulse News / KENA page 3",
+        url: "https://mypulsenews.com/feed/?paged=3",
+        topics: ["general", "crime"],
+      },
+      {
+        name: "My Pulse News / KENA page 4",
+        url: "https://mypulsenews.com/feed/?paged=4",
+        topics: ["general", "crime"],
+      },
+      {
+        name: "My Pulse News / KENA local news",
+        url: "https://mypulsenews.com/category/news/feed/",
+        topics: ["general", "politics", "economy", "crime"],
+      },
+      {
+        name: "My Pulse News / KENA sports archive",
+        url: "https://mypulsenews.com/category/sports/feed/",
+        topics: ["sports"],
+        maxAgeDays: 1_095,
+        maxItems: 8,
+      },
+    ],
     outletTypes: ["digital", "radio"],
     aliases: ["My Pulse News", "MyPulseNews.com", "KENA", "KENA Radio", "KENA 104.1 FM"],
     counties: ["arkansas/polk"],
@@ -249,17 +292,16 @@ function allDirectSources(): DirectSource[] {
   return [
     ...directSources,
     ...countyNativeSources.flatMap((source) =>
-      source.feedUrl
-        ? [
-            {
-              name: source.name,
-              url: source.feedUrl,
-              mediaType: "article" as const,
-              topics: source.topics,
-              counties: source.counties,
-            },
-          ]
-        : [],
+      (source.feeds || []).map((feed) => ({
+        name: feed.name || source.name,
+        url: feed.url,
+        mediaType: "article" as const,
+        itemSource: source.name,
+        topics: feed.topics || source.topics,
+        counties: source.counties,
+        maxAgeDays: feed.maxAgeDays,
+        maxItems: feed.maxItems,
+      })),
     ),
   ];
 }

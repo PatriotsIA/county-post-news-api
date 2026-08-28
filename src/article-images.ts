@@ -114,9 +114,19 @@ function imageFromHtml(html: string, pageUrl: string) {
   const image = metaContent(html, "property", "og:image") || metaContent(html, "name", "twitter:image") || metaContent(html, "name", "twitter:image:src");
   if (!image) return "";
   try {
-    return new URL(image, pageUrl).toString();
+    const resolved = new URL(image, pageUrl).toString();
+    return isGenericPublisherImage(resolved) ? "" : resolved;
   } catch {
     return "";
+  }
+}
+
+function isGenericPublisherImage(value: string) {
+  try {
+    const path = new URL(value).pathname.toLowerCase();
+    return /(logo|masthead|favicon|placeholder|default[-_]?image|site[-_]?icon)/.test(path);
+  } catch {
+    return false;
   }
 }
 

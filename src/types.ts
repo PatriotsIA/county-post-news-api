@@ -28,6 +28,7 @@ export type NewsFeedItem = {
   publishedAt?: string;
   description?: string;
   imageUrl?: string;
+  categories?: string[];
   mediaType?: "article" | "video" | "podcast";
 };
 
