@@ -160,6 +160,33 @@ export type CountyDroughtCondition = {
   };
 };
 
+export type CountyRainfallDay = {
+  date: string;
+  precipitationInches: number;
+};
+
+export type CountyRainfallHistory = {
+  periodStart: string;
+  periodEnd: string;
+  dataThrough: string;
+  requestedDays: number;
+  availableDays: number;
+  totalInches: number;
+  wetDays: number;
+  estimated: true;
+  locationBasis: "county-centroid";
+  daily: CountyRainfallDay[];
+  source: {
+    name: "NASA POWER";
+    agency: "NASA Langley Research Center";
+    url: string;
+    documentation: string;
+    parameter: "PRECTOTCORR";
+    nativeUnit: "mm/day";
+    latencyNote: string;
+  };
+};
+
 export type CountyWeatherResponse = {
   county: {
     name: string;
@@ -189,6 +216,7 @@ export type CountyWeatherResponse = {
   hourly: WeatherForecastPeriod[];
   alerts: WeatherAlert[];
   droughtCondition?: CountyDroughtCondition;
+  rainfallHistory?: CountyRainfallHistory;
   warnings: string[];
   meta: {
     fetchedAt: string;
@@ -200,6 +228,7 @@ export type CountyWeatherResponse = {
       temperature: "F";
       windSpeed: "mph";
       precipitationProbability: "percent";
+      precipitationHistory: "inches";
     };
     source: {
       name: "National Weather Service";

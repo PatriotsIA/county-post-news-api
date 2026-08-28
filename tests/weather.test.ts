@@ -10,6 +10,9 @@ const defaults = {
   countyFallbackMinItems: config.countyFallbackMinItems,
   nwsApiBase: config.nwsApiBase,
   nwsUserAgent: config.nwsUserAgent,
+  nasaPowerApiBase: config.nasaPowerApiBase,
+  rainfallHistoryDays: config.rainfallHistoryDays,
+  rainfallCacheTtlSeconds: config.rainfallCacheTtlSeconds,
   weatherTimeoutMs: config.weatherTimeoutMs,
 };
 
@@ -19,6 +22,9 @@ describe("county weather", () => {
     config.countyFallbackMinItems = defaults.countyFallbackMinItems;
     config.nwsApiBase = defaults.nwsApiBase;
     config.nwsUserAgent = defaults.nwsUserAgent;
+    config.nasaPowerApiBase = defaults.nasaPowerApiBase;
+    config.rainfallHistoryDays = defaults.rainfallHistoryDays;
+    config.rainfallCacheTtlSeconds = defaults.rainfallCacheTtlSeconds;
     config.weatherTimeoutMs = defaults.weatherTimeoutMs;
     vi.restoreAllMocks();
   });
@@ -65,6 +71,29 @@ describe("county weather", () => {
       "https://api.weather.gov/alerts/severe",
       "https://api.weather.gov/alerts/moderate",
     ]);
+    expect(body.rainfallHistory).toMatchObject({
+      periodStart: "2026-08-12",
+      periodEnd: "2026-08-25",
+      dataThrough: "2026-08-25",
+      requestedDays: 14,
+      availableDays: 14,
+      totalInches: 4.16,
+      wetDays: 7,
+      estimated: true,
+      locationBasis: "county-centroid",
+      source: {
+        name: "NASA POWER",
+        agency: "NASA Langley Research Center",
+        parameter: "PRECTOTCORR",
+        nativeUnit: "mm/day",
+      },
+    });
+    expect(body.rainfallHistory.daily).toHaveLength(14);
+    expect(body.rainfallHistory.daily[1]).toEqual({
+      date: "2026-08-13",
+      precipitationInches: 1,
+    });
+    expect(body.meta.units.precipitationHistory).toBe("inches");
     expect(body.warnings).toEqual([]);
     expect(body.meta.partial).toBe(false);
     expect(body.meta.source.links.alerts).toHaveLength(3);
@@ -72,6 +101,10 @@ describe("county weather", () => {
 
     const pointsCalls = fetchMock.mock.calls.filter(([url]) => String(url).includes("/points/"));
     expect(pointsCalls).toHaveLength(1);
+    const rainfallCalls = fetchMock.mock.calls.filter(([url]) =>
+      String(url).includes("power.larc.nasa.gov/api/temporal/daily/point"),
+    );
+    expect(rainfallCalls).toHaveLength(1);
     for (const [url, init] of fetchMock.mock.calls) {
       const headers = new Headers(init?.headers);
       expect(headers.get("user-agent")).toBe(config.nwsUserAgent);
@@ -148,6 +181,19 @@ describe("county weather", () => {
     expect(body.warnings).toContain("Hourly forecast is temporarily unavailable.");
   });
 
+  it("keeps NWS weather available when NASA POWER precipitation fails", async () => {
+    vi.stubGlobal("fetch", createNwsFetch({ failRainfall: true }));
+
+    const response = await weatherRequest();
+    const body = JSON.parse(response.body);
+
+    expect(response.statusCode).toBe(200);
+    expect(body.forecast).toHaveLength(1);
+    expect(body.rainfallHistory).toBeUndefined();
+    expect(body.meta.partial).toBe(true);
+    expect(body.warnings).toContain("Fourteen-day precipitation history is temporarily unavailable.");
+  });
+
   it("requires the point mapping and returns 502 when all meaningful resources fail", async () => {
     const allResourcesResponse = await withNwsFetch(
       createNwsFetch({ failAllResources: true }),
@@ -155,7 +201,7 @@ describe("county weather", () => {
     );
     expect(allResourcesResponse.statusCode).toBe(502);
     expect(JSON.parse(allResourcesResponse.body).error).toBe(
-      "National Weather Service weather resources are unavailable",
+      "County weather resources are unavailable",
     );
 
     clearCache();
@@ -264,6 +310,7 @@ function createNwsFetch(
     failHourly?: boolean;
     failAllResources?: boolean;
     failPoints?: boolean;
+    failRainfall?: boolean;
     noAlerts?: boolean;
     duplicateModerateAlert?: boolean;
   } = {},
@@ -275,6 +322,15 @@ function createNwsFetch(
     }
     if (url.pathname.startsWith("/points/")) return jsonResponse(pointsFixture);
     if (options.failAllResources) return jsonResponse({ title: "Unavailable" }, 503);
+    if (url.hostname === "power.larc.nasa.gov") {
+      expect(url.searchParams.get("parameters")).toBe("PRECTOTCORR");
+      expect(url.searchParams.get("community")).toBe("AG");
+      expect(url.searchParams.get("format")).toBe("JSON");
+      expect(url.searchParams.get("time-standard")).toBe("LST");
+      return options.failRainfall
+        ? jsonResponse({ title: "Unavailable" }, 503)
+        : jsonResponse(rainfallFixture);
+    }
     if (url.hostname === "usdmdataservices.unl.edu") return jsonResponse(options.droughtRows || []);
     if (url.pathname === "/gridpoints/LZK/12,34/forecast/hourly" && options.failHourly) {
       return jsonResponse({ title: "Unavailable" }, 503);
@@ -371,6 +427,31 @@ const observationFixture = {
     windGust: { value: null, unitCode: "wmoUnit:km_h-1" },
     windDirection: { value: 180, unitCode: "wmoUnit:degree_(angle)" },
     barometricPressure: { value: 101325, unitCode: "wmoUnit:Pa" },
+  },
+};
+
+const rainfallFixture = {
+  properties: {
+    parameter: {
+      PRECTOTCORR: {
+        "20260812": 0,
+        "20260813": 25.4,
+        "20260814": 12.7,
+        "20260815": 2.54,
+        "20260816": 0,
+        "20260817": 5.08,
+        "20260818": 0,
+        "20260819": 0.254,
+        "20260820": 50.8,
+        "20260821": 0,
+        "20260822": 7.62,
+        "20260823": 0,
+        "20260824": 0,
+        "20260825": 1.27,
+        "20260826": -999,
+        "20260827": -999,
+      },
+    },
   },
 };
 

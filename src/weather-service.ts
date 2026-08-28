@@ -3,6 +3,7 @@ import { config } from "./config.js";
 import { getCounty } from "./geo.js";
 import type {
   CountyDroughtCondition,
+  CountyRainfallHistory,
   CountySite,
   CountyWeatherResponse,
   WeatherAlert,
@@ -37,6 +38,8 @@ type AlertLoadResult = {
 
 const nwsDocumentation = "https://www.weather.gov/documentation/services-web-api";
 const nwsAlertsDocumentation = "https://www.weather.gov/documentation/services-web-alerts";
+const nasaPowerDocumentation = "https://power.larc.nasa.gov/docs/services/api/temporal/daily/";
+const millimetersPerInch = 25.4;
 const severityRank = new Map([
   ["extreme", 0],
   ["severe", 1],
@@ -82,18 +85,20 @@ export async function getCountyWeather(stateSlug: string, countySlug: string): P
     observation: loadObservation(points.observationStationsLink),
     alerts: loadAlerts(latitude, longitude, points.forecastZone, points.countyZone),
     drought: loadDroughtCondition(county),
+    rainfall: loadRainfallHistory(county),
   };
-  const [forecastResult, hourlyResult, observationResult, alertsResult, droughtResult] = await Promise.allSettled([
+  const [forecastResult, hourlyResult, observationResult, alertsResult, droughtResult, rainfallResult] = await Promise.allSettled([
     tasks.forecast,
     tasks.hourly,
     tasks.observation,
     tasks.alerts,
     tasks.drought,
+    tasks.rainfall,
   ]);
 
-  const results = [forecastResult, hourlyResult, observationResult, alertsResult, droughtResult];
+  const results = [forecastResult, hourlyResult, observationResult, alertsResult, droughtResult, rainfallResult];
   if (results.every((result) => result.status === "rejected")) {
-    throw new WeatherServiceError(502, "National Weather Service weather resources are unavailable");
+    throw new WeatherServiceError(502, "County weather resources are unavailable");
   }
 
   const warnings: string[] = [];
@@ -102,7 +107,16 @@ export async function getCountyWeather(stateSlug: string, countySlug: string): P
   if (observationResult.status === "rejected") warnings.push("Current observation is temporarily unavailable.");
   if (alertsResult.status === "rejected") warnings.push("Active alerts are temporarily unavailable.");
   if (droughtResult.status === "rejected") warnings.push("Current U.S. Drought Monitor conditions are temporarily unavailable.");
+  if (rainfallResult.status === "rejected") warnings.push("Fourteen-day precipitation history is temporarily unavailable.");
   if (alertsResult.status === "fulfilled") warnings.push(...alertsResult.value.warnings);
+  if (
+    rainfallResult.status === "fulfilled" &&
+    rainfallResult.value.availableDays < rainfallResult.value.requestedDays
+  ) {
+    warnings.push(
+      `NASA POWER returned ${rainfallResult.value.availableDays} of ${rainfallResult.value.requestedDays} requested precipitation days.`,
+    );
+  }
 
   const observation = observationResult.status === "fulfilled" ? observationResult.value : undefined;
   const alertLinks =
@@ -131,6 +145,7 @@ export async function getCountyWeather(stateSlug: string, countySlug: string): P
     hourly: hourlyResult.status === "fulfilled" ? hourlyResult.value : [],
     alerts: alertsResult.status === "fulfilled" ? alertsResult.value.alerts : [],
     droughtCondition: droughtResult.status === "fulfilled" ? droughtResult.value : undefined,
+    rainfallHistory: rainfallResult.status === "fulfilled" ? rainfallResult.value : undefined,
     warnings,
     meta: {
       fetchedAt: new Date().toISOString(),
@@ -142,6 +157,7 @@ export async function getCountyWeather(stateSlug: string, countySlug: string): P
         temperature: "F",
         windSpeed: "mph",
         precipitationProbability: "percent",
+        precipitationHistory: "inches",
       },
       source: {
         name: "National Weather Service",
@@ -158,6 +174,80 @@ export async function getCountyWeather(stateSlug: string, countySlug: string): P
       },
     },
   };
+}
+
+async function loadRainfallHistory(county: CountySite): Promise<CountyRainfallHistory> {
+  const configuredDays = Number.isFinite(config.rainfallHistoryDays)
+    ? config.rainfallHistoryDays
+    : 14;
+  const requestedDays = Math.min(31, Math.max(1, Math.floor(configuredDays)));
+  const endDate = new Date();
+  const startDate = new Date(endDate);
+  startDate.setUTCDate(startDate.getUTCDate() - requestedDays - 10);
+  const url = new URL(
+    "/api/temporal/daily/point",
+    `${config.nasaPowerApiBase.replace(/\/+$/u, "")}/`,
+  );
+  url.search = new URLSearchParams({
+    parameters: "PRECTOTCORR",
+    community: "AG",
+    longitude: formatCoordinate(county.longitude!),
+    latitude: formatCoordinate(county.latitude!),
+    start: compactDate(startDate),
+    end: compactDate(endDate),
+    format: "JSON",
+    "time-standard": "LST",
+  }).toString();
+
+  return cached(
+    `weather:rainfall:${county.fips}:${requestedDays}`,
+    config.rainfallCacheTtlSeconds,
+    async () => {
+      const json = asObject(await fetchJson(url.toString(), "NASA POWER"));
+      const parameter = objectValue(objectValue(objectValue(json, "properties"), "parameter"), "PRECTOTCORR");
+      if (!parameter) throw new Error("NASA POWER response omitted corrected precipitation");
+
+      const daily = Object.entries(parameter)
+        .flatMap(([date, value]) => {
+          if (!/^\d{8}$/u.test(date) || typeof value !== "number" || !Number.isFinite(value) || value < 0) {
+            return [];
+          }
+          return [{
+            date: `${date.slice(0, 4)}-${date.slice(4, 6)}-${date.slice(6, 8)}`,
+            precipitationInches: round(value / millimetersPerInch, 3),
+          }];
+        })
+        .sort((left, right) => left.date.localeCompare(right.date))
+        .slice(-requestedDays);
+      if (!daily.length) throw new Error("NASA POWER returned no available precipitation days");
+
+      const totalInches = round(
+        daily.reduce((total, day) => total + day.precipitationInches, 0),
+        2,
+      );
+      return {
+        periodStart: daily[0].date,
+        periodEnd: daily.at(-1)!.date,
+        dataThrough: daily.at(-1)!.date,
+        requestedDays,
+        availableDays: daily.length,
+        totalInches,
+        wetDays: daily.filter((day) => day.precipitationInches > 0.01).length,
+        estimated: true,
+        locationBasis: "county-centroid",
+        daily,
+        source: {
+          name: "NASA POWER",
+          agency: "NASA Langley Research Center",
+          url: url.toString(),
+          documentation: nasaPowerDocumentation,
+          parameter: "PRECTOTCORR",
+          nativeUnit: "mm/day",
+          latencyNote: "NASA POWER meteorological data typically trails the current date by two to three days.",
+        },
+      };
+    },
+  );
 }
 
 async function loadDroughtCondition(county: CountySite): Promise<CountyDroughtCondition | undefined> {
@@ -601,6 +691,10 @@ function round(value: number, digits: number) {
 
 function isoDate(value: Date) {
   return value.toISOString().slice(0, 10);
+}
+
+function compactDate(value: Date) {
+  return isoDate(value).replace(/-/gu, "");
 }
 
 function droughtCountyUrl(county: CountySite) {

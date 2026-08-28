@@ -23,7 +23,7 @@ Current providers:
 - GDELT Document API
 - Direct publisher RSS/Atom feeds from the source registry
 
-County forecasts, observations, and active watches/warnings come from the official National Weather Service API. Weekly D1–D4 drought conditions come separately from the [U.S. Drought Monitor](https://www.droughtmonitor.unl.edu/DmData/DataDownload/WebServiceInfo.aspx), so persistent drought is labeled as a condition rather than misrepresented as an active NWS alert. The endpoint follows the [NWS API documentation](https://www.weather.gov/documentation/services-web-api) and [NWS alerts documentation](https://www.weather.gov/documentation/services-web-alerts); it does not turn forecasts into news articles.
+County forecasts, observations, and active watches/warnings come from the official National Weather Service API. Weekly D1–D4 drought conditions come separately from the [U.S. Drought Monitor](https://www.droughtmonitor.unl.edu/DmData/DataDownload/WebServiceInfo.aspx), and the latest 14 available daily precipitation estimates come from the public [NASA POWER Daily API](https://power.larc.nasa.gov/docs/services/api/temporal/daily/). The endpoint does not turn forecasts into news articles.
 
 County coverage is tiered and locality-safe: strict county/state coverage is always first; a sparse section then adds state-qualified configured places and trusted local-market sources; only then can it add nearest same-state county coverage. It never falls back to broad state-topic inventory for a county route.
 
@@ -82,7 +82,7 @@ The county population endpoint returns the same 2025 Census estimate and pricing
 
 The county economic-data endpoint uses the FRED API to return recent county unemployment, household income, per-capita income, current-dollar GDP, and real GDP observations. Series are derived from the county FIPS code, fetched concurrently, and cached for six hours. Individual unavailable series are omitted without failing the rest of the county response.
 
-The county weather endpoint resolves the known county FIPS and centroid, then uses NWS `/points` links for a compact forecast, hourly forecast, latest station observation, and active point/forecast-zone/county-zone alerts. It also uses the county FIPS to retrieve the latest cumulative D1–D4 area percentages from the U.S. Drought Monitor. Temperatures and wind speeds are normalized to Fahrenheit and mph while source units remain in each measurement. A subresource failure is reported through `warnings` and `meta.partial`; the point lookup is required. The separate county `weather` feed continues to return real stories from the existing news providers.
+The county weather endpoint resolves the known county FIPS and centroid, then uses NWS `/points` links for a compact forecast, hourly forecast, latest station observation, and active point/forecast-zone/county-zone alerts. It also uses the county FIPS to retrieve the latest cumulative D1–D4 area percentages from the U.S. Drought Monitor and the centroid to retrieve the latest 14 available NASA POWER `PRECTOTCORR` daily values. NASA millimeters are converted to inches and returned as `rainfallHistory`, including the period, data-through date, total, wet-day count, daily values, and source metadata. This is a gridded county-center precipitation estimate that can include the liquid equivalent of frozen precipitation, not a county-wide rain-gauge total; NASA meteorological data normally trails the current date by two to three days. A subresource failure is reported through `warnings` and `meta.partial`; the NWS point lookup is required. The separate county `weather` feed continues to return real stories from the existing news providers.
 
 The County Data Atlas endpoints read validated, immutable county snapshots through an S3 `manifest/current.json` pointer. The overview includes every registered domain with explicit availability; a known sparse domain returns an empty partial document rather than invented values. Until a published object exists, local development truthfully falls back to bundled Census population and optional live FRED economy metrics. See `docs/county-data-atlas.md`.
 
@@ -182,7 +182,10 @@ Copy `.env.example` into your environment provider or shell:
 - `WEATHER_ALERTS_CACHE_TTL_SECONDS`: active-alert cache and public response cache duration, default `180`.
 - `USDM_API_BASE`: official U.S. Drought Monitor data-service root, default `https://usdmdataservices.unl.edu`.
 - `DROUGHT_CACHE_TTL_SECONDS`: weekly county drought-condition cache duration, default `21600`.
-- `WEATHER_TIMEOUT_MS`: timeout for each NWS request, default `5000`.
+- `NASA_POWER_API_BASE`: public NASA POWER API root, default `https://power.larc.nasa.gov`; no key is required.
+- `RAINFALL_HISTORY_DAYS`: number of latest available precipitation days returned, default `14` and bounded to `1–31`.
+- `RAINFALL_CACHE_TTL_SECONDS`: NASA POWER county precipitation cache duration, default `86400`.
+- `WEATHER_TIMEOUT_MS`: timeout for each NWS, U.S. Drought Monitor, or NASA POWER request, default `5000`.
 - `ATLAS_DATA_BUCKET`: private S3 snapshot bucket. Leave unset for the truthful development fallback.
 - `ATLAS_DATA_PREFIX`: optional key prefix before `manifest/current.json` and `versions/`.
 - `ATLAS_CACHE_TTL_SECONDS`: warm-process atlas document cache, default `3600`.

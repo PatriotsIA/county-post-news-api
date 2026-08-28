@@ -4,6 +4,15 @@
 
 County feeds now use an ordered, locality-safe expansion pipeline: strict requested-county coverage first, configured local places and trusted market sources only when sparse, then nearest same-state counties only if still sparse.
 
+## County precipitation history
+
+- `GET /v1/counties/:stateSlug/:countySlug/weather` now includes optional `rainfallHistory` data from NASA POWER for every county with a known centroid.
+- The service requests corrected daily precipitation (`PRECTOTCORR`), skips NASA's `-999` fill values, selects the latest 14 available days, converts millimeters to inches, and caches each county result for 24 hours.
+- The response includes period and data-through dates, total inches, wet-day count, daily values, county-centroid location basis, and direct NASA source/methodology links.
+- This is estimated precipitation rather than a county-wide gauge total and may include liquid-equivalent snow or ice. NASA meteorological data generally has a two-to-three-day reporting delay, which is shown in the response and website.
+- NASA failure does not remove NWS forecasts, observations, alerts, or U.S. Drought Monitor conditions. It adds a warning and sets `meta.partial`.
+- No API key, IAM permission, new AWS resource, or browser environment variable is required. The SAM template supplies `NASA_POWER_API_BASE`, `RAINFALL_HISTORY_DAYS`, and `RAINFALL_CACHE_TTL_SECONDS`.
+
 ## Locality rules
 
 - Primary county queries require both the county display name (for example, `Polk County`) and the full state name.
