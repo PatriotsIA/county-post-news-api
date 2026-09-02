@@ -387,18 +387,37 @@ describe("handleRequest", () => {
     expect(fetchMock).toHaveBeenCalledTimes(5);
   });
 
-  it("echoes an allowed CORS origin", async () => {
-    config.corsOrigins = ["https://main.d2z6lt4e5q50in.amplifyapp.com", "https://thecountypost.com"];
+  it("echoes an allowed Patriots in Action CORS origin", async () => {
+    config.corsOrigins = [
+      "https://main.d2z6lt4e5q50in.amplifyapp.com",
+      "https://thecountypost.com",
+      "https://patriotsinaction.com",
+    ];
 
     const response = await handleRequest({
       method: "GET",
       path: "/health",
       query: new URLSearchParams(),
-      headers: { origin: "https://main.d2z6lt4e5q50in.amplifyapp.com" },
+      headers: { origin: "https://patriotsinaction.com" },
     });
 
     expect(response.statusCode).toBe(200);
-    expect(response.headers["access-control-allow-origin"]).toBe("https://main.d2z6lt4e5q50in.amplifyapp.com");
+    expect(response.headers["access-control-allow-origin"]).toBe("https://patriotsinaction.com");
+    expect(response.headers.vary).toBe("Origin");
+  });
+
+  it("does not grant CORS access to an unlisted origin", async () => {
+    config.corsOrigins = ["https://thecountypost.com", "https://patriotsinaction.com"];
+
+    const response = await handleRequest({
+      method: "GET",
+      path: "/health",
+      query: new URLSearchParams(),
+      headers: { origin: "https://untrusted.example" },
+    });
+
+    expect(response.statusCode).toBe(200);
+    expect(response.headers["access-control-allow-origin"]).toBeUndefined();
     expect(response.headers.vary).toBe("Origin");
   });
 

@@ -278,7 +278,7 @@ CORS is handled by application response headers in `src/http.ts`.
 | Setting | Requirement |
 | --- | --- |
 | Allowed origins | Set `CORS_ORIGINS` to comma-separated frontend origins. |
-| Production origins | `https://main.d2z6lt4e5q50in.amplifyapp.com`, `https://thecountypost.com`, `https://www.thecountypost.com`. |
+| Production origins | The County Post and Patriots in Action Amplify/custom domains configured through the `CorsOrigins` SAM parameter. |
 | Lambda Function URL CORS | Do not configure a separate `FunctionUrlConfig.Cors` block. |
 | Trailing slashes | Do not include trailing slashes in origins. |
 | Expected header | One `access-control-allow-origin` header echoing the matching frontend origin. |

@@ -112,7 +112,7 @@ After the CI pipeline exists, edit it and add a deploy stage:
    - Template file: `packaged.yaml`
    - Stack name: `county-news-api`
    - Capabilities: `CAPABILITY_IAM` and `CAPABILITY_AUTO_EXPAND`
-   - Parameter overrides: set `UsdaMarsApiKey` to the USDA MARS key, `FredApiKey` to the FRED key, and `StripeSecretKey` to the Stripe secret key. Set `StripeCheckoutSuccessUrl` and `StripeCheckoutCancelUrl` to the deployed frontend payment URLs. Remove any legacy `MetalsApiKey` override: the metals ticker now uses the no-key Minted Metal endpoint configured in `template.yaml`.
+   - Parameter overrides: set `UsdaMarsApiKey` to the USDA MARS key, `FredApiKey` to the FRED key, and `StripeSecretKey` to the Stripe secret key. Set `StripeCheckoutSuccessUrl` and `StripeCheckoutCancelUrl` to the deployed frontend payment URLs. Set `CorsOrigins` to the complete comma-separated frontend origin allowlist when it differs from the template default. Remove any legacy `MetalsApiKey` override: the metals ticker now uses the no-key Minted Metal endpoint configured in `template.yaml`.
    - Atlas overrides: set `CensusApiKey` to a free Census API key, select the released ACS year with `AtlasCensusYear`, and confirm `AtlasSourceLocation`, `AtlasSourceVersion`, and `AtlasIngestionSchedule`.
 
 Do not point this deploy action at raw `template.yaml`. Raw `template.yaml` has `CodeUri: .`, which causes this error:
@@ -162,10 +162,10 @@ The publisher uploads every immutable `versions/<version>/...` object before rep
 The deployed API should only allow requests from frontend origins that should call it. The current production allowlist is:
 
 ```text
-https://main.d2z6lt4e5q50in.amplifyapp.com,https://advertiser-preview.d2z6lt4e5q50in.amplifyapp.com,https://thecountypost.com,https://www.thecountypost.com
+https://main.d2z6lt4e5q50in.amplifyapp.com,https://advertiser-preview.d2z6lt4e5q50in.amplifyapp.com,https://thecountypost.com,https://www.thecountypost.com,https://patriotsinaction.com,https://www.patriotsinaction.com
 ```
 
-These origins are configured with the `template.yaml` `CORS_ORIGINS` environment variable. The API response code echoes one matching origin from that allowlist.
+These origins are configured through the `template.yaml` `CorsOrigins` parameter and passed to the Lambda as `CORS_ORIGINS`. The API response code echoes one matching origin from that allowlist and omits `Access-Control-Allow-Origin` for unlisted origins.
 
 Do not also configure Lambda Function URL CORS for this API. Adding CORS at both the Function URL layer and in the API response can produce duplicate `Access-Control-Allow-Origin` headers, which browsers reject.
 

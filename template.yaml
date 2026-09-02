@@ -3,6 +3,10 @@ Transform: AWS::Serverless-2016-10-31
 Description: County Post News API on a low-cost Lambda Function URL.
 
 Parameters:
+  CorsOrigins:
+    Type: String
+    Default: "https://main.d2z6lt4e5q50in.amplifyapp.com,https://advertiser-preview.d2z6lt4e5q50in.amplifyapp.com,https://thecountypost.com,https://www.thecountypost.com,https://advertise.thecountypost.com,https://www.advertise.thecountypost.com,https://patriotsinaction.com,https://www.patriotsinaction.com"
+    Description: Comma-separated browser origins allowed to call the API, without trailing slashes.
   UsdaMarsApiKey:
     Type: String
     NoEcho: true
@@ -83,7 +87,7 @@ Globals:
         ARTICLE_IMAGE_LOOKUP_LIMIT: "4"
         MAX_RSS_URLS_PER_FEED: "18"
         MAX_ARTICLE_QUERIES_PER_FEED: "6"
-        CORS_ORIGINS: "https://main.d2z6lt4e5q50in.amplifyapp.com,https://advertiser-preview.d2z6lt4e5q50in.amplifyapp.com,https://thecountypost.com,https://www.thecountypost.com,https://advertise.thecountypost.com,https://www.advertise.thecountypost.com"
+        CORS_ORIGINS: !Ref CorsOrigins
         METALS_PROVIDER_URL: "https://mintedmetal.com/api/prices.json"
         METALS_CACHE_TTL_SECONDS: "900"
         USDA_MARS_API_KEY: !Ref UsdaMarsApiKey

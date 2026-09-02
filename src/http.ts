@@ -215,20 +215,25 @@ function parseJsonBody(body?: string) {
 function withCorsHeaders(response: ApiResponse, headers?: Record<string, string | undefined>): ApiResponse {
   const origin = normalizeHeaders(headers).origin?.replace(/\/+$/g, "");
   const allowedOrigin = allowedCorsOrigin(origin);
+  const responseHeaders: Record<string, string> = {
+    ...response.headers,
+    vary: "Origin",
+  };
+
+  if (allowedOrigin) {
+    responseHeaders["access-control-allow-origin"] = allowedOrigin;
+  }
+
   return {
     ...response,
-    headers: {
-      ...response.headers,
-      "access-control-allow-origin": allowedOrigin,
-      vary: "Origin",
-    },
+    headers: responseHeaders,
   };
 }
 
 function allowedCorsOrigin(origin?: string) {
   if (config.corsOrigins.includes("*")) return "*";
   if (origin && config.corsOrigins.includes(origin)) return origin;
-  return config.corsOrigins[0] || "*";
+  return undefined;
 }
 
 function logRequest(request: ApiRequest, path: string, response: ApiResponse, durationMs: number, errorMessage?: string) {
