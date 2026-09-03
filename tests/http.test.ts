@@ -258,6 +258,39 @@ describe("handleRequest", () => {
     expect(JSON.parse(response.body).topic).toBe("monetary-policy");
   });
 
+  it("pins the County Post op-ed first for every opinion scope", async () => {
+    clearCache();
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async () => new Response(emptyRss, { status: 200, headers: { "content-type": "application/rss+xml" } })),
+    );
+
+    const paths = [
+      "/v1/feeds/national/opinion",
+      "/v1/feeds/states/texas/opinion",
+      "/v1/feeds/counties/texas/potter/opinion",
+    ];
+
+    for (const path of paths) {
+      const response = await handleRequest({
+        method: "GET",
+        path,
+        query: new URLSearchParams("limit=10"),
+      });
+      const body = JSON.parse(response.body);
+
+      expect(response.statusCode).toBe(200);
+      expect(body.items[0]).toMatchObject({
+        id: "county-post-op-ed-data-centers-rest-of-us",
+        title: "The Data Centers and the Rest of Us",
+        source: "The County Post",
+        link: "https://thecountypost.com/op-eds/the-data-centers-and-the-rest-of-us",
+      });
+      expect(body.items.filter((item: { source?: string }) => item.source === "The County Post")).toHaveLength(1);
+      expect(body.meta.sourcesUsed).toContain("publisher:the-county-post");
+    }
+  });
+
   it("returns cached no-key LBMA benchmark metal prices through the server-side provider", async () => {
     vi.stubGlobal(
       "fetch",

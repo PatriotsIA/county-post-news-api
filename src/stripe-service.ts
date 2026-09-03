@@ -137,7 +137,7 @@ function parseCheckoutRequest(payload: unknown): CheckoutRequest {
   const scope = payload.scope ?? (Array.isArray(payload.counties) ? "county" : undefined);
   if (scope === "county") return parseCountyCheckout(payload, contact);
   if (scope === "state") return parseStateCheckout(payload, contact);
-  throw new CheckoutError(400, "Choose county or state campaign reach.");
+  throw new CheckoutError(400, "Choose county or state reach for the County Post Marketing Campaign.");
 }
 
 function parseCheckoutContact(payload: Record<string, unknown>): CheckoutContact {

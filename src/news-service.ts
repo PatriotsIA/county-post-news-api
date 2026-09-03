@@ -4,6 +4,7 @@ import { config } from "./config.js";
 import { buildCountyFallbackPlan, buildCountyMarketPlan, buildFeedPlan, topics } from "./feed-builders.js";
 import { filterCountyFallbackItems, filterItems, filterMarketItems } from "./filter.js";
 import { fetchGdeltItems } from "./gdelt.js";
+import { featuredCountyPostOpinion } from "./editorial.js";
 import { getCountyPlaceTerms, getNearbyCounties } from "./geo.js";
 import { fetchRssItems, getItemMaxAgeDays } from "./rss.js";
 import type { FeedResponse, FeedScope, NewsFeedItem, PageResponse, Topic } from "./types.js";
@@ -34,15 +35,20 @@ export async function getFeed(scope: FeedScope, topic: Topic, limit: number): Pr
     };
     return withCountyCoverage(primaryFeed, scope, topic, config.maxLimit);
   });
+  const feedItems = topic === "opinion" ? dedupeItems([featuredCountyPostOpinion, ...feed.items]) : feed.items;
   const sliced =
     scope.level === "county" && topic === "general"
-      ? balanceCountyPublisherMix(feed.items, cappedLimit)
-      : feed.items.slice(0, cappedLimit);
+      ? balanceCountyPublisherMix(feedItems, cappedLimit)
+      : feedItems.slice(0, cappedLimit);
   const publisherBalanceApplied =
     scope.level === "county" &&
     topic === "general" &&
     config.countyPublisherBalanceEnabled &&
     publisherConcentration(feed.items).dominantCount > publisherLimit();
+  const sourcesUsed =
+    topic === "opinion"
+      ? Array.from(new Set([...feed.meta.sourcesUsed, "publisher:the-county-post"]))
+      : feed.meta.sourcesUsed;
   return {
     ...feed,
     items: sliced,
@@ -50,8 +56,8 @@ export async function getFeed(scope: FeedScope, topic: Topic, limit: number): Pr
       ...feed.meta,
       count: sliced.length,
       sourcesUsed: publisherBalanceApplied
-        ? Array.from(new Set([...feed.meta.sourcesUsed, "county:publisher-balanced"]))
-        : feed.meta.sourcesUsed,
+        ? Array.from(new Set([...sourcesUsed, "county:publisher-balanced"]))
+        : sourcesUsed,
     },
   };
 }

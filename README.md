@@ -62,7 +62,7 @@ type NewsFeedItem = {
 
 Core topics are `general`, `sports`, `politics`, `economy`, `crime`, `weather`, `obituaries`, and `opinion`. Editorial desk subcategories are `monetary-policy`, `markets-investing`, `jobs-business`, `property-taxes`, `municipal-bonds`, `budgets-levies`, `voting-systems`, `election-administration`, `audits-recounts`, and `open-records`.
 
-`POST /v1/checkout/sessions` creates a hosted Stripe Checkout subscription for county or state advertising. The API calculates every price from the server-side rate card and authoritative geography; it rejects client-provided amounts. County campaigns support color cards and feed sponsorships. State campaigns support regular ad networks at $10 per county per month and feed sponsorships at $20 per county per selected top-level feed per month.
+`POST /v1/checkout/sessions` creates a hosted Stripe Checkout subscription for a county- or state-level County Post Marketing Campaign. The API calculates every price from the server-side rate card and authoritative geography; it rejects client-provided amounts. County-level County Post Marketing Campaigns support color cards and feed sponsorships. State-level County Post Marketing Campaigns support regular ad networks at $10 per county per month and feed sponsorships at $20 per county per selected top-level feed per month.
 
 ```json
 {
