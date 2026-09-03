@@ -12,7 +12,22 @@ export const countyRateTiers = {
 
 export type CountyRateTierKey = keyof typeof countyRateTiers;
 export type CountyPlacement = "color-card" | "section-sponsorship";
+export type StatePlacement = "state-ad" | "state-feed-sponsorship";
 export type BillingCadence = "monthly" | "annual";
+export const sponsorableFeeds = [
+  "general",
+  "sports",
+  "obituaries",
+  "politics",
+  "economy",
+  "crime",
+  "opinion",
+  "weather",
+] as const;
+export type SponsorableFeed = (typeof sponsorableFeeds)[number];
+export const STATE_AD_RATE_PER_COUNTY_CENTS = 1_000;
+export const STATE_FEED_SPONSOR_RATE_PER_COUNTY_CENTS = 2_000;
+export const ANNUAL_BILLED_MONTHS = 10;
 
 export function isCountyRateTierKey(value: unknown): value is CountyRateTierKey {
   return typeof value === "string" && value in countyRateTiers;
@@ -22,6 +37,14 @@ export function isCountyPlacement(value: unknown): value is CountyPlacement {
   return value === "color-card" || value === "section-sponsorship";
 }
 
+export function isStatePlacement(value: unknown): value is StatePlacement {
+  return value === "state-ad" || value === "state-feed-sponsorship";
+}
+
+export function isSponsorableFeed(value: unknown): value is SponsorableFeed {
+  return typeof value === "string" && sponsorableFeeds.includes(value as SponsorableFeed);
+}
+
 export function isBillingCadence(value: unknown): value is BillingCadence {
   return value === "monthly" || value === "annual";
 }
@@ -29,6 +52,11 @@ export function isBillingCadence(value: unknown): value is BillingCadence {
 export function monthlyRateFor(placement: CountyPlacement, tier: CountyRateTierKey) {
   const rate = countyRateTiers[tier];
   return placement === "color-card" ? rate.colorCardMonthlyCents : rate.sectionSponsorMonthlyCents;
+}
+
+export function monthlyStateRateFor(countyCount: number, placement: StatePlacement, feedCount = 0) {
+  if (placement === "state-ad") return countyCount * STATE_AD_RATE_PER_COUNTY_CENTS;
+  return countyCount * STATE_FEED_SPONSOR_RATE_PER_COUNTY_CENTS * feedCount;
 }
 
 export function countyRateTierForPopulation(population: number): CountyRateTierKey {

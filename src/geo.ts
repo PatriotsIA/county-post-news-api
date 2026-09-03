@@ -275,6 +275,12 @@ export function getState(slugOrAbbr: string) {
   return stateBySlug.get(normalized) || stateByAbbr.get(normalized);
 }
 
+export function getStateCountyCount(stateSlug: string) {
+  const state = getState(stateSlug);
+  if (!state) return undefined;
+  return getCountyByState(state.name).length;
+}
+
 export function getCounty(stateSlug: string, countySlug: string) {
   const state = getState(stateSlug);
   if (!state) return undefined;

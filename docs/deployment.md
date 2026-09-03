@@ -112,7 +112,7 @@ After the CI pipeline exists, edit it and add a deploy stage:
    - Template file: `packaged.yaml`
    - Stack name: `county-news-api`
    - Capabilities: `CAPABILITY_IAM` and `CAPABILITY_AUTO_EXPAND`
-   - Parameter overrides: set `UsdaMarsApiKey` to the USDA MARS key, `FredApiKey` to the FRED key, and `StripeSecretKey` to the Stripe secret key. Set `StripeCheckoutSuccessUrl` and `StripeCheckoutCancelUrl` to the deployed frontend payment URLs. Set `CorsOrigins` to the complete comma-separated frontend origin allowlist when it differs from the template default. Remove any legacy `MetalsApiKey` override: the metals ticker now uses the no-key Minted Metal endpoint configured in `template.yaml`.
+   - Parameter overrides: set `UsdaMarsApiKey` to the USDA MARS key, `FredApiKey` to the FRED key, and `StripeSecretKey` to the Stripe secret key. Set `StripeCheckoutSuccessUrl` and `StripeCheckoutCancelUrl` to the deployed advertiser microsite URLs (the template defaults to `www.advertise.thecountypost.com`). Set `CorsOrigins` to include the complete advertiser microsite origin as well as any County Post frontend origins when it differs from the template default. Remove any legacy `MetalsApiKey` override: the metals ticker now uses the no-key Minted Metal endpoint configured in `template.yaml`.
    - Atlas overrides: set `CensusApiKey` to a free Census API key, select the released ACS year with `AtlasCensusYear`, and confirm `AtlasSourceLocation`, `AtlasSourceVersion`, and `AtlasIngestionSchedule`.
 
 Do not point this deploy action at raw `template.yaml`. Raw `template.yaml` has `CodeUri: .`, which causes this error:

@@ -45,11 +45,11 @@ Parameters:
     Description: Stripe secret key used only to create hosted Checkout sessions.
   StripeCheckoutSuccessUrl:
     Type: String
-    Default: "https://thecountypost.com/payments?checkout=success"
+    Default: "https://www.advertise.thecountypost.com/?checkout=success"
     Description: Frontend URL Stripe redirects to after a successful payment.
   StripeCheckoutCancelUrl:
     Type: String
-    Default: "https://thecountypost.com/payments?checkout=cancelled"
+    Default: "https://www.advertise.thecountypost.com/?checkout=cancelled"
     Description: Frontend URL Stripe redirects to when Checkout is cancelled.
 
 Globals:

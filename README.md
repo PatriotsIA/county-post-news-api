@@ -62,10 +62,11 @@ type NewsFeedItem = {
 
 Core topics are `general`, `sports`, `politics`, `economy`, `crime`, `weather`, `obituaries`, and `opinion`. Editorial desk subcategories are `monetary-policy`, `markets-investing`, `jobs-business`, `property-taxes`, `municipal-bonds`, `budgets-levies`, `voting-systems`, `election-administration`, `audits-recounts`, and `open-records`.
 
-`POST /v1/checkout/sessions` creates a hosted Stripe Checkout subscription for a County Post color card or section sponsorship. The API calculates the price from the server-side rate card; it rejects client-provided amounts. The response contains only a Stripe Checkout URL and session ID.
+`POST /v1/checkout/sessions` creates a hosted Stripe Checkout subscription for county or state advertising. The API calculates every price from the server-side rate card and authoritative geography; it rejects client-provided amounts. County campaigns support color cards and feed sponsorships. State campaigns support regular ad networks at $10 per county per month and feed sponsorships at $20 per county per selected top-level feed per month.
 
 ```json
 {
+  "scope": "county",
   "placement": "color-card",
   "billing": "annual",
   "counties": [
@@ -76,7 +77,21 @@ Core topics are `general`, `sports`, `politics`, `economy`, `crime`, `weather`, 
 }
 ```
 
-Annual checkout charges ten times the monthly rate and renews annually. The highest-priced county is charged at full rate; additional counties are charged at half their tier rate. Population tiers are calculated from the bundled U.S. Census Bureau Vintage 2025 county estimates; refresh them annually with `npm run update:populations`. Inventory remains subject to sales review until reservations are backed by a database.
+State feed sponsorship example:
+
+```json
+{
+  "scope": "state",
+  "placement": "state-feed-sponsorship",
+  "billing": "monthly",
+  "states": ["texas", "oklahoma"],
+  "feeds": ["general", "sports"],
+  "customerEmail": "advertiser@example.com",
+  "businessName": "Example Business"
+}
+```
+
+Annual checkout charges ten times the monthly rate and renews annually. The highest-priced county is charged at full rate; additional counties are charged at half their tier rate. State purchases charge every selected state and feed at full price and record state/feed fulfillment metadata on the Stripe session and subscription. Population tiers are calculated from the bundled U.S. Census Bureau Vintage 2025 county estimates; refresh them annually with `npm run update:populations`. Inventory remains subject to sales review until reservations are backed by a database.
 
 The county population endpoint returns the same 2025 Census estimate and pricing tier used by Checkout, so the frontend can show a quote before creating a payment session. The 3,144-county lookup is bundled with the Lambda, requiring no public Census key or runtime Census request.
 
