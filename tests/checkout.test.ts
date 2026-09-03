@@ -49,6 +49,7 @@ describe("Stripe Checkout endpoint", () => {
       counties: [{ stateSlug: "texas", countySlug: "potter" }],
       customerEmail: "advertiser@example.com",
       businessName: "Example Business",
+      referredBy: "County Post Sales Team",
     });
 
     expect(response.statusCode).toBe(201);
@@ -76,6 +77,7 @@ describe("Stripe Checkout endpoint", () => {
           scope: "county",
           placement: "color-card",
           countyCount: "1",
+          referredBy: "County Post Sales Team",
         }),
       }),
     );
@@ -192,6 +194,23 @@ describe("Stripe Checkout endpoint", () => {
     });
     expect(duplicateState.statusCode).toBe(400);
     expect(JSON.parse(duplicateState.body).error).toBe("Each state can be selected only once.");
+    expect(createSession).not.toHaveBeenCalled();
+  });
+
+  it("validates referral attribution before sending it to Stripe", async () => {
+    configureCheckout();
+    const response = await checkout({
+      scope: "state",
+      placement: "state-ad",
+      billing: "monthly",
+      states: ["texas"],
+      customerEmail: "advertiser@example.com",
+      businessName: "Example Business",
+      referredBy: "x".repeat(121),
+    });
+
+    expect(response.statusCode).toBe(400);
+    expect(JSON.parse(response.body).error).toBe("The referral name must be 120 characters or fewer.");
     expect(createSession).not.toHaveBeenCalled();
   });
 

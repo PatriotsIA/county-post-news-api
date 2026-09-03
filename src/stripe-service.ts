@@ -23,6 +23,7 @@ type CheckoutContact = {
   billing: BillingCadence;
   customerEmail: string;
   businessName: string;
+  referredBy?: string;
   creativeAssetKey?: string;
 };
 
@@ -143,12 +144,13 @@ function parseCheckoutContact(payload: Record<string, unknown>): CheckoutContact
   const customerEmail = requiredText(payload.customerEmail, "A valid contact email is required.", 254);
   if (!emailPattern.test(customerEmail)) throw new CheckoutError(400, "A valid contact email is required.");
   const businessName = requiredText(payload.businessName, "A business name is required.", 120);
+  const referredBy = optionalText(payload.referredBy, "The referral name must be 120 characters or fewer.", 120);
   const creativeAssetKey = payload.creativeAssetKey;
   if (creativeAssetKey !== undefined && !isAdCreativeAssetKey(creativeAssetKey)) {
     throw new CheckoutError(400, "The creative upload reference is invalid.");
   }
 
-  return { billing: payload.billing as BillingCadence, customerEmail, businessName, creativeAssetKey };
+  return { billing: payload.billing as BillingCadence, customerEmail, businessName, referredBy, creativeAssetKey };
 }
 
 function parseCountyCheckout(payload: Record<string, unknown>, contact: CheckoutContact): CountyCheckoutRequest {
@@ -252,6 +254,7 @@ function checkoutMetadata(request: CheckoutRequest): Record<string, string> {
     placement: request.placement,
     billing: request.billing,
     requiresSalesReview: "true",
+    ...(request.referredBy ? { referredBy: request.referredBy } : {}),
     ...(request.creativeAssetKey ? { creativeAssetKey: request.creativeAssetKey } : {}),
   };
 
@@ -277,6 +280,15 @@ function requiredText(value: unknown, message: string, maxLength: number) {
   if (typeof value !== "string") throw new CheckoutError(400, message);
   const text = value.trim();
   if (!text || text.length > maxLength) throw new CheckoutError(400, message);
+  return text;
+}
+
+function optionalText(value: unknown, message: string, maxLength: number) {
+  if (value === undefined || value === null || value === "") return undefined;
+  if (typeof value !== "string") throw new CheckoutError(400, message);
+  const text = value.trim();
+  if (!text) return undefined;
+  if (text.length > maxLength) throw new CheckoutError(400, message);
   return text;
 }
 

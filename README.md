@@ -73,7 +73,8 @@ Core topics are `general`, `sports`, `politics`, `economy`, `crime`, `weather`, 
     { "stateSlug": "texas", "countySlug": "potter" }
   ],
   "customerEmail": "advertiser@example.com",
-  "businessName": "Example Business"
+  "businessName": "Example Business",
+  "referredBy": "County Post Sales Team"
 }
 ```
 
@@ -92,6 +93,8 @@ State feed sponsorship example:
 ```
 
 Annual checkout charges ten times the monthly rate and renews annually. The highest-priced county is charged at full rate; additional counties are charged at half their tier rate. State purchases charge every selected state and feed at full price and record state/feed fulfillment metadata on the Stripe session and subscription. Population tiers are calculated from the bundled U.S. Census Bureau Vintage 2025 county estimates; refresh them annually with `npm run update:populations`. Inventory remains subject to sales review until reservations are backed by a database.
+
+`referredBy` is optional. When provided, it is validated and copied to the Checkout Session and subscription metadata for sales attribution.
 
 The county population endpoint returns the same 2025 Census estimate and pricing tier used by Checkout, so the frontend can show a quote before creating a payment session. The 3,144-county lookup is bundled with the Lambda, requiring no public Census key or runtime Census request.
 
