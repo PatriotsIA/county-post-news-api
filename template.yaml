@@ -3,6 +3,15 @@ Transform: AWS::Serverless-2016-10-31
 Description: County Post News API on a low-cost Lambda Function URL.
 
 Parameters:
+  EnableEdgeCache:
+    Type: String
+    Default: "false"
+    AllowedValues: ["true", "false"]
+    Description: >-
+      Create the CloudFront distribution in front of the API. Off until AWS
+      Support verifies the account for CloudFront; the S3 shared cache carries
+      the load either way, and flipping this to "true" is the only change
+      needed once verification lands.
   CorsOrigins:
     Type: String
     Default: "https://main.d2z6lt4e5q50in.amplifyapp.com,https://advertiser-preview.d2z6lt4e5q50in.amplifyapp.com,https://thecountypost.com,https://www.thecountypost.com,https://advertise.thecountypost.com,https://www.advertise.thecountypost.com,https://patriotsinaction.com,https://www.patriotsinaction.com"
@@ -129,6 +138,9 @@ Globals:
         ADVERTISING_CREATIVE_BUCKET: !Ref AdvertisingCreativeBucket
         ADVERTISING_CREATIVE_MAX_BYTES: "10485760"
 
+Conditions:
+  EdgeCacheEnabled: !Equals [!Ref EnableEdgeCache, "true"]
+
 Resources:
   NewsApiFunction:
     Type: AWS::Serverless::Function
@@ -140,6 +152,11 @@ Resources:
             BucketName: !Ref AdvertisingCreativeBucket
         - S3ReadPolicy:
             BucketName: !Ref AtlasDataBucket
+        - S3CrudPolicy:
+            BucketName: !Ref FeedCacheBucket
+      Environment:
+        Variables:
+          FEED_CACHE_BUCKET: !Ref FeedCacheBucket
       FunctionUrlConfig:
         AuthType: NONE
 
@@ -156,6 +173,7 @@ Resources:
   # ---------------------------------------------------------------------------
   NewsApiCachePolicy:
     Type: AWS::CloudFront::CachePolicy
+    Condition: EdgeCacheEnabled
     Properties:
       CachePolicyConfig:
         Name: !Sub "${AWS::StackName}-news-api-cache"
@@ -177,6 +195,7 @@ Resources:
 
   NewsApiDistribution:
     Type: AWS::CloudFront::Distribution
+    Condition: EdgeCacheEnabled
     Properties:
       DistributionConfig:
         Enabled: true
@@ -205,7 +224,29 @@ Resources:
           # which must stay the function URL's own for Lambda to accept it.
           OriginRequestPolicyId: b689b0a8-53d0-40ab-baf2-68738e2966ac
 
-  # Keeps every covered county's lead feed warm at the edge, so the first
+  # Shared response cache. The in-memory cache only helps the instance that
+  # filled it; this bucket is what every instance reads, so a reader is served
+  # a stored county desk instantly — fresh or stale — and the warmer below is
+  # what rebuilds. Objects self-expire; nothing here is a source of truth.
+  FeedCacheBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      LifecycleConfiguration:
+        Rules:
+          - Id: expire-cache-entries
+            Status: Enabled
+            ExpirationInDays: 3
+
+  # Keeps every covered county's lead feed warm, so the first
   # reader is never the one who pays for the fan-out.
   FeedWarmerFunction:
     Type: AWS::Serverless::Function
@@ -216,7 +257,11 @@ Resources:
       MemorySize: 512
       Environment:
         Variables:
-          WARM_BASE_URL: !Sub "https://${NewsApiDistribution.DomainName}"
+          # Warms the edge when it exists, the origin's shared cache otherwise.
+          WARM_BASE_URL: !If
+            - EdgeCacheEnabled
+            - !Sub "https://${NewsApiDistribution.DomainName}"
+            - !GetAtt NewsApiFunctionUrl.FunctionUrl
           WARM_ORIGIN: "https://thecountypost.com"
           WARM_STATES: "texas"
           WARM_CONCURRENCY: "10"
@@ -484,6 +529,7 @@ Outputs:
     Description: Public Lambda Function URL for the news API.
     Value: !GetAtt NewsApiFunctionUrl.FunctionUrl
   NewsApiEdgeUrl:
+    Condition: EdgeCacheEnabled
     Description: CloudFront domain the site should call; edge-cached with stale-while-revalidate.
     Value: !Sub "https://${NewsApiDistribution.DomainName}"
   AtlasDataBucketName:

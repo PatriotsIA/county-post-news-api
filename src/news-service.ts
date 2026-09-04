@@ -1,4 +1,4 @@
-import { cached } from "./cache.js";
+import { cached, cachedShared } from "./cache.js";
 import { enrichArticleImages } from "./article-images.js";
 import { config } from "./config.js";
 import { buildCountyFallbackPlan, buildCountyMarketPlan, buildFeedPlan, topics } from "./feed-builders.js";
@@ -15,11 +15,12 @@ export async function getFeed(
   topic: Topic,
   limit: number,
   offset = 0,
+  forceFresh = false,
 ): Promise<FeedResponse> {
   const cappedLimit = capLimit(limit);
   const start = Math.max(0, Math.floor(offset));
   const cacheKey = `feed:${scopeKey(scope)}:${topic}`;
-  const feed = await cached(cacheKey, config.cacheTtlSeconds, async () => {
+  const feed = await cachedShared(cacheKey, config.cacheTtlSeconds, async () => {
     const plan = buildFeedPlan(scope, topic);
     const items = await loadPlanItems(plan);
     const filtered = dedupeItems(
@@ -41,7 +42,7 @@ export async function getFeed(
       },
     };
     return withCountyCoverage(primaryFeed, scope, topic, config.maxLimit);
-  });
+  }, { forceFresh });
   const feedItems = topic === "opinion" ? dedupeItems([featuredCountyPostOpinion, ...feed.items]) : feed.items;
   // Balancing and ordering apply to the whole result, then the requested
   // window is taken from it, so paging through a feed keeps one stable order
@@ -285,9 +286,9 @@ async function settleLimited<T, R>(items: T[], load: (item: T) => Promise<R>): P
   return results;
 }
 
-export async function getPage(scope: FeedScope, sectionNames: string[], limit: number): Promise<PageResponse> {
+export async function getPage(scope: FeedScope, sectionNames: string[], limit: number, forceFresh = false): Promise<PageResponse> {
   const selectedSections = normalizeSections(sectionNames, scope);
-  const entries = await loadPageEntries(selectedSections, scope, limit);
+  const entries = await loadPageEntries(selectedSections, scope, limit, forceFresh);
   const sections = Object.fromEntries(entries);
   const count = Object.values(sections).reduce((total, section) => total + section.meta.count, 0);
 
@@ -306,6 +307,7 @@ async function loadPageEntries(
   selectedSections: [string, Topic][],
   scope: FeedScope,
   limit: number,
+  forceFresh = false,
 ): Promise<[string, FeedResponse][]> {
   const entries = new Array<[string, FeedResponse]>(selectedSections.length);
   let cursor = 0;
@@ -318,7 +320,7 @@ async function loadPageEntries(
         cursor += 1;
         const [section, topic] = selectedSections[index];
         try {
-          entries[index] = [section, await getFeed(scope, topic, limit)];
+          entries[index] = [section, await getFeed(scope, topic, limit, 0, forceFresh)];
         } catch (reason) {
           console.warn(
             JSON.stringify({

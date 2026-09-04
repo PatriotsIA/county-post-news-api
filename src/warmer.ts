@@ -54,7 +54,12 @@ export async function handler(): Promise<WarmerResult> {
         try {
           const response = await fetch(url, {
             signal: controller.signal,
-            headers: { origin, "user-agent": "TheCountyPost cache warmer" },
+            headers: {
+              origin,
+              "user-agent": "TheCountyPost cache warmer",
+              // Marks this as the pass that rebuilds; reader requests never do.
+              "x-warm-refresh": "1",
+            },
           });
           if (response.ok) warmed += 1;
           else failed += 1;
