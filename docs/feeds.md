@@ -56,6 +56,16 @@ these fields exactly. History says any drift between the two filters shows up
 as "the API returned fifty stories and the page rendered three" — change both
 sides together, and extend the scope rather than letting the client guess.
 
+### The Local Sources directory reads the registry too
+
+`/v1/sources/counties/{state}/{county}` publishes the reviewed
+`countyNativeSources` profiles (name, website, outlet types, aliases — no feed
+URLs) and backs the frontend's Local Sources page. The frontend keeps no copy
+of the registry: its static list drifted once and Potter County's directory
+showed "no sources" while three Amarillo newsrooms were trusted here. Promote
+an outlet in `source-registry.ts` and the county's directory page updates on
+the next API deploy.
+
 ## Place data (`src/county-places.ts`, `npm run update:places`)
 
 Every county's towns, most populous first, from three public-domain federal
@@ -92,6 +102,13 @@ Two registries with deliberately different powers:
   Lufkin Daily News leads Angelina County despite publishing no usable RSS.
   Adjacent counties may share entries: Amarillo straddles Potter and Randall,
   so its newsrooms are native to both.
+- **Reviewed but untrusted** (`trustedForCountyTier: false` on a reviewed
+  entry): a real local newsroom listed on the Local Sources page whose feed
+  mixes syndicated national wire (Gray/TEGNA/Scripps/CNHI platforms), or whose
+  hostname serves several counties' papers. Fetched and listed; stories still
+  pass the text rules. The flag propagates when native feeds are flattened
+  into direct sources — dropping it there once made every such feed trusted
+  through the side door.
 - **`county-discovered-sources.ts` — generated, fetched, never trusted.**
   Produced by the discovery pipeline; every entry carries
   `trustedForCountyTier: false`, so its feed is pulled for the counties it was

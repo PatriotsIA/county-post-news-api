@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { discoveredCountyNativeSources, discoveredRegionalSources } from "../src/county-discovered-sources.js";
+import { getReviewedCountySourceProfiles, trustedCountyHosts } from "../src/source-registry.js";
 import { buildCountyPrimaryPlan } from "../src/feed-builders.js";
 import { getCounty } from "../src/geo.js";
 import { filterItems } from "../src/filter.js";
@@ -68,5 +69,31 @@ describe("discovered county sources", () => {
     );
 
     expect(kept.map((item) => item.title)).toEqual(["Lufkin ISD names a new superintendent"]);
+  });
+});
+
+describe("reviewed is not the same as trusted", () => {
+  it("an untrusted reviewed outlet is listed in the directory but never in trustedHosts", () => {
+    const mclennan = getCounty("texas", "mclennan")!;
+    const profiles = getReviewedCountySourceProfiles(mclennan);
+    // KWTX is McLennan County's newsroom and belongs on the Local Sources
+    // page, but its Gray feed mixes in national wire, so its stories must
+    // still pass the text rules.
+    expect(profiles.map((p) => p.name)).toContain("KWTX News 10");
+    expect(trustedCountyHosts(mclennan)).not.toContain("kwtx.com");
+  });
+
+  it("a trusted county weekly reaches both the directory and trustedHosts", () => {
+    const hall = getCounty("texas", "hall")!;
+    expect(getReviewedCountySourceProfiles(hall).map((p) => p.name)).toContain("The Greenbelt Intrepid");
+    expect(trustedCountyHosts(hall)).toContain("the-intrepid.com");
+  });
+
+  it("Potter County's directory names its Amarillo newsrooms", () => {
+    const potter = getCounty("texas", "potter")!;
+    const names = getReviewedCountySourceProfiles(potter).map((p) => p.name);
+    for (const name of ["Amarillo Globe-News", "NewsChannel 10", "MyHighPlains (KAMR/KCIT)", "ABC7 Amarillo (KVII)"]) {
+      expect(names).toContain(name);
+    }
   });
 });

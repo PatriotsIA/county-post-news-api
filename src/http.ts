@@ -1,6 +1,7 @@
 import { config } from "./config.js";
 import { getCounty, getState, states } from "./geo.js";
 import { getFeed, getPage } from "./news-service.js";
+import { getReviewedCountySourceProfiles } from "./source-registry.js";
 import { topics } from "./feed-builders.js";
 import { getCattleTicker, getMetalsTicker, MarketServiceError } from "./markets-service.js";
 import { CheckoutError, createCheckoutSession } from "./stripe-service.js";
@@ -70,6 +71,17 @@ export async function handleRequest(request: ApiRequest): Promise<ApiResponse> {
         response = json(200, await getCountyAtlasOverview(parts[2], parts[3]), atlasCacheControl());
       } else if (parts[1] === "counties" && parts[2] && parts[3] && parts[4] === "atlas" && parts[5] && parts.length === 6) {
         response = json(200, await getCountyAtlasDomain(parts[2], parts[3], parts[5]), atlasCacheControl());
+      } else if (parts[1] === "sources" && parts[2] === "counties" && parts[3] && parts[4] && parts.length === 5) {
+        const county = getCounty(parts[3], parts[4]);
+        if (!county) throw new ApiError(404, "Unknown county");
+        response = json(
+          200,
+          {
+            county: { state: county.state.slug, county: county.slug, displayName: county.displayName },
+            sources: getReviewedCountySourceProfiles(county),
+          },
+          "public, max-age=300, s-maxage=3600, stale-while-revalidate=86400",
+        );
       } else if (parts[1] === "feeds") {
         response = await handleFeed(parts.slice(2), request.query, request);
       } else if (parts[1] === "pages") {

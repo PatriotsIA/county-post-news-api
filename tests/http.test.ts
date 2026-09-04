@@ -1297,3 +1297,44 @@ describe("handleRequest", () => {
     });
   });
 });
+
+describe("county sources directory endpoint", () => {
+  it("lists the reviewed outlets for a county with a populated registry", async () => {
+    const response = await handleRequest({
+      method: "GET",
+      path: "/v1/sources/counties/texas/potter",
+      query: new URLSearchParams(),
+    });
+    expect(response.statusCode).toBe(200);
+    const body = JSON.parse(response.body);
+    expect(body.county).toMatchObject({ state: "texas", county: "potter" });
+    const names = body.sources.map((source: { name: string }) => source.name);
+    expect(names).toContain("Amarillo Globe-News");
+    expect(names).toContain("NewsChannel 10");
+    // Public directory shape only — no feed URLs, which are an internal detail.
+    for (const source of body.sources) {
+      expect(source).not.toHaveProperty("feeds");
+      expect(source.websiteUrl).toMatch(/^https?:\/\//);
+      expect(source.outletTypes.length).toBeGreaterThan(0);
+    }
+  });
+
+  it("returns an empty list, not an error, for a county with no reviewed outlets", async () => {
+    const response = await handleRequest({
+      method: "GET",
+      path: "/v1/sources/counties/texas/loving",
+      query: new URLSearchParams(),
+    });
+    expect(response.statusCode).toBe(200);
+    expect(JSON.parse(response.body).sources).toEqual([]);
+  });
+
+  it("404s an unknown county", async () => {
+    const response = await handleRequest({
+      method: "GET",
+      path: "/v1/sources/counties/texas/not-a-county",
+      query: new URLSearchParams(),
+    });
+    expect(response.statusCode).toBe(404);
+  });
+});
