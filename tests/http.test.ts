@@ -1113,8 +1113,11 @@ describe("handleRequest", () => {
     expect(decodedUrls.every(isCountyQualified)).toBe(true);
     expect(decodedUrls.some((url) => url.includes("www.bing.com/news/search"))).toBe(true);
     expect(decodedUrls.some((url) => url.includes("when:7d"))).toBe(true);
-    expect(plan.rssUrls.length).toBeLessThanOrEqual(18);
-    expect(plan.articleQueries.length).toBeLessThanOrEqual(6);
+    // Asserted against config, not literals. These budgets were raised to fill
+    // sparse counties, and a local .env pinning the old values made this test
+    // pass here while failing in CI, which has no .env at all.
+    expect(plan.rssUrls.length).toBeLessThanOrEqual(config.maxRssUrlsPerFeed);
+    expect(plan.articleQueries.length).toBeLessThanOrEqual(config.maxArticleQueriesPerFeed);
     expect(plan.articleQueries.every(isCountyQualified)).toBe(true);
     expect(plan.directSources.some((source) => source.counties?.includes("texas/potter"))).toBe(true);
   });
