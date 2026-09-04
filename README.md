@@ -4,6 +4,13 @@ A Node.js/AWS Lambda API that aggregates national, state, and county news into J
 
 ## Documentation
 
+- County feed architecture — locality rules, place and source data, the outlet
+  discovery pipeline, caching and the warmer: `docs/feeds.md`
+- Client-side counterpart (scope contract, infinite scroll): the frontend
+  repo's `docs/feeds.md`
+
+## Documentation
+
 Start here:
 
 - `docs/comprehensive-guide.md`: complete architecture, data flow, endpoint, configuration, deployment, operations, troubleshooting, and roadmap reference with diagrams and tables.
