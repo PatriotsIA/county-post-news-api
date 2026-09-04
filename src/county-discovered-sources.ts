@@ -41,16 +41,35 @@ export const discoveredRegionalSources: DirectSource[] = [
     "mediaType": "article",
     "itemSource": "12 NEWS",
     "counties": [
-      "texas/jasper",
       "texas/orange",
-      "texas/tyler",
-      "texas/jefferson",
       "texas/newton",
+      "texas/hardin",
+      "texas/jefferson",
+      "texas/tyler",
+      "texas/jasper",
       "texas/palo-pinto",
       "texas/blanco",
       "texas/brooks",
-      "texas/sabine",
-      "texas/hardin"
+      "texas/sabine"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "12 NEWS (2)",
+    "url": "https://12newsnow.com/feeds/syndication/rss/news",
+    "mediaType": "article",
+    "itemSource": "12 NEWS",
+    "counties": [
+      "texas/orange",
+      "texas/newton",
+      "texas/hardin",
+      "texas/jefferson",
+      "texas/tyler",
+      "texas/jasper",
+      "texas/palo-pinto",
+      "texas/blanco",
+      "texas/brooks",
+      "texas/sabine"
     ],
     "trustedForCountyTier": false
   },
@@ -70,18 +89,7 @@ export const discoveredRegionalSources: DirectSource[] = [
     "mediaType": "article",
     "itemSource": "25 News KXXV",
     "counties": [
-      "texas/hamilton",
-      "texas/mclennan"
-    ],
-    "trustedForCountyTier": false
-  },
-  {
-    "name": "ABC10",
-    "url": "https://www.abc10.com/feeds/syndication/rss/news",
-    "mediaType": "article",
-    "itemSource": "ABC10",
-    "counties": [
-      "texas/trinity"
+      "texas/hamilton"
     ],
     "trustedForCountyTier": false
   },
@@ -92,22 +100,22 @@ export const discoveredRegionalSources: DirectSource[] = [
     "itemSource": "ABC13 Houston",
     "counties": [
       "texas/matagorda",
-      "texas/houston",
       "texas/fort-bend",
-      "texas/leon",
-      "texas/liberty",
-      "texas/waller",
-      "texas/jackson",
-      "texas/harris",
       "texas/san-jacinto",
       "texas/henderson",
-      "texas/kinney",
-      "texas/tarrant",
-      "texas/walker",
+      "texas/houston",
+      "texas/liberty",
+      "texas/waller",
+      "texas/gregg",
+      "texas/harris",
       "texas/brazoria",
       "texas/chambers",
-      "texas/gregg",
-      "texas/victoria"
+      "texas/jackson",
+      "texas/leon",
+      "texas/tarrant",
+      "texas/walker",
+      "texas/kinney",
+      "texas/montgomery"
     ],
     "trustedForCountyTier": false
   },
@@ -118,32 +126,22 @@ export const discoveredRegionalSources: DirectSource[] = [
     "itemSource": "ABC13 Houston",
     "counties": [
       "texas/matagorda",
-      "texas/houston",
       "texas/fort-bend",
-      "texas/leon",
-      "texas/liberty",
-      "texas/waller",
-      "texas/jackson",
-      "texas/harris",
       "texas/san-jacinto",
       "texas/henderson",
-      "texas/kinney",
-      "texas/tarrant",
-      "texas/walker",
+      "texas/houston",
+      "texas/liberty",
+      "texas/waller",
+      "texas/gregg",
+      "texas/harris",
       "texas/brazoria",
       "texas/chambers",
-      "texas/gregg",
-      "texas/victoria"
-    ],
-    "trustedForCountyTier": false
-  },
-  {
-    "name": "Action News Now",
-    "url": "http://www.actionnewsnow.com/search/?f=rss&t=article&l=50&s=start_time&sd=desc&k%5B%5D=%23topstory",
-    "mediaType": "article",
-    "itemSource": "Action News Now",
-    "counties": [
-      "texas/trinity"
+      "texas/jackson",
+      "texas/leon",
+      "texas/tarrant",
+      "texas/walker",
+      "texas/kinney",
+      "texas/montgomery"
     ],
     "trustedForCountyTier": false
   },
@@ -153,7 +151,8 @@ export const discoveredRegionalSources: DirectSource[] = [
     "mediaType": "article",
     "itemSource": "AgriLife Today",
     "counties": [
-      "texas/mason"
+      "texas/mason",
+      "texas/brazos"
     ],
     "trustedForCountyTier": false
   },
@@ -163,39 +162,8 @@ export const discoveredRegionalSources: DirectSource[] = [
     "mediaType": "article",
     "itemSource": "AgriLife Today",
     "counties": [
-      "texas/mason"
-    ],
-    "trustedForCountyTier": false
-  },
-  {
-    "name": "Athens Review",
-    "url": "http://www.athensreview.com/search/?f=rss&t=article&l=50&s=start_time&sd=desc&k%5B%5D=%23topstory",
-    "mediaType": "article",
-    "itemSource": "Athens Review",
-    "counties": [
-      "texas/henderson"
-    ],
-    "trustedForCountyTier": false
-  },
-  {
-    "name": "Bluebonnet News",
-    "url": "https://bluebonnetnews.com/feed/",
-    "mediaType": "article",
-    "itemSource": "Bluebonnet News",
-    "counties": [
-      "texas/liberty",
-      "texas/live-oak"
-    ],
-    "trustedForCountyTier": false
-  },
-  {
-    "name": "Bluebonnet News (2)",
-    "url": "https://bluebonnetnews.com/comments/feed/",
-    "mediaType": "article",
-    "itemSource": "Bluebonnet News",
-    "counties": [
-      "texas/liberty",
-      "texas/live-oak"
+      "texas/mason",
+      "texas/brazos"
     ],
     "trustedForCountyTier": false
   },
@@ -206,10 +174,20 @@ export const discoveredRegionalSources: DirectSource[] = [
     "itemSource": "Cbs19",
     "counties": [
       "texas/wood",
-      "texas/angelina",
       "texas/harrison",
-      "texas/anderson",
-      "texas/rusk"
+      "texas/angelina"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Cbs19 (2)",
+    "url": "https://cbs19.tv/feeds/syndication/rss/news",
+    "mediaType": "article",
+    "itemSource": "Cbs19",
+    "counties": [
+      "texas/wood",
+      "texas/harrison",
+      "texas/angelina"
     ],
     "trustedForCountyTier": false
   },
@@ -220,18 +198,19 @@ export const discoveredRegionalSources: DirectSource[] = [
     "itemSource": "Click2Houston",
     "counties": [
       "texas/polk",
-      "texas/galveston",
-      "texas/liberty",
-      "texas/austin",
-      "texas/matagorda",
-      "texas/san-jacinto",
       "texas/brazoria",
-      "texas/midland",
-      "texas/uvalde",
-      "texas/harris",
+      "texas/austin",
+      "texas/galveston",
+      "texas/ector",
+      "texas/grimes",
       "texas/houston",
-      "texas/chambers",
-      "texas/victoria"
+      "texas/liberty",
+      "texas/mclennan",
+      "texas/uvalde",
+      "texas/fort-bend",
+      "texas/harris",
+      "texas/hood",
+      "texas/san-jacinto"
     ],
     "trustedForCountyTier": false
   },
@@ -261,8 +240,8 @@ export const discoveredRegionalSources: DirectSource[] = [
     "mediaType": "article",
     "itemSource": "Community Impact",
     "counties": [
-      "texas/williamson",
       "texas/collin",
+      "texas/williamson",
       "texas/brazos",
       "texas/montgomery"
     ],
@@ -274,10 +253,30 @@ export const discoveredRegionalSources: DirectSource[] = [
     "mediaType": "article",
     "itemSource": "Community Impact",
     "counties": [
-      "texas/williamson",
       "texas/collin",
+      "texas/williamson",
       "texas/brazos",
       "texas/montgomery"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Conchovalleyhomepage",
+    "url": "https://conchovalleyhomepage.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Conchovalleyhomepage",
+    "counties": [
+      "texas/tom-green"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Conchovalleyhomepage (2)",
+    "url": "https://conchovalleyhomepage.com/rss",
+    "mediaType": "article",
+    "itemSource": "Conchovalleyhomepage",
+    "counties": [
+      "texas/tom-green"
     ],
     "trustedForCountyTier": false
   },
@@ -302,126 +301,46 @@ export const discoveredRegionalSources: DirectSource[] = [
     "trustedForCountyTier": false
   },
   {
-    "name": "Cross Timbers Gazette",
-    "url": "https://www.crosstimbersgazette.com/feed/",
+    "name": "CW39 Houston",
+    "url": "https://cw39.com/feed/",
     "mediaType": "article",
-    "itemSource": "Cross Timbers Gazette",
+    "itemSource": "CW39 Houston",
     "counties": [
-      "texas/denton"
+      "texas/hardin",
+      "texas/jack"
     ],
     "trustedForCountyTier": false
   },
   {
-    "name": "Cross Timbers Gazette (2)",
-    "url": "https://crosstimbersgazette.com/feed/",
+    "name": "CW39 Houston (2)",
+    "url": "https://cw39.com/comments/feed/",
     "mediaType": "article",
-    "itemSource": "Cross Timbers Gazette",
+    "itemSource": "CW39 Houston",
     "counties": [
-      "texas/denton"
+      "texas/hardin",
+      "texas/jack"
     ],
     "trustedForCountyTier": false
   },
   {
-    "name": "Crossroads Today",
-    "url": "http://www.crossroadstoday.com/search/?f=rss&t=article&l=50&s=start_time&sd=desc&k%5B%5D=%23topstory",
+    "name": "Everythinglubbock",
+    "url": "https://everythinglubbock.com/feed/",
     "mediaType": "article",
-    "itemSource": "Crossroads Today",
+    "itemSource": "Everythinglubbock",
     "counties": [
-      "texas/jackson",
-      "texas/calhoun",
-      "texas/fort-bend",
-      "texas/guadalupe",
-      "texas/goliad"
+      "texas/gaines",
+      "texas/cochran"
     ],
     "trustedForCountyTier": false
   },
   {
-    "name": "Dailyyonder",
-    "url": "https://dailyyonder.com/feed/",
+    "name": "Everythinglubbock (2)",
+    "url": "https://everythinglubbock.com/rss",
     "mediaType": "article",
-    "itemSource": "Dailyyonder",
+    "itemSource": "Everythinglubbock",
     "counties": [
-      "texas/starr"
-    ],
-    "trustedForCountyTier": false
-  },
-  {
-    "name": "Dailyyonder (2)",
-    "url": "https://dailyyonder.com/comments/feed/",
-    "mediaType": "article",
-    "itemSource": "Dailyyonder",
-    "counties": [
-      "texas/starr"
-    ],
-    "trustedForCountyTier": false
-  },
-  {
-    "name": "Denton Record-Chronicle",
-    "url": "http://dentonrc.com/search/?f=rss&t=article&l=50&s=start_time&sd=desc&k%5B%5D=%23topstory",
-    "mediaType": "article",
-    "itemSource": "Denton Record-Chronicle",
-    "counties": [
-      "texas/denton"
-    ],
-    "trustedForCountyTier": false
-  },
-  {
-    "name": "Eagle Pass Business Journal",
-    "url": "https://epbusinessjournal.com/feed/",
-    "mediaType": "article",
-    "itemSource": "Eagle Pass Business Journal",
-    "counties": [
-      "texas/maverick"
-    ],
-    "trustedForCountyTier": false
-  },
-  {
-    "name": "Eagle Pass Business Journal (2)",
-    "url": "https://epbusinessjournal.com/rss",
-    "mediaType": "article",
-    "itemSource": "Eagle Pass Business Journal",
-    "counties": [
-      "texas/maverick"
-    ],
-    "trustedForCountyTier": false
-  },
-  {
-    "name": "Electrek",
-    "url": "https://electrek.co/feed/",
-    "mediaType": "article",
-    "itemSource": "Electrek",
-    "counties": [
-      "texas/swisher"
-    ],
-    "trustedForCountyTier": false
-  },
-  {
-    "name": "Electrek (2)",
-    "url": "https://electrek.co/rss",
-    "mediaType": "article",
-    "itemSource": "Electrek",
-    "counties": [
-      "texas/swisher"
-    ],
-    "trustedForCountyTier": false
-  },
-  {
-    "name": "FOX 26 Houston",
-    "url": "https://www.fox26houston.com/rss.xml",
-    "mediaType": "article",
-    "itemSource": "FOX 26 Houston",
-    "counties": [
-      "texas/galveston"
-    ],
-    "trustedForCountyTier": false
-  },
-  {
-    "name": "FOX 26 Houston (2)",
-    "url": "https://www.fox26houston.com/rss/category/news",
-    "mediaType": "article",
-    "itemSource": "FOX 26 Houston",
-    "counties": [
-      "texas/galveston"
+      "texas/gaines",
+      "texas/cochran"
     ],
     "trustedForCountyTier": false
   },
@@ -431,8 +350,8 @@ export const discoveredRegionalSources: DirectSource[] = [
     "mediaType": "article",
     "itemSource": "FOX 4 News Dallas-Fort Worth",
     "counties": [
-      "texas/van-zandt",
-      "texas/travis"
+      "texas/travis",
+      "texas/van-zandt"
     ],
     "trustedForCountyTier": false
   },
@@ -442,8 +361,8 @@ export const discoveredRegionalSources: DirectSource[] = [
     "mediaType": "article",
     "itemSource": "FOX 4 News Dallas-Fort Worth",
     "counties": [
-      "texas/van-zandt",
-      "texas/travis"
+      "texas/travis",
+      "texas/van-zandt"
     ],
     "trustedForCountyTier": false
   },
@@ -453,6 +372,7 @@ export const discoveredRegionalSources: DirectSource[] = [
     "mediaType": "article",
     "itemSource": "FOX 7 Austin",
     "counties": [
+      "texas/travis",
       "texas/uvalde"
     ],
     "trustedForCountyTier": false
@@ -463,27 +383,70 @@ export const discoveredRegionalSources: DirectSource[] = [
     "mediaType": "article",
     "itemSource": "FOX 7 Austin",
     "counties": [
+      "texas/travis",
       "texas/uvalde"
     ],
     "trustedForCountyTier": false
   },
   {
-    "name": "FreightWaves",
-    "url": "https://freightwaves.com/feed/",
+    "name": "Fox Business Network",
+    "url": "https://moxie.foxbusiness.com/google-publisher/latest.xml",
     "mediaType": "article",
-    "itemSource": "FreightWaves",
+    "itemSource": "Fox Business Network",
     "counties": [
-      "texas/hidalgo"
+      "texas/armstrong",
+      "texas/cameron"
     ],
     "trustedForCountyTier": false
   },
   {
-    "name": "FreightWaves (2)",
-    "url": "https://freightwaves.com/rss",
+    "name": "Fox Business Network (2)",
+    "url": "https://foxbusiness.com/rss.xml",
     "mediaType": "article",
-    "itemSource": "FreightWaves",
+    "itemSource": "Fox Business Network",
     "counties": [
-      "texas/hidalgo"
+      "texas/armstrong",
+      "texas/cameron"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "FOX21 News Colorado",
+    "url": "https://fox21news.com/feed/",
+    "mediaType": "article",
+    "itemSource": "FOX21 News Colorado",
+    "counties": [
+      "texas/starr"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "FOX21 News Colorado (2)",
+    "url": "https://fox21news.com/rss",
+    "mediaType": "article",
+    "itemSource": "FOX21 News Colorado",
+    "counties": [
+      "texas/starr"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "FOX59 News",
+    "url": "https://fox59.com/feed/",
+    "mediaType": "article",
+    "itemSource": "FOX59 News",
+    "counties": [
+      "texas/loving"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "FOX59 News (2)",
+    "url": "https://fox59.com/rss",
+    "mediaType": "article",
+    "itemSource": "FOX59 News",
+    "counties": [
+      "texas/loving"
     ],
     "trustedForCountyTier": false
   },
@@ -493,8 +456,65 @@ export const discoveredRegionalSources: DirectSource[] = [
     "mediaType": "article",
     "itemSource": "Government Technology",
     "counties": [
+      "texas/bosque",
       "texas/coryell",
+      "texas/bastrop",
+      "texas/harris",
       "texas/johnson"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Grist",
+    "url": "https://grist.org/feed/",
+    "mediaType": "article",
+    "itemSource": "Grist",
+    "counties": [
+      "texas/crockett",
+      "texas/kerr"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Grist (2)",
+    "url": "https://grist.org/rss",
+    "mediaType": "article",
+    "itemSource": "Grist",
+    "counties": [
+      "texas/crockett",
+      "texas/kerr"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Hoodline",
+    "url": "https://hoodline.com/rss.xml",
+    "mediaType": "article",
+    "itemSource": "Hoodline",
+    "counties": [
+      "texas/kendall"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "HousingWire",
+    "url": "https://www.housingwire.com/feed/",
+    "mediaType": "article",
+    "itemSource": "HousingWire",
+    "counties": [
+      "texas/collin",
+      "texas/hemphill"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "HousingWire (2)",
+    "url": "https://www.housingwire.com/comments/feed/",
+    "mediaType": "article",
+    "itemSource": "HousingWire",
+    "counties": [
+      "texas/collin",
+      "texas/hemphill"
     ],
     "trustedForCountyTier": false
   },
@@ -504,13 +524,13 @@ export const discoveredRegionalSources: DirectSource[] = [
     "mediaType": "article",
     "itemSource": "Houston Public Media",
     "counties": [
-      "texas/galveston",
       "texas/polk",
+      "texas/galveston",
       "texas/houston",
-      "texas/harris",
-      "texas/mclennan",
       "texas/montgomery",
-      "texas/waller"
+      "texas/waller",
+      "texas/brazoria",
+      "texas/harris"
     ],
     "trustedForCountyTier": false
   },
@@ -520,13 +540,13 @@ export const discoveredRegionalSources: DirectSource[] = [
     "mediaType": "article",
     "itemSource": "Houston Public Media",
     "counties": [
-      "texas/galveston",
       "texas/polk",
+      "texas/galveston",
       "texas/houston",
-      "texas/harris",
-      "texas/mclennan",
       "texas/montgomery",
-      "texas/waller"
+      "texas/waller",
+      "texas/brazoria",
+      "texas/harris"
     ],
     "trustedForCountyTier": false
   },
@@ -536,7 +556,8 @@ export const discoveredRegionalSources: DirectSource[] = [
     "mediaType": "article",
     "itemSource": "Independent Journal Review",
     "counties": [
-      "texas/milam"
+      "texas/milam",
+      "texas/harris"
     ],
     "trustedForCountyTier": false
   },
@@ -546,7 +567,35 @@ export const discoveredRegionalSources: DirectSource[] = [
     "mediaType": "article",
     "itemSource": "Independent Journal Review",
     "counties": [
-      "texas/milam"
+      "texas/milam",
+      "texas/harris"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "InForum",
+    "url": "https://www.inforum.com/index.rss",
+    "mediaType": "article",
+    "itemSource": "InForum",
+    "counties": [
+      "texas/kleberg"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "InsideClimate News",
+    "url": "https://insideclimatenews.org/feed/",
+    "mediaType": "article",
+    "itemSource": "InsideClimate News",
+    "counties": [
+      "texas/somervell",
+      "texas/pecos",
+      "texas/jim-wells",
+      "texas/caldwell",
+      "texas/tom-green",
+      "texas/webb",
+      "texas/winkler",
+      "texas/starr"
     ],
     "trustedForCountyTier": false
   },
@@ -573,16 +622,6 @@ export const discoveredRegionalSources: DirectSource[] = [
     "trustedForCountyTier": false
   },
   {
-    "name": "KAGS",
-    "url": "https://www.kagstv.com/feeds/syndication/rss/news",
-    "mediaType": "article",
-    "itemSource": "KAGS",
-    "counties": [
-      "texas/brazos"
-    ],
-    "trustedForCountyTier": false
-  },
-  {
     "name": "KARE",
     "url": "https://www.kare11.com/feeds/syndication/rss/news",
     "mediaType": "article",
@@ -593,22 +632,33 @@ export const discoveredRegionalSources: DirectSource[] = [
     "trustedForCountyTier": false
   },
   {
-    "name": "KBTX News 3",
+    "name": "KARE (2)",
+    "url": "https://kare11.com/feeds/syndication/rss/news",
+    "mediaType": "article",
+    "itemSource": "KARE",
+    "counties": [
+      "texas/washington"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KBTX",
     "url": "https://kbtx.com/arc/outboundfeeds/rss/?outputType=xml",
     "mediaType": "article",
-    "itemSource": "KBTX News 3",
+    "itemSource": "KBTX",
     "counties": [
-      "texas/palo-pinto",
       "texas/leon",
       "texas/walker",
-      "texas/lee",
-      "texas/fayette",
-      "texas/childress",
-      "texas/madison",
       "texas/burleson",
-      "texas/brazos",
+      "texas/hood",
+      "texas/palo-pinto",
       "texas/erath",
-      "texas/robertson"
+      "texas/fayette",
+      "texas/grimes",
+      "texas/lee",
+      "texas/milam",
+      "texas/robertson",
+      "texas/madison"
     ],
     "trustedForCountyTier": false
   },
@@ -618,8 +668,8 @@ export const discoveredRegionalSources: DirectSource[] = [
     "mediaType": "article",
     "itemSource": "KCBD",
     "counties": [
-      "texas/lubbock",
       "texas/hale",
+      "texas/lubbock",
       "texas/williamson",
       "texas/garza"
     ],
@@ -632,29 +682,44 @@ export const discoveredRegionalSources: DirectSource[] = [
     "itemSource": "KCEN-TV",
     "counties": [
       "texas/hamilton",
-      "texas/lampasas",
-      "texas/palo-pinto",
-      "texas/brazos"
+      "texas/bell",
+      "texas/lampasas"
     ],
     "trustedForCountyTier": false
   },
   {
-    "name": "KDRV NewsWatch 12",
-    "url": "http://www.kdrv.com/search/?f=rss&t=article&l=50&s=start_time&sd=desc&k%5B%5D=%23topstory",
+    "name": "KCEN-TV (2)",
+    "url": "https://kcentv.com/feeds/syndication/rss/news",
     "mediaType": "article",
-    "itemSource": "KDRV NewsWatch 12",
+    "itemSource": "KCEN-TV",
     "counties": [
-      "texas/trinity"
+      "texas/hamilton",
+      "texas/bell",
+      "texas/lampasas"
     ],
     "trustedForCountyTier": false
   },
   {
-    "name": "KHNL",
-    "url": "https://hawaiinewsnow.com/arc/outboundfeeds/rss/?outputType=xml",
+    "name": "Ketk",
+    "url": "https://ketk.com/feed/",
     "mediaType": "article",
-    "itemSource": "KHNL",
+    "itemSource": "Ketk",
     "counties": [
-      "texas/ward"
+      "texas/trinity",
+      "texas/smith",
+      "texas/wood"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Ketk (2)",
+    "url": "https://ketk.com/rss",
+    "mediaType": "article",
+    "itemSource": "Ketk",
+    "counties": [
+      "texas/trinity",
+      "texas/smith",
+      "texas/wood"
     ],
     "trustedForCountyTier": false
   },
@@ -665,54 +730,68 @@ export const discoveredRegionalSources: DirectSource[] = [
     "itemSource": "KHOU",
     "counties": [
       "texas/galveston",
-      "texas/houston",
-      "texas/val-verde",
-      "texas/montgomery",
-      "texas/childress",
       "texas/waller",
-      "texas/wharton",
       "texas/kendall",
-      "texas/victoria",
+      "texas/val-verde",
       "texas/harris",
-      "texas/kerr",
-      "texas/nacogdoches",
-      "texas/zavala",
       "texas/brazoria",
-      "texas/liberty",
-      "texas/real",
+      "texas/chambers",
+      "texas/childress",
+      "texas/nacogdoches",
+      "texas/houston",
+      "texas/kerr",
+      "texas/uvalde",
+      "texas/victoria",
+      "texas/wharton",
       "texas/bell",
+      "texas/ector",
+      "texas/fort-bend",
+      "texas/liberty",
+      "texas/montgomery",
+      "texas/polk",
+      "texas/zavala",
       "texas/grimes",
       "texas/rockwall",
-      "texas/polk",
-      "texas/sabine",
-      "texas/brazos",
-      "texas/ector",
-      "texas/tyler",
-      "texas/chambers",
-      "texas/fort-bend",
-      "texas/san-jacinto",
       "texas/travis",
-      "texas/wise"
+      "texas/wise",
+      "texas/san-jacinto",
+      "texas/tyler"
     ],
     "trustedForCountyTier": false
   },
   {
-    "name": "KICKS 105",
-    "url": "https://kicks105.com/feed/",
+    "name": "KHOU (2)",
+    "url": "https://khou.com/feeds/syndication/rss/news",
     "mediaType": "article",
-    "itemSource": "KICKS 105",
+    "itemSource": "KHOU",
     "counties": [
-      "texas/san-augustine"
-    ],
-    "trustedForCountyTier": false
-  },
-  {
-    "name": "KICKS 105 (2)",
-    "url": "https://kicks105.com/rss",
-    "mediaType": "article",
-    "itemSource": "KICKS 105",
-    "counties": [
-      "texas/san-augustine"
+      "texas/galveston",
+      "texas/waller",
+      "texas/kendall",
+      "texas/val-verde",
+      "texas/harris",
+      "texas/brazoria",
+      "texas/chambers",
+      "texas/childress",
+      "texas/nacogdoches",
+      "texas/houston",
+      "texas/kerr",
+      "texas/uvalde",
+      "texas/victoria",
+      "texas/wharton",
+      "texas/bell",
+      "texas/ector",
+      "texas/fort-bend",
+      "texas/liberty",
+      "texas/montgomery",
+      "texas/polk",
+      "texas/zavala",
+      "texas/grimes",
+      "texas/rockwall",
+      "texas/travis",
+      "texas/wise",
+      "texas/san-jacinto",
+      "texas/tyler"
     ],
     "trustedForCountyTier": false
   },
@@ -722,31 +801,35 @@ export const discoveredRegionalSources: DirectSource[] = [
     "mediaType": "article",
     "itemSource": "Kiii3 News",
     "counties": [
-      "texas/aransas",
-      "texas/mcmullen",
-      "texas/live-oak",
       "texas/bee",
-      "texas/goliad",
-      "texas/jim-hogg",
       "texas/kleberg",
+      "texas/mcmullen",
+      "texas/goliad",
+      "texas/aransas",
       "texas/brooks",
+      "texas/jim-hogg",
+      "texas/live-oak",
       "texas/nueces",
       "texas/burleson"
     ],
     "trustedForCountyTier": false
   },
   {
-    "name": "Killeen Daily Herald",
-    "url": "http://kdhnews.com/search/?f=rss&t=article&l=50&s=start_time&sd=desc&k%5B%5D=%23topstory",
+    "name": "Kiii3 News (2)",
+    "url": "https://kiiitv.com/feeds/syndication/rss/news",
     "mediaType": "article",
-    "itemSource": "Killeen Daily Herald",
+    "itemSource": "Kiii3 News",
     "counties": [
       "texas/bee",
-      "texas/refugio",
-      "texas/live-oak",
+      "texas/kleberg",
+      "texas/mcmullen",
       "texas/goliad",
-      "texas/washington",
-      "texas/bell"
+      "texas/aransas",
+      "texas/brooks",
+      "texas/jim-hogg",
+      "texas/live-oak",
+      "texas/nueces",
+      "texas/burleson"
     ],
     "trustedForCountyTier": false
   },
@@ -757,21 +840,22 @@ export const discoveredRegionalSources: DirectSource[] = [
     "itemSource": "KLTV",
     "counties": [
       "texas/henderson",
+      "texas/upshur",
       "texas/angelina",
       "texas/rusk",
+      "texas/smith",
+      "texas/houston",
+      "texas/rains",
       "texas/wood",
       "texas/cherokee",
       "texas/gregg",
-      "texas/marion",
-      "texas/smith",
-      "texas/houston",
       "texas/anderson",
-      "texas/franklin",
       "texas/harrison",
       "texas/hopkins",
+      "texas/marion",
+      "texas/franklin",
       "texas/newton",
-      "texas/rains",
-      "texas/upshur"
+      "texas/van-zandt"
     ],
     "trustedForCountyTier": false
   },
@@ -782,15 +866,14 @@ export const discoveredRegionalSources: DirectSource[] = [
     "itemSource": "Kristv",
     "counties": [
       "texas/refugio",
-      "texas/live-oak",
       "texas/nueces",
       "texas/bee",
-      "texas/kenedy",
+      "texas/kleberg",
       "texas/aransas",
+      "texas/kenedy",
+      "texas/live-oak",
       "texas/jim-wells",
-      "texas/brooks",
-      "texas/san-patricio",
-      "texas/kleberg"
+      "texas/san-patricio"
     ],
     "trustedForCountyTier": false
   },
@@ -801,37 +884,36 @@ export const discoveredRegionalSources: DirectSource[] = [
     "itemSource": "KSAT",
     "counties": [
       "texas/bandera",
-      "texas/maverick",
-      "texas/medina",
       "texas/frio",
-      "texas/live-oak",
-      "texas/gillespie",
+      "texas/maverick",
       "texas/uvalde",
+      "texas/atascosa",
+      "texas/guadalupe",
       "texas/wilson",
-      "texas/edwards",
-      "texas/karnes",
+      "texas/comal",
       "texas/kendall",
+      "texas/edwards",
+      "texas/goliad",
+      "texas/zavala",
+      "texas/blanco",
+      "texas/medina",
+      "texas/live-oak",
+      "texas/fayette",
+      "texas/karnes",
       "texas/la-salle",
       "texas/lavaca",
-      "texas/fayette",
+      "texas/gillespie",
       "texas/kinney",
-      "texas/guadalupe",
-      "texas/comal",
+      "texas/starr",
       "texas/val-verde",
-      "texas/blanco",
-      "texas/brazoria",
-      "texas/goliad",
-      "texas/atascosa",
-      "texas/hays",
-      "texas/zavala",
+      "texas/bee",
       "texas/bexar",
+      "texas/howard",
+      "texas/aransas",
+      "texas/brazoria",
       "texas/brooks",
       "texas/foard",
-      "texas/howard",
-      "texas/hunt",
-      "texas/midland",
-      "texas/bee",
-      "texas/kimble"
+      "texas/hunt"
     ],
     "trustedForCountyTier": false
   },
@@ -841,35 +923,10 @@ export const discoveredRegionalSources: DirectSource[] = [
     "mediaType": "article",
     "itemSource": "KSLA",
     "counties": [
-      "texas/marion",
       "texas/harrison",
+      "texas/marion",
       "texas/bowie",
       "texas/cass"
-    ],
-    "trustedForCountyTier": false
-  },
-  {
-    "name": "KTBS",
-    "url": "http://www.ktbs.com/search/?f=rss&t=article&l=50&s=start_time&sd=desc&k%5B%5D=%23topstory",
-    "mediaType": "article",
-    "itemSource": "KTBS",
-    "counties": [
-      "texas/marion",
-      "texas/bowie",
-      "texas/panola",
-      "texas/zavala"
-    ],
-    "trustedForCountyTier": false
-  },
-  {
-    "name": "KTEN",
-    "url": "http://www.kten.com/search/?f=rss&t=article&l=50&s=start_time&sd=desc&k%5B%5D=%23topstory",
-    "mediaType": "article",
-    "itemSource": "KTEN",
-    "counties": [
-      "texas/grayson",
-      "texas/fannin",
-      "texas/cooke"
     ],
     "trustedForCountyTier": false
   },
@@ -879,12 +936,13 @@ export const discoveredRegionalSources: DirectSource[] = [
     "mediaType": "article",
     "itemSource": "KTRE",
     "counties": [
-      "texas/houston",
-      "texas/angelina",
       "texas/tyler",
       "texas/nacogdoches",
+      "texas/houston",
+      "texas/angelina",
       "texas/shelby",
-      "texas/trinity"
+      "texas/trinity",
+      "texas/polk"
     ],
     "trustedForCountyTier": false
   },
@@ -895,7 +953,8 @@ export const discoveredRegionalSources: DirectSource[] = [
     "itemSource": "KVIA",
     "counties": [
       "texas/culberson",
-      "texas/hudspeth"
+      "texas/hudspeth",
+      "texas/zavala"
     ],
     "trustedForCountyTier": false
   },
@@ -906,7 +965,8 @@ export const discoveredRegionalSources: DirectSource[] = [
     "itemSource": "KVIA",
     "counties": [
       "texas/culberson",
-      "texas/hudspeth"
+      "texas/hudspeth",
+      "texas/zavala"
     ],
     "trustedForCountyTier": false
   },
@@ -916,28 +976,59 @@ export const discoveredRegionalSources: DirectSource[] = [
     "mediaType": "article",
     "itemSource": "KVUE",
     "counties": [
-      "texas/williamson",
       "texas/mason",
-      "texas/fayette",
-      "texas/gillespie",
-      "texas/milam",
+      "texas/williamson",
       "texas/bastrop",
-      "texas/jim-hogg",
-      "texas/travis",
-      "texas/comal",
-      "texas/henderson",
-      "texas/lee",
-      "texas/palo-pinto",
-      "texas/wilbarger",
-      "texas/bee",
-      "texas/blanco",
-      "texas/burnet",
       "texas/caldwell",
+      "texas/fayette",
+      "texas/burnet",
+      "texas/wilbarger",
+      "texas/jim-hogg",
+      "texas/lee",
+      "texas/milam",
+      "texas/bee",
+      "texas/gillespie",
+      "texas/blanco",
+      "texas/brazoria",
+      "texas/hays",
+      "texas/henderson",
+      "texas/orange",
+      "texas/palo-pinto",
+      "texas/comal",
       "texas/hill",
       "texas/llano",
-      "texas/orange",
+      "texas/travis"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KVUE (2)",
+    "url": "https://kvue.com/feeds/syndication/rss/news",
+    "mediaType": "article",
+    "itemSource": "KVUE",
+    "counties": [
+      "texas/mason",
+      "texas/williamson",
+      "texas/bastrop",
+      "texas/caldwell",
+      "texas/fayette",
+      "texas/burnet",
+      "texas/wilbarger",
+      "texas/jim-hogg",
+      "texas/lee",
+      "texas/milam",
+      "texas/bee",
+      "texas/gillespie",
+      "texas/blanco",
       "texas/brazoria",
-      "texas/kinney"
+      "texas/hays",
+      "texas/henderson",
+      "texas/orange",
+      "texas/palo-pinto",
+      "texas/comal",
+      "texas/hill",
+      "texas/llano",
+      "texas/travis"
     ],
     "trustedForCountyTier": false
   },
@@ -947,22 +1038,23 @@ export const discoveredRegionalSources: DirectSource[] = [
     "mediaType": "article",
     "itemSource": "KWTX",
     "counties": [
-      "texas/mclennan",
       "texas/hill",
-      "texas/coryell",
-      "texas/falls",
-      "texas/milam",
-      "texas/angelina",
-      "texas/childress",
-      "texas/san-jacinto",
-      "texas/limestone",
-      "texas/guadalupe",
-      "texas/bell",
       "texas/hamilton",
-      "texas/leon",
+      "texas/coryell",
+      "texas/mclennan",
+      "texas/angelina",
+      "texas/milam",
       "texas/bosque",
+      "texas/leon",
+      "texas/limestone",
+      "texas/falls",
+      "texas/guadalupe",
       "texas/lampasas",
-      "texas/tom-green"
+      "texas/childress",
+      "texas/erath",
+      "texas/freestone",
+      "texas/tom-green",
+      "texas/williamson"
     ],
     "trustedForCountyTier": false
   },
@@ -972,18 +1064,17 @@ export const discoveredRegionalSources: DirectSource[] = [
     "mediaType": "article",
     "itemSource": "KXAN Austin",
     "counties": [
-      "texas/williamson",
       "texas/blanco",
-      "texas/bastrop",
-      "texas/mason",
       "texas/caldwell",
-      "texas/fayette",
+      "texas/mason",
+      "texas/williamson",
+      "texas/gregg",
+      "texas/bastrop",
       "texas/gillespie",
-      "texas/midland",
       "texas/starr",
-      "texas/zavala",
-      "texas/travis",
-      "texas/victoria"
+      "texas/fayette",
+      "texas/midland",
+      "texas/travis"
     ],
     "trustedForCountyTier": false
   },
@@ -993,18 +1084,17 @@ export const discoveredRegionalSources: DirectSource[] = [
     "mediaType": "article",
     "itemSource": "KXAN Austin",
     "counties": [
-      "texas/williamson",
       "texas/blanco",
-      "texas/bastrop",
-      "texas/mason",
       "texas/caldwell",
-      "texas/fayette",
+      "texas/mason",
+      "texas/williamson",
+      "texas/gregg",
+      "texas/bastrop",
       "texas/gillespie",
-      "texas/midland",
       "texas/starr",
-      "texas/zavala",
-      "texas/travis",
-      "texas/victoria"
+      "texas/fayette",
+      "texas/midland",
+      "texas/travis"
     ],
     "trustedForCountyTier": false
   },
@@ -1014,17 +1104,9 @@ export const discoveredRegionalSources: DirectSource[] = [
     "mediaType": "article",
     "itemSource": "Law",
     "counties": [
-      "texas/guadalupe"
-    ],
-    "trustedForCountyTier": false
-  },
-  {
-    "name": "Levelland & Hockley County News Press",
-    "url": "https://levellandnews.net/rss.xml",
-    "mediaType": "article",
-    "itemSource": "Levelland & Hockley County News Press",
-    "counties": [
-      "texas/hockley"
+      "texas/midland",
+      "texas/guadalupe",
+      "texas/brown"
     ],
     "trustedForCountyTier": false
   },
@@ -1045,16 +1127,6 @@ export const discoveredRegionalSources: DirectSource[] = [
     "itemSource": "Longview News-Journal",
     "counties": [
       "texas/franklin"
-    ],
-    "trustedForCountyTier": false
-  },
-  {
-    "name": "Los Angeles Times",
-    "url": "https://www.latimes.com/index.rss",
-    "mediaType": "article",
-    "itemSource": "Los Angeles Times",
-    "counties": [
-      "texas/hood"
     ],
     "trustedForCountyTier": false
   },
@@ -1089,18 +1161,40 @@ export const discoveredRegionalSources: DirectSource[] = [
     "trustedForCountyTier": false
   },
   {
+    "name": "MyHighPlains",
+    "url": "https://myhighplains.com/feed/",
+    "mediaType": "article",
+    "itemSource": "MyHighPlains",
+    "counties": [
+      "texas/randall"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "MyHighPlains (2)",
+    "url": "https://myhighplains.com/rss",
+    "mediaType": "article",
+    "itemSource": "MyHighPlains",
+    "counties": [
+      "texas/randall"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
     "name": "NBC DFW",
     "url": "https://www.nbcdfw.com/?rss=y",
     "mediaType": "article",
     "itemSource": "NBC DFW",
     "counties": [
       "texas/crockett",
-      "texas/hopkins",
+      "texas/kaufman",
       "texas/denton",
-      "texas/hunt",
-      "texas/collin",
       "texas/fannin",
-      "texas/kaufman"
+      "texas/collin",
+      "texas/cooke",
+      "texas/dallas",
+      "texas/hunt",
+      "texas/johnson"
     ],
     "trustedForCountyTier": false
   },
@@ -1111,12 +1205,14 @@ export const discoveredRegionalSources: DirectSource[] = [
     "itemSource": "NBC DFW",
     "counties": [
       "texas/crockett",
-      "texas/hopkins",
+      "texas/kaufman",
       "texas/denton",
-      "texas/hunt",
-      "texas/collin",
       "texas/fannin",
-      "texas/kaufman"
+      "texas/collin",
+      "texas/cooke",
+      "texas/dallas",
+      "texas/hunt",
+      "texas/johnson"
     ],
     "trustedForCountyTier": false
   },
@@ -1127,8 +1223,9 @@ export const discoveredRegionalSources: DirectSource[] = [
     "itemSource": "New York Post",
     "counties": [
       "texas/maverick",
+      "texas/parker",
       "texas/webb",
-      "texas/jefferson"
+      "texas/hemphill"
     ],
     "trustedForCountyTier": false
   },
@@ -1139,8 +1236,9 @@ export const discoveredRegionalSources: DirectSource[] = [
     "itemSource": "New York Post",
     "counties": [
       "texas/maverick",
+      "texas/parker",
       "texas/webb",
-      "texas/jefferson"
+      "texas/hemphill"
     ],
     "trustedForCountyTier": false
   },
@@ -1150,17 +1248,7 @@ export const discoveredRegionalSources: DirectSource[] = [
     "mediaType": "article",
     "itemSource": "News Channel 6",
     "counties": [
-      "texas/wichita"
-    ],
-    "trustedForCountyTier": false
-  },
-  {
-    "name": "News4Jax",
-    "url": "https://news4jax.com/arc/outboundfeeds/rss/?outputType=xml",
-    "mediaType": "article",
-    "itemSource": "News4Jax",
-    "counties": [
-      "texas/clay"
+      "texas/jack"
     ],
     "trustedForCountyTier": false
   },
@@ -1170,9 +1258,9 @@ export const discoveredRegionalSources: DirectSource[] = [
     "mediaType": "article",
     "itemSource": "NewsChannel 10",
     "counties": [
+      "texas/deaf-smith",
       "texas/wheeler",
-      "texas/hutchinson",
-      "texas/deaf-smith"
+      "texas/hutchinson"
     ],
     "trustedForCountyTier": false
   },
@@ -1183,20 +1271,40 @@ export const discoveredRegionalSources: DirectSource[] = [
     "itemSource": "NewsWest 9",
     "counties": [
       "texas/presidio",
-      "texas/howard",
-      "texas/winkler",
-      "texas/midland",
-      "texas/reeves",
       "texas/crane",
-      "texas/andrews",
+      "texas/howard",
       "texas/ector",
-      "texas/terrell",
-      "texas/ward",
+      "texas/midland",
+      "texas/andrews",
       "texas/pecos",
-      "texas/brewster",
       "texas/scurry",
-      "texas/upton",
-      "texas/martin"
+      "texas/brewster",
+      "texas/reeves",
+      "texas/martin",
+      "texas/terrell",
+      "texas/ward"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "NewsWest 9 (2)",
+    "url": "https://newswest9.com/feeds/syndication/rss/news",
+    "mediaType": "article",
+    "itemSource": "NewsWest 9",
+    "counties": [
+      "texas/presidio",
+      "texas/crane",
+      "texas/howard",
+      "texas/ector",
+      "texas/midland",
+      "texas/andrews",
+      "texas/pecos",
+      "texas/scurry",
+      "texas/brewster",
+      "texas/reeves",
+      "texas/martin",
+      "texas/terrell",
+      "texas/ward"
     ],
     "trustedForCountyTier": false
   },
@@ -1221,25 +1329,16 @@ export const discoveredRegionalSources: DirectSource[] = [
     "trustedForCountyTier": false
   },
   {
-    "name": "Post and Courier",
-    "url": "https://www.postandcourier.com/search/?f=rss&t=article&l=50&s=start_time&sd=desc&k%5B%5D=%23topstory",
-    "mediaType": "article",
-    "itemSource": "Post and Courier",
-    "counties": [
-      "texas/falls"
-    ],
-    "trustedForCountyTier": false
-  },
-  {
     "name": "POWER Magazine",
     "url": "https://powermag.com/feed/",
     "mediaType": "article",
     "itemSource": "POWER Magazine",
     "counties": [
+      "texas/milam",
       "texas/haskell",
-      "texas/runnels",
       "texas/calhoun",
-      "texas/milam"
+      "texas/runnels",
+      "texas/somervell"
     ],
     "trustedForCountyTier": false
   },
@@ -1249,10 +1348,11 @@ export const discoveredRegionalSources: DirectSource[] = [
     "mediaType": "article",
     "itemSource": "POWER Magazine",
     "counties": [
+      "texas/milam",
       "texas/haskell",
-      "texas/runnels",
       "texas/calhoun",
-      "texas/milam"
+      "texas/runnels",
+      "texas/somervell"
     ],
     "trustedForCountyTier": false
   },
@@ -1262,6 +1362,7 @@ export const discoveredRegionalSources: DirectSource[] = [
     "mediaType": "article",
     "itemSource": "ProPublica",
     "counties": [
+      "texas/goliad",
       "texas/kerr"
     ],
     "trustedForCountyTier": false
@@ -1272,6 +1373,7 @@ export const discoveredRegionalSources: DirectSource[] = [
     "mediaType": "article",
     "itemSource": "ProPublica",
     "counties": [
+      "texas/goliad",
       "texas/kerr"
     ],
     "trustedForCountyTier": false
@@ -1297,12 +1399,24 @@ export const discoveredRegionalSources: DirectSource[] = [
     "trustedForCountyTier": false
   },
   {
-    "name": "Royse City Herald-Banner",
-    "url": "http://www.roysecityheraldbanner.com/search/?f=rss&t=article&l=50&s=start_time&sd=desc&k%5B%5D=%23topstory",
+    "name": "Religion News Service",
+    "url": "https://religionnews.com/feed/",
     "mediaType": "article",
-    "itemSource": "Royse City Herald-Banner",
+    "itemSource": "Religion News Service",
     "counties": [
-      "texas/rockwall"
+      "texas/hood",
+      "texas/tarrant"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Religion News Service (2)",
+    "url": "https://religionnews.com/?feed=rss2",
+    "mediaType": "article",
+    "itemSource": "Religion News Service",
+    "counties": [
+      "texas/hood",
+      "texas/tarrant"
     ],
     "trustedForCountyTier": false
   },
@@ -1312,9 +1426,10 @@ export const discoveredRegionalSources: DirectSource[] = [
     "mediaType": "article",
     "itemSource": "San Antonio Current",
     "counties": [
-      "texas/pecos",
       "texas/goliad",
-      "texas/bee"
+      "texas/bee",
+      "texas/pecos",
+      "texas/tarrant"
     ],
     "trustedForCountyTier": false
   },
@@ -1324,29 +1439,10 @@ export const discoveredRegionalSources: DirectSource[] = [
     "mediaType": "article",
     "itemSource": "San Antonio Current",
     "counties": [
-      "texas/pecos",
       "texas/goliad",
-      "texas/bee"
-    ],
-    "trustedForCountyTier": false
-  },
-  {
-    "name": "San Antonio Report",
-    "url": "https://sanantonioreport.org/feed/",
-    "mediaType": "article",
-    "itemSource": "San Antonio Report",
-    "counties": [
-      "texas/bexar"
-    ],
-    "trustedForCountyTier": false
-  },
-  {
-    "name": "San Antonio Report (2)",
-    "url": "https://sanantonioreport.org/rss",
-    "mediaType": "article",
-    "itemSource": "San Antonio Report",
-    "counties": [
-      "texas/bexar"
+      "texas/bee",
+      "texas/pecos",
+      "texas/tarrant"
     ],
     "trustedForCountyTier": false
   },
@@ -1371,42 +1467,22 @@ export const discoveredRegionalSources: DirectSource[] = [
     "trustedForCountyTier": false
   },
   {
-    "name": "Seguin Today",
-    "url": "https://seguintoday.com/feed/",
+    "name": "SignalSCV",
+    "url": "https://signalscv.com/feed/",
     "mediaType": "article",
-    "itemSource": "Seguin Today",
+    "itemSource": "SignalSCV",
     "counties": [
-      "texas/guadalupe"
+      "texas/williamson"
     ],
     "trustedForCountyTier": false
   },
   {
-    "name": "Seguin Today (2)",
-    "url": "https://seguintoday.com/rss",
+    "name": "SignalSCV (2)",
+    "url": "https://signalscv.com/rss",
     "mediaType": "article",
-    "itemSource": "Seguin Today",
+    "itemSource": "SignalSCV",
     "counties": [
-      "texas/guadalupe"
-    ],
-    "trustedForCountyTier": false
-  },
-  {
-    "name": "Snopes",
-    "url": "https://snopes.com/feed/",
-    "mediaType": "article",
-    "itemSource": "Snopes",
-    "counties": [
-      "texas/kerr"
-    ],
-    "trustedForCountyTier": false
-  },
-  {
-    "name": "Snopes (2)",
-    "url": "https://snopes.com/news/feed/",
-    "mediaType": "article",
-    "itemSource": "Snopes",
-    "counties": [
-      "texas/kerr"
+      "texas/williamson"
     ],
     "trustedForCountyTier": false
   },
@@ -1416,9 +1492,10 @@ export const discoveredRegionalSources: DirectSource[] = [
     "mediaType": "article",
     "itemSource": "Texas Monthly",
     "counties": [
-      "texas/panola",
+      "texas/crane",
       "texas/hemphill",
-      "texas/bee"
+      "texas/panola",
+      "texas/brooks"
     ],
     "trustedForCountyTier": false
   },
@@ -1428,31 +1505,10 @@ export const discoveredRegionalSources: DirectSource[] = [
     "mediaType": "article",
     "itemSource": "Texas Monthly",
     "counties": [
-      "texas/panola",
+      "texas/crane",
       "texas/hemphill",
-      "texas/bee"
-    ],
-    "trustedForCountyTier": false
-  },
-  {
-    "name": "Texoma's Homepage",
-    "url": "https://www.texomashomepage.com/feed/",
-    "mediaType": "article",
-    "itemSource": "Texoma's Homepage",
-    "counties": [
-      "texas/archer",
-      "texas/wichita"
-    ],
-    "trustedForCountyTier": false
-  },
-  {
-    "name": "Texoma's Homepage (2)",
-    "url": "https://www.texomashomepage.com/comments/feed/",
-    "mediaType": "article",
-    "itemSource": "Texoma's Homepage",
-    "counties": [
-      "texas/archer",
-      "texas/wichita"
+      "texas/panola",
+      "texas/brooks"
     ],
     "trustedForCountyTier": false
   },
@@ -1482,38 +1538,30 @@ export const discoveredRegionalSources: DirectSource[] = [
     "mediaType": "article",
     "itemSource": "The Daily Beast",
     "counties": [
+      "texas/llano",
       "texas/delta",
-      "texas/llano"
+      "texas/navarro"
     ],
     "trustedForCountyTier": false
   },
   {
-    "name": "The Daily News",
-    "url": "http://www.galvnews.com/search/?f=rss&t=article&l=50&s=start_time&sd=desc&k%5B%5D=%23topstory",
+    "name": "The Daily Signal",
+    "url": "https://dailysignal.com/feed/",
     "mediaType": "article",
-    "itemSource": "The Daily News",
+    "itemSource": "The Daily Signal",
     "counties": [
-      "texas/galveston"
+      "texas/henderson",
+      "texas/hudspeth"
     ],
     "trustedForCountyTier": false
   },
   {
-    "name": "The Gilmer Mirror",
-    "url": "https://www.gilmermirror.com/feed/",
+    "name": "The Globe and Mail",
+    "url": "https://theglobeandmail.com/arc/outboundfeeds/rss/?outputType=xml",
     "mediaType": "article",
-    "itemSource": "The Gilmer Mirror",
+    "itemSource": "The Globe and Mail",
     "counties": [
-      "texas/upshur"
-    ],
-    "trustedForCountyTier": false
-  },
-  {
-    "name": "The Gilmer Mirror (2)",
-    "url": "https://www.gilmermirror.com/comments/feed/",
-    "mediaType": "article",
-    "itemSource": "The Gilmer Mirror",
-    "counties": [
-      "texas/upshur"
+      "texas/hemphill"
     ],
     "trustedForCountyTier": false
   },
@@ -1529,32 +1577,13 @@ export const discoveredRegionalSources: DirectSource[] = [
     "trustedForCountyTier": false
   },
   {
-    "name": "The Herald-Banner",
-    "url": "http://www.heraldbanner.com/search/?f=rss&t=article&l=50&s=start_time&sd=desc&k%5B%5D=%23topstory",
+    "name": "The Guardian (2)",
+    "url": "https://theguardian.com/news/rss",
     "mediaType": "article",
-    "itemSource": "The Herald-Banner",
+    "itemSource": "The Guardian",
     "counties": [
-      "texas/hunt"
-    ],
-    "trustedForCountyTier": false
-  },
-  {
-    "name": "The Huntsville Item",
-    "url": "http://www.itemonline.com/search/?f=rss&t=article&l=50&s=start_time&sd=desc&k%5B%5D=%23topstory",
-    "mediaType": "article",
-    "itemSource": "The Huntsville Item",
-    "counties": [
-      "texas/walker"
-    ],
-    "trustedForCountyTier": false
-  },
-  {
-    "name": "The Korea Times",
-    "url": "https://feed.koreatimes.co.kr/k/allnews.xml",
-    "mediaType": "article",
-    "itemSource": "The Korea Times",
-    "counties": [
-      "texas/wharton"
+      "texas/menard",
+      "texas/hemphill"
     ],
     "trustedForCountyTier": false
   },
@@ -1565,47 +1594,48 @@ export const discoveredRegionalSources: DirectSource[] = [
     "itemSource": "The New Yorker",
     "counties": [
       "texas/loving",
+      "texas/presidio",
       "texas/hays"
     ],
     "trustedForCountyTier": false
   },
   {
-    "name": "The Paris News",
-    "url": "http://theparisnews.com/search/?f=rss&t=article&l=50&s=start_time&sd=desc&k%5B%5D=%23topstory",
+    "name": "The Paisano",
+    "url": "https://paisano-online.com/feed/",
     "mediaType": "article",
-    "itemSource": "The Paris News",
+    "itemSource": "The Paisano",
     "counties": [
-      "texas/lamar"
+      "texas/bexar"
     ],
     "trustedForCountyTier": false
   },
   {
-    "name": "The Texan",
-    "url": "http://thetexan.news/search/?f=rss&t=article&l=50&s=start_time&sd=desc&k%5B%5D=%23topstory",
+    "name": "The Paisano (2)",
+    "url": "https://paisano-online.com/feed/atom/",
     "mediaType": "article",
-    "itemSource": "The Texan",
+    "itemSource": "The Paisano",
     "counties": [
-      "texas/galveston"
+      "texas/bexar"
     ],
     "trustedForCountyTier": false
   },
   {
-    "name": "The University Star",
-    "url": "https://universitystar.com/feed/",
+    "name": "The Verge",
+    "url": "https://theverge.com/rss/index.xml",
     "mediaType": "article",
-    "itemSource": "The University Star",
+    "itemSource": "The Verge",
     "counties": [
-      "texas/hays"
+      "texas/pecos"
     ],
     "trustedForCountyTier": false
   },
   {
-    "name": "The University Star (2)",
-    "url": "https://universitystar.com/feed/atom/",
+    "name": "The Verge (2)",
+    "url": "https://theverge.com/rss.xml",
     "mediaType": "article",
-    "itemSource": "The University Star",
+    "itemSource": "The Verge",
     "counties": [
-      "texas/hays"
+      "texas/pecos"
     ],
     "trustedForCountyTier": false
   },
@@ -1615,8 +1645,7 @@ export const discoveredRegionalSources: DirectSource[] = [
     "mediaType": "article",
     "itemSource": "Toronto Sun",
     "counties": [
-      "texas/hemphill",
-      "texas/angelina"
+      "texas/hemphill"
     ],
     "trustedForCountyTier": false
   },
@@ -1626,8 +1655,47 @@ export const discoveredRegionalSources: DirectSource[] = [
     "mediaType": "article",
     "itemSource": "Toronto Sun",
     "counties": [
-      "texas/hemphill",
-      "texas/angelina"
+      "texas/hemphill"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Townhall",
+    "url": "https://townhall.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Townhall",
+    "counties": [
+      "texas/webb"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Townhall (2)",
+    "url": "https://townhall.com/news/feed/",
+    "mediaType": "article",
+    "itemSource": "Townhall",
+    "counties": [
+      "texas/webb"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Truthout",
+    "url": "https://truthout.org/feed/?withoutcomments=1",
+    "mediaType": "article",
+    "itemSource": "Truthout",
+    "counties": [
+      "texas/tarrant"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Truthout (2)",
+    "url": "https://truthout.org/feed/",
+    "mediaType": "article",
+    "itemSource": "Truthout",
+    "counties": [
+      "texas/tarrant"
     ],
     "trustedForCountyTier": false
   },
@@ -1638,8 +1706,10 @@ export const discoveredRegionalSources: DirectSource[] = [
     "itemSource": "Tyler Morning Telegraph",
     "counties": [
       "texas/upshur",
-      "texas/marion",
       "texas/rusk",
+      "texas/marion",
+      "texas/anderson",
+      "texas/gregg",
       "texas/wood"
     ],
     "trustedForCountyTier": false
@@ -1651,8 +1721,10 @@ export const discoveredRegionalSources: DirectSource[] = [
     "itemSource": "Tyler Morning Telegraph",
     "counties": [
       "texas/upshur",
-      "texas/marion",
       "texas/rusk",
+      "texas/marion",
+      "texas/anderson",
+      "texas/gregg",
       "texas/wood"
     ],
     "trustedForCountyTier": false
@@ -1669,43 +1741,45 @@ export const discoveredRegionalSources: DirectSource[] = [
   },
   {
     "name": "Us Weekly",
-    "url": "https://usmagazine.com/feed/",
+    "url": "https://usmagazine.com/rss.xml",
     "mediaType": "article",
     "itemSource": "Us Weekly",
     "counties": [
-      "texas/carson",
-      "texas/henderson"
+      "texas/henderson",
+      "texas/carson"
     ],
     "trustedForCountyTier": false
   },
   {
     "name": "Us Weekly (2)",
-    "url": "https://usmagazine.com/rss",
+    "url": "https://usmagazine.com/news/rss",
     "mediaType": "article",
     "itemSource": "Us Weekly",
     "counties": [
-      "texas/carson",
-      "texas/henderson"
+      "texas/henderson",
+      "texas/carson"
     ],
     "trustedForCountyTier": false
   },
   {
-    "name": "WBAP",
-    "url": "https://wbap.com/feed/",
+    "name": "Valleycentral",
+    "url": "https://valleycentral.com/feed/",
     "mediaType": "article",
-    "itemSource": "WBAP",
+    "itemSource": "Valleycentral",
     "counties": [
-      "texas/palo-pinto"
+      "texas/bexar",
+      "texas/hidalgo"
     ],
     "trustedForCountyTier": false
   },
   {
-    "name": "WBAP (2)",
-    "url": "https://wbap.com/rss",
+    "name": "Valleycentral (2)",
+    "url": "https://valleycentral.com/rss",
     "mediaType": "article",
-    "itemSource": "WBAP",
+    "itemSource": "Valleycentral",
     "counties": [
-      "texas/palo-pinto"
+      "texas/bexar",
+      "texas/hidalgo"
     ],
     "trustedForCountyTier": false
   },
@@ -1717,33 +1791,113 @@ export const discoveredRegionalSources: DirectSource[] = [
     "counties": [
       "texas/parker",
       "texas/cooke",
-      "texas/dallas",
-      "texas/montague",
-      "texas/van-zandt",
-      "texas/ellis",
-      "texas/delta",
-      "texas/somervell",
-      "texas/cherokee",
-      "texas/denton",
-      "texas/johnson",
-      "texas/wilbarger",
-      "texas/fannin",
-      "texas/hunt",
-      "texas/nacogdoches",
-      "texas/rains",
-      "texas/henderson",
       "texas/rockwall",
-      "texas/erath",
-      "texas/freestone",
-      "texas/grayson",
-      "texas/hopkins",
+      "texas/henderson",
+      "texas/montague",
+      "texas/delta",
+      "texas/denton",
+      "texas/ellis",
       "texas/kaufman",
       "texas/wise",
-      "texas/archer",
+      "texas/van-zandt",
+      "texas/grayson",
+      "texas/somervell",
+      "texas/cherokee",
+      "texas/dallas",
+      "texas/erath",
+      "texas/fannin",
+      "texas/freestone",
+      "texas/hopkins",
+      "texas/johnson",
+      "texas/nacogdoches",
+      "texas/collin",
+      "texas/wilbarger",
       "texas/navarro",
-      "texas/tarrant",
-      "texas/eastland",
-      "texas/jack"
+      "texas/rains",
+      "texas/archer",
+      "texas/hunt",
+      "texas/jack",
+      "texas/tom-green"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WFAA8 (2)",
+    "url": "https://wfaa.com/feeds/syndication/rss/news",
+    "mediaType": "article",
+    "itemSource": "WFAA8",
+    "counties": [
+      "texas/parker",
+      "texas/cooke",
+      "texas/rockwall",
+      "texas/henderson",
+      "texas/montague",
+      "texas/delta",
+      "texas/denton",
+      "texas/ellis",
+      "texas/kaufman",
+      "texas/wise",
+      "texas/van-zandt",
+      "texas/grayson",
+      "texas/somervell",
+      "texas/cherokee",
+      "texas/dallas",
+      "texas/erath",
+      "texas/fannin",
+      "texas/freestone",
+      "texas/hopkins",
+      "texas/johnson",
+      "texas/nacogdoches",
+      "texas/collin",
+      "texas/wilbarger",
+      "texas/navarro",
+      "texas/rains",
+      "texas/archer",
+      "texas/hunt",
+      "texas/jack",
+      "texas/tom-green"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WPMT",
+    "url": "https://www.fox43.com/feeds/syndication/rss/news",
+    "mediaType": "article",
+    "itemSource": "WPMT",
+    "counties": [
+      "texas/anderson"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WPMT (2)",
+    "url": "https://fox43.com/feeds/syndication/rss/news",
+    "mediaType": "article",
+    "itemSource": "WPMT",
+    "counties": [
+      "texas/anderson"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Yourbasin | Big 2 - Fox 24",
+    "url": "https://www.yourbasin.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Yourbasin | Big 2 - Fox 24",
+    "counties": [
+      "texas/ector",
+      "texas/reeves"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Yourbasin | Big 2 - Fox 24 (2)",
+    "url": "https://www.yourbasin.com/comments/feed/",
+    "mediaType": "article",
+    "itemSource": "Yourbasin | Big 2 - Fox 24",
+    "counties": [
+      "texas/ector",
+      "texas/reeves"
     ],
     "trustedForCountyTier": false
   }
