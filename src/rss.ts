@@ -46,8 +46,11 @@ function parseRss(xml: string, options: RssOptions): NewsFeedItem[] {
       return {
         id: textValue(item.guid) || textValue(item.link) || `${textValue(item.title) || "item"}-${index}`,
         title,
-        link: textValue(item.link) || "#",
-        source: publicationSource(options.source || textValue(item.source) || textValue(document.rss?.channel?.title), title),
+        link: unwrapRedirect(textValue(item.link)) || "#",
+        source: publicationSource(
+          options.source || textValue(item["News:Source"]) || textValue(item.source) || textValue(document.rss?.channel?.title),
+          title,
+        ),
         publishedAt: textValue(item.pubDate),
         description: decodeEntities(stripHtml(description)).slice(0, 240),
         imageUrl: imageFromItem(item, description),
@@ -83,6 +86,14 @@ type RssItem = {
   link?: unknown;
   title?: unknown;
   source?: unknown;
+  /**
+   * Bing News RSS namespaces its item fields. `<News:Source>` carries the real
+   * publisher ("Amarillo Globe-News", "NewsChannel 10 on MSN") while plain
+   * `<source>` is absent, so without reading this the parser fell back to the
+   * channel title — which for Bing is the search query itself.
+   */
+  "News:Source"?: unknown;
+  "News:Image"?: unknown;
   pubDate?: unknown;
   description?: unknown;
   category?: unknown;
@@ -137,19 +148,74 @@ export function getItemMaxAgeDays(item: NewsFeedItem) {
 }
 
 function imageFromItem(item: RssItem, description: string) {
-  if (item.enclosure?.["@_type"]?.startsWith("image/")) return item.enclosure["@_url"] || "";
-  return description.match(/<img[^>]+src=["']([^"']+)["']/i)?.[1] || "";
+  if (item.enclosure?.["@_type"]?.startsWith("image/")) return secureImageUrl(item.enclosure["@_url"] || "");
+  const bingImage = textValue(item["News:Image"]);
+  if (bingImage) return secureImageUrl(bingImage);
+  return secureImageUrl(description.match(/<img[^>]+src=["']([^"']+)["']/i)?.[1] || "");
+}
+
+/**
+ * Upgrades image URLs to https. The site is served over https, so a plain http
+ * image is blocked as mixed content and never renders — Bing publishes its
+ * thumbnails as `http://www.bing.com/th?...`, which is why those cards fell back
+ * to a placeholder even though the feed carried a picture.
+ */
+function secureImageUrl(url: string) {
+  if (!url) return "";
+  if (url.startsWith("//")) return `https:${url}`;
+  return url.startsWith("http://") ? `https://${url.slice("http://".length)}` : url;
+}
+
+/**
+ * Bing wraps every result in `bing.com/news/apiclick.aspx?...&url=<encoded>`.
+ * Unwrapping gives readers the publisher's own URL with no tracking hop, and
+ * gives the rest of the pipeline a hostname it can attribute.
+ */
+function unwrapRedirect(link: string) {
+  if (!link) return link;
+  try {
+    const url = new URL(link);
+    if (!/(^|\.)bing\.com$/i.test(url.hostname)) return link;
+    const target = url.searchParams.get("url");
+    if (!target) return link;
+    const resolved = new URL(target);
+    return resolved.protocol === "http:" || resolved.protocol === "https:" ? resolved.toString() : link;
+  } catch {
+    return link;
+  }
 }
 
 function publicationSource(source: string, title: string) {
-  if (source && !isAggregatorSource(source)) return source;
+  if (source && isUsableSource(source)) return source;
+
   const titleParts = title.split(/\s[-–—]\s/).map((part) => part.trim()).filter(Boolean);
-  return titleParts.length > 1 ? titleParts.at(-1) || source : source;
+  const fromTitle = titleParts.length > 1 ? titleParts.at(-1) || "" : "";
+  if (fromTitle && isUsableSource(fromTitle)) return fromTitle;
+
+  // Nothing trustworthy. An empty source lets the client fall back to the
+  // article's own hostname; passing the query through would print it as a byline.
+  return "";
+}
+
+function isUsableSource(source: string) {
+  return !isAggregatorSource(source) && !isSearchQuerySource(source);
 }
 
 function isAggregatorSource(source: string) {
-  const normalized = source.toLowerCase();
-  return normalized.includes("google news") || normalized.includes("bing news") || normalized.includes("news.google.com");
+  // Separators are stripped before comparing: these feeds spell themselves
+  // inconsistently ("Bing News", "BingNews", "news.google.com"), and a
+  // spaced-only check let "BingNews" through.
+  const normalized = source.toLowerCase().replace(/[^a-z]/g, "");
+  return normalized.includes("googlenews") || normalized.includes("bingnews") || normalized.includes("newsgoogle");
+}
+
+/**
+ * True when a "source" is really the query that produced the feed, e.g.
+ * `("Potter County" "Texas") (local news OR community news) - BingNews`.
+ * Real mastheads carry no quotes, parentheses, or boolean operators.
+ */
+function isSearchQuerySource(source: string) {
+  return /["\u201c\u201d()]/.test(source) || /\s(?:OR|AND)\s/.test(source) || source.length > 64;
 }
 
 function stripHtml(value: string) {
