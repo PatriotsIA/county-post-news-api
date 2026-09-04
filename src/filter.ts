@@ -113,13 +113,39 @@ function matchesCountyScope(item: NewsFeedItem, state: StateSite, counties: Coun
  */
 export function textMentionsCounty(haystack: string, county: CountySite, state: StateSite, namesState?: boolean) {
   const inState = namesState ?? includesTerm(haystack, state.name.toLowerCase());
+  const mentionsCountyName = includesTerm(haystack, `${county.name.toLowerCase()} county`);
+
   // A distinctive county name identifies itself. Requiring the state as well
   // discarded the most obviously county-local stories there are — headlines
   // that name the county and never repeat the state.
-  if ((inState || isDistinctiveCountyName(county.name)) && includesTerm(haystack, `${county.name.toLowerCase()} county`)) {
-    return true;
+  if (mentionsCountyName && (inState || isDistinctiveCountyName(county.name))) return true;
+
+  let ambiguousPlaceMentions = 0;
+  for (const place of getCountyLocalPlaces(county)) {
+    const name = place.toLowerCase();
+    if (!isAmbiguousPlaceName(place)) {
+      // A distinctive town name is its own state qualifier — Lufkin, Quitaque
+      // and Mena each exist in one state.
+      if (includesTerm(haystack, name)) return true;
+    } else if (
+      includesTerm(haystack, `${name}, ${state.name.toLowerCase()}`) ||
+      includesTerm(haystack, `${name}, ${state.abbr.toLowerCase()}`)
+    ) {
+      // The dateline supplies the state itself.
+      return true;
+    } else if (includesTerm(haystack, name)) {
+      ambiguousPlaceMentions += 1;
+    }
   }
-  return getCountyLocalPlaces(county).some((place) => mentionsPlace(haystack, place, state, inState));
+
+  // Corroboration: names that are individually too common to trust confirm one
+  // another. Hall County, Texas is the motivating case — "Hall" is a county in
+  // three states and its towns are Memphis, Turkey and Lakeview, so almost no
+  // genuine headline about it can pass on a single name. "Hall County set to
+  // receive data center near Turkey" names an ambiguous county and an ambiguous
+  // town, and together they are unambiguous; so are two of its towns at once.
+  // The wrong-state guard above still rejects stories naming another state.
+  return (mentionsCountyName && ambiguousPlaceMentions >= 1) || ambiguousPlaceMentions >= 2;
 }
 
 /**
@@ -152,26 +178,6 @@ const ambiguousPlaces = new Set(ambiguousPlaceNames);
  */
 export function isAmbiguousPlaceName(place: string) {
   return place.length <= 4 || ambiguousPlaces.has(place) || COMMON_WORD_PLACE_NAMES.has(place.toLowerCase());
-}
-
-function mentionsPlace(haystack: string, place: string, state: StateSite, namesState: boolean) {
-  const name = place.toLowerCase();
-  const ambiguous = isAmbiguousPlaceName(place);
-
-  // A distinctive town name is its own state qualifier — Lufkin, Quitaque and
-  // Mena each exist in one state — so it does not have to be accompanied by the
-  // word "Texas". Demanding that discarded most genuine local coverage, because
-  // a headline says "Lufkin ISD names new superintendent" and never names the
-  // state; the wrong-state guard above still applies either way.
-  if (!ambiguous) return includesTerm(haystack, name);
-
-  // Shared names carry no such guarantee and need the dateline, which supplies
-  // the state itself.
-  void namesState;
-  return (
-    includesTerm(haystack, `${name}, ${state.name.toLowerCase()}`) ||
-    includesTerm(haystack, `${name}, ${state.abbr.toLowerCase()}`)
-  );
 }
 
 function matchesMarketScope(

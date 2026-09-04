@@ -196,3 +196,34 @@ describe("place-name ambiguity", () => {
     ).toHaveLength(1);
   });
 });
+
+describe("corroboration between ambiguous names", () => {
+  const hall = getCounty("texas", "hall")!;
+  const scope = { level: "county", state: hall.state, county: hall } as const;
+  // Hall County, Texas is the hardest realistic case: the county name exists in
+  // three states and its towns are Memphis, Turkey and Lakeview, so almost no
+  // genuine headline about it can qualify on any single name.
+
+  it("accepts an ambiguous county name confirmed by one of its towns", () => {
+    expect(
+      filterItems([story("Hall County set to receive data center near Turkey")], "general", scope),
+    ).toHaveLength(1);
+  });
+
+  it("accepts two of the county's towns confirming each other", () => {
+    expect(
+      filterItems([story("Memphis and Turkey school districts announce closures")], "general", scope),
+    ).toHaveLength(1);
+  });
+
+  it("still rejects each ambiguous name on its own", () => {
+    expect(filterItems([story("Memphis braces for a weekend of storms")], "general", scope)).toHaveLength(0);
+    expect(filterItems([story("Hall County approves its annual budget")], "general", scope)).toHaveLength(0);
+  });
+
+  it("still rejects the same names when another state is the subject", () => {
+    expect(
+      filterItems([story("Hall County, Georgia weighs a data center near the Turkey border exhibit")], "general", scope),
+    ).toHaveLength(0);
+  });
+});
