@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { countyPlaces } from "../src/county-places.js";
-import { getCounty, getCountyLocalPlaces, getCountyMarketCities } from "../src/geo.js";
+import { getCountyByState } from "@nickgraffis/us-counties";
+import { getCounty, getCountyLocalPlaces, getCountyMarketCities, states } from "../src/geo.js";
 import { filterItems } from "../src/filter.js";
 import type { NewsFeedItem } from "../src/types.js";
 
@@ -17,8 +18,46 @@ function story(title: string, description = ""): NewsFeedItem {
 }
 
 describe("county place data", () => {
-  it("covers the overwhelming majority of counties", () => {
-    expect(Object.keys(countyPlaces).length).toBeGreaterThan(3_000);
+  it("covers every county the site publishes", () => {
+    // No county may fall back to a distant media market. The Census subcounty
+    // file alone left 85 short — counties whose population centre is
+    // unincorporated, plus Connecticut, which the Census now reports as
+    // planning regions rather than the counties this site is organised by.
+    const missing: string[] = [];
+    let total = 0;
+    for (const state of states) {
+      for (const county of getCountyByState(state.name)) {
+        total += 1;
+        if (!countyPlaces[county.FIPS]?.length) missing.push(`${state.slug}/${county.name}`);
+      }
+    }
+    expect(total).toBe(3_143);
+    expect(missing).toEqual([]);
+  });
+
+  it("fills the counties the Census subcounty file omits", () => {
+    // Unincorporated county seats, absent from the population estimates.
+    expect(countyPlaces["48033"]).toContain("Gail"); // Borden County, Texas
+    expect(countyPlaces["48261"]).toContain("Sarita"); // Kenedy County, Texas
+    expect(countyPlaces["15005"]).toContain("Kalaupapa"); // Kalawao County, Hawaii
+    expect(countyPlaces["32009"]).toContain("Goldfield"); // Esmeralda County, Nevada
+
+    // Hawaii has no incorporated places at all, so every county but Honolulu
+    // came from GNIS, ranked by Census place area rather than population.
+    expect(countyPlaces["15001"]).toContain("Hilo");
+    expect(countyPlaces["15009"]).toContain("Kahului");
+
+    // Connecticut, mapped back to the legacy counties from the 2020 Gazetteer
+    // and ranked by the population the subcounty file reports for each town.
+    expect(countyPlaces["09001"]?.slice(0, 3)).toEqual(["Bridgeport", "Stamford", "Norwalk"]);
+    expect(countyPlaces["09003"]?.[0]).toBe("Hartford");
+  });
+
+  it("keeps ghost towns out", () => {
+    // GNIS lists razed settlements alongside county seats, flagged in the name.
+    for (const places of Object.values(countyPlaces)) {
+      for (const place of places) expect(place).not.toContain("(historical)");
+    }
   });
 
   it("gives rural counties their own towns instead of a distant media market", () => {
