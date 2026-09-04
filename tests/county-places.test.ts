@@ -60,13 +60,28 @@ describe("county locality filtering", () => {
   const briscoe = getCounty("texas", "briscoe")!;
   const scope = { level: "county", state: briscoe.state, county: briscoe } as const;
 
-  it("accepts a story that names a town inside the county", () => {
+  it("accepts a distinctive town name on its own", () => {
+    // Quitaque exists in one state, so a bare mention is evidence enough. This
+    // permissiveness is the point: the strongest local stories never name the
+    // state — "Mena Police Reports" is a complete Polk County, Arkansas headline.
     const items = filterItems(
-      [story("Silverton city council approves new water line", "The Texas town voted Tuesday.")],
+      [story("Quitaque council approves a new water line", "The Texas town voted Tuesday.")],
       "general",
       scope,
     );
     expect(items).toHaveLength(1);
+  });
+
+  it("requires a dateline for a town name shared across states", () => {
+    // Silverton is also in Colorado and Oregon, so a bare mention beside the
+    // word "Texas" is not evidence this story is about Briscoe County.
+    expect(
+      filterItems([story("Silverton council approves a new water line", "The Texas town voted.")], "general", scope),
+    ).toHaveLength(0);
+
+    expect(
+      filterItems([story("Silverton, TX council approves a new water line")], "general", scope),
+    ).toHaveLength(1);
   });
 
   it("still accepts a story that names the county itself", () => {
@@ -106,5 +121,39 @@ describe("county locality filtering", () => {
       hopeScope,
     );
     expect(dateline).toHaveLength(1);
+  });
+});
+
+describe("place-name ambiguity", () => {
+  it("rejects the false matches that bare name matching produced", () => {
+    // Observed on production before this rule existed.
+    const arthur = getCounty("nebraska", "arthur")!;
+    expect(
+      filterItems(
+        [story("Clues in the cellar: a night of mystery at James Arthur Vineyard", "A Nebraska event.")],
+        "general",
+        { level: "county", state: arthur.state, county: arthur },
+      ),
+    ).toHaveLength(0);
+
+    const roberts = getCounty("texas", "roberts")!;
+    expect(
+      filterItems(
+        [story("Miami Dolphins cut Bradley Chubb", "Texas Roadhouse coverage of the move.")],
+        "general",
+        { level: "county", state: roberts.state, county: roberts },
+      ),
+    ).toHaveLength(0);
+  });
+
+  it("still lets a genuinely local story through for those counties", () => {
+    const roberts = getCounty("texas", "roberts")!;
+    expect(
+      filterItems(
+        [story("Miami, TX schools name a new superintendent")],
+        "general",
+        { level: "county", state: roberts.state, county: roberts },
+      ),
+    ).toHaveLength(1);
   });
 });

@@ -1,3 +1,4 @@
+import { ambiguousPlaceNames } from "./county-places.js";
 import { getCountyLocalPlaces } from "./geo.js";
 import type { CountySite, FeedScope, NewsFeedItem, StateSite, Topic } from "./types.js";
 import { isTrustedCountySource, isTrustedMarketSource, type DirectSource } from "./source-registry.js";
@@ -89,7 +90,13 @@ function matchesCountyScope(item: NewsFeedItem, state: StateSite, counties: Coun
   const contentHaystack = itemContent(item);
   const fullHaystack = itemHaystack(item);
   const mentionsOtherState = stateNames.some((stateName) => stateName !== state.name.toLowerCase() && includesTerm(contentHaystack, stateName));
-  if (mentionsOtherState || !includesTerm(fullHaystack, state.name.toLowerCase())) return false;
+  if (mentionsOtherState) return false;
+
+  // The state is normally established by its full name. A bare postal
+  // abbreviation is too noisy to accept on its own — "OR", "IN" and "ME" are
+  // ordinary words — but inside a dateline it is unambiguous, so "Miami, TX"
+  // establishes both the town and the state at once.
+  const namesState = includesTerm(fullHaystack, state.name.toLowerCase());
 
   // A story is county-local if it names the county, or names a town inside it.
   // Requiring the literal "briscoe county" discarded every Silverton story —
@@ -98,28 +105,38 @@ function matchesCountyScope(item: NewsFeedItem, state: StateSite, counties: Coun
   // media markets the county tier is meant to exclude.
   return counties.some(
     (county) =>
-      includesTerm(fullHaystack, `${county.name.toLowerCase()} county`) ||
-      getCountyLocalPlaces(county).some((place) => mentionsPlace(fullHaystack, place, state)),
+      (namesState && includesTerm(fullHaystack, `${county.name.toLowerCase()} county`)) ||
+      getCountyLocalPlaces(county).some((place) => mentionsPlace(fullHaystack, place, state, namesState)),
   );
 }
 
 /**
- * Town names that are also ordinary English words, or too short to carry
- * meaning on their own. A story that happens to contain "hope" or "union"
- * beside a state name is not a story about Hope, Arkansas, so these count only
- * when written the way news writes a location: "Hope, Arkansas" or "Hope, AR".
- * Distinctive names are matched on their own.
+ * Town names that are also ordinary English words. Generated ambiguity covers
+ * names shared across states; this catches the rest, where the collision is
+ * with normal prose rather than another town.
  */
-const AMBIGUOUS_PLACE_NAMES = new Set([
-  "bath", "bell", "cedar", "center", "central", "clinton", "commerce", "enterprise", "eureka",
-  "franklin", "friendly", "hope", "independence", "industry", "liberty", "madison", "milton",
-  "normal", "oak", "point", "salem", "springfield", "summit", "union", "energy", "progress",
-  "surprise", "grand", "mount", "fair", "best", "rich", "blue", "gold", "silver", "home", "sun",
+const COMMON_WORD_PLACE_NAMES = new Set([
+  "bath", "bell", "best", "blue", "cedar", "center", "central", "commerce", "energy", "enterprise",
+  "fair", "friendly", "gold", "grand", "home", "industry", "mount", "normal", "oak", "point",
+  "progress", "rich", "silver", "summit", "sun", "surprise",
 ]);
 
-function mentionsPlace(haystack: string, place: string, state: StateSite) {
+const ambiguousPlaces = new Set(ambiguousPlaceNames);
+
+/**
+ * A town name only counts as evidence when it actually points at this county.
+ *
+ * Distinctive names are trusted on their own, which matters: the strongest
+ * local stories never name the state — "Mena Police Reports" is a Polk County,
+ * Arkansas headline in full. Names shared by three or more states, and names
+ * that are ordinary English words, need the dateline form instead. Without that
+ * split, Arthur County, Nebraska matched "James Arthur Vineyard" and Roberts
+ * County, Texas matched "Miami Dolphins CUT Bradley Chubb".
+ */
+function mentionsPlace(haystack: string, place: string, state: StateSite, namesState: boolean) {
   const name = place.toLowerCase();
-  if (place.length > 4 && !AMBIGUOUS_PLACE_NAMES.has(name)) return includesTerm(haystack, name);
+  const ambiguous = place.length <= 4 || ambiguousPlaces.has(place) || COMMON_WORD_PLACE_NAMES.has(name);
+  if (!ambiguous) return namesState && includesTerm(haystack, name);
   return (
     includesTerm(haystack, `${name}, ${state.name.toLowerCase()}`) ||
     includesTerm(haystack, `${name}, ${state.abbr.toLowerCase()}`)

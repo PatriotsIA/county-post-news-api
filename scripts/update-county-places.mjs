@@ -103,6 +103,27 @@ const countyPlaces = Object.fromEntries(
     .sort(([left], [right]) => left.localeCompare(right)),
 );
 
+/**
+ * Town names shared by places in three or more states. A bare mention of one is
+ * weak evidence: "Arthur" is a county seat in Nebraska and also a person's
+ * name, "Miami" is a town in Texas and a city in Florida. These require the
+ * dateline form to count, while a distinctive name like Mena or Quitaque is
+ * trusted on its own — which matters, because the best local stories
+ * ("Mena Police Reports") never name the state at all.
+ */
+const statesByName = new Map();
+for (const [fips, places] of byCounty) {
+  for (const name of places.keys()) {
+    const seen = statesByName.get(name) ?? new Set();
+    seen.add(fips.slice(0, 2));
+    statesByName.set(name, seen);
+  }
+}
+const ambiguousPlaceNames = [...statesByName.entries()]
+  .filter(([, seen]) => seen.size >= 3)
+  .map(([name]) => name)
+  .sort((left, right) => left.localeCompare(right));
+
 const counties = Object.keys(countyPlaces).length;
 if (counties < 2_800) {
   throw new Error(`Expected places for at least 2,800 counties; received ${counties}.`);
@@ -118,10 +139,16 @@ const generated =
   `// county news is actually written about; searching a county's nearest media\n` +
   `// market instead is what left rural feeds empty.\n` +
   `export const COUNTY_PLACES_VINTAGE = 2024;\n\n` +
-  `export const countyPlaces: Record<string, string[]> = ${JSON.stringify(countyPlaces, null, 2)};\n`;
+  `export const countyPlaces: Record<string, string[]> = ${JSON.stringify(countyPlaces, null, 2)};\n\n` +
+  `// Town names shared by three or more states. A bare mention is weak evidence,\n` +
+  `// so these count only when written as a dateline ("Miami, TX").\n` +
+  `export const ambiguousPlaceNames: string[] = ${JSON.stringify(ambiguousPlaceNames, null, 2)};\n`;
 
 await writeFile(OUTPUT_PATH, generated, "utf8");
-console.log(`Wrote places for ${counties.toLocaleString()} counties to ${OUTPUT_PATH.pathname}.`);
+console.log(
+  `Wrote places for ${counties.toLocaleString()} counties ` +
+    `and ${ambiguousPlaceNames.length.toLocaleString()} ambiguous names to ${OUTPUT_PATH.pathname}.`,
+);
 
 function cleanPlaceName(value) {
   let name = value.replace(/\s*\(pt\.\)$/, "").trim();
