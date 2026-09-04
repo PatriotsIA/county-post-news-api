@@ -97,3 +97,19 @@ describe("reviewed is not the same as trusted", () => {
     }
   });
 });
+
+describe("metro counties carry multiple reviewed outlets", () => {
+  it("Tarrant County lists its dailies and newsrooms, with the daily trusted", () => {
+    const tarrant = getCounty("texas", "tarrant")!;
+    const names = getReviewedCountySourceProfiles(tarrant).map((p) => p.name);
+    for (const name of ["Fort Worth Report", "Fort Worth Star-Telegram", "WFAA", "NBC 5 Dallas-Fort Worth", "FOX 4 News"]) {
+      expect(names).toContain(name);
+    }
+    const hosts = trustedCountyHosts(tarrant);
+    expect(hosts).toContain("star-telegram.com");
+    expect(hosts).toContain("fortworthreport.org");
+    // The TV feeds carry syndicated national wire; their stories pass the
+    // text rules instead of arriving by provenance.
+    expect(hosts).not.toContain("wfaa.com");
+  });
+});
