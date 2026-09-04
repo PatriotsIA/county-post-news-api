@@ -4,7 +4,13 @@ export const config = {
   port: Number(process.env.PORT || 8787),
   corsOrigins: parseCorsOrigins(process.env.CORS_ORIGINS || process.env.CORS_ORIGIN || "*"),
   cacheTtlSeconds: Number(process.env.CACHE_TTL_SECONDS || 30),
-  requestTimeoutMs: Number(process.env.REQUEST_TIMEOUT_MS || 3500),
+  requestTimeoutMs: Number(process.env.REQUEST_TIMEOUT_MS || 2500),
+  /**
+   * Total time the request path spends hunting og:image thumbnails. Lookups
+   * that miss it continue in the background and land in the per-URL cache for
+   * the next rebuild.
+   */
+  imageEnrichmentBudgetMs: Number(process.env.IMAGE_ENRICHMENT_BUDGET_MS || 2500),
   defaultLimit: Number(process.env.DEFAULT_LIMIT || 120),
   maxLimit: Number(process.env.MAX_LIMIT || 600),
   countyFallbackMinItems: Number(process.env.COUNTY_FALLBACK_MIN_ITEMS || 12),
@@ -52,7 +58,7 @@ export const config = {
   bingNewsUrlShare: Number(process.env.BING_NEWS_URL_SHARE || 0.2),
   bingNewsSearch: "https://www.bing.com/news/search",
   pageSectionConcurrency: Number(process.env.PAGE_SECTION_CONCURRENCY || 2),
-  upstreamConcurrency: Number(process.env.UPSTREAM_CONCURRENCY || 20),
+  upstreamConcurrency: Number(process.env.UPSTREAM_CONCURRENCY || 40),
   articleImageLookupLimit: Number(process.env.ARTICLE_IMAGE_LOOKUP_LIMIT || 30),
   maxRssUrlsPerFeed: Number(process.env.MAX_RSS_URLS_PER_FEED || 30),
   maxArticleQueriesPerFeed: Number(process.env.MAX_ARTICLE_QUERIES_PER_FEED || 10),

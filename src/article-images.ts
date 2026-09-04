@@ -9,10 +9,20 @@ export async function enrichArticleImages(items: NewsFeedItem[]) {
   const candidates = items.filter((item) => !item.imageUrl && isHttpUrl(item.link)).slice(0, config.articleImageLookupLimit);
   if (!candidates.length) return items;
 
-  const resolved = await mapLimited(candidates, IMAGE_LOOKUP_CONCURRENCY, async (item) => ({
+  // Thumbnails are a nicety; the articles are the product. Whatever resolves
+  // inside the budget ships, the rest keep loading into the per-URL cache and
+  // appear when the feed next rebuilds. Without the deadline, two dozen
+  // article-page fetches sat between the reader and their first story.
+  const lookups = mapLimited(candidates, IMAGE_LOOKUP_CONCURRENCY, async (item) => ({
     id: item.id,
     imageUrl: await getArticleImage(item.link),
   }));
+  const resolved = await Promise.race([
+    lookups,
+    new Promise<Awaited<typeof lookups>>((resolve) =>
+      setTimeout(() => resolve([]), config.imageEnrichmentBudgetMs).unref?.(),
+    ),
+  ]);
   const imageUrls = new Map(resolved.filter((result): result is { id: string; imageUrl: string } => Boolean(result.imageUrl)).map((result) => [result.id, result.imageUrl]));
 
   return items.map((item) => (imageUrls.has(item.id) ? { ...item, imageUrl: imageUrls.get(item.id) } : item));

@@ -193,7 +193,13 @@ function responseHeaders(cacheControl?: string) {
     "content-type": "application/json; charset=utf-8",
     "access-control-allow-methods": "GET, POST, OPTIONS",
     "access-control-allow-headers": "content-type, authorization",
-    "cache-control": cacheControl || `public, max-age=${config.cacheTtlSeconds}, s-maxage=${config.cacheTtlSeconds}`,
+    // stale-while-revalidate lets the CDN answer instantly with the previous
+    // result and refresh in the background, so readers stop paying for the
+    // upstream fan-out; stale-if-error keeps a county desk up through an
+    // upstream outage rather than erroring alongside it.
+    "cache-control":
+      cacheControl ||
+      `public, max-age=${config.cacheTtlSeconds}, s-maxage=${config.cacheTtlSeconds}, stale-while-revalidate=86400, stale-if-error=86400`,
   };
 }
 

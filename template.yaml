@@ -143,6 +143,90 @@ Resources:
       FunctionUrlConfig:
         AuthType: NONE
 
+  # ---------------------------------------------------------------------------
+  # Edge cache in front of the news API.
+  #
+  # The function's own cache is per-instance memory with a five-minute TTL;
+  # across 3,143 counties nearly every reader was a cold hit paying the full
+  # upstream fan-out (measured at 9-27 seconds). CloudFront makes the s-maxage
+  # the API already sends real, and stale-while-revalidate means an expired
+  # entry is served instantly while the edge refreshes it in the background.
+  # Origin Shield funnels every edge location through one regional cache, so the
+  # scheduled warmer below warms the world, not just the nearest POP.
+  # ---------------------------------------------------------------------------
+  NewsApiCachePolicy:
+    Type: AWS::CloudFront::CachePolicy
+    Properties:
+      CachePolicyConfig:
+        Name: !Sub "${AWS::StackName}-news-api-cache"
+        Comment: Query strings select the feed; Origin is in the key because CORS responses echo it.
+        DefaultTTL: 300
+        MinTTL: 0
+        MaxTTL: 86400
+        ParametersInCacheKeyAndForwardedToOrigin:
+          EnableAcceptEncodingGzip: true
+          EnableAcceptEncodingBrotli: true
+          CookiesConfig:
+            CookieBehavior: none
+          HeadersConfig:
+            HeaderBehavior: whitelist
+            Headers:
+              - Origin
+          QueryStringsConfig:
+            QueryStringBehavior: all
+
+  NewsApiDistribution:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        Enabled: true
+        Comment: County Post News API edge cache
+        HttpVersion: http2and3
+        PriceClass: PriceClass_100
+        Origins:
+          - Id: news-api-function
+            DomainName: !Select [2, !Split ["/", !GetAtt NewsApiFunctionUrl.FunctionUrl]]
+            CustomOriginConfig:
+              OriginProtocolPolicy: https-only
+              OriginSSLProtocols:
+                - TLSv1.2
+              OriginReadTimeout: 60
+            OriginShield:
+              Enabled: true
+              OriginShieldRegion: !Ref AWS::Region
+        DefaultCacheBehavior:
+          TargetOriginId: news-api-function
+          ViewerProtocolPolicy: https-only
+          AllowedMethods: [GET, HEAD, OPTIONS, PUT, POST, PATCH, DELETE]
+          CachedMethods: [GET, HEAD, OPTIONS]
+          Compress: true
+          CachePolicyId: !Ref NewsApiCachePolicy
+          # Managed AllViewerExceptHostHeader: forward everything except Host,
+          # which must stay the function URL's own for Lambda to accept it.
+          OriginRequestPolicyId: b689b0a8-53d0-40ab-baf2-68738e2966ac
+
+  # Keeps every covered county's lead feed warm at the edge, so the first
+  # reader is never the one who pays for the fan-out.
+  FeedWarmerFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: .
+      Handler: dist/src/warmer.handler
+      Timeout: 840
+      MemorySize: 512
+      Environment:
+        Variables:
+          WARM_BASE_URL: !Sub "https://${NewsApiDistribution.DomainName}"
+          WARM_ORIGIN: "https://thecountypost.com"
+          WARM_STATES: "texas"
+          WARM_CONCURRENCY: "10"
+      Events:
+        WarmSchedule:
+          Type: Schedule
+          Properties:
+            Schedule: rate(5 minutes)
+            Description: Refresh the edge cache for every covered county desk.
+
   AdvertisingCreativeBucket:
     Type: AWS::S3::Bucket
     Properties:
@@ -399,6 +483,9 @@ Outputs:
   NewsApiUrl:
     Description: Public Lambda Function URL for the news API.
     Value: !GetAtt NewsApiFunctionUrl.FunctionUrl
+  NewsApiEdgeUrl:
+    Description: CloudFront domain the site should call; edge-cached with stale-while-revalidate.
+    Value: !Sub "https://${NewsApiDistribution.DomainName}"
   AtlasDataBucketName:
     Description: Private versioned bucket containing active County Data Atlas snapshots.
     Value: !Ref AtlasDataBucket
