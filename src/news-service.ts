@@ -7,6 +7,7 @@ import { fetchGdeltItems } from "./gdelt.js";
 import { featuredCountyPostOpinion } from "./editorial.js";
 import { getCountyLocalPlaces, getCountyPlaceTerms, getNearbyCounties } from "./geo.js";
 import { fetchRssItems, getItemMaxAgeDays } from "./rss.js";
+import { trustedCountyHosts } from "./source-registry.js";
 import type { FeedResponse, FeedScope, NewsFeedItem, PageResponse, Topic } from "./types.js";
 
 export async function getFeed(
@@ -602,5 +603,8 @@ function scopePayload(scope: FeedScope): Record<string, string | string[]> {
     // stories — a Lufkin school board report — that the API just found.
     places: distinctivePlaces,
     datelinePlaces,
+    // Outlets the API accepts as county-local on their own. Without this the
+    // browser re-filtered them straight back out.
+    trustedHosts: trustedCountyHosts(scope.county),
   };
 }

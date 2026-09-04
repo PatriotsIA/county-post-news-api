@@ -484,6 +484,25 @@ export function isTrustedMarketSource(item: NewsFeedItem, sources: DirectSource[
   return Boolean(itemDomain && sources.some((source) => hostname(source.url) === itemDomain));
 }
 
+/**
+ * Hostnames whose stories count as county-local without naming the county.
+ *
+ * Published in the API response because the browser re-checks locality on what
+ * it receives and has no copy of this registry: it was discarding items the API
+ * had accepted through exactly this rule, which is why county desks showed a
+ * handful of stories out of the fifty they were sent.
+ */
+export function trustedCountyHosts(county: CountySite): string[] {
+  const countyKey = countySourceKey(county);
+  const hosts = [
+    ...allDirectSources()
+      .filter((source) => source.counties?.includes(countyKey) && source.trustedForCountyTier !== false)
+      .map((source) => hostname(source.url)),
+    ...getCountyNativeSources(county).map((source) => hostname(source.websiteUrl)),
+  ];
+  return Array.from(new Set(hosts.filter(Boolean)));
+}
+
 export function isTrustedCountySource(item: NewsFeedItem, sources: DirectSource[], county: CountySite) {
   const countyKey = countySourceKey(county);
   const countySources = sources.filter(
