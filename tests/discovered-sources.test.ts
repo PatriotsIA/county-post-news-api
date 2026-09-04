@@ -113,3 +113,23 @@ describe("metro counties carry multiple reviewed outlets", () => {
     expect(hosts).not.toContain("wfaa.com");
   });
 });
+
+describe("national pass coverage", () => {
+  it("major counties nationwide carry reviewed outlets with correct trust", () => {
+    const king = getCounty("washington", "king")!;
+    expect(getReviewedCountySourceProfiles(king).map((p) => p.name)).toContain("The Seattle Times");
+    expect(trustedCountyHosts(king)).toContain("seattletimes.com");
+
+    const cook = getCounty("illinois", "cook")!;
+    const cookNames = getReviewedCountySourceProfiles(cook).map((p) => p.name);
+    expect(cookNames).toContain("Chicago Tribune");
+    expect(cookNames).toContain("Block Club Chicago");
+    expect(trustedCountyHosts(cook)).toContain("blockclubchicago.org");
+
+    // Statewide hosts are reviewed but never trusted: an AL.com story about
+    // Mobile must not land on the Jefferson County desk by provenance.
+    const jefferson = getCounty("alabama", "jefferson")!;
+    expect(getReviewedCountySourceProfiles(jefferson).map((p) => p.name)).toContain("AL.com");
+    expect(trustedCountyHosts(jefferson)).not.toContain("al.com");
+  });
+});

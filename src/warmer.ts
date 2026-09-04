@@ -25,12 +25,16 @@ export async function handler(): Promise<WarmerResult> {
   const origin = process.env.WARM_ORIGIN || "https://thecountypost.com";
   const concurrency = Math.max(1, Number(process.env.WARM_CONCURRENCY || 10));
   const limit = Number(process.env.WARM_FEED_LIMIT || process.env.DEFAULT_LIMIT || 120);
-  const stateSlugs = (process.env.WARM_STATES || "texas")
-    .split(",")
-    .map((slug) => slug.trim())
-    .filter(Boolean);
+  const warmStatesEnv = process.env.WARM_STATES || "texas";
+  const stateSlugs =
+    warmStatesEnv.trim() === "all"
+      ? states.map((state) => state.slug)
+      : warmStatesEnv
+          .split(",")
+          .map((slug) => slug.trim())
+          .filter(Boolean);
 
-  const targets = stateSlugs.flatMap((stateSlug) => {
+  const allTargets = stateSlugs.flatMap((stateSlug) => {
     const state = states.find((entry) => entry.slug === stateSlug);
     if (!state) return [];
     return getCountyByState(state.name)
@@ -38,6 +42,18 @@ export async function handler(): Promise<WarmerResult> {
       .filter((county): county is NonNullable<typeof county> => Boolean(county))
       .map((county) => `${baseUrl}/v1/feeds/counties/${county.state.slug}/${county.slug}/general?limit=${limit}`);
   });
+
+  // One pass cannot rebuild every county in the country: 3,143 rebuilds would
+  // blow the function timeout and hammer the upstream search feeds. Each pass
+  // therefore warms one shard, chosen by wall-clock so consecutive scheduled
+  // runs walk the whole list in order. Every county still gets rebuilt well
+  // inside the S3 cache's stale window; readers in between are served the
+  // stored copy instantly.
+  const maxPerPass = Math.max(25, Number(process.env.WARM_MAX_PER_PASS || 150));
+  const shardCount = Math.max(1, Math.ceil(allTargets.length / maxPerPass));
+  const intervalMs = Math.max(1, Number(process.env.WARM_INTERVAL_MINUTES || 5)) * 60_000;
+  const shardIndex = Math.floor(Date.now() / intervalMs) % shardCount;
+  const targets = allTargets.filter((_, index) => index % shardCount === shardIndex);
 
   const started = Date.now();
   let warmed = 0;
@@ -75,6 +91,6 @@ export async function handler(): Promise<WarmerResult> {
   );
 
   const result = { warmed, failed, ms: Date.now() - started };
-  console.info(JSON.stringify({ event: "warmer.pass", targets: targets.length, ...result }));
+  console.info(JSON.stringify({ event: "warmer.pass", targets: targets.length, totalTargets: allTargets.length, shard: `${shardIndex + 1}/${shardCount}`, ...result }));
   return result;
 }

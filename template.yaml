@@ -263,7 +263,8 @@ Resources:
             - !Sub "https://${NewsApiDistribution.DomainName}"
             - !GetAtt NewsApiFunctionUrl.FunctionUrl
           WARM_ORIGIN: "https://thecountypost.com"
-          WARM_STATES: "texas"
+          WARM_STATES: "all"
+          WARM_MAX_PER_PASS: "150"
           WARM_CONCURRENCY: "10"
       Events:
         WarmSchedule:
