@@ -5,11 +5,18 @@ export const config = {
   corsOrigins: parseCorsOrigins(process.env.CORS_ORIGINS || process.env.CORS_ORIGIN || "*"),
   cacheTtlSeconds: Number(process.env.CACHE_TTL_SECONDS || 30),
   requestTimeoutMs: Number(process.env.REQUEST_TIMEOUT_MS || 3500),
-  defaultLimit: Number(process.env.DEFAULT_LIMIT || 48),
-  maxLimit: Number(process.env.MAX_LIMIT || 200),
+  defaultLimit: Number(process.env.DEFAULT_LIMIT || 120),
+  maxLimit: Number(process.env.MAX_LIMIT || 600),
   countyFallbackMinItems: Number(process.env.COUNTY_FALLBACK_MIN_ITEMS || 12),
   articleMaxAgeDays: Number(process.env.ARTICLE_MAX_AGE_DAYS || 183),
   freshnessFocusDays: Number(process.env.FRESHNESS_FOCUS_DAYS || 14),
+  /**
+   * Stories newer than this are ordered ahead of everything else, and older
+   * bands follow in turn, so a county desk leads with the current news it has
+   * without discarding the archive that keeps a thin feed populated.
+   */
+  recencyPrimaryDays: Number(process.env.RECENCY_PRIMARY_DAYS || 60),
+  recencySecondaryDays: Number(process.env.RECENCY_SECONDARY_DAYS || 180),
   stateMarketLimit: Number(process.env.STATE_MARKET_LIMIT || 4),
   countyMarketLimit: Number(process.env.COUNTY_MARKET_LIMIT || 3),
   countyNearbyLimit: Number(process.env.COUNTY_NEARBY_LIMIT || 3),
@@ -17,22 +24,38 @@ export const config = {
   countyAgencyQueryEnabled: process.env.COUNTY_AGENCY_QUERY_ENABLED !== "false",
   countyLocalSourceSearchEnabled: process.env.COUNTY_LOCAL_SOURCE_SEARCH_ENABLED !== "false",
   countyPublisherBalanceEnabled: process.env.COUNTY_PUBLISHER_BALANCE_ENABLED !== "false",
-  countySinglePublisherMax: Number(process.env.COUNTY_SINGLE_PUBLISHER_MAX || 25),
-  countyOtherSourcesTarget: Number(process.env.COUNTY_OTHER_SOURCES_TARGET || 25),
-  countyPrimaryQueryLimit: Number(process.env.COUNTY_PRIMARY_QUERY_LIMIT || 4),
-  countyMarketQueryLimit: Number(process.env.COUNTY_MARKET_QUERY_LIMIT || 4),
+  countySinglePublisherMax: Number(process.env.COUNTY_SINGLE_PUBLISHER_MAX || 90),
+  countyOtherSourcesTarget: Number(process.env.COUNTY_OTHER_SOURCES_TARGET || 90),
+  /**
+   * When one publisher supplies more than this, the desk reaches out for other
+   * newsrooms. Deliberately much lower than the single-publisher cap: the cap
+   * decides how many stories one outlet may end up contributing, this decides
+   * when a feed looks too monotonous to leave alone. Tying the two together
+   * meant raising the cap silently switched the diversity search off.
+   */
+  countyPublisherDiversityThreshold: Number(process.env.COUNTY_PUBLISHER_DIVERSITY_THRESHOLD || 12),
+  countyPrimaryQueryLimit: Number(process.env.COUNTY_PRIMARY_QUERY_LIMIT || 8),
+  countyMarketQueryLimit: Number(process.env.COUNTY_MARKET_QUERY_LIMIT || 6),
   // How many of a county's own towns are named in its search queries.
   countyPlaceQueryLimit: Number(process.env.COUNTY_PLACE_QUERY_LIMIT || 4),
   gdeltEnabled: process.env.GDELT_ENABLED !== "false",
   gdeltMaxRecords: Number(process.env.GDELT_MAX_RECORDS || 100),
   gdeltDocApi: "https://api.gdeltproject.org/api/v2/doc/doc",
   bingNewsEnabled: process.env.BING_NEWS_ENABLED !== "false",
+  /**
+   * Share of a feed's URL budget given to Bing. Both providers are used: Bing
+   * surfaces results Google misses and supplies the publisher name Google
+   * omits. It is simply far less productive per slot — measured across five
+   * counties, Bing returned 0 to 9 items where Google returned 92 to 234 — so
+   * it takes a minority of the budget rather than 40 percent of it.
+   */
+  bingNewsUrlShare: Number(process.env.BING_NEWS_URL_SHARE || 0.2),
   bingNewsSearch: "https://www.bing.com/news/search",
   pageSectionConcurrency: Number(process.env.PAGE_SECTION_CONCURRENCY || 2),
-  upstreamConcurrency: Number(process.env.UPSTREAM_CONCURRENCY || 12),
-  articleImageLookupLimit: Number(process.env.ARTICLE_IMAGE_LOOKUP_LIMIT || 18),
-  maxRssUrlsPerFeed: Number(process.env.MAX_RSS_URLS_PER_FEED || 18),
-  maxArticleQueriesPerFeed: Number(process.env.MAX_ARTICLE_QUERIES_PER_FEED || 6),
+  upstreamConcurrency: Number(process.env.UPSTREAM_CONCURRENCY || 20),
+  articleImageLookupLimit: Number(process.env.ARTICLE_IMAGE_LOOKUP_LIMIT || 30),
+  maxRssUrlsPerFeed: Number(process.env.MAX_RSS_URLS_PER_FEED || 30),
+  maxArticleQueriesPerFeed: Number(process.env.MAX_ARTICLE_QUERIES_PER_FEED || 10),
   googleNewsRssSearch: "https://news.google.com/rss/search",
   metalsProviderUrl: process.env.METALS_PROVIDER_URL || "https://mintedmetal.com/api/prices.json",
   metalsCacheTtlSeconds: Number(process.env.METALS_CACHE_TTL_SECONDS || 900),

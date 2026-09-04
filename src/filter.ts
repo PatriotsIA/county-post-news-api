@@ -140,9 +140,18 @@ const ambiguousPlaces = new Set(ambiguousPlaceNames);
  * split, Arthur County, Nebraska matched "James Arthur Vineyard" and Roberts
  * County, Texas matched "Miami Dolphins CUT Bradley Chubb".
  */
+/**
+ * Whether a town name needs a dateline to count. Shared with the API response
+ * so the browser can apply the same rule instead of guessing: it has no copy
+ * of the national place corpus this is derived from.
+ */
+export function isAmbiguousPlaceName(place: string) {
+  return place.length <= 4 || ambiguousPlaces.has(place) || COMMON_WORD_PLACE_NAMES.has(place.toLowerCase());
+}
+
 function mentionsPlace(haystack: string, place: string, state: StateSite, namesState: boolean) {
   const name = place.toLowerCase();
-  const ambiguous = place.length <= 4 || ambiguousPlaces.has(place) || COMMON_WORD_PLACE_NAMES.has(name);
+  const ambiguous = isAmbiguousPlaceName(place);
 
   // A distinctive town name is its own state qualifier — Lufkin, Quitaque and
   // Mena each exist in one state — so it does not have to be accompanied by the

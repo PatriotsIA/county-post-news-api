@@ -306,7 +306,19 @@ export function getCounty(stateSlug: string, countySlug: string) {
   // getCountyMarketCities for the market tier that deliberately wants them.
   const inCountyPlaces = countyPlaces[countyRecord.FIPS] ?? [];
   const primaryCity = override?.primaryCity || inCountyPlaces[0] || nearestMarkets[0];
-  const localCities = override?.localCities || (inCountyPlaces.length ? inCountyPlaces.slice(1) : nearestMarkets.slice(1));
+  // Hand-written towns and generated ones are merged rather than one replacing
+  // the other. An override was previously the whole list, so curating Potter
+  // County threw away every town the Census file knew about that nobody had
+  // thought to type out.
+  const mergedLocal = Array.from(
+    new Set([...(override?.localCities ?? []), ...inCountyPlaces].filter((place) => place && place !== primaryCity)),
+  );
+  // Market cities are a last resort for counties we know no towns for at all.
+  // Testing the merged list instead let a one-town county fall through to them:
+  // Arthur County, Nebraska has only Arthur, which becomes primaryCity, leaving
+  // nothing behind and pulling in Omaha.
+  const knowsAnyLocalPlace = Boolean(override?.localCities?.length || inCountyPlaces.length);
+  const localCities = knowsAnyLocalPlace ? mergedLocal : nearestMarkets.slice(1);
 
   return {
     name,

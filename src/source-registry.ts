@@ -94,6 +94,210 @@ const countyNativeSources: CountyNativeSource[] = [
     aliases: ["My Pulse News", "MyPulseNews.com", "KENA", "KENA Radio", "KENA 104.1 FM"],
     counties: ["arkansas/polk"],
   },
+
+  // Texas outlets promoted from the discovery review queue. Each was checked
+  // against the county it covers before being trusted here: Athens is the
+  // Henderson County seat, Gilmer the Upshur County seat, and so on. Trust
+  // means every story these publish reaches that county's desk without having
+  // to name it, which is what a county paper's own coverage deserves and what
+  // a regional wire must never get.
+  {
+    // No usable RSS, but the profile still earns its place: it produces a
+    // targeted site: search and lets the filter trust what that search returns.
+    // This is how the Lufkin Daily News became Angelina County's top source.
+    name: "The Lufkin Daily News",
+    websiteUrl: "https://lufkindailynews.com/",
+    outletTypes: ["newspaper"],
+    aliases: ["Lufkin Daily News", "lufkindailynews.com"],
+    counties: ["texas/angelina"],
+  },
+  {
+    name: "Amarillo Globe-News",
+    websiteUrl: "https://www.amarillo.com/",
+    outletTypes: ["newspaper"],
+    aliases: ["Amarillo Globe News", "amarillo.com"],
+    // Amarillo straddles both counties, so its newsroom is native to each.
+    counties: ["texas/potter", "texas/randall"],
+  },
+  {
+    name: "The Athens Review",
+    websiteUrl: "https://athensreview.com/",
+    outletTypes: ["newspaper"],
+    counties: ["texas/henderson"],
+    feeds: [
+      { url: "http://www.athensreview.com/search/?f=rss&t=article&l=50&s=start_time&sd=desc&k%5B%5D=%23topstory" },
+    ],
+  },
+  {
+    name: "Bluebonnet News",
+    websiteUrl: "https://bluebonnetnews.com/",
+    outletTypes: ["digital"],
+    counties: ["texas/liberty"],
+    feeds: [
+      { url: "https://bluebonnetnews.com/feed/" },
+      { url: "https://bluebonnetnews.com/comments/feed/" },
+    ],
+  },
+  {
+    name: "Cross Timbers Gazette",
+    websiteUrl: "https://crosstimbersgazette.com/",
+    outletTypes: ["newspaper"],
+    counties: ["texas/denton"],
+    feeds: [
+      { url: "https://www.crosstimbersgazette.com/feed/" },
+      { url: "https://crosstimbersgazette.com/feed/" },
+    ],
+  },
+  {
+    name: "Denton Record-Chronicle",
+    websiteUrl: "https://dentonrc.com/",
+    outletTypes: ["newspaper"],
+    counties: ["texas/denton"],
+    feeds: [
+      { url: "http://dentonrc.com/search/?f=rss&t=article&l=50&s=start_time&sd=desc&k%5B%5D=%23topstory" },
+    ],
+  },
+  {
+    name: "Eagle Pass Business Journal",
+    websiteUrl: "https://epbusinessjournal.com/",
+    outletTypes: ["digital"],
+    counties: ["texas/maverick"],
+    feeds: [
+      { url: "https://epbusinessjournal.com/feed/" },
+      { url: "https://epbusinessjournal.com/rss" },
+    ],
+  },
+  {
+    name: "The Galveston County Daily News",
+    websiteUrl: "https://galvnews.com/",
+    outletTypes: ["newspaper"],
+    counties: ["texas/galveston"],
+    feeds: [
+      { url: "http://www.galvnews.com/search/?f=rss&t=article&l=50&s=start_time&sd=desc&k%5B%5D=%23topstory" },
+    ],
+  },
+  {
+    name: "The Gilmer Mirror",
+    websiteUrl: "https://gilmermirror.com/",
+    outletTypes: ["newspaper"],
+    counties: ["texas/upshur"],
+    feeds: [
+      { url: "https://www.gilmermirror.com/feed/" },
+      { url: "https://www.gilmermirror.com/comments/feed/" },
+    ],
+  },
+  {
+    name: "The Herald-Banner",
+    websiteUrl: "https://heraldbanner.com/",
+    outletTypes: ["newspaper"],
+    counties: ["texas/hunt"],
+    feeds: [
+      { url: "http://www.heraldbanner.com/search/?f=rss&t=article&l=50&s=start_time&sd=desc&k%5B%5D=%23topstory" },
+    ],
+  },
+  {
+    name: "The Huntsville Item",
+    websiteUrl: "https://itemonline.com/",
+    outletTypes: ["newspaper"],
+    counties: ["texas/walker"],
+    feeds: [
+      { url: "http://www.itemonline.com/search/?f=rss&t=article&l=50&s=start_time&sd=desc&k%5B%5D=%23topstory" },
+    ],
+  },
+  {
+    name: "KAGS",
+    websiteUrl: "https://kagstv.com/",
+    outletTypes: ["television"],
+    counties: ["texas/brazos"],
+    feeds: [
+      { url: "https://www.kagstv.com/feeds/syndication/rss/news" },
+    ],
+  },
+  {
+    name: "Levelland & Hockley County News Press",
+    websiteUrl: "https://levellandnews.net/",
+    outletTypes: ["newspaper"],
+    counties: ["texas/hockley"],
+    feeds: [
+      { url: "https://levellandnews.net/rss.xml" },
+    ],
+  },
+  {
+    name: "News Channel 6",
+    websiteUrl: "https://newschannel6now.com/",
+    outletTypes: ["television"],
+    counties: ["texas/wichita"],
+    feeds: [
+      { url: "https://newschannel6now.com/arc/outboundfeeds/rss/?outputType=xml" },
+    ],
+  },
+  {
+    name: "The Paris News",
+    websiteUrl: "https://theparisnews.com/",
+    outletTypes: ["newspaper"],
+    counties: ["texas/lamar"],
+    feeds: [
+      { url: "http://theparisnews.com/search/?f=rss&t=article&l=50&s=start_time&sd=desc&k%5B%5D=%23topstory" },
+    ],
+  },
+  {
+    name: "Royse City Herald-Banner",
+    websiteUrl: "https://roysecityheraldbanner.com/",
+    outletTypes: ["newspaper"],
+    counties: ["texas/rockwall"],
+    feeds: [
+      { url: "http://www.roysecityheraldbanner.com/search/?f=rss&t=article&l=50&s=start_time&sd=desc&k%5B%5D=%23topstory" },
+    ],
+  },
+  {
+    name: "San Antonio Report",
+    websiteUrl: "https://sanantonioreport.org/",
+    outletTypes: ["digital"],
+    counties: ["texas/bexar"],
+    feeds: [
+      { url: "https://sanantonioreport.org/feed/" },
+      { url: "https://sanantonioreport.org/rss" },
+    ],
+  },
+  {
+    name: "Seguin Today",
+    websiteUrl: "https://seguintoday.com/",
+    outletTypes: ["digital"],
+    counties: ["texas/guadalupe"],
+    feeds: [
+      { url: "https://seguintoday.com/feed/" },
+      { url: "https://seguintoday.com/rss" },
+    ],
+  },
+  {
+    name: "Texoma's Homepage",
+    websiteUrl: "https://texomashomepage.com/",
+    outletTypes: ["television"],
+    counties: ["texas/wichita", "texas/archer"],
+    feeds: [
+      { url: "https://www.texomashomepage.com/feed/" },
+      { url: "https://www.texomashomepage.com/comments/feed/" },
+    ],
+  },
+  {
+    name: "The University Star",
+    websiteUrl: "https://universitystar.com/",
+    outletTypes: ["newspaper"],
+    counties: ["texas/hays"],
+    feeds: [
+      { url: "https://universitystar.com/feed/" },
+      { url: "https://universitystar.com/feed/atom/" },
+    ],
+  },
+  {
+    name: "NewsChannel 10",
+    websiteUrl: "https://newschannel10.com/",
+    outletTypes: ["television"],
+    counties: ["texas/potter", "texas/randall"],
+    feeds: [
+      { url: "https://www.newschannel10.com/arc/outboundfeeds/rss/?outputType=xml" },
+    ],
+  },
 ];
 
 const directSources: DirectSource[] = [

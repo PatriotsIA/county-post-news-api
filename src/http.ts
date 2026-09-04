@@ -105,7 +105,10 @@ export async function handleRequest(request: ApiRequest): Promise<ApiResponse> {
 
 async function handleFeed(parts: string[], query: URLSearchParams) {
   const { scope, topic } = parseFeedScope(parts);
-  return json(200, await getFeed(scope, topic, numberParam(query, "limit", config.defaultLimit)));
+  return json(
+    200,
+    await getFeed(scope, topic, numberParam(query, "limit", config.defaultLimit), numberParam(query, "offset", 0)),
+  );
 }
 
 async function handlePage(parts: string[], query: URLSearchParams) {

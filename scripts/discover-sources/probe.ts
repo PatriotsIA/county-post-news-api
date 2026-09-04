@@ -42,8 +42,19 @@ const FEED_PATHS = [
   "/?feed=rss2",
   "/feeds/all.rss",
   "/arc/outboundfeeds/rss/?outputType=xml",
+  // Section feeds. Local newsrooms very often publish these and nothing at the
+  // site root — myhighplains.com serves /news/feed/ and no homepage feed at all.
   "/news/feed/",
+  "/news/local/feed/",
+  "/local-news/feed/",
   "/local/feed/",
+  "/category/news/feed/",
+  "/category/local-news/feed/",
+  "/news/rss",
+  "/news/rss.xml",
+  "/feeds/syndication/rss/news",
+  "/rss/local",
+  "/rss/news",
 ];
 
 const RECENT_DAYS = 120;
@@ -150,11 +161,16 @@ async function probeHost(candidate: HostAggregate): Promise<ProbedHost> {
     probedAt: new Date().toISOString(),
   };
 
+  // A homepage that blocks us says nothing about whether the site has a feed:
+  // myhighplains.com refused the request while serving a perfectly good
+  // /news/feed/ the registry was already using. Failure here only costs us the
+  // advertised links; the known paths are still worth trying.
   let advertised: string[] = [];
+  let note: string | undefined;
   try {
     advertised = await advertisedFeeds(websiteUrl);
   } catch (error) {
-    return { ...base, status: "unreachable", feeds: [], note: String(error).slice(0, 120) };
+    note = `homepage unreachable: ${String(error).slice(0, 90)}`;
   }
 
   // Advertised feeds first: a page that declares its own feed is more reliable
@@ -167,14 +183,14 @@ async function probeHost(candidate: HostAggregate): Promise<ProbedHost> {
   });
 
   const feeds: ProbedFeed[] = [];
-  for (const url of urls.slice(0, 14)) {
+  for (const url of urls.slice(0, 24)) {
     const feed = await validateFeed(url);
     if (feed) feeds.push(feed);
     if (feeds.length >= 3) break;
   }
 
-  if (!feeds.length) return { ...base, status: "no-feed", feeds: [] };
-  return { ...base, status: "ok", feeds };
+  if (!feeds.length) return { ...base, status: note ? "unreachable" : "no-feed", feeds: [], note };
+  return { ...base, status: "ok", feeds, note };
 }
 
 async function advertisedFeeds(websiteUrl: string) {

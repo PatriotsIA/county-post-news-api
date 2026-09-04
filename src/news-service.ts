@@ -2,15 +2,21 @@ import { cached } from "./cache.js";
 import { enrichArticleImages } from "./article-images.js";
 import { config } from "./config.js";
 import { buildCountyFallbackPlan, buildCountyMarketPlan, buildFeedPlan, topics } from "./feed-builders.js";
-import { filterCountyFallbackItems, filterItems, filterMarketItems } from "./filter.js";
+import { filterCountyFallbackItems, filterItems, filterMarketItems, isAmbiguousPlaceName } from "./filter.js";
 import { fetchGdeltItems } from "./gdelt.js";
 import { featuredCountyPostOpinion } from "./editorial.js";
 import { getCountyLocalPlaces, getCountyPlaceTerms, getNearbyCounties } from "./geo.js";
 import { fetchRssItems, getItemMaxAgeDays } from "./rss.js";
 import type { FeedResponse, FeedScope, NewsFeedItem, PageResponse, Topic } from "./types.js";
 
-export async function getFeed(scope: FeedScope, topic: Topic, limit: number): Promise<FeedResponse> {
+export async function getFeed(
+  scope: FeedScope,
+  topic: Topic,
+  limit: number,
+  offset = 0,
+): Promise<FeedResponse> {
   const cappedLimit = capLimit(limit);
+  const start = Math.max(0, Math.floor(offset));
   const cacheKey = `feed:${scopeKey(scope)}:${topic}`;
   const feed = await cached(cacheKey, config.cacheTtlSeconds, async () => {
     const plan = buildFeedPlan(scope, topic);
@@ -36,10 +42,14 @@ export async function getFeed(scope: FeedScope, topic: Topic, limit: number): Pr
     return withCountyCoverage(primaryFeed, scope, topic, config.maxLimit);
   });
   const feedItems = topic === "opinion" ? dedupeItems([featuredCountyPostOpinion, ...feed.items]) : feed.items;
-  const sliced =
+  // Balancing and ordering apply to the whole result, then the requested
+  // window is taken from it, so paging through a feed keeps one stable order
+  // rather than re-balancing each page against itself.
+  const ordered =
     scope.level === "county" && topic === "general"
-      ? balanceCountyPublisherMix(feedItems, cappedLimit)
-      : feedItems.slice(0, cappedLimit);
+      ? balanceCountyPublisherMix(feedItems, start + cappedLimit)
+      : feedItems;
+  const sliced = ordered.slice(start, start + cappedLimit);
   const publisherBalanceApplied =
     scope.level === "county" &&
     topic === "general" &&
@@ -55,6 +65,10 @@ export async function getFeed(scope: FeedScope, topic: Topic, limit: number): Pr
     meta: {
       ...feed.meta,
       count: sliced.length,
+      offset: start,
+      // What the client needs to know whether another page exists.
+      totalAvailable: ordered.length,
+      hasMore: start + sliced.length < ordered.length,
       sourcesUsed: publisherBalanceApplied
         ? Array.from(new Set([...sourcesUsed, "county:publisher-balanced"]))
         : sourcesUsed,
@@ -151,12 +165,17 @@ function needsCountyExpansion(items: NewsFeedItem[], topic: Topic, limit: number
 }
 
 function needsPublisherDiversity(items: NewsFeedItem[], topic: Topic) {
-  if (topic !== "general" || !config.countyPublisherBalanceEnabled) return false;
+  if (!config.countyPublisherBalanceEnabled) return false;
   const { dominantCount, otherCount } = publisherConcentration(items);
-  return (
-    dominantCount > publisherLimit() &&
-    otherCount < otherSourcesTarget()
-  );
+  // Applies to every desk, not just the general one: a sports or obituaries
+  // page carried entirely by one outlet has the same problem.
+  void topic;
+  return dominantCount > diversityThreshold() && otherCount < otherSourcesTarget();
+}
+
+/** See config.countyPublisherDiversityThreshold — not the single-publisher cap. */
+function diversityThreshold() {
+  return Math.max(1, Math.floor(config.countyPublisherDiversityThreshold));
 }
 
 export function balanceCountyPublisherMix(items: NewsFeedItem[], maxItems: number) {
@@ -360,14 +379,31 @@ function capLimit(limit: number) {
   return Math.min(Math.floor(limit), config.maxLimit);
 }
 
+const DAY_MS = 24 * 60 * 60 * 1000;
+
+/**
+ * Recency band, lowest first. A county desk should lead with the news it has
+ * from the last couple of months, then fall back through older coverage rather
+ * than dropping it — on a thin county the archive is what keeps the page from
+ * being empty. Undated items sort last: an RSS feed that omits pubDate is
+ * common enough that discarding those items costs real volume, but they cannot
+ * be ranked against anything.
+ */
+function recencyBand(item: NewsFeedItem) {
+  const published = timestamp(item.publishedAt);
+  if (published === undefined) return 3;
+  const ageDays = (Date.now() - published) / DAY_MS;
+  if (ageDays <= config.freshnessFocusDays) return 0;
+  if (ageDays <= config.recencyPrimaryDays) return 1;
+  return ageDays <= config.recencySecondaryDays ? 2 : 4;
+}
+
 function newest(items: NewsFeedItem[], maxItems: number) {
-  const focusCutoff = Date.now() - config.freshnessFocusDays * 24 * 60 * 60 * 1000;
   return [...items]
-    .sort((a, b) => {
-      const aTime = timestamp(a.publishedAt) ?? 0;
-      const bTime = timestamp(b.publishedAt) ?? 0;
-      const focusDelta = Number(bTime >= focusCutoff) - Number(aTime >= focusCutoff);
-      return focusDelta || bTime - aTime;
+    .sort((left, right) => {
+      const band = recencyBand(left) - recencyBand(right);
+      if (band) return band;
+      return (timestamp(right.publishedAt) ?? 0) - (timestamp(left.publishedAt) ?? 0);
     })
     .slice(0, maxItems);
 }
@@ -376,9 +412,12 @@ function recentItems(items: NewsFeedItem[]) {
   const now = Date.now();
   return items.filter((item) => {
     const publishedAt = timestamp(item.publishedAt);
+    // Undated items are kept and ranked last rather than dropped; many local
+    // feeds omit pubDate entirely, and on a sparse county that is the
+    // difference between a populated desk and an empty one.
+    if (publishedAt === undefined) return true;
     const maxAgeDays = getItemMaxAgeDays(item) || config.articleMaxAgeDays;
-    const cutoff = now - maxAgeDays * 24 * 60 * 60 * 1000;
-    return publishedAt !== undefined && publishedAt >= cutoff && publishedAt <= now + 24 * 60 * 60 * 1000;
+    return publishedAt >= now - maxAgeDays * DAY_MS && publishedAt <= now + DAY_MS;
   });
 }
 
@@ -544,6 +583,10 @@ function scopeKey(scope: FeedScope) {
 function scopePayload(scope: FeedScope): Record<string, string | string[]> {
   if (scope.level === "national") return { level: "national" };
   if (scope.level === "state") return { level: "state", stateSlug: scope.state.slug, stateName: scope.state.name, stateAbbr: scope.state.abbr };
+  const localPlaces = getCountyLocalPlaces(scope.county);
+  const distinctivePlaces = localPlaces.filter((place) => !isAmbiguousPlaceName(place));
+  const datelinePlaces = localPlaces.filter((place) => isAmbiguousPlaceName(place));
+
   return {
     level: "county",
     stateSlug: scope.state.slug,
@@ -552,10 +595,12 @@ function scopePayload(scope: FeedScope): Record<string, string | string[]> {
     countySlug: scope.county.slug,
     countyName: scope.county.name,
     displayName: scope.county.displayName,
-    // The towns this feed was scoped to. Published so the browser can apply the
-    // same locality rule the API did: it has no county place list of its own,
+    // The towns this feed was scoped to, split the way the filter splits them.
+    // Published so the browser can apply the same rule: it has neither a county
+    // place list nor the national corpus the ambiguity split is derived from,
     // and re-checking for the county's name alone discards the very local
-    // stories — a Silverton council report — that the API just found.
-    places: getCountyLocalPlaces(scope.county),
+    // stories — a Lufkin school board report — that the API just found.
+    places: distinctivePlaces,
+    datelinePlaces,
   };
 }

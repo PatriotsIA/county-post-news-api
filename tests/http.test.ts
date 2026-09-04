@@ -1010,7 +1010,7 @@ describe("handleRequest", () => {
     expect(marketPlan.rssUrls.length).toBeLessThanOrEqual(config.maxRssUrlsPerFeed);
   });
 
-  it("balances a dominant county publisher with up to 25 stories from other publishers", () => {
+  it("caps a dominant county publisher so other newsrooms still appear", () => {
     const makeItems = (host: string, source: string, count: number, offset: number) =>
       Array.from({ length: count }, (_, index) => ({
         id: `${source}-${index}`,
@@ -1019,17 +1019,23 @@ describe("handleRequest", () => {
         source,
         publishedAt: new Date(Date.now() - (index + offset) * 60_000).toISOString(),
       }));
-    const dominant = makeItems("mypulsenews.com", "My Pulse News / KENA", 40, 0);
+    // Asserted against the configured caps rather than a literal: they were
+    // raised deliberately so a county desk is not held to a few dozen stories,
+    // and the behaviour under test is the balance, not the number.
+    const cap = config.countySinglePublisherMax;
+    const others = config.countyOtherSourcesTarget;
+    const dominant = makeItems("mypulsenews.com", "My Pulse News / KENA", cap + 15, 0);
     const alternatives = [
-      ...makeItems("other-one.example", "Other One", 15, 40),
-      ...makeItems("other-two.example", "Other Two", 15, 55),
+      ...makeItems("other-one.example", "Other One", others, cap + 15),
+      ...makeItems("other-two.example", "Other Two", others, cap + 15 + others),
     ];
 
-    const balanced = balanceCountyPublisherMix([...dominant, ...alternatives], 50);
+    const requested = cap + others;
+    const balanced = balanceCountyPublisherMix([...dominant, ...alternatives], requested);
 
-    expect(balanced).toHaveLength(50);
-    expect(balanced.filter((item) => item.link.includes("mypulsenews.com"))).toHaveLength(25);
-    expect(balanced.filter((item) => !item.link.includes("mypulsenews.com"))).toHaveLength(25);
+    expect(balanced).toHaveLength(requested);
+    expect(balanced.filter((item) => item.link.includes("mypulsenews.com"))).toHaveLength(cap);
+    expect(balanced.filter((item) => !item.link.includes("mypulsenews.com"))).toHaveLength(others);
   });
 
   it("expands a dense single-publisher county feed before applying its publisher cap", async () => {
@@ -1070,11 +1076,17 @@ describe("handleRequest", () => {
     const body = JSON.parse(response.body);
 
     expect(response.statusCode).toBe(200);
-    expect(body.items).toHaveLength(25);
+    // One publisher supplied thirty stories; the desk shows as many as the
+    // single-publisher cap allows. Expressed against the configured cap so
+    // raising it to fill sparse counties does not look like a regression.
+    expect(body.items).toHaveLength(Math.min(30, config.countySinglePublisherMax));
+    // The desk still reaches past its one dense publisher for more coverage.
+    // "publisher-balanced" is no longer among these: with the cap raised there
+    // are fewer stories than it allows, so no balancing is applied — which is
+    // the intended behaviour, not a missing step.
     expect(body.meta.sourcesUsed).toEqual(
       expect.arrayContaining([
         "county:publisher-diversity",
-        "county:publisher-balanced",
         "county:market",
         "county:fallback-nearby",
       ]),

@@ -249,7 +249,7 @@ function urlsForQueries(queries: string[]) {
   const bingUrls = config.bingNewsEnabled ? bingUrlsForQueries(queries) : [];
   if (!bingUrls.length) return googleUrls.slice(0, config.maxRssUrlsPerFeed);
 
-  const bingBudget = Math.max(1, Math.ceil(config.maxRssUrlsPerFeed * 0.4));
+  const bingBudget = Math.max(1, Math.round(config.maxRssUrlsPerFeed * config.bingNewsUrlShare));
   const googleBudget = Math.max(1, config.maxRssUrlsPerFeed - bingBudget);
   return Array.from(new Set([...bingUrls.slice(0, bingBudget), ...googleUrls.slice(0, googleBudget)])).slice(
     0,

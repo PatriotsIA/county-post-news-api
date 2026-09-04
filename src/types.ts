@@ -64,6 +64,10 @@ export type FeedResponse = {
     sourcesUsed: string[];
     fetchedAt: string;
     cacheTtlSeconds: number;
+    /** Window position, for feeds read a page at a time. */
+    offset?: number;
+    totalAvailable?: number;
+    hasMore?: boolean;
   };
 };
 
