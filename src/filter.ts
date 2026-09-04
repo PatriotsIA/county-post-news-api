@@ -103,11 +103,18 @@ function matchesCountyScope(item: NewsFeedItem, state: StateSite, counties: Coun
   // local reporting names the town. The towns come from the Census subcounty
   // file and are strictly inside the county, so this cannot readmit the nearby
   // media markets the county tier is meant to exclude.
-  return counties.some(
-    (county) =>
-      (namesState && includesTerm(fullHaystack, `${county.name.toLowerCase()} county`)) ||
-      getCountyLocalPlaces(county).some((place) => mentionsPlace(fullHaystack, place, state, namesState)),
-  );
+  return counties.some((county) => textMentionsCounty(fullHaystack, county, state, namesState));
+}
+
+/**
+ * Whether text points at a county, by its name or by a town inside it.
+ * Exported so outlet discovery scores candidate publishers with exactly the
+ * rule the feed filter applies, rather than a second approximation of it.
+ */
+export function textMentionsCounty(haystack: string, county: CountySite, state: StateSite, namesState?: boolean) {
+  const inState = namesState ?? includesTerm(haystack, state.name.toLowerCase());
+  if (inState && includesTerm(haystack, `${county.name.toLowerCase()} county`)) return true;
+  return getCountyLocalPlaces(county).some((place) => mentionsPlace(haystack, place, state, inState));
 }
 
 /**
@@ -136,7 +143,17 @@ const ambiguousPlaces = new Set(ambiguousPlaceNames);
 function mentionsPlace(haystack: string, place: string, state: StateSite, namesState: boolean) {
   const name = place.toLowerCase();
   const ambiguous = place.length <= 4 || ambiguousPlaces.has(place) || COMMON_WORD_PLACE_NAMES.has(name);
-  if (!ambiguous) return namesState && includesTerm(haystack, name);
+
+  // A distinctive town name is its own state qualifier — Lufkin, Quitaque and
+  // Mena each exist in one state — so it does not have to be accompanied by the
+  // word "Texas". Demanding that discarded most genuine local coverage, because
+  // a headline says "Lufkin ISD names new superintendent" and never names the
+  // state; the wrong-state guard above still applies either way.
+  if (!ambiguous) return includesTerm(haystack, name);
+
+  // Shared names carry no such guarantee and need the dateline, which supplies
+  // the state itself.
+  void namesState;
   return (
     includesTerm(haystack, `${name}, ${state.name.toLowerCase()}`) ||
     includesTerm(haystack, `${name}, ${state.abbr.toLowerCase()}`)
