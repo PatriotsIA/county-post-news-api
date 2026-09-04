@@ -1,5 +1,5 @@
 import { ambiguousPlaceNames } from "./county-places.js";
-import { getCountyLocalPlaces } from "./geo.js";
+import { getCountyLocalPlaces, isDistinctiveCountyName } from "./geo.js";
 import type { CountySite, FeedScope, NewsFeedItem, StateSite, Topic } from "./types.js";
 import { isTrustedCountySource, isTrustedMarketSource, type DirectSource } from "./source-registry.js";
 
@@ -113,7 +113,12 @@ function matchesCountyScope(item: NewsFeedItem, state: StateSite, counties: Coun
  */
 export function textMentionsCounty(haystack: string, county: CountySite, state: StateSite, namesState?: boolean) {
   const inState = namesState ?? includesTerm(haystack, state.name.toLowerCase());
-  if (inState && includesTerm(haystack, `${county.name.toLowerCase()} county`)) return true;
+  // A distinctive county name identifies itself. Requiring the state as well
+  // discarded the most obviously county-local stories there are — headlines
+  // that name the county and never repeat the state.
+  if ((inState || isDistinctiveCountyName(county.name)) && includesTerm(haystack, `${county.name.toLowerCase()} county`)) {
+    return true;
+  }
   return getCountyLocalPlaces(county).some((place) => mentionsPlace(haystack, place, state, inState));
 }
 

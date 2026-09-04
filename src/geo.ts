@@ -424,3 +424,27 @@ function slugify(value: string) {
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "");
 }
+
+/**
+ * County names shared by three or more states — Polk, Franklin, Washington.
+ * A bare "Polk County" could be Arkansas, Florida, Iowa or a dozen others, so
+ * it needs the state named alongside it. A distinctive one like Angelina County
+ * identifies itself, and demanding the state as well threw away the clearest
+ * county-local stories there are: headlines that name the county outright.
+ */
+const countyNameStateCounts = (() => {
+  const counts = new Map<string, Set<string>>();
+  for (const state of states) {
+    for (const county of getCountyByState(state.name) as Array<{ name: string }>) {
+      const key = county.name.toLowerCase();
+      const seen = counts.get(key) ?? new Set<string>();
+      seen.add(state.slug);
+      counts.set(key, seen);
+    }
+  }
+  return counts;
+})();
+
+export function isDistinctiveCountyName(countyName: string) {
+  return (countyNameStateCounts.get(countyName.toLowerCase())?.size ?? 0) < 3;
+}

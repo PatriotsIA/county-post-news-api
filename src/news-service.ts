@@ -5,7 +5,7 @@ import { buildCountyFallbackPlan, buildCountyMarketPlan, buildFeedPlan, topics }
 import { filterCountyFallbackItems, filterItems, filterMarketItems, isAmbiguousPlaceName } from "./filter.js";
 import { fetchGdeltItems } from "./gdelt.js";
 import { featuredCountyPostOpinion } from "./editorial.js";
-import { getCountyLocalPlaces, getCountyPlaceTerms, getNearbyCounties } from "./geo.js";
+import { getCountyLocalPlaces, getCountyPlaceTerms, getNearbyCounties, isDistinctiveCountyName } from "./geo.js";
 import { fetchRssItems, getItemMaxAgeDays } from "./rss.js";
 import { trustedCountyHosts } from "./source-registry.js";
 import type { FeedResponse, FeedScope, NewsFeedItem, PageResponse, Topic } from "./types.js";
@@ -606,5 +606,7 @@ function scopePayload(scope: FeedScope): Record<string, string | string[]> {
     // Outlets the API accepts as county-local on their own. Without this the
     // browser re-filtered them straight back out.
     trustedHosts: trustedCountyHosts(scope.county),
+    // Whether the county's own name is evidence enough without the state.
+    countyNameDistinctive: isDistinctiveCountyName(scope.county.name) ? "true" : "false",
   };
 }
