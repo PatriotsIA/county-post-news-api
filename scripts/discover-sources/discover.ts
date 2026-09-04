@@ -21,8 +21,17 @@ import { fetchRssItems } from "../../src/rss.js";
 import { getCountyNativeSources } from "../../src/source-registry.js";
 import { getCountyByState, slugify } from "./shared.js";
 import type { CountyDiscovery, PublisherObservation } from "./shared.js";
+import type { Topic } from "../../src/types.js";
 
 const DEFAULT_OUTPUT = path.resolve("scripts/discover-sources/.out");
+
+/**
+ * Categories worth searching for publisher discovery. Local newsrooms dominate
+ * these — a county weekly's obituaries and high-school sports are the coverage
+ * no regional outlet duplicates — so they surface outlets the general desk
+ * alone would miss.
+ */
+const DEFAULT_TOPICS: Topic[] = ["general", "sports", "obituaries", "crime"];
 
 /** Aggregator and syndication hosts are never a county's local newsroom. */
 const NON_PUBLISHER_HOSTS = [
@@ -86,22 +95,31 @@ async function main() {
   console.log(`Discovering publishers for ${roster.length} counties (${done.size} already done).`);
 
   let index = 0;
-  for (const target of roster) {
-    index += 1;
-    const county = getCounty(target.stateSlug, target.countySlug);
-    if (!county) continue;
+  const queue = [...roster];
+  const workers = Array.from({ length: Math.max(1, options.concurrency) }, async () => {
+    for (;;) {
+      const target = queue.shift();
+      if (!target) return;
+      index += 1;
+      const position = index;
+      const county = getCounty(target.stateSlug, target.countySlug);
+      if (!county) continue;
 
-    try {
-      const discovery = await discoverCounty(county, options);
-      await appendFile(checkpoint, `${JSON.stringify(discovery)}\n`, "utf8");
-      console.log(
-        `[${index}/${roster.length}] ${discovery.key}: ${discovery.publishers.length} candidate publishers ` +
-          `from ${discovery.itemsSeen} items`,
-      );
-    } catch (error) {
-      console.warn(`[${index}/${roster.length}] ${target.stateSlug}/${target.countySlug} failed: ${String(error)}`);
+      try {
+        const discovery = await discoverCounty(county, options);
+        // Appends are serialised by the single-threaded event loop and each
+        // write is one line, so concurrent workers cannot interleave a record.
+        await appendFile(checkpoint, `${JSON.stringify(discovery)}\n`, "utf8");
+        console.log(
+          `[${position}/${roster.length}] ${discovery.key}: ${discovery.publishers.length} candidates ` +
+            `from ${discovery.itemsSeen} items`,
+        );
+      } catch (error) {
+        console.warn(`[${position}/${roster.length}] ${target.stateSlug}/${target.countySlug} failed: ${String(error)}`);
+      }
     }
-  }
+  });
+  await Promise.all(workers);
 
   console.log(`\nCheckpoint: ${checkpoint}`);
 }
@@ -110,45 +128,52 @@ async function discoverCounty(
   county: NonNullable<ReturnType<typeof getCounty>>,
   options: DiscoverOptions,
 ): Promise<CountyDiscovery> {
-  const plan = buildCountyPrimaryPlan(county, "general");
-  // All of them. Slicing took only the Bing URLs, which yield a handful of
-  // items each, while the Google ones return dozens.
-  const urls = options.feedsPerCounty ? plan.rssUrls.slice(0, options.feedsPerCounty) : plan.rssUrls;
   const known = new Set(getCountyNativeSources(county).map((source) => hostOf(source.websiteUrl)));
-
   const observations = new Map<string, PublisherObservation>();
   let itemsSeen = 0;
 
-  const results = await Promise.allSettled(urls.map((url) => fetchRssItems(url)));
-  for (const result of results) {
-    if (result.status !== "fulfilled") continue;
-    for (const item of result.value) {
-      itemsSeen += 1;
-      const host = hostOf(item.link);
-      if (!host || isExcludedHost(host) || known.has(host)) continue;
+  for (const topic of options.topics) {
+    const plan = buildCountyPrimaryPlan(county, topic);
+    // All of them. Slicing took only the Bing URLs, which yield a handful of
+    // items each, while the Google ones return dozens.
+    const urls = options.feedsPerCounty ? plan.rssUrls.slice(0, options.feedsPerCounty) : plan.rssUrls;
 
-      // Scored with the feed filter's own rule, so an ambiguous town name needs
-      // a dateline here too. A plain substring test credited Anderson County,
-      // Texas to Fox Carolina because a story mentioned Palestine.
-      const haystack = `${item.title} ${item.description ?? ""}`.toLowerCase();
-      const local = textMentionsCounty(haystack, county, county.state);
+    const results = await Promise.allSettled(urls.map((url) => fetchRssItems(url)));
+    for (const result of results) {
+      if (result.status !== "fulfilled") continue;
+      for (const item of result.value) {
+        itemsSeen += 1;
+        const host = hostOf(item.link);
+        if (!host || isExcludedHost(host) || known.has(host)) continue;
 
-      const existing = observations.get(host) ?? {
-        host,
-        publisher: item.source || host,
-        items: 0,
-        localItems: 0,
-        sampleLinks: [],
-      };
-      existing.items += 1;
-      if (local) existing.localItems += 1;
-      if (existing.sampleLinks.length < 3) existing.sampleLinks.push(item.link);
-      if (!existing.publisher && item.source) existing.publisher = item.source;
-      observations.set(host, existing);
+        // Scored with the feed filter's own rule, so an ambiguous town name
+        // needs a dateline here too. A plain substring test credited Anderson
+        // County, Texas to Fox Carolina because a story mentioned Palestine.
+        const haystack = `${item.title} ${item.description ?? ""}`.toLowerCase();
+        const local = textMentionsCounty(haystack, county, county.state);
+
+        const existing = observations.get(host) ?? {
+          host,
+          publisher: item.source || host,
+          items: 0,
+          localItems: 0,
+          localByTopic: {},
+          sampleLinks: [],
+        };
+        existing.items += 1;
+        if (local) {
+          existing.localItems += 1;
+          existing.localByTopic[topic] = (existing.localByTopic[topic] ?? 0) + 1;
+        }
+        if (local && existing.sampleLinks.length < 3) existing.sampleLinks.push(item.link);
+        if (!existing.publisher && item.source) existing.publisher = item.source;
+        observations.set(host, existing);
+      }
     }
   }
 
   return {
+    topics: options.topics,
     key: `${county.state.slug}/${county.slug}`,
     stateSlug: county.state.slug,
     countySlug: county.slug,
@@ -183,6 +208,8 @@ type DiscoverOptions = {
   stateSlugs: Set<string>;
   maxCounties?: number;
   feedsPerCounty: number;
+  concurrency: number;
+  topics: Topic[];
   fresh: boolean;
 };
 
@@ -191,6 +218,8 @@ function parseOptions(argv: string[]): DiscoverOptions {
     outputDir: DEFAULT_OUTPUT,
     stateSlugs: new Set(),
     feedsPerCounty: 0,
+    concurrency: 4,
+    topics: DEFAULT_TOPICS,
     fresh: false,
   };
 
@@ -208,6 +237,12 @@ function parseOptions(argv: string[]): DiscoverOptions {
       index += 1;
     } else if (flag === "--output" && value) {
       options.outputDir = path.resolve(value);
+      index += 1;
+    } else if (flag === "--concurrency" && value) {
+      options.concurrency = Number(value);
+      index += 1;
+    } else if (flag === "--topics" && value) {
+      options.topics = value.split(",").map((topic) => topic.trim()).filter(Boolean) as Topic[];
       index += 1;
     } else if (flag === "--fresh") {
       options.fresh = true;

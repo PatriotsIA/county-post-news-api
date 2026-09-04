@@ -1189,14 +1189,24 @@ describe("handleRequest", () => {
     );
   });
 
-  it("does not use broad nearby-market sources in a primary county feed", () => {
+  it("never lets a nearby-market source count as county-local", () => {
     const county = getCounty("texas", "wood");
     expect(county).toBeDefined();
 
     const plan = buildFeedPlan({ level: "county", state: county!.state, county: county! }, "general");
 
+    // A market outlet may now be fetched for a county it demonstrably covers —
+    // Wood County sits in the Tyler market, and that is where the extra county
+    // coverage comes from. What must never happen is one of them being trusted
+    // as county-local, which would put the whole market on this county's desk.
+    for (const source of plan.directSources) {
+      if (source.counties?.includes("texas/wood") && source.trustedForCountyTier !== false) {
+        expect(source.name).not.toMatch(/Amarillo|Tyler/);
+      }
+    }
+
+    // Amarillo is a different market entirely and should not appear at all.
     expect(plan.directSources.some((source) => source.name.includes("Amarillo"))).toBe(false);
-    expect(plan.directSources.some((source) => source.name.includes("Tyler"))).toBe(false);
   });
 
   it("keeps a primary county feed limited to its explicitly named county", () => {

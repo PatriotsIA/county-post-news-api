@@ -16,7 +16,9 @@
     "atlas:ingest": "tsx scripts/atlas/cli.ts",
     "atlas:test": "vitest run tests/atlas-ingestion.test.ts tests/atlas-service.test.ts",
     "update:places": "node scripts/update-county-places.mjs",
-    "discover:sources": "tsx scripts/discover-sources/discover.ts"
+    "discover:sources": "tsx scripts/discover-sources/discover.ts",
+    "probe:sources": "tsx scripts/discover-sources/probe.ts",
+    "emit:sources": "tsx scripts/discover-sources/emit.ts"
   },
   "keywords": [
     "aws-lambda",

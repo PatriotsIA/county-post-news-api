@@ -22,11 +22,14 @@ export type PublisherObservation = {
   items: number;
   /** Of those, how many named the county or one of its towns. */
   localItems: number;
+  /** Local item count per feed category, so a registry entry can be scoped. */
+  localByTopic: Record<string, number>;
   sampleLinks: string[];
 };
 
 export type CountyDiscovery = {
   key: string;
+  topics: string[];
   stateSlug: string;
   countySlug: string;
   countyName: string;
@@ -57,3 +60,45 @@ export type ProbedHost = {
   probedAt: string;
   note?: string;
 };
+
+/**
+ * Hosts that surface for many counties without being anyone's local newsroom:
+ * aggregators that republish other outlets, statewide and national wires, and
+ * trade press that happened to match a county because of one industry story.
+ * Excluded from the registry regardless of how often they appear.
+ */
+export const EXCLUDED_PUBLISHER_HOSTS = new Set([
+  // Aggregators and syndicators.
+  "aol.com",
+  "msn.com",
+  "yahoo.com",
+  "news.yahoo.com",
+  "newsbreak.com",
+  "flipboard.com",
+  "smartnews.com",
+  "headtopics.com",
+  "newsbreakapp.com",
+  // Statewide and national wires.
+  "thecentersquare.com",
+  "courthousenews.com",
+  "texastribune.org",
+  "texasobserver.org",
+  "stateline.org",
+  "governing.com",
+  "usnews.com",
+  // Metro dailies whose coverage is regional rather than county-scoped. They
+  // remain reachable through the market tier.
+  "dallasnews.com",
+  "chron.com",
+  "houstonchronicle.com",
+  "expressnews.com",
+  "mysanantonio.com",
+  "statesman.com",
+  "star-telegram.com",
+  // Trade and vertical press.
+  "datacenterdynamics.com",
+  "markets.businessinsider.com",
+  "businessinsider.com",
+  "bisnow.com",
+  "law360.com",
+]);

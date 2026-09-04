@@ -1,3 +1,4 @@
+import { discoveredCountyNativeSources, discoveredRegionalSources } from "./county-discovered-sources.js";
 import type { CountySite, FeedScope, NewsFeedItem, StateSite, Topic } from "./types.js";
 
 export type DirectSource = {
@@ -12,6 +13,15 @@ export type DirectSource = {
   maxAgeDays?: number;
   maxItems?: number;
   trustedForMarketTier?: boolean;
+  /**
+   * Whether an item from this source counts as county-local purely because it
+   * came from here. True for an outlet that only covers this county; false for
+   * a regional newsroom listed against a county so its feed is fetched, whose
+   * stories must still name the county or one of its towns to appear. Without
+   * the distinction, adding KLTV to the twenty East Texas counties it serves
+   * would put all of East Texas on each of their desks.
+   */
+  trustedForCountyTier?: boolean;
 };
 
 export type CountyNativeFeed = {
@@ -240,9 +250,14 @@ export function getDirectSources(scope: FeedScope, topic: Topic, marketCities: s
   );
 }
 
+/** Reviewed outlets first, then the ones discovery observed. */
+function allCountyNativeSources(): CountyNativeSource[] {
+  return [...countyNativeSources, ...discoveredCountyNativeSources];
+}
+
 export function getCountyNativeSources(county: CountySite, topic?: Topic) {
   const countyKey = countySourceKey(county);
-  return countyNativeSources.filter(
+  return allCountyNativeSources().filter(
     (source) => source.counties.includes(countyKey) && (!topic || !source.topics?.length || source.topics.includes(topic)),
   );
 }
@@ -267,7 +282,9 @@ export function isTrustedMarketSource(item: NewsFeedItem, sources: DirectSource[
 
 export function isTrustedCountySource(item: NewsFeedItem, sources: DirectSource[], county: CountySite) {
   const countyKey = countySourceKey(county);
-  const countySources = sources.filter((source) => source.counties?.includes(countyKey));
+  const countySources = sources.filter(
+    (source) => source.counties?.includes(countyKey) && source.trustedForCountyTier !== false,
+  );
   const itemDomain = hostname(item.link);
   if (itemDomain && countySources.some((source) => hostname(source.url) === itemDomain)) return true;
 
@@ -291,7 +308,8 @@ function sourceMatchesTopic(source: DirectSource, topic: Topic) {
 function allDirectSources(): DirectSource[] {
   return [
     ...directSources,
-    ...countyNativeSources.flatMap((source) =>
+    ...discoveredRegionalSources,
+    ...allCountyNativeSources().flatMap((source) =>
       (source.feeds || []).map((feed) => ({
         name: feed.name || source.name,
         url: feed.url,

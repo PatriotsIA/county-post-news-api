@@ -7,3 +7,6 @@ coverage/
 
 # Personal Claude Code settings (AWS profile, etc.)
 .claude/settings.local.json
+# Discovery run artifacts (checkpoints, probe output, logs)
+scripts/discover-sources/.out/
+scripts/discover-sources/*.log
