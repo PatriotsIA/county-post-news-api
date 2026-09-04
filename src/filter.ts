@@ -1,3 +1,4 @@
+import { getCountyLocalPlaces } from "./geo.js";
 import type { CountySite, FeedScope, NewsFeedItem, StateSite, Topic } from "./types.js";
 import { isTrustedCountySource, isTrustedMarketSource, type DirectSource } from "./source-registry.js";
 
@@ -90,7 +91,39 @@ function matchesCountyScope(item: NewsFeedItem, state: StateSite, counties: Coun
   const mentionsOtherState = stateNames.some((stateName) => stateName !== state.name.toLowerCase() && includesTerm(contentHaystack, stateName));
   if (mentionsOtherState || !includesTerm(fullHaystack, state.name.toLowerCase())) return false;
 
-  return counties.some((county) => includesTerm(fullHaystack, `${county.name.toLowerCase()} county`));
+  // A story is county-local if it names the county, or names a town inside it.
+  // Requiring the literal "briscoe county" discarded every Silverton story —
+  // local reporting names the town. The towns come from the Census subcounty
+  // file and are strictly inside the county, so this cannot readmit the nearby
+  // media markets the county tier is meant to exclude.
+  return counties.some(
+    (county) =>
+      includesTerm(fullHaystack, `${county.name.toLowerCase()} county`) ||
+      getCountyLocalPlaces(county).some((place) => mentionsPlace(fullHaystack, place, state)),
+  );
+}
+
+/**
+ * Town names that are also ordinary English words, or too short to carry
+ * meaning on their own. A story that happens to contain "hope" or "union"
+ * beside a state name is not a story about Hope, Arkansas, so these count only
+ * when written the way news writes a location: "Hope, Arkansas" or "Hope, AR".
+ * Distinctive names are matched on their own.
+ */
+const AMBIGUOUS_PLACE_NAMES = new Set([
+  "bath", "bell", "cedar", "center", "central", "clinton", "commerce", "enterprise", "eureka",
+  "franklin", "friendly", "hope", "independence", "industry", "liberty", "madison", "milton",
+  "normal", "oak", "point", "salem", "springfield", "summit", "union", "energy", "progress",
+  "surprise", "grand", "mount", "fair", "best", "rich", "blue", "gold", "silver", "home", "sun",
+]);
+
+function mentionsPlace(haystack: string, place: string, state: StateSite) {
+  const name = place.toLowerCase();
+  if (place.length > 4 && !AMBIGUOUS_PLACE_NAMES.has(name)) return includesTerm(haystack, name);
+  return (
+    includesTerm(haystack, `${name}, ${state.name.toLowerCase()}`) ||
+    includesTerm(haystack, `${name}, ${state.abbr.toLowerCase()}`)
+  );
 }
 
 function matchesMarketScope(

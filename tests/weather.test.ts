@@ -3,7 +3,7 @@ import { clearCache } from "../src/cache.js";
 import { config } from "../src/config.js";
 import { buildFeedPlan } from "../src/feed-builders.js";
 import { filterItems } from "../src/filter.js";
-import { getCounty } from "../src/geo.js";
+import { getCounty, getCountyLocalPlaces } from "../src/geo.js";
 import { handleRequest } from "../src/http.js";
 
 const defaults = {
@@ -240,7 +240,16 @@ describe("weather news topic", () => {
     expect(county).toBeDefined();
     const scope = { level: "county" as const, state: county!.state, county: county! };
     const plan = buildFeedPlan(scope, "weather");
-    expect(plan.articleQueries.every((query) => query.includes("Polk County") && query.includes("Arkansas"))).toBe(true);
+    // Qualified by the county name or one of its towns (Mena, Cove, ...), plus
+    // the state — searching only "Polk County" is what left rural feeds empty.
+    const polkPlaces = getCountyLocalPlaces(county!);
+    expect(
+      plan.articleQueries.every(
+        (query) =>
+          (query.includes("Arkansas") || query.includes(", AR")) &&
+          (query.includes("Polk County") || polkPlaces.some((place) => query.includes(place))),
+      ),
+    ).toBe(true);
     expect(decodeURIComponent(plan.rssUrls[0])).toMatch(/weather|forecast|storm/u);
 
     const filtered = filterItems(

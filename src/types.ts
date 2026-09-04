@@ -56,7 +56,7 @@ export type FeedScope =
   | { level: "county"; state: StateSite; county: CountySite };
 
 export type FeedResponse = {
-  scope: Record<string, string>;
+  scope: Record<string, string | string[]>;
   topic: Topic;
   items: NewsFeedItem[];
   meta: {
@@ -68,7 +68,7 @@ export type FeedResponse = {
 };
 
 export type PageResponse = {
-  scope: Record<string, string>;
+  scope: Record<string, string | string[]>;
   sections: Record<string, FeedResponse>;
   meta: {
     count: number;

@@ -5,7 +5,7 @@ import { buildCountyFallbackPlan, buildCountyMarketPlan, buildFeedPlan, topics }
 import { filterCountyFallbackItems, filterItems, filterMarketItems } from "./filter.js";
 import { fetchGdeltItems } from "./gdelt.js";
 import { featuredCountyPostOpinion } from "./editorial.js";
-import { getCountyPlaceTerms, getNearbyCounties } from "./geo.js";
+import { getCountyLocalPlaces, getCountyPlaceTerms, getNearbyCounties } from "./geo.js";
 import { fetchRssItems, getItemMaxAgeDays } from "./rss.js";
 import type { FeedResponse, FeedScope, NewsFeedItem, PageResponse, Topic } from "./types.js";
 
@@ -541,7 +541,7 @@ function scopeKey(scope: FeedScope) {
   return `county:${scope.state.slug}:${scope.county.slug}`;
 }
 
-function scopePayload(scope: FeedScope): Record<string, string> {
+function scopePayload(scope: FeedScope): Record<string, string | string[]> {
   if (scope.level === "national") return { level: "national" };
   if (scope.level === "state") return { level: "state", stateSlug: scope.state.slug, stateName: scope.state.name, stateAbbr: scope.state.abbr };
   return {
@@ -552,5 +552,10 @@ function scopePayload(scope: FeedScope): Record<string, string> {
     countySlug: scope.county.slug,
     countyName: scope.county.name,
     displayName: scope.county.displayName,
+    // The towns this feed was scoped to. Published so the browser can apply the
+    // same locality rule the API did: it has no county place list of its own,
+    // and re-checking for the county's name alone discards the very local
+    // stories — a Silverton council report — that the API just found.
+    places: getCountyLocalPlaces(scope.county),
   };
 }

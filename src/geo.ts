@@ -1,4 +1,5 @@
 import { getCountyByState } from "@nickgraffis/us-counties";
+import { countyPlaces } from "./county-places.js";
 import { getCountyCentroid } from "./county-centroids.js";
 import type { CountySite, StateSite } from "./types.js";
 
@@ -298,8 +299,14 @@ export function getCounty(stateSlug: string, countySlug: string) {
           .map((hub) => hub.city)
           .slice(0, 3)
       : [];
-  const primaryCity = override?.primaryCity || nearestMarkets[0];
-  const localCities = override?.localCities || nearestMarkets.slice(1);
+  // Towns actually inside the county, most populous first. Falling back to the
+  // nearest media markets is what made rural feeds empty: Briscoe County would
+  // search Amarillo and Lubbock, then the county locality filter — correctly —
+  // threw those stories away. Market cities remain available separately through
+  // getCountyMarketCities for the market tier that deliberately wants them.
+  const inCountyPlaces = countyPlaces[countyRecord.FIPS] ?? [];
+  const primaryCity = override?.primaryCity || inCountyPlaces[0] || nearestMarkets[0];
+  const localCities = override?.localCities || (inCountyPlaces.length ? inCountyPlaces.slice(1) : nearestMarkets.slice(1));
 
   return {
     name,
@@ -318,10 +325,12 @@ export function getStateMarketCities(state: StateSite, limit = 3) {
   return (stateNewsHubs[state.slug] || []).map((hub) => hub.city).slice(0, limit);
 }
 
+/**
+ * Nearby media markets — the regional cities whose newsrooms cover this county
+ * from outside it. Deliberately distinct from the county's own towns: the
+ * market tier wants Amarillo for Briscoe County, the county tier must not.
+ */
 export function getCountyMarketCities(county: CountySite, limit = 2) {
-  if (county.primaryCity || county.localCities.length) {
-    return Array.from(new Set([county.primaryCity, ...county.localCities].filter(Boolean) as string[])).slice(0, limit);
-  }
   const sortedHubs =
     county.latitude !== undefined && county.longitude !== undefined
       ? sortedStateHubsForCounty(county.state, county.latitude, county.longitude)
@@ -330,8 +339,21 @@ export function getCountyMarketCities(county: CountySite, limit = 2) {
   return Array.from(new Set(sortedHubs.map((hub) => hub.city))).slice(0, limit);
 }
 
+/** The county's own towns, most populous first. Never a neighbouring market. */
+export function getCountyLocalPlaces(county: CountySite, limit = 6) {
+  return Array.from(new Set([county.primaryCity, ...county.localCities].filter(Boolean) as string[])).slice(0, limit);
+}
+
+/**
+ * Every place a market-tier story may legitimately name: the county's own towns
+ * and the regional markets that cover it. Each category gets its own budget —
+ * a shared slice let the county's towns crowd the market cities out entirely,
+ * which silently narrowed the market tier to nothing.
+ */
 export function getCountyPlaceTerms(county: CountySite, limit = 4) {
-  return Array.from(new Set([county.primaryCity, ...county.localCities, ...getCountyMarketCities(county, limit)].filter(Boolean) as string[])).slice(0, limit);
+  return Array.from(
+    new Set([...getCountyLocalPlaces(county, limit), ...getCountyMarketCities(county, limit)].filter(Boolean) as string[]),
+  );
 }
 
 export function getNearbyCounties(county: CountySite, limit = 3) {
@@ -350,7 +372,7 @@ export function getNearbyCounties(county: CountySite, limit = 3) {
           fips: record.FIPS,
           displayName: `${record.name} County`,
           state: county.state,
-          localCities: [],
+          localCities: countyPlaces[record.FIPS] ?? [],
           latitude: centroid[0],
           longitude: centroid[1],
         } satisfies CountySite,

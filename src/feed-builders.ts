@@ -1,5 +1,5 @@
 import { config } from "./config.js";
-import { getCountyPlaceTerms, getStateMarketCities } from "./geo.js";
+import { getCountyLocalPlaces, getCountyPlaceTerms, getStateMarketCities } from "./geo.js";
 import {
   getCountyNativeSources,
   getDirectSources,
@@ -183,6 +183,20 @@ export function buildCountyFallbackPlan(county: CountySite, nearbyCounties: Coun
 function buildCountyPrimaryQueries(county: CountySite, countyTopic: string, nativeSources: CountyNativeSource[]) {
   const state = county.state;
   const agencyQuery = `"${county.displayName}" "${state.name}" (sheriff OR police OR courthouse OR "school district" OR "city council" OR commissioners)`;
+
+  // Local reporting names the town, not the county: a Silverton city council
+  // story rarely contains the words "Briscoe County". Searching only the county
+  // name is why rural feeds came back with nothing to show.
+  const localPlaces = getCountyLocalPlaces(county, config.countyPlaceQueryLimit);
+  const placeQueries = localPlaces.length
+    ? [
+        `(${localPlaces.map((place) => `"${place}"`).join(" OR ")}) "${state.name}" (${countyTopic})`,
+        `(${localPlaces
+          .slice(0, 2)
+          .map((place) => `"${place}, ${state.abbr}"`)
+          .join(" OR ")}) (${countyTopic})`,
+      ]
+    : [];
   const nativeSourceQueries = config.countyLocalSourceSearchEnabled
     ? [
         ...buildReviewedNativeSourceQueries(county, countyTopic, nativeSources),
@@ -191,6 +205,7 @@ function buildCountyPrimaryQueries(county: CountySite, countyTopic: string, nati
     : [];
   return [
     `("${county.displayName}" "${state.name}") (${countyTopic})`,
+    ...placeQueries,
     ...nativeSourceQueries,
     `("${county.displayName}" "${state.name}") ("breaking news" OR "local news" OR "community" OR "public safety" OR "business")`,
     ...(config.countyAgencyQueryEnabled ? [agencyQuery] : []),
@@ -207,7 +222,9 @@ function buildReviewedNativeSourceQueries(county: CountySite, countyTopic: strin
     .map((domain) => `site:${domain}`);
   if (!siteTerms.length) return [];
 
-  const places = [county.displayName, ...getCountyPlaceTerms(county, config.countyMarketLimit)]
+  // County-primary queries stay inside the county: the regional markets belong
+  // to the market tier, not here.
+  const places = [county.displayName, ...getCountyLocalPlaces(county, config.countyPlaceQueryLimit)]
     .map((place) => `"${place}"`)
     .join(" OR ");
   return [`(${siteTerms.join(" OR ")}) "${county.state.name}" (${places}) (${countyTopic})`];

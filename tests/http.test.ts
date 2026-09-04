@@ -3,7 +3,7 @@ import { clearCache } from "../src/cache.js";
 import { config } from "../src/config.js";
 import { buildCountyMarketPlan, buildFeedPlan } from "../src/feed-builders.js";
 import { filterItems, filterMarketItems } from "../src/filter.js";
-import { getCounty, getCountyPlaceTerms, getNearbyCounties } from "../src/geo.js";
+import { getCounty, getCountyLocalPlaces, getCountyPlaceTerms, getNearbyCounties } from "../src/geo.js";
 import { fetchGdeltItems } from "../src/gdelt.js";
 import { handleRequest } from "../src/http.js";
 import { balanceCountyPublisherMix } from "../src/news-service.js";
@@ -1090,12 +1090,20 @@ describe("handleRequest", () => {
 
     expect(plan.sourcesUsed).toContain("provider:bing-news-rss");
     expect(plan.sourcesUsed).toContain("county:primary");
-    expect(decodedUrls.every((url) => url.includes("Potter County") && url.includes("Texas"))).toBe(true);
+    // Every primary query is still tied to this county, but no longer by
+    // requiring the county's name: local reporting names the town, so a query
+    // qualifies by naming Potter County or one of the towns inside it, plus the
+    // state by name or postal abbreviation.
+    const potterPlaces = getCountyLocalPlaces(county!);
+    const isCountyQualified = (value: string) =>
+      (value.includes("Texas") || value.includes(", TX")) &&
+      (value.includes("Potter County") || potterPlaces.some((place) => value.includes(place)));
+    expect(decodedUrls.every(isCountyQualified)).toBe(true);
     expect(decodedUrls.some((url) => url.includes("www.bing.com/news/search"))).toBe(true);
     expect(decodedUrls.some((url) => url.includes("when:7d"))).toBe(true);
     expect(plan.rssUrls.length).toBeLessThanOrEqual(18);
     expect(plan.articleQueries.length).toBeLessThanOrEqual(6);
-    expect(plan.articleQueries.every((query) => query.includes("Potter County") && query.includes("Texas"))).toBe(true);
+    expect(plan.articleQueries.every(isCountyQualified)).toBe(true);
     expect(plan.directSources.some((source) => source.counties?.includes("texas/potter"))).toBe(true);
   });
 

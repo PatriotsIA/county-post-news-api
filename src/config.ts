@@ -21,6 +21,8 @@ export const config = {
   countyOtherSourcesTarget: Number(process.env.COUNTY_OTHER_SOURCES_TARGET || 25),
   countyPrimaryQueryLimit: Number(process.env.COUNTY_PRIMARY_QUERY_LIMIT || 4),
   countyMarketQueryLimit: Number(process.env.COUNTY_MARKET_QUERY_LIMIT || 4),
+  // How many of a county's own towns are named in its search queries.
+  countyPlaceQueryLimit: Number(process.env.COUNTY_PLACE_QUERY_LIMIT || 4),
   gdeltEnabled: process.env.GDELT_ENABLED !== "false",
   gdeltMaxRecords: Number(process.env.GDELT_MAX_RECORDS || 100),
   gdeltDocApi: "https://api.gdeltproject.org/api/v2/doc/doc",
