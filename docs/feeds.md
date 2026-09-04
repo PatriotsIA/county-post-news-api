@@ -141,11 +141,16 @@ half a second. The design keeps those on different actors:
   a day — from any Lambda instance. The S3 write is awaited on purpose: work
   started after a Lambda response is sent freezes with the sandbox, so a
   fire-and-forget put is lost.
-- **Only the warmer rebuilds.** It runs every five minutes over every covered
-  county (`WARM_STATES`), marking its requests with `x-warm-refresh: 1` — the
-  sole trigger for a forced rebuild — and sending the site's own `Origin`
-  header, which matters once a CDN with Origin in its cache key sits in front.
-  A county nobody ever visited builds inline once, then stays warm.
+- **Only the warmer rebuilds.** It runs every five minutes, marking its
+  requests with `x-warm-refresh: 1` — the sole trigger for a forced rebuild —
+  and sending the site's own `Origin` header, which matters once a CDN with
+  Origin in its cache key sits in front. With `WARM_STATES=all` it covers all
+  3,143 counties in **shard rotation** (`WARM_MAX_PER_PASS`, default 150 per
+  pass): one pass cannot rebuild the whole country without blowing the
+  function timeout and the upstream search feeds' rate limits, so each pass
+  walks one shard and every county refreshes on a cycle well inside the S3
+  stale window. A county nobody ever visited builds inline once, then joins
+  the rotation.
 - **CloudFront is written but parked** behind the `EnableEdgeCache` template
   parameter (default `"false"`): the AWS account awaits CloudFront verification
   by AWS Support. When that clears, flipping the parameter adds the edge on top
