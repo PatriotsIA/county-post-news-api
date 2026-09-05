@@ -30,13 +30,16 @@ describe("discovered county sources", () => {
     }
   });
 
-  it("scopes every source to counties that exist", () => {
-    for (const source of discoveredRegionalSources) {
-      for (const key of source.counties ?? []) {
-        const [stateSlug, countySlug] = key.split("/");
-        expect(getCounty(stateSlug, countySlug), `${key} from ${source.name}`).toBeDefined();
-      }
-    }
+  it("scopes every source to counties that exist", { timeout: 30_000 }, () => {
+    // getCounty is a linear scan per call; with the national registry there
+    // are thousands of keys, so resolve each distinct key exactly once or the
+    // test blows the default timeout on CI hardware.
+    const keys = new Set(discoveredRegionalSources.flatMap((source) => source.counties ?? []));
+    const unknown = [...keys].filter((key) => {
+      const [stateSlug, countySlug] = key.split("/");
+      return !getCounty(stateSlug, countySlug);
+    });
+    expect(unknown, unknown.join(", ")).toEqual([]);
   });
 
   it("attaches its feeds to the county plans they were found for", () => {
