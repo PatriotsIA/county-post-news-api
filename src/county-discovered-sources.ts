@@ -17,7 +17,7 @@ export const discoveredCountyNativeSources: CountyNativeSource[] = [];
 export const discoveredRegionalSources: DirectSource[] = [
   {
     "name": "101.5 KNUE Country Radio",
-    "url": "https://knue.com/feed/",
+    "url": "https://knue.com/rss",
     "mediaType": "article",
     "itemSource": "101.5 KNUE Country Radio",
     "counties": [
@@ -27,11 +27,211 @@ export const discoveredRegionalSources: DirectSource[] = [
   },
   {
     "name": "101.5 KNUE Country Radio (2)",
-    "url": "https://knue.com/rss",
+    "url": "https://knue.com/category/news/feed/",
     "mediaType": "article",
     "itemSource": "101.5 KNUE Country Radio",
     "counties": [
       "texas/anderson"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "1011 Now",
+    "url": "https://1011now.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "1011 Now",
+    "counties": [
+      "nebraska/lancaster",
+      "nebraska/polk",
+      "nebraska/gage",
+      "nebraska/antelope",
+      "nebraska/cherry",
+      "nebraska/dawes",
+      "nebraska/hamilton",
+      "nebraska/jefferson",
+      "nebraska/cass",
+      "nebraska/madison",
+      "nebraska/otoe"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "106.9 KROC",
+    "url": "https://kroc.com/feed/",
+    "mediaType": "article",
+    "itemSource": "106.9 KROC",
+    "counties": [
+      "minnesota/dakota"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "106.9 KROC (2)",
+    "url": "https://kroc.com/rss",
+    "mediaType": "article",
+    "itemSource": "106.9 KROC",
+    "counties": [
+      "minnesota/dakota"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "10tv",
+    "url": "https://www.10tv.com/feeds/syndication/rss/news",
+    "mediaType": "article",
+    "itemSource": "10tv",
+    "counties": [
+      "ohio/vinton",
+      "ohio/delaware",
+      "ohio/athens",
+      "ohio/morrow",
+      "ohio/pickaway",
+      "ohio/hocking",
+      "ohio/madison",
+      "ohio/perry",
+      "ohio/ross",
+      "ohio/jackson",
+      "ohio/marion",
+      "ohio/coshocton",
+      "ohio/morgan",
+      "ohio/scioto",
+      "ohio/fairfield",
+      "ohio/franklin",
+      "ohio/logan",
+      "ohio/muskingum",
+      "ohio/pike",
+      "ohio/wayne",
+      "ohio/crawford",
+      "ohio/guernsey",
+      "ohio/hardin",
+      "ohio/licking",
+      "ohio/noble",
+      "ohio/shelby",
+      "ohio/union",
+      "ohio/fayette",
+      "ohio/knox"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "10tv (2)",
+    "url": "https://10tv.com/feeds/syndication/rss/news",
+    "mediaType": "article",
+    "itemSource": "10tv",
+    "counties": [
+      "ohio/vinton",
+      "ohio/delaware",
+      "ohio/athens",
+      "ohio/morrow",
+      "ohio/pickaway",
+      "ohio/hocking",
+      "ohio/madison",
+      "ohio/perry",
+      "ohio/ross",
+      "ohio/jackson",
+      "ohio/marion",
+      "ohio/coshocton",
+      "ohio/morgan",
+      "ohio/scioto",
+      "ohio/fairfield",
+      "ohio/franklin",
+      "ohio/logan",
+      "ohio/muskingum",
+      "ohio/pike",
+      "ohio/wayne",
+      "ohio/crawford",
+      "ohio/guernsey",
+      "ohio/hardin",
+      "ohio/licking",
+      "ohio/noble",
+      "ohio/shelby",
+      "ohio/union",
+      "ohio/fayette",
+      "ohio/knox"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "11Alive",
+    "url": "https://www.11alive.com/feeds/syndication/rss/news",
+    "mediaType": "article",
+    "itemSource": "11Alive",
+    "counties": [
+      "georgia/coweta",
+      "georgia/putnam",
+      "georgia/clinch",
+      "georgia/forsyth",
+      "georgia/habersham",
+      "georgia/rockdale",
+      "georgia/bartow",
+      "georgia/brantley",
+      "illinois/dekalb",
+      "georgia/coffee",
+      "georgia/gordon",
+      "georgia/henry",
+      "georgia/troup",
+      "florida/franklin",
+      "georgia/ben-hill",
+      "georgia/dawson",
+      "georgia/franklin",
+      "alabama/cherokee",
+      "georgia/butts",
+      "georgia/chattooga",
+      "georgia/decatur",
+      "georgia/dougherty",
+      "georgia/haralson",
+      "georgia/oconee",
+      "georgia/rabun",
+      "georgia/towns",
+      "south-carolina/saluda",
+      "georgia/banks",
+      "georgia/barrow",
+      "georgia/clayton",
+      "georgia/harris",
+      "georgia/newton",
+      "georgia/walker"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "11Alive (2)",
+    "url": "https://11alive.com/feeds/syndication/rss/news",
+    "mediaType": "article",
+    "itemSource": "11Alive",
+    "counties": [
+      "georgia/coweta",
+      "georgia/putnam",
+      "georgia/clinch",
+      "georgia/forsyth",
+      "georgia/habersham",
+      "georgia/rockdale",
+      "georgia/bartow",
+      "georgia/brantley",
+      "illinois/dekalb",
+      "georgia/coffee",
+      "georgia/gordon",
+      "georgia/henry",
+      "georgia/troup",
+      "florida/franklin",
+      "georgia/ben-hill",
+      "georgia/dawson",
+      "georgia/franklin",
+      "alabama/cherokee",
+      "georgia/butts",
+      "georgia/chattooga",
+      "georgia/decatur",
+      "georgia/dougherty",
+      "georgia/haralson",
+      "georgia/oconee",
+      "georgia/rabun",
+      "georgia/towns",
+      "south-carolina/saluda",
+      "georgia/banks",
+      "georgia/barrow",
+      "georgia/clayton",
+      "georgia/harris",
+      "georgia/newton",
+      "georgia/walker"
     ],
     "trustedForCountyTier": false
   },
@@ -74,12 +274,114 @@ export const discoveredRegionalSources: DirectSource[] = [
     "trustedForCountyTier": false
   },
   {
+    "name": "12news",
+    "url": "https://www.12news.com/feeds/syndication/rss/news",
+    "mediaType": "article",
+    "itemSource": "12news",
+    "counties": [
+      "arizona/yavapai",
+      "georgia/polk"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "12news (2)",
+    "url": "https://12news.com/feeds/syndication/rss/news",
+    "mediaType": "article",
+    "itemSource": "12news",
+    "counties": [
+      "arizona/yavapai",
+      "georgia/polk"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "1380 KCIM",
+    "url": "https://www.1380kcim.com/feed/",
+    "mediaType": "article",
+    "itemSource": "1380 KCIM",
+    "counties": [
+      "iowa/carroll",
+      "iowa/greene"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "1380 KCIM (2)",
+    "url": "https://1380kcim.com/feed/",
+    "mediaType": "article",
+    "itemSource": "1380 KCIM",
+    "counties": [
+      "iowa/carroll",
+      "iowa/greene"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
     "name": "13abc",
     "url": "https://13abc.com/arc/outboundfeeds/rss/?outputType=xml",
     "mediaType": "article",
     "itemSource": "13abc",
     "counties": [
-      "texas/victoria"
+      "ohio/paulding",
+      "ohio/lucas",
+      "texas/victoria",
+      "ohio/defiance",
+      "ohio/hancock",
+      "ohio/ottawa",
+      "ohio/williams",
+      "ohio/wood"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "14 News",
+    "url": "https://14news.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "14 News",
+    "counties": [
+      "indiana/pike",
+      "kentucky/union",
+      "illinois/wabash",
+      "kentucky/boyle"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "19 Action News",
+    "url": "https://cleveland19.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "19 Action News",
+    "counties": [
+      "ohio/lake",
+      "ohio/richland",
+      "ohio/wayne",
+      "ohio/ashtabula",
+      "ohio/medina",
+      "ohio/cuyahoga",
+      "ohio/portage",
+      "missouri/reynolds",
+      "ohio/ashland",
+      "ohio/huron",
+      "ohio/summit",
+      "ohio/geauga",
+      "ohio/guernsey",
+      "ohio/holmes",
+      "ohio/licking",
+      "ohio/monroe",
+      "ohio/erie",
+      "ohio/lorain",
+      "ohio/marion"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "23ABC News Bakersfield",
+    "url": "https://www.turnto23.com/index.rss",
+    "mediaType": "article",
+    "itemSource": "23ABC News Bakersfield",
+    "counties": [
+      "california/kern"
     ],
     "trustedForCountyTier": false
   },
@@ -90,6 +392,443 @@ export const discoveredRegionalSources: DirectSource[] = [
     "itemSource": "25 News KXXV",
     "counties": [
       "texas/hamilton"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "25 News Now",
+    "url": "https://25newsnow.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "25 News Now",
+    "counties": [
+      "illinois/tazewell"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "4 KTIV Siouxland's News channel",
+    "url": "https://ktiv.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "4 KTIV Siouxland's News channel",
+    "counties": [
+      "iowa/monona",
+      "iowa/sioux",
+      "nebraska/stanton",
+      "iowa/emmet",
+      "iowa/woodbury",
+      "iowa/lyon",
+      "iowa/cherokee",
+      "iowa/dickinson",
+      "nebraska/knox",
+      "nebraska/wayne",
+      "iowa/buena-vista",
+      "nebraska/dakota",
+      "iowa/plymouth",
+      "nebraska/cedar",
+      "south-dakota/yankton",
+      "iowa/carroll",
+      "iowa/clay",
+      "iowa/kossuth",
+      "iowa/palo-alto",
+      "iowa/pocahontas",
+      "iowa/sac",
+      "minnesota/jackson",
+      "nebraska/dixon",
+      "nebraska/madison",
+      "south-dakota/lincoln",
+      "iowa/crawford",
+      "iowa/ida",
+      "iowa/osceola",
+      "nebraska/holt"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "41NBC News",
+    "url": "https://www.41nbc.com/feed/",
+    "mediaType": "article",
+    "itemSource": "41NBC News",
+    "counties": [
+      "georgia/twiggs",
+      "georgia/houston",
+      "georgia/bibb",
+      "georgia/baldwin",
+      "georgia/monroe",
+      "georgia/macon"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "41NBC News (2)",
+    "url": "https://41nbc.com/feed/",
+    "mediaType": "article",
+    "itemSource": "41NBC News",
+    "counties": [
+      "georgia/twiggs",
+      "georgia/houston",
+      "georgia/bibb",
+      "georgia/baldwin",
+      "georgia/monroe",
+      "georgia/macon"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "48 Hills",
+    "url": "https://48hills.org/feed/",
+    "mediaType": "article",
+    "itemSource": "48 Hills",
+    "counties": [
+      "wisconsin/wood"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "48 Hills (2)",
+    "url": "https://48hills.org/rss",
+    "mediaType": "article",
+    "itemSource": "48 Hills",
+    "counties": [
+      "wisconsin/wood"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "5NEWS",
+    "url": "https://www.5newsonline.com/feeds/syndication/rss/news",
+    "mediaType": "article",
+    "itemSource": "5NEWS",
+    "counties": [
+      "arkansas/benton",
+      "arkansas/madison",
+      "arkansas/washington"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "5NEWS (2)",
+    "url": "https://5newsonline.com/feeds/syndication/rss/news",
+    "mediaType": "article",
+    "itemSource": "5NEWS",
+    "counties": [
+      "arkansas/benton",
+      "arkansas/madison",
+      "arkansas/washington"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "6abc Action News",
+    "url": "https://6abc.com/feed/",
+    "mediaType": "article",
+    "itemSource": "6abc Action News",
+    "counties": [
+      "new-jersey/atlantic",
+      "new-jersey/gloucester",
+      "pennsylvania/perry",
+      "pennsylvania/berks",
+      "pennsylvania/chester",
+      "pennsylvania/lebanon",
+      "kentucky/carroll",
+      "new-jersey/cape-may",
+      "pennsylvania/carbon",
+      "pennsylvania/york",
+      "delaware/kent",
+      "delaware/new-castle",
+      "michigan/ottawa",
+      "new-jersey/camden",
+      "new-jersey/salem",
+      "pennsylvania/clinton",
+      "pennsylvania/schuylkill"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "6abc Action News (2)",
+    "url": "https://6abc.com/rss",
+    "mediaType": "article",
+    "itemSource": "6abc Action News",
+    "counties": [
+      "new-jersey/atlantic",
+      "new-jersey/gloucester",
+      "pennsylvania/perry",
+      "pennsylvania/berks",
+      "pennsylvania/chester",
+      "pennsylvania/lebanon",
+      "kentucky/carroll",
+      "new-jersey/cape-may",
+      "pennsylvania/carbon",
+      "pennsylvania/york",
+      "delaware/kent",
+      "delaware/new-castle",
+      "michigan/ottawa",
+      "new-jersey/camden",
+      "new-jersey/salem",
+      "pennsylvania/clinton",
+      "pennsylvania/schuylkill"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "9&10 News",
+    "url": "https://9and10news.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "9&10 News",
+    "counties": [
+      "michigan/kalkaska",
+      "michigan/emmet",
+      "iowa/emmet",
+      "michigan/isabella",
+      "michigan/mecosta",
+      "michigan/osceola",
+      "michigan/presque-isle",
+      "michigan/alpena",
+      "michigan/antrim",
+      "michigan/cheboygan",
+      "michigan/grand-traverse",
+      "michigan/wexford"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "95.3 MNC",
+    "url": "https://www.953mnc.com/feed/",
+    "mediaType": "article",
+    "itemSource": "95.3 MNC",
+    "counties": [
+      "indiana/laporte",
+      "indiana/elkhart",
+      "indiana/lagrange"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "95.3 MNC (2)",
+    "url": "https://www.953mnc.com/comments/feed/",
+    "mediaType": "article",
+    "itemSource": "95.3 MNC",
+    "counties": [
+      "indiana/laporte",
+      "indiana/elkhart",
+      "indiana/lagrange"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "98.1 KHAK",
+    "url": "https://khak.com/feed/",
+    "mediaType": "article",
+    "itemSource": "98.1 KHAK",
+    "counties": [
+      "iowa/linn"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "98.1 KHAK (2)",
+    "url": "https://khak.com/rss",
+    "mediaType": "article",
+    "itemSource": "98.1 KHAK",
+    "counties": [
+      "iowa/linn"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "9NEWS",
+    "url": "https://www.9news.com/feeds/syndication/rss/news",
+    "mediaType": "article",
+    "itemSource": "9NEWS",
+    "counties": [
+      "colorado/costilla",
+      "colorado/gilpin",
+      "colorado/teller",
+      "colorado/weld",
+      "colorado/elbert",
+      "colorado/el-paso",
+      "colorado/jackson",
+      "colorado/las-animas",
+      "colorado/san-miguel",
+      "colorado/la-plata",
+      "colorado/bent",
+      "colorado/broomfield",
+      "colorado/custer",
+      "colorado/delta",
+      "colorado/denver",
+      "colorado/douglas",
+      "colorado/eagle",
+      "colorado/gunnison",
+      "colorado/hinsdale",
+      "colorado/jefferson",
+      "colorado/lincoln",
+      "colorado/logan",
+      "colorado/mineral",
+      "colorado/moffat",
+      "colorado/morgan",
+      "colorado/otero",
+      "colorado/pitkin",
+      "colorado/arapahoe",
+      "colorado/boulder",
+      "colorado/grand"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "9NEWS (2)",
+    "url": "https://9news.com/feeds/syndication/rss/news",
+    "mediaType": "article",
+    "itemSource": "9NEWS",
+    "counties": [
+      "colorado/costilla",
+      "colorado/gilpin",
+      "colorado/teller",
+      "colorado/weld",
+      "colorado/elbert",
+      "colorado/el-paso",
+      "colorado/jackson",
+      "colorado/las-animas",
+      "colorado/san-miguel",
+      "colorado/la-plata",
+      "colorado/bent",
+      "colorado/broomfield",
+      "colorado/custer",
+      "colorado/delta",
+      "colorado/denver",
+      "colorado/douglas",
+      "colorado/eagle",
+      "colorado/gunnison",
+      "colorado/hinsdale",
+      "colorado/jefferson",
+      "colorado/lincoln",
+      "colorado/logan",
+      "colorado/mineral",
+      "colorado/moffat",
+      "colorado/morgan",
+      "colorado/otero",
+      "colorado/pitkin",
+      "colorado/arapahoe",
+      "colorado/boulder",
+      "colorado/grand"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "ABC 36 News",
+    "url": "https://www.wtvq.com/feed/",
+    "mediaType": "article",
+    "itemSource": "ABC 36 News",
+    "counties": [
+      "kentucky/whitley",
+      "kentucky/kenton",
+      "kentucky/hart"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "ABC 36 News (2)",
+    "url": "https://wtvq.com/feed/",
+    "mediaType": "article",
+    "itemSource": "ABC 36 News",
+    "counties": [
+      "kentucky/whitley",
+      "kentucky/kenton",
+      "kentucky/hart"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "ABC 7 Chicago",
+    "url": "https://abc7chicago.com/feed/",
+    "mediaType": "article",
+    "itemSource": "ABC 7 Chicago",
+    "counties": [
+      "indiana/porter",
+      "illinois/kankakee",
+      "illinois/sangamon",
+      "oklahoma/major",
+      "indiana/lake",
+      "illinois/cumberland",
+      "illinois/dupage",
+      "minnesota/washington",
+      "tennessee/lake",
+      "wisconsin/dodge",
+      "illinois/dekalb",
+      "illinois/jefferson",
+      "illinois/kendall",
+      "illinois/montgomery",
+      "indiana/laporte",
+      "north-carolina/hoke",
+      "north-carolina/vance",
+      "wisconsin/walworth",
+      "georgia/bibb",
+      "illinois/cook",
+      "illinois/will",
+      "indiana/jasper",
+      "indiana/putnam",
+      "indiana/washington",
+      "pennsylvania/clinton"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "ABC 7 Chicago (2)",
+    "url": "https://abc7chicago.com/rss",
+    "mediaType": "article",
+    "itemSource": "ABC 7 Chicago",
+    "counties": [
+      "indiana/porter",
+      "illinois/kankakee",
+      "illinois/sangamon",
+      "oklahoma/major",
+      "indiana/lake",
+      "illinois/cumberland",
+      "illinois/dupage",
+      "minnesota/washington",
+      "tennessee/lake",
+      "wisconsin/dodge",
+      "illinois/dekalb",
+      "illinois/jefferson",
+      "illinois/kendall",
+      "illinois/montgomery",
+      "indiana/laporte",
+      "north-carolina/hoke",
+      "north-carolina/vance",
+      "wisconsin/walworth",
+      "georgia/bibb",
+      "illinois/cook",
+      "illinois/will",
+      "indiana/jasper",
+      "indiana/putnam",
+      "indiana/washington",
+      "pennsylvania/clinton"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "ABC10",
+    "url": "https://www.abc10.com/feeds/syndication/rss/news",
+    "mediaType": "article",
+    "itemSource": "ABC10",
+    "counties": [
+      "south-carolina/chesterfield",
+      "nevada/washoe",
+      "texas/trinity",
+      "california/sierra",
+      "south-carolina/georgetown"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "ABC10 (2)",
+    "url": "https://abc10.com/feeds/syndication/rss/news",
+    "mediaType": "article",
+    "itemSource": "ABC10",
+    "counties": [
+      "south-carolina/chesterfield",
+      "nevada/washoe",
+      "texas/trinity",
+      "california/sierra",
+      "south-carolina/georgetown"
     ],
     "trustedForCountyTier": false
   },
@@ -108,14 +847,18 @@ export const discoveredRegionalSources: DirectSource[] = [
       "texas/waller",
       "texas/gregg",
       "texas/harris",
+      "minnesota/douglas",
       "texas/brazoria",
       "texas/chambers",
       "texas/jackson",
       "texas/leon",
       "texas/tarrant",
       "texas/walker",
+      "virginia/lee",
       "texas/kinney",
-      "texas/montgomery"
+      "texas/montgomery",
+      "new-jersey/gloucester",
+      "tennessee/stewart"
     ],
     "trustedForCountyTier": false
   },
@@ -134,14 +877,357 @@ export const discoveredRegionalSources: DirectSource[] = [
       "texas/waller",
       "texas/gregg",
       "texas/harris",
+      "minnesota/douglas",
       "texas/brazoria",
       "texas/chambers",
       "texas/jackson",
       "texas/leon",
       "texas/tarrant",
       "texas/walker",
+      "virginia/lee",
       "texas/kinney",
-      "texas/montgomery"
+      "texas/montgomery",
+      "new-jersey/gloucester",
+      "tennessee/stewart"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "ABC15 Arizona",
+    "url": "https://www.abc15.com/index.rss",
+    "mediaType": "article",
+    "itemSource": "ABC15 Arizona",
+    "counties": [
+      "arizona/gila",
+      "arizona/mohave",
+      "arizona/navajo",
+      "georgia/chattahoochee"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "ABC17NEWS",
+    "url": "https://abc17news.com/feed/",
+    "mediaType": "article",
+    "itemSource": "ABC17NEWS",
+    "counties": [
+      "illinois/boone",
+      "missouri/morgan"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "ABC17NEWS (2)",
+    "url": "https://abc17news.com/rss",
+    "mediaType": "article",
+    "itemSource": "ABC17NEWS",
+    "counties": [
+      "illinois/boone",
+      "missouri/morgan"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "abc27",
+    "url": "https://abc27.com/feed/",
+    "mediaType": "article",
+    "itemSource": "abc27",
+    "counties": [
+      "pennsylvania/franklin",
+      "pennsylvania/chester",
+      "pennsylvania/perry",
+      "pennsylvania/cumberland",
+      "pennsylvania/lancaster",
+      "pennsylvania/lebanon",
+      "pennsylvania/york",
+      "pennsylvania/centre",
+      "pennsylvania/dauphin",
+      "pennsylvania/berks",
+      "pennsylvania/mifflin"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "abc27 (2)",
+    "url": "https://abc27.com/rss",
+    "mediaType": "article",
+    "itemSource": "abc27",
+    "counties": [
+      "pennsylvania/franklin",
+      "pennsylvania/chester",
+      "pennsylvania/perry",
+      "pennsylvania/cumberland",
+      "pennsylvania/lancaster",
+      "pennsylvania/lebanon",
+      "pennsylvania/york",
+      "pennsylvania/centre",
+      "pennsylvania/dauphin",
+      "pennsylvania/berks",
+      "pennsylvania/mifflin"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "ABC30 News",
+    "url": "https://abc30.com/feed/",
+    "mediaType": "article",
+    "itemSource": "ABC30 News",
+    "counties": [
+      "california/fresno",
+      "california/kings",
+      "california/mariposa"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "ABC30 News (2)",
+    "url": "https://abc30.com/rss",
+    "mediaType": "article",
+    "itemSource": "ABC30 News",
+    "counties": [
+      "california/fresno",
+      "california/kings",
+      "california/mariposa"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "ABC4 Utah",
+    "url": "https://abc4.com/feed/",
+    "mediaType": "article",
+    "itemSource": "ABC4 Utah",
+    "counties": [
+      "utah/millard",
+      "utah/weber",
+      "utah/davis",
+      "utah/duchesne",
+      "utah/tooele",
+      "utah/wasatch",
+      "utah/juab",
+      "utah/salt-lake",
+      "utah/utah",
+      "utah/washington",
+      "arizona/mohave",
+      "utah/carbon"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "ABC4 Utah (2)",
+    "url": "https://abc4.com/rss",
+    "mediaType": "article",
+    "itemSource": "ABC4 Utah",
+    "counties": [
+      "utah/millard",
+      "utah/weber",
+      "utah/davis",
+      "utah/duchesne",
+      "utah/tooele",
+      "utah/wasatch",
+      "utah/juab",
+      "utah/salt-lake",
+      "utah/utah",
+      "utah/washington",
+      "arizona/mohave",
+      "utah/carbon"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "ABC57",
+    "url": "https://abc57.com/rss",
+    "mediaType": "article",
+    "itemSource": "ABC57",
+    "counties": [
+      "michigan/berrien",
+      "indiana/marshall"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "ABC7",
+    "url": "https://abc7.com/feed/",
+    "mediaType": "article",
+    "itemSource": "ABC7",
+    "counties": [
+      "california/madera",
+      "tennessee/stewart",
+      "michigan/ottawa",
+      "california/monterey",
+      "north-carolina/alamance",
+      "texas/bell",
+      "arkansas/lonoke",
+      "florida/marion",
+      "new-jersey/camden",
+      "pennsylvania/lebanon"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "ABC7 (2)",
+    "url": "https://abc7.com/rss",
+    "mediaType": "article",
+    "itemSource": "ABC7",
+    "counties": [
+      "california/madera",
+      "tennessee/stewart",
+      "michigan/ottawa",
+      "california/monterey",
+      "north-carolina/alamance",
+      "texas/bell",
+      "arkansas/lonoke",
+      "florida/marion",
+      "new-jersey/camden",
+      "pennsylvania/lebanon"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "ABC7 News",
+    "url": "https://abc7news.com/feed/",
+    "mediaType": "article",
+    "itemSource": "ABC7 News",
+    "counties": [
+      "california/merced",
+      "california/san-mateo",
+      "california/yolo"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "ABC7 News (2)",
+    "url": "https://abc7news.com/rss",
+    "mediaType": "article",
+    "itemSource": "ABC7 News",
+    "counties": [
+      "california/merced",
+      "california/san-mateo",
+      "california/yolo"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Aclu",
+    "url": "https://aclu.org/feed/",
+    "mediaType": "article",
+    "itemSource": "Aclu",
+    "counties": [
+      "mississippi/desoto",
+      "montana/chouteau",
+      "washington/grant",
+      "georgia/monroe",
+      "mississippi/itawamba",
+      "south-carolina/richland",
+      "utah/san-juan",
+      "washington/lewis",
+      "texas/llano",
+      "mississippi/madison",
+      "washington/whatcom"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Aclu (2)",
+    "url": "https://aclu.org/rss",
+    "mediaType": "article",
+    "itemSource": "Aclu",
+    "counties": [
+      "mississippi/desoto",
+      "montana/chouteau",
+      "washington/grant",
+      "georgia/monroe",
+      "mississippi/itawamba",
+      "south-carolina/richland",
+      "utah/san-juan",
+      "washington/lewis",
+      "texas/llano",
+      "mississippi/madison",
+      "washington/whatcom"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Action News 5",
+    "url": "https://actionnews5.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "Action News 5",
+    "counties": [
+      "mississippi/quitman",
+      "ohio/adams",
+      "virginia/waynesboro"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Action News Jax",
+    "url": "https://actionnewsjax.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "Action News Jax",
+    "counties": [
+      "georgia/ware",
+      "florida/columbia",
+      "georgia/brantley",
+      "georgia/camden",
+      "georgia/charlton",
+      "georgia/glynn"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Addison Independent",
+    "url": "https://www.addisonindependent.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Addison Independent",
+    "counties": [
+      "vermont/addison"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Addison Independent (2)",
+    "url": "https://addisonindependent.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Addison Independent",
+    "counties": [
+      "vermont/addison"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "advocate",
+    "url": "https://www.advocate.com/feeds/feed.rss",
+    "mediaType": "article",
+    "itemSource": "advocate",
+    "counties": [
+      "virginia/king-george"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "advocate (2)",
+    "url": "https://advocate.com/feed/",
+    "mediaType": "article",
+    "itemSource": "advocate",
+    "counties": [
+      "virginia/king-george"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "AG Week",
+    "url": "https://www.agweek.com/index.rss",
+    "mediaType": "article",
+    "itemSource": "AG Week",
+    "counties": [
+      "south-dakota/hyde",
+      "south-dakota/mccook",
+      "minnesota/norman",
+      "south-dakota/douglas",
+      "south-dakota/lincoln",
+      "south-dakota/mellette",
+      "minnesota/renville",
+      "south-dakota/stanley",
+      "north-dakota/adams"
     ],
     "trustedForCountyTier": false
   },
@@ -164,6 +1250,984 @@ export const discoveredRegionalSources: DirectSource[] = [
     "counties": [
       "texas/mason",
       "texas/brazos"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "al",
+    "url": "https://al.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "al",
+    "counties": [
+      "alabama/shelby",
+      "alabama/lowndes",
+      "alabama/mobile",
+      "alabama/walker",
+      "alabama/marshall",
+      "alabama/cullman",
+      "alabama/tallapoosa",
+      "alabama/blount",
+      "alabama/madison",
+      "alabama/baldwin",
+      "alabama/wilcox",
+      "alabama/elmore",
+      "alabama/lawrence",
+      "alabama/macon",
+      "alabama/coffee",
+      "alabama/colbert",
+      "alabama/greene",
+      "alabama/bibb",
+      "alabama/clarke",
+      "alabama/jackson",
+      "alabama/jefferson",
+      "alabama/limestone",
+      "alabama/morgan",
+      "florida/gulf",
+      "mississippi/tunica",
+      "alabama/chambers",
+      "alabama/dale",
+      "alabama/escambia",
+      "alabama/lauderdale",
+      "alabama/marion",
+      "alabama/monroe",
+      "alabama/montgomery",
+      "alabama/pike",
+      "alabama/randolph",
+      "alabama/tuscaloosa",
+      "georgia/bibb",
+      "mississippi/jefferson",
+      "alabama/covington",
+      "florida/jackson",
+      "washington/jefferson"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Al Jazeera English",
+    "url": "https://www.aljazeera.com/xml/rss/all.xml",
+    "mediaType": "article",
+    "itemSource": "Al Jazeera English",
+    "counties": [
+      "georgia/spalding"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Al Jazeera English (2)",
+    "url": "https://aljazeera.com/rss",
+    "mediaType": "article",
+    "itemSource": "Al Jazeera English",
+    "counties": [
+      "georgia/spalding"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Alaska Dispatch News",
+    "url": "https://adn.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "Alaska Dispatch News",
+    "counties": [
+      "alaska/kusilvak",
+      "oregon/morrow"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Alaska Native News",
+    "url": "https://alaska-native-news.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Alaska Native News",
+    "counties": [
+      "alaska/skagway"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Alaska Native News (2)",
+    "url": "https://alaska-native-news.com/rss",
+    "mediaType": "article",
+    "itemSource": "Alaska Native News",
+    "counties": [
+      "alaska/skagway"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "AllHipHop",
+    "url": "https://allhiphop.com/feed/",
+    "mediaType": "article",
+    "itemSource": "AllHipHop",
+    "counties": [
+      "ohio/butler",
+      "mississippi/hinds"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "AllHipHop (2)",
+    "url": "https://allhiphop.com/comments/feed/",
+    "mediaType": "article",
+    "itemSource": "AllHipHop",
+    "counties": [
+      "ohio/butler",
+      "mississippi/hinds"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "AllOnGeorgia",
+    "url": "https://allongeorgia.com/feed/",
+    "mediaType": "article",
+    "itemSource": "AllOnGeorgia",
+    "counties": [
+      "georgia/henry"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "AllOnGeorgia (2)",
+    "url": "https://allongeorgia.com/comments/feed/",
+    "mediaType": "article",
+    "itemSource": "AllOnGeorgia",
+    "counties": [
+      "georgia/henry"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Almanac Online",
+    "url": "https://www.almanacnews.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Almanac Online",
+    "counties": [
+      "california/imperial"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Almanac Online (2)",
+    "url": "https://www.almanacnews.com/comments/feed/",
+    "mediaType": "article",
+    "itemSource": "Almanac Online",
+    "counties": [
+      "california/imperial"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Altoona Mirror",
+    "url": "https://altoonamirror.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Altoona Mirror",
+    "counties": [
+      "pennsylvania/huntingdon",
+      "pennsylvania/clearfield",
+      "pennsylvania/bedford",
+      "pennsylvania/allegheny"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Altoona Mirror (2)",
+    "url": "https://altoonamirror.com/rss",
+    "mediaType": "article",
+    "itemSource": "Altoona Mirror",
+    "counties": [
+      "pennsylvania/huntingdon",
+      "pennsylvania/clearfield",
+      "pennsylvania/bedford",
+      "pennsylvania/allegheny"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "American Banker",
+    "url": "https://americanbanker.com/rss",
+    "mediaType": "article",
+    "itemSource": "American Banker",
+    "counties": [
+      "missouri/franklin"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "arizonadailyindependent",
+    "url": "https://arizonadailyindependent.com/feed/",
+    "mediaType": "article",
+    "itemSource": "arizonadailyindependent",
+    "counties": [
+      "arizona/yuma"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "arizonadailyindependent (2)",
+    "url": "https://arizonadailyindependent.com/comments/feed/",
+    "mediaType": "article",
+    "itemSource": "arizonadailyindependent",
+    "counties": [
+      "arizona/yuma"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Arkadelphian",
+    "url": "https://arkadelphian.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Arkadelphian",
+    "counties": [
+      "arkansas/clark"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Arkadelphian (2)",
+    "url": "https://arkadelphian.com/comments/feed/",
+    "mediaType": "article",
+    "itemSource": "Arkadelphian",
+    "counties": [
+      "arkansas/clark"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Arkansas Times",
+    "url": "https://arktimes.com/feed",
+    "mediaType": "article",
+    "itemSource": "Arkansas Times",
+    "counties": [
+      "arkansas/franklin",
+      "arkansas/craighead",
+      "arkansas/hot-spring",
+      "arkansas/pope",
+      "arkansas/sharp",
+      "arkansas/union",
+      "arkansas/lonoke",
+      "arkansas/prairie",
+      "arkansas/searcy",
+      "arkansas/marion",
+      "arkansas/lincoln",
+      "arkansas/newton"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Arkansas Times (2)",
+    "url": "https://arktimes.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Arkansas Times",
+    "counties": [
+      "arkansas/franklin",
+      "arkansas/craighead",
+      "arkansas/hot-spring",
+      "arkansas/pope",
+      "arkansas/sharp",
+      "arkansas/union",
+      "arkansas/lonoke",
+      "arkansas/prairie",
+      "arkansas/searcy",
+      "arkansas/marion",
+      "arkansas/lincoln",
+      "arkansas/newton"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Arlnow",
+    "url": "https://arlnow.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Arlnow",
+    "counties": [
+      "virginia/falls-church"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Arlnow (2)",
+    "url": "https://arlnow.com/rss",
+    "mediaType": "article",
+    "itemSource": "Arlnow",
+    "counties": [
+      "virginia/falls-church"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Ars Technica",
+    "url": "https://arstechnica.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Ars Technica",
+    "counties": [
+      "missouri/jackson",
+      "wyoming/laramie"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Ars Technica (2)",
+    "url": "https://arstechnica.com/rss",
+    "mediaType": "article",
+    "itemSource": "Ars Technica",
+    "counties": [
+      "missouri/jackson",
+      "wyoming/laramie"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Ashland Daily Tidings",
+    "url": "https://dailytidings.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Ashland Daily Tidings",
+    "counties": [
+      "oregon/washington",
+      "oregon/morrow"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Ashland Daily Tidings (2)",
+    "url": "https://dailytidings.com/rss",
+    "mediaType": "article",
+    "itemSource": "Ashland Daily Tidings",
+    "counties": [
+      "oregon/washington",
+      "oregon/morrow"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Aspen Daily News",
+    "url": "https://aspendailynews.com/rss.xml",
+    "mediaType": "article",
+    "itemSource": "Aspen Daily News",
+    "counties": [
+      "colorado/pitkin",
+      "virginia/gloucester"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Atlanta News First",
+    "url": "https://atlantanewsfirst.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "Atlanta News First",
+    "counties": [
+      "georgia/towns",
+      "georgia/coweta",
+      "georgia/douglas",
+      "georgia/henry"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Attack of the Fanboy",
+    "url": "https://attackofthefanboy.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Attack of the Fanboy",
+    "counties": [
+      "georgia/polk"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Attack of the Fanboy (2)",
+    "url": "https://attackofthefanboy.com/?feed=rss2",
+    "mediaType": "article",
+    "itemSource": "Attack of the Fanboy",
+    "counties": [
+      "georgia/polk"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Augusta Free Press",
+    "url": "https://augustafreepress.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Augusta Free Press",
+    "counties": [
+      "virginia/giles",
+      "virginia/page",
+      "virginia/augusta",
+      "virginia/james-city",
+      "virginia/montgomery",
+      "virginia/new-kent",
+      "virginia/harrisonburg",
+      "virginia/staunton"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Augusta Free Press (2)",
+    "url": "https://augustafreepress.com/rss",
+    "mediaType": "article",
+    "itemSource": "Augusta Free Press",
+    "counties": [
+      "virginia/giles",
+      "virginia/page",
+      "virginia/augusta",
+      "virginia/james-city",
+      "virginia/montgomery",
+      "virginia/new-kent",
+      "virginia/harrisonburg",
+      "virginia/staunton"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Aviation Pros",
+    "url": "https://aviationpros.com/__rss/website-scheduled-content.xml?input=%7B%22sectionAlias%22%3A%22home%22%7D",
+    "mediaType": "article",
+    "itemSource": "Aviation Pros",
+    "counties": [
+      "virginia/manassas"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "AZFamily",
+    "url": "https://azfamily.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "AZFamily",
+    "counties": [
+      "arizona/gila",
+      "arizona/pinal",
+      "arizona/apache",
+      "arizona/coconino",
+      "arizona/navajo",
+      "arizona/la-paz"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Baltimore Brew",
+    "url": "https://content.baltimorebrew.com/rss",
+    "mediaType": "article",
+    "itemSource": "Baltimore Brew",
+    "counties": [
+      "maryland/baltimore"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Bangor Daily News",
+    "url": "https://www.bangordailynews.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Bangor Daily News",
+    "counties": [
+      "maine/knox",
+      "maine/waldo",
+      "maine/hancock",
+      "maine/york",
+      "maine/aroostook",
+      "maine/cumberland"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Bangor Daily News (2)",
+    "url": "https://bangordailynews.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Bangor Daily News",
+    "counties": [
+      "maine/knox",
+      "maine/waldo",
+      "maine/hancock",
+      "maine/york",
+      "maine/aroostook",
+      "maine/cumberland"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Banking Dive",
+    "url": "https://www.bankingdive.com/feeds/news/",
+    "mediaType": "article",
+    "itemSource": "Banking Dive",
+    "counties": [
+      "florida/madison"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "BBC",
+    "url": "https://bbc.co.uk/news/rss.xml",
+    "mediaType": "article",
+    "itemSource": "BBC",
+    "counties": [
+      "tennessee/jackson",
+      "texas/kerr"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "BBC",
+    "url": "https://bbc.com/news/rss.xml",
+    "mediaType": "article",
+    "itemSource": "BBC",
+    "counties": [
+      "california/nevada",
+      "tennessee/jackson",
+      "tennessee/humphreys",
+      "ohio/van-wert",
+      "virginia/loudoun",
+      "nevada/washoe",
+      "texas/kerr",
+      "new-york/niagara",
+      "florida/charlotte",
+      "montana/gallatin"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Becker's Hospital Review",
+    "url": "https://beckershospitalreview.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Becker's Hospital Review",
+    "counties": [
+      "alabama/bullock",
+      "georgia/irwin",
+      "missouri/putnam",
+      "ohio/belmont",
+      "oklahoma/comanche"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Berks Weekly",
+    "url": "https://berksweekly.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Berks Weekly",
+    "counties": [
+      "pennsylvania/berks"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Berks Weekly (2)",
+    "url": "https://berksweekly.com/comments/feed/",
+    "mediaType": "article",
+    "itemSource": "Berks Weekly",
+    "counties": [
+      "pennsylvania/berks"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Big Frog 104",
+    "url": "https://bigfrog104.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Big Frog 104",
+    "counties": [
+      "new-york/saratoga",
+      "new-york/seneca"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Big Frog 104 (2)",
+    "url": "https://bigfrog104.com/rss",
+    "mediaType": "article",
+    "itemSource": "Big Frog 104",
+    "counties": [
+      "new-york/saratoga",
+      "new-york/seneca"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "BizWest",
+    "url": "https://bizwest.com/feed/",
+    "mediaType": "article",
+    "itemSource": "BizWest",
+    "counties": [
+      "colorado/larimer",
+      "colorado/weld"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "BizWest (2)",
+    "url": "https://bizwest.com/rss",
+    "mediaType": "article",
+    "itemSource": "BizWest",
+    "counties": [
+      "colorado/larimer",
+      "colorado/weld"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Bladen Journal",
+    "url": "https://www.bladenjournal.com/feed",
+    "mediaType": "article",
+    "itemSource": "Bladen Journal",
+    "counties": [
+      "north-carolina/bladen"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Bladen Journal (2)",
+    "url": "https://bladenjournal.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Bladen Journal",
+    "counties": [
+      "north-carolina/bladen"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "BNO News",
+    "url": "https://bnonews.com/index.php/feed/",
+    "mediaType": "article",
+    "itemSource": "BNO News",
+    "counties": [
+      "virginia/waynesboro",
+      "new-jersey/mercer"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "BNO News (2)",
+    "url": "https://bnonews.com/?feed=rss2",
+    "mediaType": "article",
+    "itemSource": "BNO News",
+    "counties": [
+      "virginia/waynesboro",
+      "new-jersey/mercer"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "BOE Report",
+    "url": "https://boereport.com/feed/",
+    "mediaType": "article",
+    "itemSource": "BOE Report",
+    "counties": [
+      "wisconsin/iron"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "BOE Report (2)",
+    "url": "https://boereport.com/rss",
+    "mediaType": "article",
+    "itemSource": "BOE Report",
+    "counties": [
+      "wisconsin/iron"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Boulder Weekly",
+    "url": "https://boulderweekly.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Boulder Weekly",
+    "counties": [
+      "colorado/boulder"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Boulder Weekly (2)",
+    "url": "https://boulderweekly.com/rss",
+    "mediaType": "article",
+    "itemSource": "Boulder Weekly",
+    "counties": [
+      "colorado/boulder"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Brainerd Dispatch",
+    "url": "https://www.brainerddispatch.com/index.rss",
+    "mediaType": "article",
+    "itemSource": "Brainerd Dispatch",
+    "counties": [
+      "minnesota/crow-wing",
+      "minnesota/cass",
+      "minnesota/mille-lacs",
+      "minnesota/stearns"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Broadband Communities",
+    "url": "https://bbcmag.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Broadband Communities",
+    "counties": [
+      "indiana/allen"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Broadband Communities (2)",
+    "url": "https://bbcmag.com/comments/feed/",
+    "mediaType": "article",
+    "itemSource": "Broadband Communities",
+    "counties": [
+      "indiana/allen"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "BroadwayWorld",
+    "url": "https://www.broadwayworld.com/feed_all_bway.php",
+    "mediaType": "article",
+    "itemSource": "BroadwayWorld",
+    "counties": [
+      "vermont/addison",
+      "pennsylvania/bucks"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "BroBible",
+    "url": "https://brobible.com/feed/",
+    "mediaType": "article",
+    "itemSource": "BroBible",
+    "counties": [
+      "mississippi/choctaw"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "BroBible (2)",
+    "url": "https://brobible.com/rss",
+    "mediaType": "article",
+    "itemSource": "BroBible",
+    "counties": [
+      "mississippi/choctaw"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Buckrail",
+    "url": "https://buckrail.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Buckrail",
+    "counties": [
+      "idaho/teton"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Buckrail (2)",
+    "url": "https://buckrail.com/rss",
+    "mediaType": "article",
+    "itemSource": "Buckrail",
+    "counties": [
+      "idaho/teton"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Business Facilities",
+    "url": "https://businessfacilities.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Business Facilities",
+    "counties": [
+      "missouri/montgomery",
+      "new-york/genesee",
+      "south-carolina/jasper",
+      "virginia/henrico",
+      "maryland/allegany",
+      "virginia/mecklenburg",
+      "florida/bay",
+      "georgia/harris",
+      "north-carolina/forsyth",
+      "south-carolina/richland",
+      "virginia/goochland"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Business Journal Daily",
+    "url": "https://businessjournaldaily.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Business Journal Daily",
+    "counties": [
+      "ohio/columbiana",
+      "ohio/trumbull",
+      "ohio/mahoning"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Business Journal Daily (2)",
+    "url": "https://businessjournaldaily.com/rss",
+    "mediaType": "article",
+    "itemSource": "Business Journal Daily",
+    "counties": [
+      "ohio/columbiana",
+      "ohio/trumbull",
+      "ohio/mahoning"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Business Observer",
+    "url": "https://businessobserverfl.com/rss/headlines/all/",
+    "mediaType": "article",
+    "itemSource": "Business Observer",
+    "counties": [
+      "florida/pinellas",
+      "florida/sarasota"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Carlsbad Current-Argus",
+    "url": "https://currentargus.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Carlsbad Current-Argus",
+    "counties": [
+      "new-mexico/eddy"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Carlsbad Current-Argus (2)",
+    "url": "https://currentargus.com/rss",
+    "mediaType": "article",
+    "itemSource": "Carlsbad Current-Argus",
+    "counties": [
+      "new-mexico/eddy"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Carson Now",
+    "url": "https://www.carsonnow.org/feed",
+    "mediaType": "article",
+    "itemSource": "Carson Now",
+    "counties": [
+      "nevada/storey"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Carson Now (2)",
+    "url": "https://carsonnow.org/feed/",
+    "mediaType": "article",
+    "itemSource": "Carson Now",
+    "counties": [
+      "nevada/storey"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Cascadia Daily News",
+    "url": "https://www.cascadiadaily.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Cascadia Daily News",
+    "counties": [
+      "washington/skagit",
+      "washington/whatcom"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Cascadia Daily News (2)",
+    "url": "https://cascadiadaily.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Cascadia Daily News",
+    "counties": [
+      "washington/skagit",
+      "washington/whatcom"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Cassville Democrat",
+    "url": "https://www.cassville-democrat.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Cassville Democrat",
+    "counties": [
+      "missouri/barry"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Cassville Democrat (2)",
+    "url": "https://cassville-democrat.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Cassville Democrat",
+    "counties": [
+      "missouri/barry"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Cat Country 107.3",
+    "url": "https://catcountry1073.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Cat Country 107.3",
+    "counties": [
+      "new-jersey/cumberland"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Cat Country 107.3 (2)",
+    "url": "https://catcountry1073.com/rss",
+    "mediaType": "article",
+    "itemSource": "Cat Country 107.3",
+    "counties": [
+      "new-jersey/cumberland"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "CBS 17",
+    "url": "https://cbs17.com/feed/",
+    "mediaType": "article",
+    "itemSource": "CBS 17",
+    "counties": [
+      "north-carolina/harnett",
+      "north-carolina/chatham",
+      "north-carolina/durham",
+      "north-carolina/johnston",
+      "north-carolina/wake"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "CBS 17 (2)",
+    "url": "https://cbs17.com/rss",
+    "mediaType": "article",
+    "itemSource": "CBS 17",
+    "counties": [
+      "north-carolina/harnett",
+      "north-carolina/chatham",
+      "north-carolina/durham",
+      "north-carolina/johnston",
+      "north-carolina/wake"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "CBS 42",
+    "url": "https://cbs42.com/feed/",
+    "mediaType": "article",
+    "itemSource": "CBS 42",
+    "counties": [
+      "alabama/clay",
+      "alabama/lee"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "CBS 42 (2)",
+    "url": "https://cbs42.com/rss",
+    "mediaType": "article",
+    "itemSource": "CBS 42",
+    "counties": [
+      "alabama/clay",
+      "alabama/lee"
     ],
     "trustedForCountyTier": false
   },
@@ -192,6 +2256,242 @@ export const discoveredRegionalSources: DirectSource[] = [
     "trustedForCountyTier": false
   },
   {
+    "name": "Central Jersey",
+    "url": "https://centraljersey.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Central Jersey",
+    "counties": [
+      "pennsylvania/somerset",
+      "ohio/shelby"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Chapelboro",
+    "url": "https://chapelboro.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Chapelboro",
+    "counties": [
+      "north-carolina/chatham"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Chatham Journal Newspaper",
+    "url": "https://chathamjournal.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Chatham Journal Newspaper",
+    "counties": [
+      "north-carolina/chatham"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Chatham Journal Newspaper (2)",
+    "url": "https://chathamjournal.com/rss",
+    "mediaType": "article",
+    "itemSource": "Chatham Journal Newspaper",
+    "counties": [
+      "north-carolina/chatham"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Chattanoogan",
+    "url": "https://chattanoogan.com/Breaking-News/feed",
+    "mediaType": "article",
+    "itemSource": "Chattanoogan",
+    "counties": [
+      "tennessee/bradley",
+      "tennessee/rhea",
+      "georgia/henry",
+      "tennessee/bledsoe",
+      "tennessee/hamilton",
+      "tennessee/meigs",
+      "tennessee/coffee"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Chicago Sun-Times",
+    "url": "https://chicago.suntimes.com/rss/index.xml",
+    "mediaType": "article",
+    "itemSource": "Chicago Sun-Times",
+    "counties": [
+      "illinois/lasalle",
+      "illinois/kankakee",
+      "minnesota/cook",
+      "wisconsin/door",
+      "illinois/sangamon",
+      "illinois/dupage",
+      "illinois/will"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Chicago Sun-Times (2)",
+    "url": "https://chicago.suntimes.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Chicago Sun-Times",
+    "counties": [
+      "illinois/lasalle",
+      "illinois/kankakee",
+      "minnesota/cook",
+      "wisconsin/door",
+      "illinois/sangamon",
+      "illinois/dupage",
+      "illinois/will"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Circle of Blue",
+    "url": "https://www.circleofblue.org/feed/",
+    "mediaType": "article",
+    "itemSource": "Circle of Blue",
+    "counties": [
+      "michigan/gratiot"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Circle of Blue (2)",
+    "url": "https://circleofblue.org/feed/",
+    "mediaType": "article",
+    "itemSource": "Circle of Blue",
+    "counties": [
+      "michigan/gratiot"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Civil Eats",
+    "url": "https://civileats.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Civil Eats",
+    "counties": [
+      "washington/skagit",
+      "tennessee/washington",
+      "arkansas/phillips"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Civil Eats (2)",
+    "url": "https://civileats.com/rss",
+    "mediaType": "article",
+    "itemSource": "Civil Eats",
+    "counties": [
+      "washington/skagit",
+      "tennessee/washington",
+      "arkansas/phillips"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Cjr",
+    "url": "https://cjr.org/feed/",
+    "mediaType": "article",
+    "itemSource": "Cjr",
+    "counties": [
+      "ohio/athens"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Cjr (2)",
+    "url": "https://cjr.org/rss",
+    "mediaType": "article",
+    "itemSource": "Cjr",
+    "counties": [
+      "ohio/athens"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Clackamas County",
+    "url": "https://clackamas.us/rss.xml",
+    "mediaType": "article",
+    "itemSource": "Clackamas County",
+    "counties": [
+      "oregon/clackamas"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Claiborne Progress",
+    "url": "https://claiborneprogress.net/feed/",
+    "mediaType": "article",
+    "itemSource": "Claiborne Progress",
+    "counties": [
+      "tennessee/campbell"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Claiborne Progress (2)",
+    "url": "https://claiborneprogress.net/rss",
+    "mediaType": "article",
+    "itemSource": "Claiborne Progress",
+    "counties": [
+      "tennessee/campbell"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Clarksville Online",
+    "url": "https://www.clarksvilleonline.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Clarksville Online",
+    "counties": [
+      "tennessee/montgomery",
+      "tennessee/humphreys"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Clarksville Online (2)",
+    "url": "https://clarksvilleonline.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Clarksville Online",
+    "counties": [
+      "tennessee/montgomery",
+      "tennessee/humphreys"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Cleveland",
+    "url": "https://cleveland.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "Cleveland",
+    "counties": [
+      "ohio/medina",
+      "ohio/lorain",
+      "ohio/geauga",
+      "ohio/trumbull",
+      "ohio/ashtabula",
+      "ohio/adams",
+      "ohio/wayne",
+      "ohio/erie",
+      "ohio/lake",
+      "ohio/portage",
+      "ohio/delaware",
+      "ohio/franklin",
+      "ohio/carroll",
+      "ohio/pike",
+      "ohio/summit",
+      "florida/charlotte",
+      "north-carolina/burke",
+      "ohio/williams",
+      "ohio/athens",
+      "ohio/darke",
+      "virginia/hampton",
+      "west-virginia/kanawha"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
     "name": "Click2Houston",
     "url": "https://click2houston.com/arc/outboundfeeds/rss/?outputType=xml",
     "mediaType": "article",
@@ -215,11 +2515,198 @@ export const discoveredRegionalSources: DirectSource[] = [
     "trustedForCountyTier": false
   },
   {
+    "name": "ClickOnDetroit",
+    "url": "https://clickondetroit.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "ClickOnDetroit",
+    "counties": [
+      "michigan/wexford",
+      "michigan/macomb",
+      "michigan/oakland",
+      "michigan/missaukee",
+      "michigan/newaygo",
+      "michigan/alpena",
+      "michigan/clinton",
+      "michigan/leelanau",
+      "michigan/washtenaw",
+      "michigan/huron",
+      "michigan/lenawee",
+      "michigan/marquette",
+      "michigan/monroe",
+      "michigan/osceola",
+      "colorado/san-juan",
+      "michigan/antrim",
+      "michigan/benzie",
+      "michigan/crawford",
+      "michigan/eaton",
+      "michigan/grand-traverse",
+      "michigan/luce",
+      "michigan/muskegon",
+      "ohio/monroe",
+      "michigan/genesee",
+      "michigan/ottawa"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "clintoncountydailynews",
+    "url": "https://clintoncountydailynews.com/feed/",
+    "mediaType": "article",
+    "itemSource": "clintoncountydailynews",
+    "counties": [
+      "kentucky/clark",
+      "indiana/clinton"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "clintoncountydailynews (2)",
+    "url": "https://clintoncountydailynews.com/rss",
+    "mediaType": "article",
+    "itemSource": "clintoncountydailynews",
+    "counties": [
+      "kentucky/clark",
+      "indiana/clinton"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "CNET",
+    "url": "https://www.cnet.com/rss/all/",
+    "mediaType": "article",
+    "itemSource": "CNET",
+    "counties": [
+      "louisiana/st-landry",
+      "oklahoma/kay",
+      "tennessee/montgomery"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "CNET (2)",
+    "url": "https://cnet.com/feed/",
+    "mediaType": "article",
+    "itemSource": "CNET",
+    "counties": [
+      "louisiana/st-landry",
+      "oklahoma/kay",
+      "tennessee/montgomery"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "CNYhomepage",
+    "url": "https://cnyhomepage.com/feed/",
+    "mediaType": "article",
+    "itemSource": "CNYhomepage",
+    "counties": [
+      "new-york/otsego"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "CNYhomepage (2)",
+    "url": "https://cnyhomepage.com/rss",
+    "mediaType": "article",
+    "itemSource": "CNYhomepage",
+    "counties": [
+      "new-york/otsego"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Coastal Review Online",
+    "url": "https://coastalreview.org/feed/",
+    "mediaType": "article",
+    "itemSource": "Coastal Review Online",
+    "counties": [
+      "north-carolina/camden",
+      "north-carolina/pasquotank"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Coastal Review Online (2)",
+    "url": "https://coastalreview.org/rss",
+    "mediaType": "article",
+    "itemSource": "Coastal Review Online",
+    "counties": [
+      "north-carolina/camden",
+      "north-carolina/pasquotank"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Cobb County Courier",
+    "url": "https://cobbcountycourier.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Cobb County Courier",
+    "counties": [
+      "georgia/cobb"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Cobb County Courier (2)",
+    "url": "https://cobbcountycourier.com/comments/feed/",
+    "mediaType": "article",
+    "itemSource": "Cobb County Courier",
+    "counties": [
+      "georgia/cobb"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Cointelegraph",
+    "url": "https://cointelegraph.com/rss",
+    "mediaType": "article",
+    "itemSource": "Cointelegraph",
+    "counties": [
+      "tennessee/hawkins"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Cointelegraph (2)",
+    "url": "https://cointelegraph.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Cointelegraph",
+    "counties": [
+      "tennessee/hawkins"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "College of Agriculture and Life Sciences",
+    "url": "https://cals.ncsu.edu/feed/",
+    "mediaType": "article",
+    "itemSource": "College of Agriculture and Life Sciences",
+    "counties": [
+      "north-carolina/person"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "College of Agriculture and Life Sciences (2)",
+    "url": "https://cals.ncsu.edu/rss",
+    "mediaType": "article",
+    "itemSource": "College of Agriculture and Life Sciences",
+    "counties": [
+      "north-carolina/person"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
     "name": "Colorado Politics",
     "url": "https://www.coloradopolitics.com/feed/",
     "mediaType": "article",
     "itemSource": "Colorado Politics",
     "counties": [
+      "colorado/arapahoe",
+      "colorado/park",
+      "colorado/weld",
+      "colorado/el-paso",
+      "colorado/mesa",
       "texas/el-paso"
     ],
     "trustedForCountyTier": false
@@ -230,7 +2717,33 @@ export const discoveredRegionalSources: DirectSource[] = [
     "mediaType": "article",
     "itemSource": "Colorado Politics",
     "counties": [
+      "colorado/arapahoe",
+      "colorado/park",
+      "colorado/weld",
+      "colorado/el-paso",
+      "colorado/mesa",
       "texas/el-paso"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Colorado Public Radio",
+    "url": "https://cpr.org/feed/",
+    "mediaType": "article",
+    "itemSource": "Colorado Public Radio",
+    "counties": [
+      "colorado/bent",
+      "new-mexico/colfax",
+      "colorado/gunnison",
+      "colorado/weld",
+      "colorado/adams",
+      "colorado/archuleta",
+      "colorado/jefferson",
+      "colorado/conejos",
+      "colorado/costilla",
+      "colorado/otero",
+      "colorado/pitkin",
+      "colorado/pueblo"
     ],
     "trustedForCountyTier": false
   },
@@ -281,6 +2794,136 @@ export const discoveredRegionalSources: DirectSource[] = [
     "trustedForCountyTier": false
   },
   {
+    "name": "Cond&#233; Nast Traveler",
+    "url": "https://www.cntraveler.com/feed/rss",
+    "mediaType": "article",
+    "itemSource": "Cond&#233; Nast Traveler",
+    "counties": [
+      "california/mono",
+      "california/plumas"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "conservativebrief",
+    "url": "https://conservativebrief.com/feed/",
+    "mediaType": "article",
+    "itemSource": "conservativebrief",
+    "counties": [
+      "georgia/gwinnett"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "conservativebrief (2)",
+    "url": "https://conservativebrief.com/rss",
+    "mediaType": "article",
+    "itemSource": "conservativebrief",
+    "counties": [
+      "georgia/gwinnett"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "CoolCleveland",
+    "url": "https://coolcleveland.com/feed/",
+    "mediaType": "article",
+    "itemSource": "CoolCleveland",
+    "counties": [
+      "ohio/geauga"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "CoolCleveland (2)",
+    "url": "https://coolcleveland.com/rss",
+    "mediaType": "article",
+    "itemSource": "CoolCleveland",
+    "counties": [
+      "ohio/geauga"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Correctional News",
+    "url": "https://correctionalnews.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Correctional News",
+    "counties": [
+      "washington/whatcom",
+      "illinois/lake",
+      "kansas/shawnee",
+      "california/santa-clara"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Correctional News (2)",
+    "url": "https://correctionalnews.com/rss",
+    "mediaType": "article",
+    "itemSource": "Correctional News",
+    "counties": [
+      "washington/whatcom",
+      "illinois/lake",
+      "kansas/shawnee",
+      "california/santa-clara"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "County 17",
+    "url": "https://county17.com/feed/",
+    "mediaType": "article",
+    "itemSource": "County 17",
+    "counties": [
+      "wyoming/campbell"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "County 17 (2)",
+    "url": "https://county17.com/rss",
+    "mediaType": "article",
+    "itemSource": "County 17",
+    "counties": [
+      "wyoming/campbell"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Cowboy State Daily",
+    "url": "https://cowboystatedaily.com/rss.xml",
+    "mediaType": "article",
+    "itemSource": "Cowboy State Daily",
+    "counties": [
+      "wyoming/big-horn",
+      "wyoming/hot-springs",
+      "wyoming/natrona",
+      "wyoming/laramie"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "crawfordcountynow",
+    "url": "https://crawfordcountynow.com/rss.xml",
+    "mediaType": "article",
+    "itemSource": "crawfordcountynow",
+    "counties": [
+      "ohio/crawford"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "crawfordcountynow (2)",
+    "url": "https://crawfordcountynow.com/local/feed/",
+    "mediaType": "article",
+    "itemSource": "crawfordcountynow",
+    "counties": [
+      "ohio/crawford"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
     "name": "Crooks and Liars",
     "url": "https://crooksandliars.com/feeds/latest",
     "mediaType": "article",
@@ -301,6 +2944,48 @@ export const discoveredRegionalSources: DirectSource[] = [
     "trustedForCountyTier": false
   },
   {
+    "name": "Crypto Briefing",
+    "url": "https://cryptobriefing.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Crypto Briefing",
+    "counties": [
+      "georgia/columbia"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Crypto Briefing (2)",
+    "url": "https://cryptobriefing.com/news/feed/",
+    "mediaType": "article",
+    "itemSource": "Crypto Briefing",
+    "counties": [
+      "georgia/columbia"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Cryptopolitan",
+    "url": "https://cryptopolitan.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Cryptopolitan",
+    "counties": [
+      "georgia/cobb",
+      "georgia/marion"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Cryptopolitan (2)",
+    "url": "https://cryptopolitan.com/news/feed/",
+    "mediaType": "article",
+    "itemSource": "Cryptopolitan",
+    "counties": [
+      "georgia/cobb",
+      "georgia/marion"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
     "name": "CW39 Houston",
     "url": "https://cw39.com/feed/",
     "mediaType": "article",
@@ -313,12 +2998,447 @@ export const discoveredRegionalSources: DirectSource[] = [
   },
   {
     "name": "CW39 Houston (2)",
-    "url": "https://cw39.com/comments/feed/",
+    "url": "https://cw39.com/rss",
     "mediaType": "article",
     "itemSource": "CW39 Houston",
     "counties": [
       "texas/hardin",
       "texas/jack"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Dailyyonder",
+    "url": "https://dailyyonder.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Dailyyonder",
+    "counties": [
+      "colorado/montezuma",
+      "tennessee/mcnairy",
+      "texas/starr",
+      "kentucky/martin",
+      "maine/franklin",
+      "north-carolina/martin",
+      "south-dakota/roberts",
+      "washington/okanogan"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Dailyyonder (2)",
+    "url": "https://dailyyonder.com/comments/feed/",
+    "mediaType": "article",
+    "itemSource": "Dailyyonder",
+    "counties": [
+      "colorado/montezuma",
+      "tennessee/mcnairy",
+      "texas/starr",
+      "kentucky/martin",
+      "maine/franklin",
+      "north-carolina/martin",
+      "south-dakota/roberts",
+      "washington/okanogan"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Danvillesanramon",
+    "url": "https://www.danvillesanramon.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Danvillesanramon",
+    "counties": [
+      "california/alameda"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Danvillesanramon (2)",
+    "url": "https://www.danvillesanramon.com/comments/feed/",
+    "mediaType": "article",
+    "itemSource": "Danvillesanramon",
+    "counties": [
+      "california/alameda"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Darkhorse Press",
+    "url": "https://darkhorsepressnow.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Darkhorse Press",
+    "counties": [
+      "mississippi/leflore",
+      "kentucky/lee",
+      "mississippi/claiborne",
+      "washington/adams"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Darkhorse Press (2)",
+    "url": "https://darkhorsepressnow.com/rss",
+    "mediaType": "article",
+    "itemSource": "Darkhorse Press",
+    "counties": [
+      "mississippi/leflore",
+      "kentucky/lee",
+      "mississippi/claiborne",
+      "washington/adams"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Defense News",
+    "url": "https://defensenews.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "Defense News",
+    "counties": [
+      "tennessee/hickman",
+      "virginia/orange"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Deming Headlight",
+    "url": "https://demingheadlight.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Deming Headlight",
+    "counties": [
+      "new-mexico/luna"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Deming Headlight (2)",
+    "url": "https://demingheadlight.com/?feed=rss2",
+    "mediaType": "article",
+    "itemSource": "Deming Headlight",
+    "counties": [
+      "new-mexico/luna"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Den Of Geek",
+    "url": "https://www.denofgeek.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Den Of Geek",
+    "counties": [
+      "california/yuba"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Den Of Geek (2)",
+    "url": "https://denofgeek.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Den Of Geek",
+    "counties": [
+      "california/yuba"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Denver7",
+    "url": "https://www.denver7.com/index.rss",
+    "mediaType": "article",
+    "itemSource": "Denver7",
+    "counties": [
+      "colorado/adams",
+      "colorado/jefferson"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Deseret News",
+    "url": "https://www.deseret.com/rss/latest.rss",
+    "mediaType": "article",
+    "itemSource": "Deseret News",
+    "counties": [
+      "utah/emery",
+      "utah/tooele",
+      "utah/millard",
+      "montana/petroleum",
+      "utah/utah"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Deseret News (2)",
+    "url": "https://deseret.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "Deseret News",
+    "counties": [
+      "utah/emery",
+      "utah/tooele",
+      "utah/millard",
+      "montana/petroleum",
+      "utah/utah"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "DRGNews",
+    "url": "https://drgnews.com/feed/",
+    "mediaType": "article",
+    "itemSource": "DRGNews",
+    "counties": [
+      "south-dakota/stanley"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "DRGNews (2)",
+    "url": "https://drgnews.com/rss",
+    "mediaType": "article",
+    "itemSource": "DRGNews",
+    "counties": [
+      "south-dakota/stanley"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Drinks",
+    "url": "https://www.just-drinks.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Drinks",
+    "counties": [
+      "kentucky/garrard"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Drinks (2)",
+    "url": "https://just-drinks.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Drinks",
+    "counties": [
+      "kentucky/garrard"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Dubois County Free Press",
+    "url": "https://duboiscountyfreepress.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Dubois County Free Press",
+    "counties": [
+      "indiana/dubois"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Dubois County Free Press (2)",
+    "url": "https://duboiscountyfreepress.com/rss",
+    "mediaType": "article",
+    "itemSource": "Dubois County Free Press",
+    "counties": [
+      "indiana/dubois"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Duluth News Tribune",
+    "url": "https://www.duluthnewstribune.com/index.rss",
+    "mediaType": "article",
+    "itemSource": "Duluth News Tribune",
+    "counties": [
+      "minnesota/crow-wing",
+      "minnesota/cook"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "E!",
+    "url": "https://eonline.com/feed/",
+    "mediaType": "article",
+    "itemSource": "E!",
+    "counties": [
+      "arizona/pima",
+      "ohio/pike",
+      "arkansas/washington"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "E! (2)",
+    "url": "https://eonline.com/rss",
+    "mediaType": "article",
+    "itemSource": "E!",
+    "counties": [
+      "arizona/pima",
+      "ohio/pike",
+      "arkansas/washington"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "East Oregonian",
+    "url": "https://eastoregonian.com/feed/",
+    "mediaType": "article",
+    "itemSource": "East Oregonian",
+    "counties": [
+      "oregon/union",
+      "oregon/wallowa",
+      "oregon/grant"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "East Oregonian (2)",
+    "url": "https://eastoregonian.com/rss",
+    "mediaType": "article",
+    "itemSource": "East Oregonian",
+    "counties": [
+      "oregon/union",
+      "oregon/wallowa",
+      "oregon/grant"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Ecoportal",
+    "url": "https://www.ecoportal.net/feed/",
+    "mediaType": "article",
+    "itemSource": "Ecoportal",
+    "counties": [
+      "new-york/madison",
+      "texas/fort-bend",
+      "ohio/madison",
+      "oregon/klamath"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Ecoportal (2)",
+    "url": "https://www.ecoportal.net/en/feed/",
+    "mediaType": "article",
+    "itemSource": "Ecoportal",
+    "counties": [
+      "new-york/madison",
+      "texas/fort-bend",
+      "ohio/madison",
+      "oregon/klamath"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Edgar County Watchdogs",
+    "url": "https://edgarcountywatchdogs.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Edgar County Watchdogs",
+    "counties": [
+      "illinois/whiteside"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Edgar County Watchdogs (2)",
+    "url": "https://edgarcountywatchdogs.com/comments/feed/",
+    "mediaType": "article",
+    "itemSource": "Edgar County Watchdogs",
+    "counties": [
+      "illinois/whiteside"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "EdSource",
+    "url": "https://edsource.org/feed/",
+    "mediaType": "article",
+    "itemSource": "EdSource",
+    "counties": [
+      "california/marin"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Effingham Radio",
+    "url": "https://effinghamradio.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Effingham Radio",
+    "counties": [
+      "illinois/douglas"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Effingham Radio (2)",
+    "url": "https://effinghamradio.com/rss",
+    "mediaType": "article",
+    "itemSource": "Effingham Radio",
+    "counties": [
+      "illinois/douglas"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Electrek",
+    "url": "https://electrek.co/feed/",
+    "mediaType": "article",
+    "itemSource": "Electrek",
+    "counties": [
+      "arkansas/cross",
+      "kentucky/clay",
+      "utah/emery",
+      "georgia/bartow",
+      "texas/swisher",
+      "indiana/lake"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Electrek (2)",
+    "url": "https://electrek.co/rss",
+    "mediaType": "article",
+    "itemSource": "Electrek",
+    "counties": [
+      "arkansas/cross",
+      "kentucky/clay",
+      "utah/emery",
+      "georgia/bartow",
+      "texas/swisher",
+      "indiana/lake"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Elkhorn Media Group",
+    "url": "https://elkhornmediagroup.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Elkhorn Media Group",
+    "counties": [
+      "oregon/deschutes"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Elkhorn Media Group (2)",
+    "url": "https://elkhornmediagroup.com/rss",
+    "mediaType": "article",
+    "itemSource": "Elkhorn Media Group",
+    "counties": [
+      "oregon/deschutes"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "EURweb",
+    "url": "https://eurweb.com/feed/",
+    "mediaType": "article",
+    "itemSource": "EURweb",
+    "counties": [
+      "georgia/lee"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "EURweb (2)",
+    "url": "https://eurweb.com/rss",
+    "mediaType": "article",
+    "itemSource": "EURweb",
+    "counties": [
+      "georgia/lee"
     ],
     "trustedForCountyTier": false
   },
@@ -345,6 +3465,559 @@ export const discoveredRegionalSources: DirectSource[] = [
     "trustedForCountyTier": false
   },
   {
+    "name": "Fairmont Sentinel",
+    "url": "https://fairmontsentinel.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Fairmont Sentinel",
+    "counties": [
+      "minnesota/martin"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Fairmont Sentinel (2)",
+    "url": "https://fairmontsentinel.com/rss",
+    "mediaType": "article",
+    "itemSource": "Fairmont Sentinel",
+    "counties": [
+      "minnesota/martin"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Falls Church News-Press",
+    "url": "https://www.fcnp.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Falls Church News-Press",
+    "counties": [
+      "virginia/falls-church"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Falls Church News-Press (2)",
+    "url": "https://fcnp.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Falls Church News-Press",
+    "counties": [
+      "virginia/falls-church"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Farm and Dairy",
+    "url": "https://www.farmanddairy.com/feed",
+    "mediaType": "article",
+    "itemSource": "Farm and Dairy",
+    "counties": [
+      "ohio/lorain",
+      "pennsylvania/indiana",
+      "ohio/portage"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Farm and Dairy (2)",
+    "url": "https://www.farmanddairy.com/comments/feed",
+    "mediaType": "article",
+    "itemSource": "Farm and Dairy",
+    "counties": [
+      "ohio/lorain",
+      "pennsylvania/indiana",
+      "ohio/portage"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Farm Progress",
+    "url": "https://farmprogress.com/rss.xml",
+    "mediaType": "article",
+    "itemSource": "Farm Progress",
+    "counties": [
+      "ohio/seneca"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Fast Company",
+    "url": "https://fastcompany.com/rss",
+    "mediaType": "article",
+    "itemSource": "Fast Company",
+    "counties": [
+      "oregon/deschutes",
+      "texas/pecos"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Fast Company (2)",
+    "url": "https://fastcompany.com/rss.xml",
+    "mediaType": "article",
+    "itemSource": "Fast Company",
+    "counties": [
+      "oregon/deschutes",
+      "texas/pecos"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Fergus Falls Journal",
+    "url": "https://www.fergusfallsjournal.com/index.rss",
+    "mediaType": "article",
+    "itemSource": "Fergus Falls Journal",
+    "counties": [
+      "minnesota/otter-tail"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Finance & Commerce",
+    "url": "https://finance-commerce.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Finance & Commerce",
+    "counties": [
+      "wisconsin/columbia"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Finance & Commerce (2)",
+    "url": "https://finance-commerce.com/rss",
+    "mediaType": "article",
+    "itemSource": "Finance & Commerce",
+    "counties": [
+      "wisconsin/columbia"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Financial Post",
+    "url": "https://financialpost.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Financial Post",
+    "counties": [
+      "indiana/marion",
+      "washington/clark",
+      "oregon/malheur",
+      "virginia/goochland",
+      "virginia/new-kent"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Financial Post (2)",
+    "url": "https://financialpost.com/rss",
+    "mediaType": "article",
+    "itemSource": "Financial Post",
+    "counties": [
+      "indiana/marion",
+      "washington/clark",
+      "oregon/malheur",
+      "virginia/goochland",
+      "virginia/new-kent"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Finanznachrichten",
+    "url": "https://www.finanznachrichten.de/rss-aktien-nachrichten/",
+    "mediaType": "article",
+    "itemSource": "Finanznachrichten",
+    "counties": [
+      "new-jersey/essex",
+      "florida/liberty",
+      "oregon/malheur",
+      "north-carolina/craven"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Finanznachrichten (2)",
+    "url": "https://www.finanznachrichten.de/rss-aktien-analysen/",
+    "mediaType": "article",
+    "itemSource": "Finanznachrichten",
+    "counties": [
+      "new-jersey/essex",
+      "florida/liberty",
+      "oregon/malheur",
+      "north-carolina/craven"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Fingerlakes1",
+    "url": "https://www.fingerlakes1.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Fingerlakes1",
+    "counties": [
+      "new-york/seneca",
+      "new-york/rensselaer",
+      "new-york/ontario",
+      "new-york/cayuga",
+      "new-york/yates",
+      "new-york/suffolk",
+      "west-virginia/harrison",
+      "new-york/broome"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Fingerlakes1 (2)",
+    "url": "https://fingerlakes1.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Fingerlakes1",
+    "counties": [
+      "new-york/seneca",
+      "new-york/rensselaer",
+      "new-york/ontario",
+      "new-york/cayuga",
+      "new-york/yates",
+      "new-york/suffolk",
+      "west-virginia/harrison",
+      "new-york/broome"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Firehouse",
+    "url": "https://firehouse.com/__rss/website-scheduled-content.xml?input=%7B%22sectionAlias%22%3A%22home%22%7D",
+    "mediaType": "article",
+    "itemSource": "Firehouse",
+    "counties": [
+      "georgia/rockdale",
+      "kentucky/johnson",
+      "pennsylvania/forest"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "First Coast News",
+    "url": "https://www.firstcoastnews.com/feeds/syndication/rss/news",
+    "mediaType": "article",
+    "itemSource": "First Coast News",
+    "counties": [
+      "florida/bradford",
+      "florida/baker",
+      "georgia/camden",
+      "florida/nassau",
+      "georgia/atkinson",
+      "georgia/baker",
+      "georgia/mcintosh",
+      "georgia/glynn",
+      "georgia/ware",
+      "florida/union",
+      "georgia/brantley"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "First Coast News (2)",
+    "url": "https://firstcoastnews.com/feeds/syndication/rss/news",
+    "mediaType": "article",
+    "itemSource": "First Coast News",
+    "counties": [
+      "florida/bradford",
+      "florida/baker",
+      "georgia/camden",
+      "florida/nassau",
+      "georgia/atkinson",
+      "georgia/baker",
+      "georgia/mcintosh",
+      "georgia/glynn",
+      "georgia/ware",
+      "florida/union",
+      "georgia/brantley"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "FITSNews",
+    "url": "https://www.fitsnews.com/feed/",
+    "mediaType": "article",
+    "itemSource": "FITSNews",
+    "counties": [
+      "south-carolina/dorchester",
+      "south-carolina/georgetown",
+      "south-carolina/spartanburg"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "FITSNews (2)",
+    "url": "https://www.fitsnews.com/comments/feed/",
+    "mediaType": "article",
+    "itemSource": "FITSNews",
+    "counties": [
+      "south-carolina/dorchester",
+      "south-carolina/georgetown",
+      "south-carolina/spartanburg"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "FlaglerLive",
+    "url": "https://flaglerlive.com/feed/",
+    "mediaType": "article",
+    "itemSource": "FlaglerLive",
+    "counties": [
+      "florida/flagler"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "FlaglerLive (2)",
+    "url": "https://flaglerlive.com/comments/feed/",
+    "mediaType": "article",
+    "itemSource": "FlaglerLive",
+    "counties": [
+      "florida/flagler"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Florida Politics",
+    "url": "https://floridapolitics.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Florida Politics",
+    "counties": [
+      "florida/citrus",
+      "florida/leon",
+      "florida/putnam",
+      "florida/hernando"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Florida Politics (2)",
+    "url": "https://floridapolitics.com/comments/feed/",
+    "mediaType": "article",
+    "itemSource": "Florida Politics",
+    "counties": [
+      "florida/citrus",
+      "florida/leon",
+      "florida/putnam",
+      "florida/hernando"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Florida Trend",
+    "url": "https://floridatrend.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "Florida Trend",
+    "counties": [
+      "florida/taylor",
+      "florida/baker"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Flying",
+    "url": "https://flyingmag.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Flying",
+    "counties": [
+      "virginia/manassas",
+      "illinois/crawford",
+      "north-carolina/hyde",
+      "wyoming/big-horn"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Flying (2)",
+    "url": "https://flyingmag.com/rss",
+    "mediaType": "article",
+    "itemSource": "Flying",
+    "counties": [
+      "virginia/manassas",
+      "illinois/crawford",
+      "north-carolina/hyde",
+      "wyoming/big-horn"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Food Safety News",
+    "url": "https://www.foodsafetynews.com/rss/",
+    "mediaType": "article",
+    "itemSource": "Food Safety News",
+    "counties": [
+      "california/los-angeles",
+      "kentucky/hopkins",
+      "new-york/suffolk"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Food Safety News (2)",
+    "url": "https://foodsafetynews.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Food Safety News",
+    "counties": [
+      "california/los-angeles",
+      "kentucky/hopkins",
+      "new-york/suffolk"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Fort Scott Tribune",
+    "url": "https://fstribune.com/rss.xml",
+    "mediaType": "article",
+    "itemSource": "Fort Scott Tribune",
+    "counties": [
+      "kansas/bourbon"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Fourstateshomepage",
+    "url": "https://fourstateshomepage.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Fourstateshomepage",
+    "counties": [
+      "oklahoma/ottawa",
+      "missouri/lawrence",
+      "oklahoma/delaware",
+      "kansas/labette"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Fourstateshomepage (2)",
+    "url": "https://fourstateshomepage.com/rss",
+    "mediaType": "article",
+    "itemSource": "Fourstateshomepage",
+    "counties": [
+      "oklahoma/ottawa",
+      "missouri/lawrence",
+      "oklahoma/delaware",
+      "kansas/labette"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "FOX 10 Phoenix",
+    "url": "https://www.fox10phoenix.com/rss.xml",
+    "mediaType": "article",
+    "itemSource": "FOX 10 Phoenix",
+    "counties": [
+      "arizona/gila",
+      "arizona/cochise",
+      "arizona/apache",
+      "arizona/mohave",
+      "arizona/la-paz",
+      "arizona/pinal",
+      "arizona/maricopa",
+      "arizona/yavapai",
+      "arizona/coconino",
+      "arizona/navajo",
+      "arizona/yuma"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "FOX 10 Phoenix (2)",
+    "url": "https://www.fox10phoenix.com/rss/category/news",
+    "mediaType": "article",
+    "itemSource": "FOX 10 Phoenix",
+    "counties": [
+      "arizona/gila",
+      "arizona/cochise",
+      "arizona/apache",
+      "arizona/mohave",
+      "arizona/la-paz",
+      "arizona/pinal",
+      "arizona/maricopa",
+      "arizona/yavapai",
+      "arizona/coconino",
+      "arizona/navajo",
+      "arizona/yuma"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Fox 12 Oregon",
+    "url": "https://kptv.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "Fox 12 Oregon",
+    "counties": [
+      "oregon/linn",
+      "oregon/wasco",
+      "alabama/colbert"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "FOX 13 Utah",
+    "url": "https://www.fox13now.com/index.rss",
+    "mediaType": "article",
+    "itemSource": "FOX 13 Utah",
+    "counties": [
+      "utah/tooele",
+      "utah/emery",
+      "utah/juab",
+      "utah/wasatch",
+      "utah/millard",
+      "utah/davis",
+      "utah/washington",
+      "utah/box-elder",
+      "utah/iron",
+      "utah/piute",
+      "utah/utah",
+      "utah/weber",
+      "kentucky/bourbon",
+      "utah/beaver",
+      "utah/cache",
+      "utah/uintah",
+      "nevada/elko",
+      "utah/carbon",
+      "utah/kane",
+      "utah/sevier",
+      "utah/san-juan",
+      "wyoming/fremont",
+      "utah/sanpete"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "FOX 17",
+    "url": "https://www.fox17online.com/index.rss",
+    "mediaType": "article",
+    "itemSource": "FOX 17",
+    "counties": [
+      "michigan/calhoun",
+      "michigan/ottawa",
+      "michigan/kalamazoo",
+      "michigan/newaygo",
+      "michigan/montcalm"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "FOX 29 News Philadelphia",
+    "url": "https://www.fox29.com/rss.xml",
+    "mediaType": "article",
+    "itemSource": "FOX 29 News Philadelphia",
+    "counties": [
+      "pennsylvania/centre",
+      "new-jersey/atlantic"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "FOX 29 News Philadelphia (2)",
+    "url": "https://www.fox29.com/rss/category/news",
+    "mediaType": "article",
+    "itemSource": "FOX 29 News Philadelphia",
+    "counties": [
+      "pennsylvania/centre",
+      "new-jersey/atlantic"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
     "name": "FOX 4 News Dallas-Fort Worth",
     "url": "https://www.fox4news.com/rss.xml",
     "mediaType": "article",
@@ -363,6 +4036,152 @@ export const discoveredRegionalSources: DirectSource[] = [
     "counties": [
       "texas/travis",
       "texas/van-zandt"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "FOX 5 Atlanta",
+    "url": "https://www.fox5atlanta.com/rss.xml",
+    "mediaType": "article",
+    "itemSource": "FOX 5 Atlanta",
+    "counties": [
+      "georgia/cobb",
+      "georgia/coweta",
+      "georgia/fannin",
+      "georgia/butts",
+      "georgia/upson",
+      "georgia/bartow",
+      "georgia/forsyth",
+      "georgia/rockdale",
+      "georgia/newton",
+      "georgia/towns",
+      "georgia/whitfield",
+      "illinois/dekalb",
+      "georgia/crisp",
+      "georgia/mcintosh",
+      "georgia/meriwether",
+      "alabama/dekalb",
+      "georgia/clarke",
+      "georgia/douglas",
+      "georgia/fayette",
+      "georgia/gordon",
+      "georgia/hall",
+      "georgia/haralson",
+      "georgia/troup",
+      "georgia/ware",
+      "georgia/washington",
+      "georgia/banks",
+      "georgia/dekalb",
+      "georgia/habersham",
+      "georgia/pickens",
+      "georgia/walton",
+      "idaho/shoshone",
+      "florida/desoto",
+      "florida/franklin",
+      "georgia/bryan",
+      "georgia/camden",
+      "georgia/carroll",
+      "georgia/clayton",
+      "georgia/dawson",
+      "georgia/gilmer",
+      "georgia/glynn"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "FOX 5 Atlanta (2)",
+    "url": "https://www.fox5atlanta.com/rss/category/news",
+    "mediaType": "article",
+    "itemSource": "FOX 5 Atlanta",
+    "counties": [
+      "georgia/cobb",
+      "georgia/coweta",
+      "georgia/fannin",
+      "georgia/butts",
+      "georgia/upson",
+      "georgia/bartow",
+      "georgia/forsyth",
+      "georgia/rockdale",
+      "georgia/newton",
+      "georgia/towns",
+      "georgia/whitfield",
+      "illinois/dekalb",
+      "georgia/crisp",
+      "georgia/mcintosh",
+      "georgia/meriwether",
+      "alabama/dekalb",
+      "georgia/clarke",
+      "georgia/douglas",
+      "georgia/fayette",
+      "georgia/gordon",
+      "georgia/hall",
+      "georgia/haralson",
+      "georgia/troup",
+      "georgia/ware",
+      "georgia/washington",
+      "georgia/banks",
+      "georgia/dekalb",
+      "georgia/habersham",
+      "georgia/pickens",
+      "georgia/walton",
+      "idaho/shoshone",
+      "florida/desoto",
+      "florida/franklin",
+      "georgia/bryan",
+      "georgia/camden",
+      "georgia/carroll",
+      "georgia/clayton",
+      "georgia/dawson",
+      "georgia/gilmer",
+      "georgia/glynn"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "FOX 5 DC",
+    "url": "https://www.fox5dc.com/rss.xml",
+    "mediaType": "article",
+    "itemSource": "FOX 5 DC",
+    "counties": [
+      "virginia/fairfax",
+      "virginia/fauquier",
+      "virginia/loudoun",
+      "virginia/manassas"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "FOX 5 DC (2)",
+    "url": "https://www.fox5dc.com/rss/category/news",
+    "mediaType": "article",
+    "itemSource": "FOX 5 DC",
+    "counties": [
+      "virginia/fairfax",
+      "virginia/fauquier",
+      "virginia/loudoun",
+      "virginia/manassas"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Fox 5 San Diego",
+    "url": "https://fox5sandiego.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Fox 5 San Diego",
+    "counties": [
+      "california/san-diego",
+      "california/imperial"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Fox 5 San Diego (2)",
+    "url": "https://fox5sandiego.com/rss",
+    "mediaType": "article",
+    "itemSource": "Fox 5 San Diego",
+    "counties": [
+      "california/san-diego",
+      "california/imperial"
     ],
     "trustedForCountyTier": false
   },
@@ -389,13 +4208,96 @@ export const discoveredRegionalSources: DirectSource[] = [
     "trustedForCountyTier": false
   },
   {
+    "name": "FOX 8 News",
+    "url": "https://fox8.com/feed/",
+    "mediaType": "article",
+    "itemSource": "FOX 8 News",
+    "counties": [
+      "ohio/geauga",
+      "ohio/ashland",
+      "ohio/sandusky",
+      "ohio/trumbull",
+      "ohio/ashtabula",
+      "ohio/portage",
+      "ohio/vinton",
+      "ohio/lucas",
+      "ohio/holmes",
+      "ohio/mahoning",
+      "ohio/medina",
+      "ohio/mercer",
+      "ohio/stark",
+      "ohio/tuscarawas",
+      "washington/adams",
+      "ohio/miami",
+      "ohio/ottawa",
+      "ohio/summit"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "FOX 8 News (2)",
+    "url": "https://fox8.com/rss",
+    "mediaType": "article",
+    "itemSource": "FOX 8 News",
+    "counties": [
+      "ohio/geauga",
+      "ohio/ashland",
+      "ohio/sandusky",
+      "ohio/trumbull",
+      "ohio/ashtabula",
+      "ohio/portage",
+      "ohio/vinton",
+      "ohio/lucas",
+      "ohio/holmes",
+      "ohio/mahoning",
+      "ohio/medina",
+      "ohio/mercer",
+      "ohio/stark",
+      "ohio/tuscarawas",
+      "washington/adams",
+      "ohio/miami",
+      "ohio/ottawa",
+      "ohio/summit"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "FOX 9 Minneapolis-St. Paul",
+    "url": "https://www.fox9.com/rss.xml",
+    "mediaType": "article",
+    "itemSource": "FOX 9 Minneapolis-St. Paul",
+    "counties": [
+      "minnesota/meeker",
+      "minnesota/anoka"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "FOX 9 Minneapolis-St. Paul (2)",
+    "url": "https://www.fox9.com/rss/category/news",
+    "mediaType": "article",
+    "itemSource": "FOX 9 Minneapolis-St. Paul",
+    "counties": [
+      "minnesota/meeker",
+      "minnesota/anoka"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
     "name": "Fox Business Network",
     "url": "https://moxie.foxbusiness.com/google-publisher/latest.xml",
     "mediaType": "article",
     "itemSource": "Fox Business Network",
     "counties": [
+      "california/marin",
+      "new-jersey/passaic",
+      "north-carolina/martin",
+      "new-jersey/hudson",
       "texas/armstrong",
-      "texas/cameron"
+      "california/santa-cruz",
+      "virginia/henrico",
+      "texas/cameron",
+      "delaware/sussex"
     ],
     "trustedForCountyTier": false
   },
@@ -405,8 +4307,50 @@ export const discoveredRegionalSources: DirectSource[] = [
     "mediaType": "article",
     "itemSource": "Fox Business Network",
     "counties": [
+      "california/marin",
+      "new-jersey/passaic",
+      "north-carolina/martin",
+      "new-jersey/hudson",
       "texas/armstrong",
-      "texas/cameron"
+      "california/santa-cruz",
+      "virginia/henrico",
+      "texas/cameron",
+      "delaware/sussex"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Fox Carolina News",
+    "url": "https://foxcarolina.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "Fox Carolina News",
+    "counties": [
+      "south-carolina/pickens",
+      "georgia/franklin",
+      "south-carolina/orangeburg",
+      "south-carolina/cherokee",
+      "texas/anderson",
+      "georgia/hart",
+      "north-carolina/henderson",
+      "north-carolina/yancey",
+      "south-carolina/anderson",
+      "south-carolina/greenville",
+      "south-carolina/spartanburg",
+      "south-carolina/greenwood"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "FOX10 News",
+    "url": "https://fox10tv.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "FOX10 News",
+    "counties": [
+      "alabama/baldwin",
+      "alabama/monroe",
+      "florida/walton",
+      "alabama/mobile",
+      "florida/escambia"
     ],
     "trustedForCountyTier": false
   },
@@ -416,7 +4360,9 @@ export const discoveredRegionalSources: DirectSource[] = [
     "mediaType": "article",
     "itemSource": "FOX21 News Colorado",
     "counties": [
-      "texas/starr"
+      "colorado/el-paso",
+      "texas/starr",
+      "colorado/pueblo"
     ],
     "trustedForCountyTier": false
   },
@@ -426,7 +4372,221 @@ export const discoveredRegionalSources: DirectSource[] = [
     "mediaType": "article",
     "itemSource": "FOX21 News Colorado",
     "counties": [
-      "texas/starr"
+      "colorado/el-paso",
+      "texas/starr",
+      "colorado/pueblo"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Fox2Now",
+    "url": "https://fox2now.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Fox2Now",
+    "counties": [
+      "missouri/lincoln",
+      "missouri/jefferson",
+      "illinois/macoupin",
+      "missouri/franklin",
+      "missouri/pike",
+      "illinois/jefferson",
+      "missouri/ray",
+      "illinois/clinton",
+      "illinois/washington",
+      "missouri/iron",
+      "missouri/montgomery",
+      "illinois/greene",
+      "illinois/jersey",
+      "illinois/madison",
+      "illinois/monroe",
+      "missouri/boone",
+      "missouri/gasconade",
+      "missouri/hickory",
+      "missouri/madison",
+      "missouri/morgan",
+      "missouri/pulaski",
+      "missouri/reynolds",
+      "missouri/warren",
+      "illinois/saline",
+      "missouri/laclede",
+      "missouri/lawrence",
+      "missouri/pemiscot"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Fox2Now (2)",
+    "url": "https://fox2now.com/rss",
+    "mediaType": "article",
+    "itemSource": "Fox2Now",
+    "counties": [
+      "missouri/lincoln",
+      "missouri/jefferson",
+      "illinois/macoupin",
+      "missouri/franklin",
+      "missouri/pike",
+      "illinois/jefferson",
+      "missouri/ray",
+      "illinois/clinton",
+      "illinois/washington",
+      "missouri/iron",
+      "missouri/montgomery",
+      "illinois/greene",
+      "illinois/jersey",
+      "illinois/madison",
+      "illinois/monroe",
+      "missouri/boone",
+      "missouri/gasconade",
+      "missouri/hickory",
+      "missouri/madison",
+      "missouri/morgan",
+      "missouri/pulaski",
+      "missouri/reynolds",
+      "missouri/warren",
+      "illinois/saline",
+      "missouri/laclede",
+      "missouri/lawrence",
+      "missouri/pemiscot"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "FOX31 Denver",
+    "url": "https://kdvr.com/feed/",
+    "mediaType": "article",
+    "itemSource": "FOX31 Denver",
+    "counties": [
+      "colorado/arapahoe",
+      "wyoming/albany",
+      "colorado/moffat",
+      "colorado/adams",
+      "colorado/broomfield",
+      "colorado/elbert",
+      "colorado/douglas",
+      "colorado/rio-blanco"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "FOX31 Denver (2)",
+    "url": "https://kdvr.com/rss",
+    "mediaType": "article",
+    "itemSource": "FOX31 Denver",
+    "counties": [
+      "colorado/arapahoe",
+      "wyoming/albany",
+      "colorado/moffat",
+      "colorado/adams",
+      "colorado/broomfield",
+      "colorado/elbert",
+      "colorado/douglas",
+      "colorado/rio-blanco"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "FOX40 News",
+    "url": "https://fox40.com/feed/",
+    "mediaType": "article",
+    "itemSource": "FOX40 News",
+    "counties": [
+      "california/yuba",
+      "california/stanislaus",
+      "california/placer",
+      "california/colusa",
+      "california/sacramento",
+      "california/sutter",
+      "missouri/randolph",
+      "nevada/washoe",
+      "california/san-joaquin"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "FOX40 News (2)",
+    "url": "https://fox40.com/rss",
+    "mediaType": "article",
+    "itemSource": "FOX40 News",
+    "counties": [
+      "california/yuba",
+      "california/stanislaus",
+      "california/placer",
+      "california/colusa",
+      "california/sacramento",
+      "california/sutter",
+      "missouri/randolph",
+      "nevada/washoe",
+      "california/san-joaquin"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "FOX4KC WDAF-TV",
+    "url": "https://fox4kc.com/feed/",
+    "mediaType": "article",
+    "itemSource": "FOX4KC WDAF-TV",
+    "counties": [
+      "missouri/lafayette",
+      "kansas/wyandotte",
+      "kansas/miami",
+      "missouri/carroll",
+      "kansas/leavenworth",
+      "missouri/ray",
+      "kansas/clay",
+      "missouri/clay",
+      "kansas/johnson",
+      "missouri/jackson",
+      "missouri/saline",
+      "kansas/jackson",
+      "missouri/cass",
+      "missouri/johnson",
+      "missouri/wright",
+      "kansas/franklin",
+      "missouri/henry",
+      "missouri/linn",
+      "kansas/linn",
+      "missouri/clinton",
+      "missouri/harrison"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "FOX4KC WDAF-TV (2)",
+    "url": "https://fox4kc.com/rss",
+    "mediaType": "article",
+    "itemSource": "FOX4KC WDAF-TV",
+    "counties": [
+      "missouri/lafayette",
+      "kansas/wyandotte",
+      "kansas/miami",
+      "missouri/carroll",
+      "kansas/leavenworth",
+      "missouri/ray",
+      "kansas/clay",
+      "missouri/clay",
+      "kansas/johnson",
+      "missouri/jackson",
+      "missouri/saline",
+      "kansas/jackson",
+      "missouri/cass",
+      "missouri/johnson",
+      "missouri/wright",
+      "kansas/franklin",
+      "missouri/henry",
+      "missouri/linn",
+      "kansas/linn",
+      "missouri/clinton",
+      "missouri/harrison"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "FOX5 Las Vegas",
+    "url": "https://fox5vegas.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "FOX5 Las Vegas",
+    "counties": [
+      "nevada/nye"
     ],
     "trustedForCountyTier": false
   },
@@ -436,7 +4596,41 @@ export const discoveredRegionalSources: DirectSource[] = [
     "mediaType": "article",
     "itemSource": "FOX59 News",
     "counties": [
-      "texas/loving"
+      "indiana/greene",
+      "indiana/henry",
+      "indiana/marion",
+      "indiana/newton",
+      "texas/loving",
+      "indiana/jennings",
+      "indiana/bartholomew",
+      "indiana/johnson",
+      "indiana/owen",
+      "indiana/switzerland",
+      "indiana/wayne",
+      "indiana/white",
+      "kentucky/boone",
+      "indiana/hendricks",
+      "indiana/howard",
+      "indiana/jay",
+      "indiana/putnam",
+      "ohio/henry",
+      "indiana/decatur",
+      "indiana/delaware",
+      "indiana/fulton",
+      "indiana/lawrence",
+      "indiana/martin",
+      "indiana/monroe",
+      "indiana/montgomery",
+      "indiana/morgan",
+      "indiana/orange",
+      "indiana/shelby",
+      "ohio/perry",
+      "indiana/benton",
+      "indiana/grant",
+      "indiana/jackson",
+      "indiana/jasper",
+      "indiana/jefferson",
+      "indiana/warrick"
     ],
     "trustedForCountyTier": false
   },
@@ -446,7 +4640,341 @@ export const discoveredRegionalSources: DirectSource[] = [
     "mediaType": "article",
     "itemSource": "FOX59 News",
     "counties": [
-      "texas/loving"
+      "indiana/greene",
+      "indiana/henry",
+      "indiana/marion",
+      "indiana/newton",
+      "texas/loving",
+      "indiana/jennings",
+      "indiana/bartholomew",
+      "indiana/johnson",
+      "indiana/owen",
+      "indiana/switzerland",
+      "indiana/wayne",
+      "indiana/white",
+      "kentucky/boone",
+      "indiana/hendricks",
+      "indiana/howard",
+      "indiana/jay",
+      "indiana/putnam",
+      "ohio/henry",
+      "indiana/decatur",
+      "indiana/delaware",
+      "indiana/fulton",
+      "indiana/lawrence",
+      "indiana/martin",
+      "indiana/monroe",
+      "indiana/montgomery",
+      "indiana/morgan",
+      "indiana/orange",
+      "indiana/shelby",
+      "ohio/perry",
+      "indiana/benton",
+      "indiana/grant",
+      "indiana/jackson",
+      "indiana/jasper",
+      "indiana/jefferson",
+      "indiana/warrick"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "FOX6 News Milwaukee",
+    "url": "https://www.fox6now.com/rss.xml",
+    "mediaType": "article",
+    "itemSource": "FOX6 News Milwaukee",
+    "counties": [
+      "wisconsin/iron",
+      "wisconsin/racine",
+      "wisconsin/fond-du-lac",
+      "wisconsin/waukesha",
+      "wisconsin/ozaukee",
+      "wisconsin/walworth",
+      "wisconsin/winnebago",
+      "colorado/summit",
+      "iowa/iowa",
+      "wisconsin/columbia",
+      "wisconsin/florence",
+      "wisconsin/jefferson",
+      "wisconsin/chippewa",
+      "wisconsin/dane",
+      "wisconsin/manitowoc",
+      "wisconsin/washington",
+      "wisconsin/barron",
+      "wisconsin/milwaukee"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "FOX6 News Milwaukee (2)",
+    "url": "https://www.fox6now.com/rss/category/news",
+    "mediaType": "article",
+    "itemSource": "FOX6 News Milwaukee",
+    "counties": [
+      "wisconsin/iron",
+      "wisconsin/racine",
+      "wisconsin/fond-du-lac",
+      "wisconsin/waukesha",
+      "wisconsin/ozaukee",
+      "wisconsin/walworth",
+      "wisconsin/winnebago",
+      "colorado/summit",
+      "iowa/iowa",
+      "wisconsin/columbia",
+      "wisconsin/florence",
+      "wisconsin/jefferson",
+      "wisconsin/chippewa",
+      "wisconsin/dane",
+      "wisconsin/manitowoc",
+      "wisconsin/washington",
+      "wisconsin/barron",
+      "wisconsin/milwaukee"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Franklin County Free Press",
+    "url": "https://fcfreepresspa.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Franklin County Free Press",
+    "counties": [
+      "pennsylvania/adams"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Franklin County Free Press (2)",
+    "url": "https://fcfreepresspa.com/rss",
+    "mediaType": "article",
+    "itemSource": "Franklin County Free Press",
+    "counties": [
+      "pennsylvania/adams"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "freebeacon",
+    "url": "https://freebeacon.com/feed/",
+    "mediaType": "article",
+    "itemSource": "freebeacon",
+    "counties": [
+      "new-jersey/passaic",
+      "oregon/multnomah"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "freebeacon (2)",
+    "url": "https://freebeacon.com/rss",
+    "mediaType": "article",
+    "itemSource": "freebeacon",
+    "counties": [
+      "new-jersey/passaic",
+      "oregon/multnomah"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Futurism",
+    "url": "https://futurism.com/feed",
+    "mediaType": "article",
+    "itemSource": "Futurism",
+    "counties": [
+      "ohio/holmes"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Futurism (2)",
+    "url": "https://futurism.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Futurism",
+    "counties": [
+      "ohio/holmes"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Gambling News",
+    "url": "https://gamblingnews.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Gambling News",
+    "counties": [
+      "kentucky/graves",
+      "new-york/orange",
+      "florida/sarasota"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Gambling News (2)",
+    "url": "https://gamblingnews.com/rss",
+    "mediaType": "article",
+    "itemSource": "Gambling News",
+    "counties": [
+      "kentucky/graves",
+      "new-york/orange",
+      "florida/sarasota"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Gazette Journal",
+    "url": "https://www.gazettejournal.net/feed/",
+    "mediaType": "article",
+    "itemSource": "Gazette Journal",
+    "counties": [
+      "virginia/gloucester"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Gazette Journal (2)",
+    "url": "https://gazettejournal.net/feed/",
+    "mediaType": "article",
+    "itemSource": "Gazette Journal",
+    "counties": [
+      "virginia/gloucester"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "gbi.georgia",
+    "url": "https://gbi.georgia.gov/rss.xml",
+    "mediaType": "article",
+    "itemSource": "gbi.georgia",
+    "counties": [
+      "georgia/clayton",
+      "georgia/richmond",
+      "georgia/walker"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Georgia Recorder",
+    "url": "https://georgiarecorder.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Georgia Recorder",
+    "counties": [
+      "georgia/muscogee"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Georgia Recorder (2)",
+    "url": "https://georgiarecorder.com/rss",
+    "mediaType": "article",
+    "itemSource": "Georgia Recorder",
+    "counties": [
+      "georgia/muscogee"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Gephardt Daily",
+    "url": "https://gephardtdaily.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Gephardt Daily",
+    "counties": [
+      "utah/sevier",
+      "utah/weber"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Gephardt Daily (2)",
+    "url": "https://gephardtdaily.com/local/feed/",
+    "mediaType": "article",
+    "itemSource": "Gephardt Daily",
+    "counties": [
+      "utah/sevier",
+      "utah/weber"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Gila Valley Central",
+    "url": "https://gilavalleycentral.net/feed/",
+    "mediaType": "article",
+    "itemSource": "Gila Valley Central",
+    "counties": [
+      "arizona/graham"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Gila Valley Central (2)",
+    "url": "https://gilavalleycentral.net/rss",
+    "mediaType": "article",
+    "itemSource": "Gila Valley Central",
+    "counties": [
+      "arizona/graham"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "gizmodo",
+    "url": "https://gizmodo.com/feed",
+    "mediaType": "article",
+    "itemSource": "gizmodo",
+    "counties": [
+      "wyoming/laramie"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "gizmodo (2)",
+    "url": "https://gizmodo.com/feed/",
+    "mediaType": "article",
+    "itemSource": "gizmodo",
+    "counties": [
+      "wyoming/laramie"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Global News",
+    "url": "https://globalnews.ca/feed/",
+    "mediaType": "article",
+    "itemSource": "Global News",
+    "counties": [
+      "montana/gallatin",
+      "montana/toole",
+      "montana/yellowstone"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Global News (2)",
+    "url": "https://globalnews.ca/rss",
+    "mediaType": "article",
+    "itemSource": "Global News",
+    "counties": [
+      "montana/gallatin",
+      "montana/toole",
+      "montana/yellowstone"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Gothamist",
+    "url": "https://gothamist.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Gothamist",
+    "counties": [
+      "new-york/rockland",
+      "new-jersey/mercer"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Gothamist (2)",
+    "url": "https://gothamist.com/index.xml",
+    "mediaType": "article",
+    "itemSource": "Gothamist",
+    "counties": [
+      "new-york/rockland",
+      "new-jersey/mercer"
     ],
     "trustedForCountyTier": false
   },
@@ -457,10 +4985,149 @@ export const discoveredRegionalSources: DirectSource[] = [
     "itemSource": "Government Technology",
     "counties": [
       "texas/bosque",
+      "georgia/twiggs",
+      "maryland/frederick",
+      "new-mexico/bernalillo",
+      "nebraska/lancaster",
       "texas/coryell",
+      "minnesota/winona",
+      "north-carolina/anson",
+      "oregon/morrow",
+      "utah/salt-lake",
+      "virginia/botetourt",
       "texas/bastrop",
       "texas/harris",
-      "texas/johnson"
+      "texas/johnson",
+      "arizona/yuma",
+      "california/nevada",
+      "michigan/antrim",
+      "ohio/lorain"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "gpb",
+    "url": "https://gpb.org/rss",
+    "mediaType": "article",
+    "itemSource": "gpb",
+    "counties": [
+      "georgia/rockdale",
+      "georgia/glynn",
+      "georgia/monroe",
+      "georgia/bibb",
+      "georgia/twiggs",
+      "georgia/brantley",
+      "georgia/bryan",
+      "georgia/houston",
+      "georgia/mcintosh",
+      "georgia/butts",
+      "georgia/dougherty",
+      "georgia/effingham",
+      "georgia/coffee",
+      "georgia/gwinnett",
+      "georgia/hart",
+      "georgia/heard",
+      "georgia/jasper",
+      "georgia/peach",
+      "georgia/toombs",
+      "georgia/wilcox",
+      "georgia/camden",
+      "georgia/charlton",
+      "georgia/elbert",
+      "georgia/hall",
+      "georgia/muscogee"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "gpb (2)",
+    "url": "https://gpb.org/rss.xml",
+    "mediaType": "article",
+    "itemSource": "gpb",
+    "counties": [
+      "georgia/rockdale",
+      "georgia/glynn",
+      "georgia/monroe",
+      "georgia/bibb",
+      "georgia/twiggs",
+      "georgia/brantley",
+      "georgia/bryan",
+      "georgia/houston",
+      "georgia/mcintosh",
+      "georgia/butts",
+      "georgia/dougherty",
+      "georgia/effingham",
+      "georgia/coffee",
+      "georgia/gwinnett",
+      "georgia/hart",
+      "georgia/heard",
+      "georgia/jasper",
+      "georgia/peach",
+      "georgia/toombs",
+      "georgia/wilcox",
+      "georgia/camden",
+      "georgia/charlton",
+      "georgia/elbert",
+      "georgia/hall",
+      "georgia/muscogee"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Grand Forks Herald",
+    "url": "https://www.grandforksherald.com/index.rss",
+    "mediaType": "article",
+    "itemSource": "Grand Forks Herald",
+    "counties": [
+      "minnesota/polk",
+      "north-dakota/rolette",
+      "north-dakota/towner",
+      "north-dakota/walsh",
+      "minnesota/marshall",
+      "minnesota/roseau",
+      "north-dakota/pembina",
+      "north-dakota/ramsey"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Great Bend Tribune",
+    "url": "https://gbtribune.com/rss/",
+    "mediaType": "article",
+    "itemSource": "Great Bend Tribune",
+    "counties": [
+      "kansas/pawnee"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Great Bend Tribune (2)",
+    "url": "https://gbtribune.com/rss",
+    "mediaType": "article",
+    "itemSource": "Great Bend Tribune",
+    "counties": [
+      "kansas/pawnee"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Greenfield Vedette Online",
+    "url": "https://greenfieldvedette.com/feed.atom",
+    "mediaType": "article",
+    "itemSource": "Greenfield Vedette Online",
+    "counties": [
+      "missouri/polk"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Grice Connect",
+    "url": "https://griceconnect.com/rss",
+    "mediaType": "article",
+    "itemSource": "Grice Connect",
+    "counties": [
+      "georgia/bulloch",
+      "georgia/decatur"
     ],
     "trustedForCountyTier": false
   },
@@ -470,8 +5137,19 @@ export const discoveredRegionalSources: DirectSource[] = [
     "mediaType": "article",
     "itemSource": "Grist",
     "counties": [
+      "virginia/pittsylvania",
+      "florida/levy",
       "texas/crockett",
-      "texas/kerr"
+      "texas/kerr",
+      "ohio/belmont",
+      "utah/millard",
+      "wisconsin/vernon",
+      "michigan/leelanau",
+      "new-mexico/torrance",
+      "north-carolina/yancey",
+      "pennsylvania/warren",
+      "georgia/whitfield",
+      "minnesota/beltrami"
     ],
     "trustedForCountyTier": false
   },
@@ -481,8 +5159,254 @@ export const discoveredRegionalSources: DirectSource[] = [
     "mediaType": "article",
     "itemSource": "Grist",
     "counties": [
+      "virginia/pittsylvania",
+      "florida/levy",
       "texas/crockett",
-      "texas/kerr"
+      "texas/kerr",
+      "ohio/belmont",
+      "utah/millard",
+      "wisconsin/vernon",
+      "michigan/leelanau",
+      "new-mexico/torrance",
+      "north-carolina/yancey",
+      "pennsylvania/warren",
+      "georgia/whitfield",
+      "minnesota/beltrami"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "HCO News",
+    "url": "https://hconews.com/feed/",
+    "mediaType": "article",
+    "itemSource": "HCO News",
+    "counties": [
+      "georgia/columbia"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "HCO News (2)",
+    "url": "https://hconews.com/rss",
+    "mediaType": "article",
+    "itemSource": "HCO News",
+    "counties": [
+      "georgia/columbia"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Heavy",
+    "url": "https://heavy.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Heavy",
+    "counties": [
+      "alabama/shelby",
+      "florida/leon",
+      "california/calaveras"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Heavy (2)",
+    "url": "https://heavy.com/rss",
+    "mediaType": "article",
+    "itemSource": "Heavy",
+    "counties": [
+      "alabama/shelby",
+      "florida/leon",
+      "california/calaveras"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Hello!",
+    "url": "https://www.hellomagazine.com/feeds/rss/any/any/any/50.xml",
+    "mediaType": "article",
+    "itemSource": "Hello!",
+    "counties": [
+      "arizona/gila"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Hello! (2)",
+    "url": "https://hellomagazine.com/rss",
+    "mediaType": "article",
+    "itemSource": "Hello!",
+    "counties": [
+      "arizona/gila"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Henrico Citizen",
+    "url": "https://www.henricocitizen.com/latest/rss/",
+    "mediaType": "article",
+    "itemSource": "Henrico Citizen",
+    "counties": [
+      "virginia/henrico",
+      "virginia/staunton"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Henrico Citizen (2)",
+    "url": "https://henricocitizen.com/rss",
+    "mediaType": "article",
+    "itemSource": "Henrico Citizen",
+    "counties": [
+      "virginia/henrico",
+      "virginia/staunton"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Herald-Standard",
+    "url": "https://heraldstandard.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Herald-Standard",
+    "counties": [
+      "pennsylvania/greene"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Herald-Standard (2)",
+    "url": "https://heraldstandard.com/rss",
+    "mediaType": "article",
+    "itemSource": "Herald-Standard",
+    "counties": [
+      "pennsylvania/greene"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "HHJ Online",
+    "url": "https://hhjonline.com/feed/",
+    "mediaType": "article",
+    "itemSource": "HHJ Online",
+    "counties": [
+      "georgia/houston"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "HHJ Online (2)",
+    "url": "https://hhjonline.com/news/feed/",
+    "mediaType": "article",
+    "itemSource": "HHJ Online",
+    "counties": [
+      "georgia/houston"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "High Country News",
+    "url": "https://www.hcn.org/feed/",
+    "mediaType": "article",
+    "itemSource": "High Country News",
+    "counties": [
+      "oregon/harney",
+      "california/siskiyou",
+      "montana/sweet-grass",
+      "new-mexico/lincoln",
+      "new-mexico/mckinley",
+      "utah/emery"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "High Country News (2)",
+    "url": "https://hcn.org/feed/",
+    "mediaType": "article",
+    "itemSource": "High Country News",
+    "counties": [
+      "oregon/harney",
+      "california/siskiyou",
+      "montana/sweet-grass",
+      "new-mexico/lincoln",
+      "new-mexico/mckinley",
+      "utah/emery"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "High Plains Journal",
+    "url": "https://hpj.com/feed/",
+    "mediaType": "article",
+    "itemSource": "High Plains Journal",
+    "counties": [
+      "kansas/nemaha",
+      "kansas/edwards",
+      "oklahoma/ellis"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "High Plains Journal (2)",
+    "url": "https://hpj.com/rss",
+    "mediaType": "article",
+    "itemSource": "High Plains Journal",
+    "counties": [
+      "kansas/nemaha",
+      "kansas/edwards",
+      "oklahoma/ellis"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "High Times",
+    "url": "https://hightimes.com/feed/",
+    "mediaType": "article",
+    "itemSource": "High Times",
+    "counties": [
+      "florida/leon",
+      "maine/franklin"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "High Times (2)",
+    "url": "https://hightimes.com/rss",
+    "mediaType": "article",
+    "itemSource": "High Times",
+    "counties": [
+      "florida/leon",
+      "maine/franklin"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Hometownstations",
+    "url": "https://hometownstations.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "Hometownstations",
+    "counties": [
+      "ohio/allen",
+      "ohio/hancock"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Honolulu Star-Advertiser",
+    "url": "https://www.staradvertiser.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Honolulu Star-Advertiser",
+    "counties": [
+      "hawaii/kalawao",
+      "hawaii/hawaii"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Honolulu Star-Advertiser (2)",
+    "url": "https://staradvertiser.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Honolulu Star-Advertiser",
+    "counties": [
+      "hawaii/kalawao",
+      "hawaii/hawaii"
     ],
     "trustedForCountyTier": false
   },
@@ -492,7 +5416,88 @@ export const discoveredRegionalSources: DirectSource[] = [
     "mediaType": "article",
     "itemSource": "Hoodline",
     "counties": [
-      "texas/kendall"
+      "kentucky/bullitt",
+      "missouri/carroll",
+      "kansas/neosho",
+      "colorado/bent",
+      "missouri/clay",
+      "missouri/iron",
+      "north-carolina/columbus",
+      "indiana/floyd",
+      "ohio/lorain",
+      "pennsylvania/bedford",
+      "georgia/franklin",
+      "south-carolina/greenwood",
+      "ohio/coshocton",
+      "oklahoma/wagoner",
+      "south-carolina/oconee",
+      "utah/millard",
+      "maryland/garrett",
+      "nevada/nye",
+      "north-carolina/sampson",
+      "tennessee/gibson",
+      "california/siskiyou",
+      "missouri/cass",
+      "tennessee/dyer",
+      "maryland/frederick",
+      "virginia/halifax",
+      "colorado/weld",
+      "maryland/carroll",
+      "ohio/geauga",
+      "california/san-bernardino",
+      "georgia/rockdale",
+      "minnesota/brown",
+      "north-carolina/person",
+      "georgia/fannin",
+      "illinois/grundy",
+      "new-hampshire/grafton",
+      "north-carolina/wake",
+      "ohio/ashtabula",
+      "oklahoma/garfield",
+      "oregon/multnomah",
+      "missouri/platte"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Hoosier Ag Today",
+    "url": "https://www.hoosieragtoday.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Hoosier Ag Today",
+    "counties": [
+      "indiana/spencer",
+      "indiana/whitley"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Hoosier Ag Today (2)",
+    "url": "https://hoosieragtoday.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Hoosier Ag Today",
+    "counties": [
+      "indiana/spencer",
+      "indiana/whitley"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Horrorfuel",
+    "url": "https://horrorfuel.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Horrorfuel",
+    "counties": [
+      "virginia/winchester"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Horrorfuel (2)",
+    "url": "https://horrorfuel.com/comments/feed/",
+    "mediaType": "article",
+    "itemSource": "Horrorfuel",
+    "counties": [
+      "virginia/winchester"
     ],
     "trustedForCountyTier": false
   },
@@ -503,7 +5508,9 @@ export const discoveredRegionalSources: DirectSource[] = [
     "itemSource": "HousingWire",
     "counties": [
       "texas/collin",
-      "texas/hemphill"
+      "texas/hemphill",
+      "new-jersey/hudson",
+      "idaho/bonner"
     ],
     "trustedForCountyTier": false
   },
@@ -514,7 +5521,9 @@ export const discoveredRegionalSources: DirectSource[] = [
     "itemSource": "HousingWire",
     "counties": [
       "texas/collin",
-      "texas/hemphill"
+      "texas/hemphill",
+      "new-jersey/hudson",
+      "idaho/bonner"
     ],
     "trustedForCountyTier": false
   },
@@ -551,24 +5560,141 @@ export const discoveredRegionalSources: DirectSource[] = [
     "trustedForCountyTier": false
   },
   {
-    "name": "Independent Journal Review",
-    "url": "https://ijr.com/feed/",
+    "name": "Hudson Valley One",
+    "url": "https://hudsonvalleyone.com/feed/",
     "mediaType": "article",
-    "itemSource": "Independent Journal Review",
+    "itemSource": "Hudson Valley One",
     "counties": [
-      "texas/milam",
-      "texas/harris"
+      "new-york/ulster",
+      "new-york/dutchess"
     ],
     "trustedForCountyTier": false
   },
   {
-    "name": "Independent Journal Review (2)",
-    "url": "https://ijr.com/feed.xml",
+    "name": "Hudson Valley One (2)",
+    "url": "https://hudsonvalleyone.com/comments/feed/",
     "mediaType": "article",
-    "itemSource": "Independent Journal Review",
+    "itemSource": "Hudson Valley One",
     "counties": [
-      "texas/milam",
-      "texas/harris"
+      "new-york/ulster",
+      "new-york/dutchess"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "IBTimes UK",
+    "url": "https://ibtimes.co.uk/rss",
+    "mediaType": "article",
+    "itemSource": "IBTimes UK",
+    "counties": [
+      "pennsylvania/fayette",
+      "arkansas/lonoke",
+      "georgia/polk",
+      "missouri/christian",
+      "new-york/ontario",
+      "south-carolina/florence",
+      "california/monterey",
+      "washington/spokane"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "IBTimes UK (2)",
+    "url": "https://ibtimes.co.uk/rss/local",
+    "mediaType": "article",
+    "itemSource": "IBTimes UK",
+    "counties": [
+      "pennsylvania/fayette",
+      "arkansas/lonoke",
+      "georgia/polk",
+      "missouri/christian",
+      "new-york/ontario",
+      "south-carolina/florence",
+      "california/monterey",
+      "washington/spokane"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "In These Times",
+    "url": "https://inthesetimes.com/rss",
+    "mediaType": "article",
+    "itemSource": "In These Times",
+    "counties": [
+      "montana/carter",
+      "west-virginia/mcdowell",
+      "kentucky/harlan"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Inc.",
+    "url": "https://inc.com/rss",
+    "mediaType": "article",
+    "itemSource": "Inc.",
+    "counties": [
+      "oregon/morrow",
+      "kentucky/mercer"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Independent Herald",
+    "url": "https://independentherald.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Independent Herald",
+    "counties": [
+      "west-virginia/kanawha"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Independent Herald (2)",
+    "url": "https://independentherald.com/rss",
+    "mediaType": "article",
+    "itemSource": "Independent Herald",
+    "counties": [
+      "west-virginia/kanawha"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Indy Week",
+    "url": "https://indyweek.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Indy Week",
+    "counties": [
+      "north-carolina/wake"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Indy Week (2)",
+    "url": "https://indyweek.com/rss",
+    "mediaType": "article",
+    "itemSource": "Indy Week",
+    "counties": [
+      "north-carolina/wake"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "InformNNY",
+    "url": "https://informnny.com/feed/",
+    "mediaType": "article",
+    "itemSource": "InformNNY",
+    "counties": [
+      "new-york/jefferson"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "InformNNY (2)",
+    "url": "https://informnny.com/rss",
+    "mediaType": "article",
+    "itemSource": "InformNNY",
+    "counties": [
+      "new-york/jefferson"
     ],
     "trustedForCountyTier": false
   },
@@ -578,7 +5704,33 @@ export const discoveredRegionalSources: DirectSource[] = [
     "mediaType": "article",
     "itemSource": "InForum",
     "counties": [
-      "texas/kleberg"
+      "north-dakota/pembina",
+      "north-dakota/billings",
+      "minnesota/nobles",
+      "minnesota/becker",
+      "minnesota/swift",
+      "north-dakota/sheridan",
+      "texas/kleberg",
+      "north-dakota/walsh",
+      "minnesota/mower",
+      "minnesota/renville",
+      "north-dakota/grand-forks",
+      "north-dakota/renville",
+      "north-dakota/ward",
+      "south-dakota/tripp",
+      "minnesota/aitkin",
+      "north-dakota/cavalier"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Inside EVs",
+    "url": "https://insideevs.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Inside EVs",
+    "counties": [
+      "kentucky/warren",
+      "california/placer"
     ],
     "trustedForCountyTier": false
   },
@@ -588,14 +5740,41 @@ export const discoveredRegionalSources: DirectSource[] = [
     "mediaType": "article",
     "itemSource": "InsideClimate News",
     "counties": [
+      "wyoming/converse",
       "texas/somervell",
+      "north-carolina/lee",
+      "alabama/winston",
+      "new-york/schuyler",
+      "virginia/louisa",
+      "illinois/kendall",
+      "iowa/iowa",
+      "montana/rosebud",
+      "virginia/fluvanna",
       "texas/pecos",
+      "georgia/muscogee",
+      "nevada/white-pine",
+      "north-carolina/wayne",
+      "virginia/chesterfield",
       "texas/jim-wells",
+      "iowa/dallas",
+      "montana/musselshell",
+      "virginia/loudoun",
+      "virginia/portsmouth",
+      "wyoming/laramie",
       "texas/caldwell",
       "texas/tom-green",
       "texas/webb",
       "texas/winkler",
-      "texas/starr"
+      "colorado/boulder",
+      "minnesota/aitkin",
+      "north-carolina/cumberland",
+      "texas/starr",
+      "alabama/marion",
+      "idaho/twin-falls",
+      "illinois/will",
+      "iowa/calhoun",
+      "iowa/polk",
+      "pennsylvania/beaver"
     ],
     "trustedForCountyTier": false
   },
@@ -605,8 +5784,16 @@ export const discoveredRegionalSources: DirectSource[] = [
     "mediaType": "article",
     "itemSource": "Insurance Journal",
     "counties": [
+      "alabama/greene",
       "texas/gregg",
-      "texas/lampasas"
+      "florida/gadsden",
+      "kansas/shawnee",
+      "missouri/laclede",
+      "new-mexico/curry",
+      "washington/spokane",
+      "west-virginia/preston",
+      "texas/lampasas",
+      "washington/yakima"
     ],
     "trustedForCountyTier": false
   },
@@ -616,8 +5803,210 @@ export const discoveredRegionalSources: DirectSource[] = [
     "mediaType": "article",
     "itemSource": "Insurance Journal",
     "counties": [
+      "alabama/greene",
       "texas/gregg",
-      "texas/lampasas"
+      "florida/gadsden",
+      "kansas/shawnee",
+      "missouri/laclede",
+      "new-mexico/curry",
+      "washington/spokane",
+      "west-virginia/preston",
+      "texas/lampasas",
+      "washington/yakima"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Interesting Engineering",
+    "url": "https://interestingengineering.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Interesting Engineering",
+    "counties": [
+      "california/ventura"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Interesting Engineering (2)",
+    "url": "https://interestingengineering.com/rss",
+    "mediaType": "article",
+    "itemSource": "Interesting Engineering",
+    "counties": [
+      "california/ventura"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "International Business Times",
+    "url": "https://ibtimes.com/rss",
+    "mediaType": "article",
+    "itemSource": "International Business Times",
+    "counties": [
+      "kansas/wallace",
+      "illinois/dupage"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "International Business Times (2)",
+    "url": "https://ibtimes.com/rss/local",
+    "mediaType": "article",
+    "itemSource": "International Business Times",
+    "counties": [
+      "kansas/wallace",
+      "illinois/dupage"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "International Business Times Singapore",
+    "url": "https://ibtimes.sg/rss.xml",
+    "mediaType": "article",
+    "itemSource": "International Business Times Singapore",
+    "counties": [
+      "kentucky/bourbon"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Iredell Free News",
+    "url": "https://iredellfreenews.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Iredell Free News",
+    "counties": [
+      "north-carolina/iredell"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Iredell Free News (2)",
+    "url": "https://iredellfreenews.com/?feed=rss2",
+    "mediaType": "article",
+    "itemSource": "Iredell Free News",
+    "counties": [
+      "north-carolina/iredell"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "JoCo Report",
+    "url": "https://jocoreport.com/feed/",
+    "mediaType": "article",
+    "itemSource": "JoCo Report",
+    "counties": [
+      "north-carolina/johnston"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "JoCo Report (2)",
+    "url": "https://jocoreport.com/comments/feed/",
+    "mediaType": "article",
+    "itemSource": "JoCo Report",
+    "counties": [
+      "north-carolina/johnston"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Just The News",
+    "url": "https://justthenews.com/rss.xml",
+    "mediaType": "article",
+    "itemSource": "Just The News",
+    "counties": [
+      "arkansas/arkansas",
+      "minnesota/hennepin"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Just The News (2)",
+    "url": "https://justthenews.com/rss",
+    "mediaType": "article",
+    "itemSource": "Just The News",
+    "counties": [
+      "arkansas/arkansas",
+      "minnesota/hennepin"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "K105",
+    "url": "https://www.k105.com/feed/",
+    "mediaType": "article",
+    "itemSource": "K105",
+    "counties": [
+      "kentucky/grayson",
+      "kentucky/perry"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "K105 (2)",
+    "url": "https://k105.com/feed/",
+    "mediaType": "article",
+    "itemSource": "K105",
+    "counties": [
+      "kentucky/grayson",
+      "kentucky/perry"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KAAL TV",
+    "url": "https://kaaltv.com/feed/",
+    "mediaType": "article",
+    "itemSource": "KAAL TV",
+    "counties": [
+      "minnesota/winona"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KAAL TV (2)",
+    "url": "https://kaaltv.com/rss",
+    "mediaType": "article",
+    "itemSource": "KAAL TV",
+    "counties": [
+      "minnesota/winona"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KAGS",
+    "url": "https://www.kagstv.com/feeds/syndication/rss/news",
+    "mediaType": "article",
+    "itemSource": "KAGS",
+    "counties": [
+      "georgia/polk",
+      "georgia/bibb",
+      "wyoming/sublette"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KAGS (2)",
+    "url": "https://kagstv.com/feeds/syndication/rss/news",
+    "mediaType": "article",
+    "itemSource": "KAGS",
+    "counties": [
+      "georgia/polk",
+      "georgia/bibb",
+      "wyoming/sublette"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KAIT",
+    "url": "https://kait8.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "KAIT",
+    "counties": [
+      "missouri/dunklin",
+      "arkansas/mississippi",
+      "arkansas/craighead",
+      "arkansas/greene",
+      "arkansas/white"
     ],
     "trustedForCountyTier": false
   },
@@ -627,7 +6016,14 @@ export const discoveredRegionalSources: DirectSource[] = [
     "mediaType": "article",
     "itemSource": "KARE",
     "counties": [
-      "texas/washington"
+      "texas/washington",
+      "minnesota/blue-earth",
+      "minnesota/dakota",
+      "wisconsin/dunn",
+      "wisconsin/price",
+      "wisconsin/rusk",
+      "minnesota/brown",
+      "minnesota/rock"
     ],
     "trustedForCountyTier": false
   },
@@ -637,7 +6033,50 @@ export const discoveredRegionalSources: DirectSource[] = [
     "mediaType": "article",
     "itemSource": "KARE",
     "counties": [
-      "texas/washington"
+      "texas/washington",
+      "minnesota/blue-earth",
+      "minnesota/dakota",
+      "wisconsin/dunn",
+      "wisconsin/price",
+      "wisconsin/rusk",
+      "minnesota/brown",
+      "minnesota/rock"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KARK",
+    "url": "https://kark.com/feed/",
+    "mediaType": "article",
+    "itemSource": "KARK",
+    "counties": [
+      "arkansas/mississippi",
+      "arkansas/hempstead",
+      "arkansas/union",
+      "arkansas/saline"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KARK (2)",
+    "url": "https://kark.com/rss",
+    "mediaType": "article",
+    "itemSource": "KARK",
+    "counties": [
+      "arkansas/mississippi",
+      "arkansas/hempstead",
+      "arkansas/union",
+      "arkansas/saline"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "kbhbradio",
+    "url": "https://kbhbradio.com/feed/",
+    "mediaType": "article",
+    "itemSource": "kbhbradio",
+    "counties": [
+      "south-dakota/meade"
     ],
     "trustedForCountyTier": false
   },
@@ -700,6 +6139,133 @@ export const discoveredRegionalSources: DirectSource[] = [
     "trustedForCountyTier": false
   },
   {
+    "name": "KCRG",
+    "url": "https://kcrg.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "KCRG",
+    "counties": [
+      "wisconsin/grant",
+      "iowa/dallas",
+      "iowa/clayton",
+      "iowa/iowa",
+      "iowa/dubuque",
+      "iowa/winneshiek",
+      "iowa/buchanan",
+      "iowa/tama",
+      "iowa/delaware",
+      "iowa/linn",
+      "iowa/pocahontas",
+      "iowa/poweshiek",
+      "iowa/warren",
+      "iowa/benton",
+      "iowa/black-hawk",
+      "iowa/fayette",
+      "iowa/muscatine",
+      "iowa/pottawattamie"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KCTV5 News",
+    "url": "https://kctv5.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "KCTV5 News",
+    "counties": [
+      "missouri/camden",
+      "missouri/cole",
+      "missouri/lafayette",
+      "missouri/livingston",
+      "missouri/cass",
+      "missouri/platte",
+      "kansas/jackson",
+      "kansas/miami",
+      "missouri/caldwell",
+      "missouri/carroll",
+      "missouri/henry",
+      "missouri/jackson",
+      "missouri/saline",
+      "missouri/vernon",
+      "kansas/wyandotte"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KELO-AM",
+    "url": "https://kelo.com/feed/",
+    "mediaType": "article",
+    "itemSource": "KELO-AM",
+    "counties": [
+      "south-dakota/union"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KELO-AM (2)",
+    "url": "https://kelo.com/rss",
+    "mediaType": "article",
+    "itemSource": "KELO-AM",
+    "counties": [
+      "south-dakota/union"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KELOLAND News",
+    "url": "https://keloland.com/feed/",
+    "mediaType": "article",
+    "itemSource": "KELOLAND News",
+    "counties": [
+      "south-dakota/mcpherson",
+      "iowa/lyon",
+      "minnesota/pipestone",
+      "minnesota/rock",
+      "south-dakota/grant",
+      "south-dakota/stanley"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KELOLAND News (2)",
+    "url": "https://keloland.com/rss",
+    "mediaType": "article",
+    "itemSource": "KELOLAND News",
+    "counties": [
+      "south-dakota/mcpherson",
+      "iowa/lyon",
+      "minnesota/pipestone",
+      "minnesota/rock",
+      "south-dakota/grant",
+      "south-dakota/stanley"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Kennebec Journal",
+    "url": "https://www.centralmaine.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Kennebec Journal",
+    "counties": [
+      "maine/waldo",
+      "maine/somerset",
+      "maine/york",
+      "maine/aroostook"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Kennebec Journal (2)",
+    "url": "https://centralmaine.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Kennebec Journal",
+    "counties": [
+      "maine/waldo",
+      "maine/somerset",
+      "maine/york",
+      "maine/aroostook"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
     "name": "Ketk",
     "url": "https://ketk.com/feed/",
     "mediaType": "article",
@@ -720,6 +6286,312 @@ export const discoveredRegionalSources: DirectSource[] = [
       "texas/trinity",
       "texas/smith",
       "texas/wood"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KEYT",
+    "url": "https://keyt.com/feed/",
+    "mediaType": "article",
+    "itemSource": "KEYT",
+    "counties": [
+      "nevada/washoe",
+      "california/san-luis-obispo",
+      "new-mexico/bernalillo"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KEYT (2)",
+    "url": "https://keyt.com/rss",
+    "mediaType": "article",
+    "itemSource": "KEYT",
+    "counties": [
+      "nevada/washoe",
+      "california/san-luis-obispo",
+      "new-mexico/bernalillo"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KFGO",
+    "url": "https://kfgo.com/feed/",
+    "mediaType": "article",
+    "itemSource": "KFGO",
+    "counties": [
+      "north-dakota/eddy",
+      "north-dakota/morton",
+      "minnesota/becker"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KFGO (2)",
+    "url": "https://kfgo.com/rss",
+    "mediaType": "article",
+    "itemSource": "KFGO",
+    "counties": [
+      "north-dakota/eddy",
+      "north-dakota/morton",
+      "minnesota/becker"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KFIZ News-Talk 1450 AM",
+    "url": "https://kfiz.com/feed/",
+    "mediaType": "article",
+    "itemSource": "KFIZ News-Talk 1450 AM",
+    "counties": [
+      "wisconsin/fond-du-lac"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KFIZ News-Talk 1450 AM (2)",
+    "url": "https://kfiz.com/rss",
+    "mediaType": "article",
+    "itemSource": "KFIZ News-Talk 1450 AM",
+    "counties": [
+      "wisconsin/fond-du-lac"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KFOR",
+    "url": "https://kfor.com/feed/",
+    "mediaType": "article",
+    "itemSource": "KFOR",
+    "counties": [
+      "oklahoma/pottawatomie",
+      "oklahoma/pontotoc",
+      "oklahoma/beaver",
+      "oklahoma/mccurtain",
+      "oklahoma/okmulgee",
+      "oklahoma/lincoln",
+      "oklahoma/cimarron",
+      "oklahoma/tillman",
+      "oklahoma/love",
+      "oklahoma/ellis",
+      "oklahoma/caddo",
+      "oklahoma/hughes",
+      "oklahoma/creek",
+      "oklahoma/greer",
+      "illinois/monroe",
+      "oklahoma/garfield",
+      "oklahoma/grady",
+      "oklahoma/kiowa",
+      "oklahoma/mcclain",
+      "oklahoma/pawnee",
+      "oklahoma/ottawa",
+      "oklahoma/woodward",
+      "oklahoma/canadian",
+      "oklahoma/murray",
+      "oklahoma/texas",
+      "oklahoma/comanche",
+      "oklahoma/okfuskee",
+      "oklahoma/seminole"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KFOR (2)",
+    "url": "https://kfor.com/rss",
+    "mediaType": "article",
+    "itemSource": "KFOR",
+    "counties": [
+      "oklahoma/pottawatomie",
+      "oklahoma/pontotoc",
+      "oklahoma/beaver",
+      "oklahoma/mccurtain",
+      "oklahoma/okmulgee",
+      "oklahoma/lincoln",
+      "oklahoma/cimarron",
+      "oklahoma/tillman",
+      "oklahoma/love",
+      "oklahoma/ellis",
+      "oklahoma/caddo",
+      "oklahoma/hughes",
+      "oklahoma/creek",
+      "oklahoma/greer",
+      "illinois/monroe",
+      "oklahoma/garfield",
+      "oklahoma/grady",
+      "oklahoma/kiowa",
+      "oklahoma/mcclain",
+      "oklahoma/pawnee",
+      "oklahoma/ottawa",
+      "oklahoma/woodward",
+      "oklahoma/canadian",
+      "oklahoma/murray",
+      "oklahoma/texas",
+      "oklahoma/comanche",
+      "oklahoma/okfuskee",
+      "oklahoma/seminole"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KFVS12",
+    "url": "https://kfvs12.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "KFVS12",
+    "counties": [
+      "kentucky/graves",
+      "missouri/mississippi",
+      "tennessee/lake",
+      "illinois/franklin",
+      "missouri/carter",
+      "missouri/dunklin",
+      "missouri/ripley",
+      "missouri/stoddard",
+      "missouri/bollinger",
+      "missouri/cape-girardeau",
+      "illinois/jefferson",
+      "illinois/williamson",
+      "kentucky/ballard",
+      "kentucky/crittenden",
+      "kentucky/lyon",
+      "kentucky/trigg",
+      "missouri/iron",
+      "missouri/perry",
+      "illinois/saline",
+      "kentucky/livingston",
+      "tennessee/weakley"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KGAB",
+    "url": "https://kgab.com/feed/",
+    "mediaType": "article",
+    "itemSource": "KGAB",
+    "counties": [
+      "wyoming/laramie"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KGAB (2)",
+    "url": "https://kgab.com/rss",
+    "mediaType": "article",
+    "itemSource": "KGAB",
+    "counties": [
+      "wyoming/laramie"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KGET",
+    "url": "https://kget.com/feed/",
+    "mediaType": "article",
+    "itemSource": "KGET",
+    "counties": [
+      "california/kern"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KGET (2)",
+    "url": "https://kget.com/rss",
+    "mediaType": "article",
+    "itemSource": "KGET",
+    "counties": [
+      "california/kern"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KGW",
+    "url": "https://www.kgw.com/feeds/syndication/rss/news",
+    "mediaType": "article",
+    "itemSource": "KGW",
+    "counties": [
+      "oregon/umatilla",
+      "oregon/morrow",
+      "oregon/marion",
+      "washington/wahkiakum",
+      "oregon/jackson",
+      "oregon/yamhill",
+      "oregon/washington",
+      "oregon/linn",
+      "oregon/wheeler",
+      "washington/clark",
+      "washington/skamania",
+      "oregon/lincoln",
+      "oregon/polk",
+      "washington/cowlitz",
+      "oregon/gilliam",
+      "oregon/harney",
+      "washington/pacific",
+      "oregon/benton",
+      "oregon/columbia",
+      "oregon/multnomah"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KGW (2)",
+    "url": "https://kgw.com/feeds/syndication/rss/news",
+    "mediaType": "article",
+    "itemSource": "KGW",
+    "counties": [
+      "oregon/umatilla",
+      "oregon/morrow",
+      "oregon/marion",
+      "washington/wahkiakum",
+      "oregon/jackson",
+      "oregon/yamhill",
+      "oregon/washington",
+      "oregon/linn",
+      "oregon/wheeler",
+      "washington/clark",
+      "washington/skamania",
+      "oregon/lincoln",
+      "oregon/polk",
+      "washington/cowlitz",
+      "oregon/gilliam",
+      "oregon/harney",
+      "washington/pacific",
+      "oregon/benton",
+      "oregon/columbia",
+      "oregon/multnomah"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KHNL",
+    "url": "https://hawaiinewsnow.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "KHNL",
+    "counties": [
+      "hawaii/hawaii",
+      "hawaii/kalawao",
+      "georgia/atkinson",
+      "texas/ward",
+      "hawaii/maui"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KHON2",
+    "url": "https://khon2.com/feed/",
+    "mediaType": "article",
+    "itemSource": "KHON2",
+    "counties": [
+      "hawaii/maui",
+      "hawaii/hawaii"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KHON2 (2)",
+    "url": "https://khon2.com/rss",
+    "mediaType": "article",
+    "itemSource": "KHON2",
+    "counties": [
+      "hawaii/maui",
+      "hawaii/hawaii"
     ],
     "trustedForCountyTier": false
   },
@@ -755,7 +6627,8 @@ export const discoveredRegionalSources: DirectSource[] = [
       "texas/travis",
       "texas/wise",
       "texas/san-jacinto",
-      "texas/tyler"
+      "texas/tyler",
+      "mississippi/jackson"
     ],
     "trustedForCountyTier": false
   },
@@ -791,7 +6664,8 @@ export const discoveredRegionalSources: DirectSource[] = [
       "texas/travis",
       "texas/wise",
       "texas/san-jacinto",
-      "texas/tyler"
+      "texas/tyler",
+      "mississippi/jackson"
     ],
     "trustedForCountyTier": false
   },
@@ -834,6 +6708,164 @@ export const discoveredRegionalSources: DirectSource[] = [
     "trustedForCountyTier": false
   },
   {
+    "name": "KING5",
+    "url": "https://www.king5.com/feeds/syndication/rss/news",
+    "mediaType": "article",
+    "itemSource": "KING5",
+    "counties": [
+      "washington/thurston",
+      "idaho/latah",
+      "washington/king",
+      "south-carolina/georgetown",
+      "washington/cowlitz",
+      "washington/lewis",
+      "washington/mason",
+      "kentucky/pulaski",
+      "washington/clark",
+      "washington/pierce",
+      "washington/snohomish"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KING5 (2)",
+    "url": "https://king5.com/feeds/syndication/rss/news",
+    "mediaType": "article",
+    "itemSource": "KING5",
+    "counties": [
+      "washington/thurston",
+      "idaho/latah",
+      "washington/king",
+      "south-carolina/georgetown",
+      "washington/cowlitz",
+      "washington/lewis",
+      "washington/mason",
+      "kentucky/pulaski",
+      "washington/clark",
+      "washington/pierce",
+      "washington/snohomish"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Kiosk Marketplace",
+    "url": "https://kioskmarketplace.com/rss",
+    "mediaType": "article",
+    "itemSource": "Kiosk Marketplace",
+    "counties": [
+      "virginia/fairfax",
+      "michigan/wexford",
+      "south-dakota/pennington"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Kiosk Marketplace (2)",
+    "url": "https://kioskmarketplace.com/rss/news",
+    "mediaType": "article",
+    "itemSource": "Kiosk Marketplace",
+    "counties": [
+      "virginia/fairfax",
+      "michigan/wexford",
+      "south-dakota/pennington"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Kiowa County Press",
+    "url": "https://kiowacountypress.net/rss.xml",
+    "mediaType": "article",
+    "itemSource": "Kiowa County Press",
+    "counties": [
+      "colorado/kiowa",
+      "colorado/prowers",
+      "nevada/nye",
+      "colorado/cheyenne",
+      "colorado/jefferson"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Kiss 95.1",
+    "url": "https://kiss951.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Kiss 95.1",
+    "counties": [
+      "south-carolina/york"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Kiss 95.1 (2)",
+    "url": "https://kiss951.com/rss",
+    "mediaType": "article",
+    "itemSource": "Kiss 95.1",
+    "counties": [
+      "south-carolina/york"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KIVI-TV",
+    "url": "https://www.kivitv.com/index.rss",
+    "mediaType": "article",
+    "itemSource": "KIVI-TV",
+    "counties": [
+      "idaho/canyon",
+      "idaho/blaine",
+      "idaho/elmore",
+      "idaho/ada",
+      "idaho/gooding",
+      "idaho/twin-falls"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KIWA Radio",
+    "url": "https://kiwaradio.com/feed/",
+    "mediaType": "article",
+    "itemSource": "KIWA Radio",
+    "counties": [
+      "iowa/sioux",
+      "iowa/lyon"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KIWA Radio (2)",
+    "url": "https://kiwaradio.com/rss",
+    "mediaType": "article",
+    "itemSource": "KIWA Radio",
+    "counties": [
+      "iowa/sioux",
+      "iowa/lyon"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KJCT8",
+    "url": "https://kjct8.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "KJCT8",
+    "counties": [
+      "colorado/montrose",
+      "ohio/adams"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KKTV",
+    "url": "https://kktv.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "KKTV",
+    "counties": [
+      "colorado/teller",
+      "colorado/jefferson",
+      "colorado/park"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
     "name": "KLTV",
     "url": "https://kltv.com/arc/outboundfeeds/rss/?outputType=xml",
     "mediaType": "article",
@@ -860,6 +6892,311 @@ export const discoveredRegionalSources: DirectSource[] = [
     "trustedForCountyTier": false
   },
   {
+    "name": "KMVT",
+    "url": "https://kmvt.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "KMVT",
+    "counties": [
+      "idaho/lincoln",
+      "oregon/malheur",
+      "idaho/jerome"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KNOE",
+    "url": "https://knoe.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "KNOE",
+    "counties": [
+      "arkansas/union"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KNOX News Radio",
+    "url": "https://knoxradio.com/feed/",
+    "mediaType": "article",
+    "itemSource": "KNOX News Radio",
+    "counties": [
+      "north-dakota/grand-forks",
+      "north-dakota/traill",
+      "minnesota/becker"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KNOX News Radio (2)",
+    "url": "https://knoxradio.com/rss",
+    "mediaType": "article",
+    "itemSource": "KNOX News Radio",
+    "counties": [
+      "north-dakota/grand-forks",
+      "north-dakota/traill",
+      "minnesota/becker"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KNSI",
+    "url": "https://knsiradio.com/feed/",
+    "mediaType": "article",
+    "itemSource": "KNSI",
+    "counties": [
+      "minnesota/stearns"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KNSI (2)",
+    "url": "https://knsiradio.com/rss",
+    "mediaType": "article",
+    "itemSource": "KNSI",
+    "counties": [
+      "minnesota/stearns"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KOAA 5",
+    "url": "https://www.koaa.com/index.rss",
+    "mediaType": "article",
+    "itemSource": "KOAA 5",
+    "counties": [
+      "colorado/el-paso",
+      "colorado/teller",
+      "colorado/baca",
+      "colorado/pitkin",
+      "colorado/alamosa",
+      "colorado/bent",
+      "colorado/crowley"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KOB",
+    "url": "https://kob.com/feed/",
+    "mediaType": "article",
+    "itemSource": "KOB",
+    "counties": [
+      "new-mexico/de-baca",
+      "new-mexico/mora",
+      "new-mexico/otero",
+      "new-mexico/santa-fe",
+      "new-mexico/taos"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KOB (2)",
+    "url": "https://kob.com/rss",
+    "mediaType": "article",
+    "itemSource": "KOB",
+    "counties": [
+      "new-mexico/de-baca",
+      "new-mexico/mora",
+      "new-mexico/otero",
+      "new-mexico/santa-fe",
+      "new-mexico/taos"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KOIN 6",
+    "url": "https://koin.com/feed/",
+    "mediaType": "article",
+    "itemSource": "KOIN 6",
+    "counties": [
+      "oregon/douglas",
+      "oregon/benton",
+      "oregon/clackamas",
+      "oregon/coos",
+      "oregon/lane",
+      "oregon/yamhill",
+      "oregon/curry",
+      "oregon/harney",
+      "oregon/klamath",
+      "oregon/malheur",
+      "oregon/polk",
+      "oregon/multnomah",
+      "oregon/wallowa",
+      "oregon/washington",
+      "oregon/josephine",
+      "oregon/marion"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KOIN 6 (2)",
+    "url": "https://koin.com/rss",
+    "mediaType": "article",
+    "itemSource": "KOIN 6",
+    "counties": [
+      "oregon/douglas",
+      "oregon/benton",
+      "oregon/clackamas",
+      "oregon/coos",
+      "oregon/lane",
+      "oregon/yamhill",
+      "oregon/curry",
+      "oregon/harney",
+      "oregon/klamath",
+      "oregon/malheur",
+      "oregon/polk",
+      "oregon/multnomah",
+      "oregon/wallowa",
+      "oregon/washington",
+      "oregon/josephine",
+      "oregon/marion"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KOTA Radio",
+    "url": "https://kotaradio.com/feed/",
+    "mediaType": "article",
+    "itemSource": "KOTA Radio",
+    "counties": [
+      "south-dakota/meade",
+      "south-dakota/union"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KOTA Radio (2)",
+    "url": "https://kotaradio.com/rss",
+    "mediaType": "article",
+    "itemSource": "KOTA Radio",
+    "counties": [
+      "south-dakota/meade",
+      "south-dakota/union"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KPAX News",
+    "url": "https://www.kpax.com/index.rss",
+    "mediaType": "article",
+    "itemSource": "KPAX News",
+    "counties": [
+      "montana/lake",
+      "montana/missoula"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KPBS",
+    "url": "https://www.kpbs.org/index.rss",
+    "mediaType": "article",
+    "itemSource": "KPBS",
+    "counties": [
+      "california/imperial"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KQED",
+    "url": "https://ww2.kqed.org/news/feed/",
+    "mediaType": "article",
+    "itemSource": "KQED",
+    "counties": [
+      "california/santa-clara",
+      "california/madera",
+      "california/alameda",
+      "california/fresno",
+      "california/sonoma"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KRDO",
+    "url": "https://krdo.com/feed/",
+    "mediaType": "article",
+    "itemSource": "KRDO",
+    "counties": [
+      "colorado/adams",
+      "colorado/bent",
+      "colorado/delta",
+      "colorado/las-animas",
+      "colorado/custer",
+      "arkansas/johnson",
+      "colorado/baca",
+      "colorado/chaffee",
+      "colorado/garfield",
+      "colorado/jefferson",
+      "colorado/saguache",
+      "colorado/teller"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KRDO (2)",
+    "url": "https://krdo.com/rss",
+    "mediaType": "article",
+    "itemSource": "KRDO",
+    "counties": [
+      "colorado/adams",
+      "colorado/bent",
+      "colorado/delta",
+      "colorado/las-animas",
+      "colorado/custer",
+      "arkansas/johnson",
+      "colorado/baca",
+      "colorado/chaffee",
+      "colorado/garfield",
+      "colorado/jefferson",
+      "colorado/saguache",
+      "colorado/teller"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KREM",
+    "url": "https://www.krem.com/feeds/syndication/rss/news",
+    "mediaType": "article",
+    "itemSource": "KREM",
+    "counties": [
+      "idaho/shoshone",
+      "idaho/bonner",
+      "idaho/boundary",
+      "idaho/kootenai",
+      "idaho/clearwater",
+      "idaho/nez-perce",
+      "washington/ferry",
+      "idaho/fremont",
+      "idaho/idaho",
+      "washington/spokane",
+      "washington/chelan",
+      "washington/garfield",
+      "washington/mason",
+      "idaho/owyhee"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KREM (2)",
+    "url": "https://krem.com/feeds/syndication/rss/news",
+    "mediaType": "article",
+    "itemSource": "KREM",
+    "counties": [
+      "idaho/shoshone",
+      "idaho/bonner",
+      "idaho/boundary",
+      "idaho/kootenai",
+      "idaho/clearwater",
+      "idaho/nez-perce",
+      "washington/ferry",
+      "idaho/fremont",
+      "idaho/idaho",
+      "washington/spokane",
+      "washington/chelan",
+      "washington/garfield",
+      "washington/mason",
+      "idaho/owyhee"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
     "name": "Kristv",
     "url": "https://www.kristv.com/index.rss",
     "mediaType": "article",
@@ -874,6 +7211,128 @@ export const discoveredRegionalSources: DirectSource[] = [
       "texas/live-oak",
       "texas/jim-wells",
       "texas/san-patricio"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KRMG",
+    "url": "https://krmg.com/feed/",
+    "mediaType": "article",
+    "itemSource": "KRMG",
+    "counties": [
+      "oklahoma/muskogee"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KRMG (2)",
+    "url": "https://krmg.com/rss",
+    "mediaType": "article",
+    "itemSource": "KRMG",
+    "counties": [
+      "oklahoma/muskogee"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KRQE",
+    "url": "https://krqe.com/feed/",
+    "mediaType": "article",
+    "itemSource": "KRQE",
+    "counties": [
+      "new-mexico/catron",
+      "new-mexico/mora",
+      "new-mexico/quay",
+      "new-mexico/lea",
+      "new-mexico/do-a-ana",
+      "new-mexico/luna",
+      "new-mexico/santa-fe",
+      "new-mexico/cibola",
+      "new-mexico/de-baca",
+      "new-mexico/san-juan",
+      "new-mexico/socorro",
+      "new-mexico/valencia",
+      "new-mexico/colfax",
+      "new-mexico/rio-arriba",
+      "new-mexico/union",
+      "new-mexico/curry",
+      "new-mexico/eddy",
+      "new-mexico/grant",
+      "new-mexico/otero",
+      "new-mexico/sierra",
+      "texas/wichita",
+      "new-mexico/chaves",
+      "new-mexico/hidalgo",
+      "new-mexico/lincoln",
+      "new-mexico/mckinley",
+      "new-mexico/sandoval",
+      "new-mexico/torrance"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KRQE (2)",
+    "url": "https://krqe.com/rss",
+    "mediaType": "article",
+    "itemSource": "KRQE",
+    "counties": [
+      "new-mexico/catron",
+      "new-mexico/mora",
+      "new-mexico/quay",
+      "new-mexico/lea",
+      "new-mexico/do-a-ana",
+      "new-mexico/luna",
+      "new-mexico/santa-fe",
+      "new-mexico/cibola",
+      "new-mexico/de-baca",
+      "new-mexico/san-juan",
+      "new-mexico/socorro",
+      "new-mexico/valencia",
+      "new-mexico/colfax",
+      "new-mexico/rio-arriba",
+      "new-mexico/union",
+      "new-mexico/curry",
+      "new-mexico/eddy",
+      "new-mexico/grant",
+      "new-mexico/otero",
+      "new-mexico/sierra",
+      "texas/wichita",
+      "new-mexico/chaves",
+      "new-mexico/hidalgo",
+      "new-mexico/lincoln",
+      "new-mexico/mckinley",
+      "new-mexico/sandoval",
+      "new-mexico/torrance"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KRTV",
+    "url": "https://www.krtv.com/index.rss",
+    "mediaType": "article",
+    "itemSource": "KRTV",
+    "counties": [
+      "montana/cascade"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KSAL",
+    "url": "https://ksal.com/feed/",
+    "mediaType": "article",
+    "itemSource": "KSAL",
+    "counties": [
+      "kansas/saline"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KSAL (2)",
+    "url": "https://ksal.com/rss",
+    "mediaType": "article",
+    "itemSource": "KSAL",
+    "counties": [
+      "kansas/saline"
     ],
     "trustedForCountyTier": false
   },
@@ -913,7 +7372,114 @@ export const discoveredRegionalSources: DirectSource[] = [
       "texas/brazoria",
       "texas/brooks",
       "texas/foard",
-      "texas/hunt"
+      "texas/hunt",
+      "north-carolina/durham"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KSCB Radio News",
+    "url": "https://kscbnews.net/feed/",
+    "mediaType": "article",
+    "itemSource": "KSCB Radio News",
+    "counties": [
+      "kansas/stevens"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KSCB Radio News (2)",
+    "url": "https://kscbnews.net/rss",
+    "mediaType": "article",
+    "itemSource": "KSCB Radio News",
+    "counties": [
+      "kansas/stevens"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KSDK",
+    "url": "https://www.ksdk.com/feeds/syndication/rss/news",
+    "mediaType": "article",
+    "itemSource": "KSDK",
+    "counties": [
+      "illinois/montgomery",
+      "missouri/jefferson",
+      "illinois/clinton",
+      "illinois/madison",
+      "missouri/christian",
+      "missouri/franklin",
+      "missouri/warren",
+      "missouri/wayne",
+      "illinois/wayne",
+      "missouri/perry",
+      "illinois/jefferson",
+      "illinois/monroe",
+      "missouri/crawford",
+      "missouri/iron",
+      "missouri/madison",
+      "missouri/phelps",
+      "illinois/sangamon",
+      "missouri/lincoln"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KSDK (2)",
+    "url": "https://ksdk.com/feeds/syndication/rss/news",
+    "mediaType": "article",
+    "itemSource": "KSDK",
+    "counties": [
+      "illinois/montgomery",
+      "missouri/jefferson",
+      "illinois/clinton",
+      "illinois/madison",
+      "missouri/christian",
+      "missouri/franklin",
+      "missouri/warren",
+      "missouri/wayne",
+      "illinois/wayne",
+      "missouri/perry",
+      "illinois/jefferson",
+      "illinois/monroe",
+      "missouri/crawford",
+      "missouri/iron",
+      "missouri/madison",
+      "missouri/phelps",
+      "illinois/sangamon",
+      "missouri/lincoln"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KSL",
+    "url": "https://ksl.com/rss/news",
+    "mediaType": "article",
+    "itemSource": "KSL",
+    "counties": [
+      "utah/tooele",
+      "utah/weber",
+      "idaho/bannock",
+      "utah/san-juan",
+      "utah/davis",
+      "utah/duchesne",
+      "utah/morgan",
+      "utah/wasatch",
+      "utah/wayne",
+      "idaho/blaine",
+      "idaho/butte",
+      "utah/garfield",
+      "utah/sanpete",
+      "utah/uintah",
+      "utah/carbon",
+      "idaho/bonneville",
+      "iowa/wayne",
+      "utah/beaver",
+      "utah/box-elder",
+      "utah/emery",
+      "utah/iron",
+      "utah/piute",
+      "utah/washington"
     ],
     "trustedForCountyTier": false
   },
@@ -926,7 +7492,241 @@ export const discoveredRegionalSources: DirectSource[] = [
       "texas/harrison",
       "texas/marion",
       "texas/bowie",
+      "arkansas/hempstead",
       "texas/cass"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KSN-TV",
+    "url": "https://ksn.com/feed/",
+    "mediaType": "article",
+    "itemSource": "KSN-TV",
+    "counties": [
+      "kansas/sumner",
+      "kansas/pawnee",
+      "kansas/ellis",
+      "kansas/finney",
+      "oklahoma/major",
+      "kansas/barber",
+      "kansas/morton",
+      "oklahoma/beaver",
+      "kansas/elk",
+      "kansas/rice",
+      "kansas/harvey",
+      "kansas/jewell",
+      "kansas/allen",
+      "oklahoma/harper",
+      "kansas/gray",
+      "kansas/hodgeman",
+      "kansas/kingman",
+      "kansas/mitchell",
+      "kansas/scott",
+      "kansas/lane"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KSN-TV (2)",
+    "url": "https://ksn.com/rss",
+    "mediaType": "article",
+    "itemSource": "KSN-TV",
+    "counties": [
+      "kansas/sumner",
+      "kansas/pawnee",
+      "kansas/ellis",
+      "kansas/finney",
+      "oklahoma/major",
+      "kansas/barber",
+      "kansas/morton",
+      "oklahoma/beaver",
+      "kansas/elk",
+      "kansas/rice",
+      "kansas/harvey",
+      "kansas/jewell",
+      "kansas/allen",
+      "oklahoma/harper",
+      "kansas/gray",
+      "kansas/hodgeman",
+      "kansas/kingman",
+      "kansas/mitchell",
+      "kansas/scott",
+      "kansas/lane"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KSNB Local4",
+    "url": "https://ksnblocal4.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "KSNB Local4",
+    "counties": [
+      "kansas/republic",
+      "nebraska/lancaster"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KSNT",
+    "url": "https://ksnt.com/feed/",
+    "mediaType": "article",
+    "itemSource": "KSNT",
+    "counties": [
+      "kansas/shawnee"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KSNT (2)",
+    "url": "https://ksnt.com/rss",
+    "mediaType": "article",
+    "itemSource": "KSNT",
+    "counties": [
+      "kansas/shawnee"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KSTP",
+    "url": "https://kstp.com/feed/",
+    "mediaType": "article",
+    "itemSource": "KSTP",
+    "counties": [
+      "minnesota/anoka",
+      "wisconsin/chippewa",
+      "wisconsin/polk",
+      "minnesota/ramsey",
+      "minnesota/aitkin",
+      "minnesota/dakota",
+      "minnesota/jackson",
+      "wisconsin/barron",
+      "wisconsin/burnett",
+      "wisconsin/douglas",
+      "wisconsin/rusk",
+      "minnesota/hennepin"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KSTP (2)",
+    "url": "https://kstp.com/rss",
+    "mediaType": "article",
+    "itemSource": "KSTP",
+    "counties": [
+      "minnesota/anoka",
+      "wisconsin/chippewa",
+      "wisconsin/polk",
+      "minnesota/ramsey",
+      "minnesota/aitkin",
+      "minnesota/dakota",
+      "minnesota/jackson",
+      "wisconsin/barron",
+      "wisconsin/burnett",
+      "wisconsin/douglas",
+      "wisconsin/rusk",
+      "minnesota/hennepin"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KTHV",
+    "url": "https://www.thv11.com/feeds/syndication/rss/news",
+    "mediaType": "article",
+    "itemSource": "KTHV",
+    "counties": [
+      "arkansas/garland",
+      "arkansas/madison",
+      "arkansas/jefferson",
+      "arkansas/cleveland",
+      "arkansas/monroe",
+      "arkansas/saline",
+      "arkansas/yell",
+      "arkansas/ouachita",
+      "arkansas/woodruff",
+      "arkansas/baxter",
+      "arkansas/benton",
+      "arkansas/drew",
+      "arkansas/grant",
+      "arkansas/izard",
+      "arkansas/lonoke",
+      "arkansas/washington"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KTHV (2)",
+    "url": "https://thv11.com/feeds/syndication/rss/news",
+    "mediaType": "article",
+    "itemSource": "KTHV",
+    "counties": [
+      "arkansas/garland",
+      "arkansas/madison",
+      "arkansas/jefferson",
+      "arkansas/cleveland",
+      "arkansas/monroe",
+      "arkansas/saline",
+      "arkansas/yell",
+      "arkansas/ouachita",
+      "arkansas/woodruff",
+      "arkansas/baxter",
+      "arkansas/benton",
+      "arkansas/drew",
+      "arkansas/grant",
+      "arkansas/izard",
+      "arkansas/lonoke",
+      "arkansas/washington"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KTLA",
+    "url": "https://ktla.com/feed/",
+    "mediaType": "article",
+    "itemSource": "KTLA",
+    "counties": [
+      "california/inyo",
+      "california/san-bernardino",
+      "california/mono",
+      "california/monterey",
+      "california/santa-barbara",
+      "california/ventura",
+      "california/santa-cruz"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KTLA (2)",
+    "url": "https://ktla.com/rss",
+    "mediaType": "article",
+    "itemSource": "KTLA",
+    "counties": [
+      "california/inyo",
+      "california/san-bernardino",
+      "california/mono",
+      "california/monterey",
+      "california/santa-barbara",
+      "california/ventura",
+      "california/santa-cruz"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KTLO",
+    "url": "https://www.ktlo.com/feed/",
+    "mediaType": "article",
+    "itemSource": "KTLO",
+    "counties": [
+      "arkansas/madison"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KTLO (2)",
+    "url": "https://ktlo.com/feed/",
+    "mediaType": "article",
+    "itemSource": "KTLO",
+    "counties": [
+      "arkansas/madison"
     ],
     "trustedForCountyTier": false
   },
@@ -947,6 +7747,234 @@ export const discoveredRegionalSources: DirectSource[] = [
     "trustedForCountyTier": false
   },
   {
+    "name": "KTSM 9 News",
+    "url": "https://ktsm.com/feed/",
+    "mediaType": "article",
+    "itemSource": "KTSM 9 News",
+    "counties": [
+      "new-mexico/do-a-ana"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KTSM 9 News (2)",
+    "url": "https://ktsm.com/rss",
+    "mediaType": "article",
+    "itemSource": "KTSM 9 News",
+    "counties": [
+      "new-mexico/do-a-ana"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KTTC",
+    "url": "https://kttc.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "KTTC",
+    "counties": [
+      "iowa/winneshiek",
+      "minnesota/steele",
+      "minnesota/hennepin",
+      "iowa/cerro-gordo",
+      "ohio/adams"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KTTN-FM 92.3 and KGOZ-FM 101.7",
+    "url": "https://kttn.com/feed/",
+    "mediaType": "article",
+    "itemSource": "KTTN-FM 92.3 and KGOZ-FM 101.7",
+    "counties": [
+      "missouri/carroll",
+      "missouri/macon",
+      "missouri/mercer",
+      "missouri/livingston",
+      "missouri/harrison",
+      "missouri/worth",
+      "iowa/worth"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KTTN-FM 92.3 and KGOZ-FM 101.7 (2)",
+    "url": "https://kttn.com/rss",
+    "mediaType": "article",
+    "itemSource": "KTTN-FM 92.3 and KGOZ-FM 101.7",
+    "counties": [
+      "missouri/carroll",
+      "missouri/macon",
+      "missouri/mercer",
+      "missouri/livingston",
+      "missouri/harrison",
+      "missouri/worth",
+      "iowa/worth"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KTVB",
+    "url": "https://www.ktvb.com/feeds/syndication/rss/news",
+    "mediaType": "article",
+    "itemSource": "KTVB",
+    "counties": [
+      "idaho/ada",
+      "idaho/boise",
+      "idaho/washington",
+      "idaho/elmore",
+      "idaho/bonner",
+      "idaho/custer",
+      "idaho/fremont",
+      "idaho/shoshone",
+      "idaho/blaine",
+      "idaho/cassia",
+      "idaho/idaho",
+      "idaho/minidoka",
+      "idaho/payette",
+      "idaho/clark",
+      "idaho/clearwater",
+      "idaho/jerome",
+      "idaho/owyhee",
+      "idaho/power",
+      "idaho/benewah",
+      "idaho/bingham",
+      "idaho/gooding",
+      "idaho/twin-falls",
+      "oregon/malheur",
+      "tennessee/lake",
+      "idaho/canyon",
+      "idaho/kootenai",
+      "idaho/madison",
+      "south-carolina/chesterfield",
+      "south-carolina/georgetown",
+      "idaho/bannock",
+      "idaho/bonneville",
+      "idaho/nez-perce"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KTVB (2)",
+    "url": "https://ktvb.com/feeds/syndication/rss/news",
+    "mediaType": "article",
+    "itemSource": "KTVB",
+    "counties": [
+      "idaho/ada",
+      "idaho/boise",
+      "idaho/washington",
+      "idaho/elmore",
+      "idaho/bonner",
+      "idaho/custer",
+      "idaho/fremont",
+      "idaho/shoshone",
+      "idaho/blaine",
+      "idaho/cassia",
+      "idaho/idaho",
+      "idaho/minidoka",
+      "idaho/payette",
+      "idaho/clark",
+      "idaho/clearwater",
+      "idaho/jerome",
+      "idaho/owyhee",
+      "idaho/power",
+      "idaho/benewah",
+      "idaho/bingham",
+      "idaho/gooding",
+      "idaho/twin-falls",
+      "oregon/malheur",
+      "tennessee/lake",
+      "idaho/canyon",
+      "idaho/kootenai",
+      "idaho/madison",
+      "south-carolina/chesterfield",
+      "south-carolina/georgetown",
+      "idaho/bannock",
+      "idaho/bonneville",
+      "idaho/nez-perce"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KTVQ",
+    "url": "https://www.ktvq.com/index.rss",
+    "mediaType": "article",
+    "itemSource": "KTVQ",
+    "counties": [
+      "montana/yellowstone"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KTVU FOX 2",
+    "url": "https://www.ktvu.com/rss.xml",
+    "mediaType": "article",
+    "itemSource": "KTVU FOX 2",
+    "counties": [
+      "california/marin",
+      "california/santa-clara",
+      "california/alameda",
+      "california/contra-costa",
+      "california/napa",
+      "california/stanislaus",
+      "california/tulare",
+      "california/sonoma",
+      "new-hampshire/grafton",
+      "south-carolina/aiken"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KTVU FOX 2 (2)",
+    "url": "https://www.ktvu.com/rss/category/local-news",
+    "mediaType": "article",
+    "itemSource": "KTVU FOX 2",
+    "counties": [
+      "california/marin",
+      "california/santa-clara",
+      "california/alameda",
+      "california/contra-costa",
+      "california/napa",
+      "california/stanislaus",
+      "california/tulare",
+      "california/sonoma",
+      "new-hampshire/grafton",
+      "south-carolina/aiken"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KTVZ",
+    "url": "https://ktvz.com/feed/",
+    "mediaType": "article",
+    "itemSource": "KTVZ",
+    "counties": [
+      "oregon/crook",
+      "oregon/lincoln",
+      "oregon/deschutes",
+      "oregon/jefferson",
+      "oregon/harney",
+      "oregon/marion",
+      "oklahoma/choctaw"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KTVZ (2)",
+    "url": "https://ktvz.com/rss",
+    "mediaType": "article",
+    "itemSource": "KTVZ",
+    "counties": [
+      "oregon/crook",
+      "oregon/lincoln",
+      "oregon/deschutes",
+      "oregon/jefferson",
+      "oregon/harney",
+      "oregon/marion",
+      "oklahoma/choctaw"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
     "name": "KVIA",
     "url": "https://kvia.com/feed/",
     "mediaType": "article",
@@ -954,6 +7982,9 @@ export const discoveredRegionalSources: DirectSource[] = [
     "counties": [
       "texas/culberson",
       "texas/hudspeth",
+      "new-mexico/do-a-ana",
+      "new-mexico/hidalgo",
+      "new-mexico/otero",
       "texas/zavala"
     ],
     "trustedForCountyTier": false
@@ -966,7 +7997,32 @@ export const discoveredRegionalSources: DirectSource[] = [
     "counties": [
       "texas/culberson",
       "texas/hudspeth",
+      "new-mexico/do-a-ana",
+      "new-mexico/hidalgo",
+      "new-mexico/otero",
       "texas/zavala"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KVOE",
+    "url": "https://kvoe.com/feed/",
+    "mediaType": "article",
+    "itemSource": "KVOE",
+    "counties": [
+      "kansas/lyon",
+      "kansas/chase"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KVOE (2)",
+    "url": "https://kvoe.com/rss",
+    "mediaType": "article",
+    "itemSource": "KVOE",
+    "counties": [
+      "kansas/lyon",
+      "kansas/chase"
     ],
     "trustedForCountyTier": false
   },
@@ -1033,6 +8089,47 @@ export const discoveredRegionalSources: DirectSource[] = [
     "trustedForCountyTier": false
   },
   {
+    "name": "KWCH",
+    "url": "https://kwch.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "KWCH",
+    "counties": [
+      "kansas/pawnee",
+      "kansas/rawlins",
+      "kansas/sedgwick",
+      "kansas/morton",
+      "kansas/clark",
+      "kansas/ellis",
+      "kansas/meade",
+      "kansas/reno",
+      "kansas/republic"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KWQC-TV6",
+    "url": "https://kwqc.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "KWQC-TV6",
+    "counties": [
+      "iowa/louisa",
+      "illinois/mercer",
+      "illinois/warren",
+      "iowa/muscatine",
+      "illinois/rock-island",
+      "iowa/scott",
+      "illinois/henry",
+      "illinois/jo-daviess",
+      "illinois/whiteside",
+      "iowa/dubuque",
+      "iowa/henry",
+      "iowa/lee",
+      "illinois/piatt",
+      "iowa/greene"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
     "name": "KWTX",
     "url": "https://kwtx.com/arc/outboundfeeds/rss/?outputType=xml",
     "mediaType": "article",
@@ -1060,7 +8157,7 @@ export const discoveredRegionalSources: DirectSource[] = [
   },
   {
     "name": "KXAN Austin",
-    "url": "https://www.kxan.com/feed/",
+    "url": "https://kxan.com/feed/",
     "mediaType": "article",
     "itemSource": "KXAN Austin",
     "counties": [
@@ -1080,7 +8177,7 @@ export const discoveredRegionalSources: DirectSource[] = [
   },
   {
     "name": "KXAN Austin (2)",
-    "url": "https://www.kxan.com/comments/feed/",
+    "url": "https://kxan.com/rss",
     "mediaType": "article",
     "itemSource": "KXAN Austin",
     "counties": [
@@ -1099,14 +8196,441 @@ export const discoveredRegionalSources: DirectSource[] = [
     "trustedForCountyTier": false
   },
   {
+    "name": "KXII",
+    "url": "https://kxii.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "KXII",
+    "counties": [
+      "oklahoma/pushmataha",
+      "oklahoma/bryan"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KY3",
+    "url": "https://ky3.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "KY3",
+    "counties": [
+      "missouri/greene",
+      "missouri/ozark",
+      "missouri/wright",
+      "missouri/miller",
+      "missouri/stone",
+      "arkansas/baxter",
+      "arkansas/boone",
+      "arkansas/carroll",
+      "arkansas/searcy",
+      "missouri/benton",
+      "missouri/laclede",
+      "missouri/texas",
+      "arkansas/benton",
+      "missouri/cole",
+      "missouri/morgan"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KYMA",
+    "url": "https://kyma.com/feed/",
+    "mediaType": "article",
+    "itemSource": "KYMA",
+    "counties": [
+      "arizona/pima"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "KYMA (2)",
+    "url": "https://kyma.com/rss",
+    "mediaType": "article",
+    "itemSource": "KYMA",
+    "counties": [
+      "arizona/pima"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Lake County News",
+    "url": "https://lakeconews.com/en/?tp=1&format=feed&type=rss",
+    "mediaType": "article",
+    "itemSource": "Lake County News",
+    "counties": [
+      "california/lake"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Lake County News (2)",
+    "url": "https://lakeconews.com/en/?tp=1&format=feed&type=atom",
+    "mediaType": "article",
+    "itemSource": "Lake County News",
+    "counties": [
+      "california/lake"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Laker Country 104.9 WJRS",
+    "url": "https://lakercountry.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Laker Country 104.9 WJRS",
+    "counties": [
+      "kentucky/russell",
+      "kentucky/wayne",
+      "tennessee/clay"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Laker Country 104.9 WJRS (2)",
+    "url": "https://lakercountry.com/rss",
+    "mediaType": "article",
+    "itemSource": "Laker Country 104.9 WJRS",
+    "counties": [
+      "kentucky/russell",
+      "kentucky/wayne",
+      "tennessee/clay"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Lane Report",
+    "url": "https://www.lanereport.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Lane Report",
+    "counties": [
+      "kentucky/bullitt",
+      "kentucky/graves",
+      "kentucky/wolfe",
+      "kentucky/barren",
+      "kentucky/mccreary",
+      "kentucky/madison",
+      "kentucky/marshall"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Lane Report (2)",
+    "url": "https://lanereport.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Lane Report",
+    "counties": [
+      "kentucky/bullitt",
+      "kentucky/graves",
+      "kentucky/wolfe",
+      "kentucky/barren",
+      "kentucky/mccreary",
+      "kentucky/madison",
+      "kentucky/marshall"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Las Vegas Review-Journal",
+    "url": "https://www.reviewjournal.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Las Vegas Review-Journal",
+    "counties": [
+      "nevada/esmeralda",
+      "nevada/nye",
+      "nevada/lyon",
+      "arizona/mohave",
+      "nevada/douglas",
+      "nevada/white-pine"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Las Vegas Review-Journal (2)",
+    "url": "https://reviewjournal.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Las Vegas Review-Journal",
+    "counties": [
+      "nevada/esmeralda",
+      "nevada/nye",
+      "nevada/lyon",
+      "arizona/mohave",
+      "nevada/douglas",
+      "nevada/white-pine"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
     "name": "Law",
     "url": "https://law.com/news/feed/",
     "mediaType": "article",
     "itemSource": "Law",
     "counties": [
+      "georgia/muscogee",
+      "new-york/kings",
+      "washington/yakima",
+      "new-york/new-york",
+      "illinois/cook",
+      "new-york/suffolk",
+      "georgia/candler",
+      "georgia/dougherty",
+      "michigan/isabella",
       "texas/midland",
+      "georgia/gwinnett",
+      "georgia/henry",
+      "georgia/paulding",
       "texas/guadalupe",
-      "texas/brown"
+      "california/santa-clara",
+      "georgia/cobb",
+      "georgia/dekalb",
+      "georgia/telfair",
+      "texas/brown",
+      "georgia/fulton",
+      "georgia/sumter",
+      "new-jersey/monmouth",
+      "new-york/saratoga"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Lebanon Local",
+    "url": "https://www.lebanonlocalnews.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Lebanon Local",
+    "counties": [
+      "oregon/curry"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Lebanon Local (2)",
+    "url": "https://lebanonlocalnews.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Lebanon Local",
+    "counties": [
+      "oregon/curry"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Lehigh Valley Live",
+    "url": "https://lehighvalleylive.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "Lehigh Valley Live",
+    "counties": [
+      "new-jersey/warren",
+      "pennsylvania/lehigh",
+      "pennsylvania/northampton",
+      "pennsylvania/blair"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "LEX 18",
+    "url": "https://www.lex18.com/index.rss",
+    "mediaType": "article",
+    "itemSource": "LEX 18",
+    "counties": [
+      "kentucky/knox",
+      "kentucky/laurel",
+      "kentucky/bourbon",
+      "kentucky/bath",
+      "kentucky/grayson",
+      "kentucky/pike",
+      "kentucky/powell",
+      "kentucky/madison",
+      "kentucky/rowan",
+      "kentucky/breckinridge",
+      "kentucky/casey",
+      "kentucky/crittenden",
+      "kentucky/lincoln",
+      "kentucky/franklin",
+      "kentucky/garrard",
+      "kentucky/lee",
+      "kentucky/menifee",
+      "kentucky/breathitt",
+      "kentucky/floyd",
+      "kentucky/owsley",
+      "kentucky/taylor",
+      "kentucky/bell",
+      "kentucky/clark",
+      "kentucky/clinton",
+      "kentucky/hart",
+      "kentucky/johnson",
+      "kentucky/leslie",
+      "kentucky/mccracken",
+      "kentucky/mason",
+      "kentucky/montgomery",
+      "kentucky/wayne",
+      "kentucky/woodford",
+      "tennessee/pickett",
+      "kentucky/clay",
+      "kentucky/martin",
+      "kentucky/russell",
+      "kentucky/scott"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "LGBTQ Nation",
+    "url": "https://www.lgbtqnation.com/feed/",
+    "mediaType": "article",
+    "itemSource": "LGBTQ Nation",
+    "counties": [
+      "georgia/white",
+      "idaho/canyon"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "LGBTQ Nation (2)",
+    "url": "https://lgbtqnation.com/feed/",
+    "mediaType": "article",
+    "itemSource": "LGBTQ Nation",
+    "counties": [
+      "georgia/white",
+      "idaho/canyon"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Light Reading",
+    "url": "https://lightreading.com/rss.xml",
+    "mediaType": "article",
+    "itemSource": "Light Reading",
+    "counties": [
+      "florida/seminole"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Live 5 News",
+    "url": "https://live5news.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "Live 5 News",
+    "counties": [
+      "georgia/hancock",
+      "south-carolina/dorchester"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Localmemphis",
+    "url": "https://www.localmemphis.com/feeds/syndication/rss/news",
+    "mediaType": "article",
+    "itemSource": "Localmemphis",
+    "counties": [
+      "tennessee/fentress",
+      "tennessee/dyer",
+      "tennessee/hamblen"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Localmemphis (2)",
+    "url": "https://localmemphis.com/feeds/syndication/rss/news",
+    "mediaType": "article",
+    "itemSource": "Localmemphis",
+    "counties": [
+      "tennessee/fentress",
+      "tennessee/dyer",
+      "tennessee/hamblen"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Localnews8",
+    "url": "https://localnews8.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Localnews8",
+    "counties": [
+      "idaho/custer",
+      "idaho/payette",
+      "idaho/bear-lake",
+      "idaho/bannock",
+      "idaho/bingham",
+      "idaho/madison",
+      "idaho/teton",
+      "idaho/bonneville",
+      "idaho/fremont",
+      "idaho/power",
+      "idaho/elmore",
+      "idaho/jerome",
+      "utah/rich",
+      "idaho/caribou",
+      "idaho/butte",
+      "idaho/cassia",
+      "idaho/jefferson",
+      "idaho/lemhi",
+      "idaho/lincoln",
+      "wyoming/teton"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Localnews8 (2)",
+    "url": "https://localnews8.com/rss",
+    "mediaType": "article",
+    "itemSource": "Localnews8",
+    "counties": [
+      "idaho/custer",
+      "idaho/payette",
+      "idaho/bear-lake",
+      "idaho/bannock",
+      "idaho/bingham",
+      "idaho/madison",
+      "idaho/teton",
+      "idaho/bonneville",
+      "idaho/fremont",
+      "idaho/power",
+      "idaho/elmore",
+      "idaho/jerome",
+      "utah/rich",
+      "idaho/caribou",
+      "idaho/butte",
+      "idaho/cassia",
+      "idaho/jefferson",
+      "idaho/lemhi",
+      "idaho/lincoln",
+      "wyoming/teton"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Localsyr",
+    "url": "https://localsyr.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Localsyr",
+    "counties": [
+      "new-york/onondaga",
+      "new-york/seneca"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Localsyr (2)",
+    "url": "https://localsyr.com/rss",
+    "mediaType": "article",
+    "itemSource": "Localsyr",
+    "counties": [
+      "new-york/onondaga",
+      "new-york/seneca"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Long Island Press",
+    "url": "https://longislandpress.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Long Island Press",
+    "counties": [
+      "new-york/nassau"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Long Island Press (2)",
+    "url": "https://longislandpress.com/rss",
+    "mediaType": "article",
+    "itemSource": "Long Island Press",
+    "counties": [
+      "new-york/nassau"
     ],
     "trustedForCountyTier": false
   },
@@ -1131,12 +8655,673 @@ export const discoveredRegionalSources: DirectSource[] = [
     "trustedForCountyTier": false
   },
   {
+    "name": "Los Alamos Reporter",
+    "url": "https://losalamosreporter.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Los Alamos Reporter",
+    "counties": [
+      "new-mexico/los-alamos"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Los Alamos Reporter (2)",
+    "url": "https://losalamosreporter.com/rss",
+    "mediaType": "article",
+    "itemSource": "Los Alamos Reporter",
+    "counties": [
+      "new-mexico/los-alamos"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Los Angeles Times",
+    "url": "https://www.latimes.com/index.rss",
+    "mediaType": "article",
+    "itemSource": "Los Angeles Times",
+    "counties": [
+      "california/shasta",
+      "california/imperial",
+      "california/calaveras",
+      "california/santa-barbara",
+      "california/kern",
+      "california/mono",
+      "california/plumas",
+      "california/san-bernardino",
+      "california/kings",
+      "california/madera",
+      "california/sierra",
+      "california/nevada",
+      "california/trinity",
+      "california/yolo",
+      "california/alameda",
+      "california/el-dorado",
+      "california/tehama",
+      "california/ventura",
+      "texas/hood",
+      "california/alpine",
+      "california/amador",
+      "california/merced",
+      "california/napa",
+      "california/fresno",
+      "california/inyo",
+      "california/lake",
+      "california/lassen",
+      "california/mendocino",
+      "california/san-diego",
+      "california/santa-clara",
+      "california/solano",
+      "california/sonoma",
+      "colorado/larimer",
+      "louisiana/st-mary",
+      "missouri/cole"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Louisville Public Media",
+    "url": "https://www.lpm.org/index.rss",
+    "mediaType": "article",
+    "itemSource": "Louisville Public Media",
+    "counties": [
+      "kentucky/bourbon",
+      "kentucky/oldham"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Louisville Public Media (2)",
+    "url": "https://lpm.org/feed/",
+    "mediaType": "article",
+    "itemSource": "Louisville Public Media",
+    "counties": [
+      "kentucky/bourbon",
+      "kentucky/oldham"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Lyon County Reporter",
+    "url": "https://www.lyoncountyreporter.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Lyon County Reporter",
+    "counties": [
+      "iowa/lyon"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Lyon County Reporter (2)",
+    "url": "https://lyoncountyreporter.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Lyon County Reporter",
+    "counties": [
+      "iowa/lyon"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Magnolia State Live",
+    "url": "https://magnoliastatelive.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Magnolia State Live",
+    "counties": [
+      "mississippi/yalobusha",
+      "mississippi/claiborne",
+      "mississippi/jones",
+      "mississippi/desoto",
+      "mississippi/lafayette"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Magnolia State Live (2)",
+    "url": "https://magnoliastatelive.com/rss",
+    "mediaType": "article",
+    "itemSource": "Magnolia State Live",
+    "counties": [
+      "mississippi/yalobusha",
+      "mississippi/claiborne",
+      "mississippi/jones",
+      "mississippi/desoto",
+      "mississippi/lafayette"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Manteca Bulletin",
+    "url": "https://mantecabulletin.com/rss/",
+    "mediaType": "article",
+    "itemSource": "Manteca Bulletin",
+    "counties": [
+      "california/san-joaquin"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Manteca Bulletin (2)",
+    "url": "https://mantecabulletin.com/rss",
+    "mediaType": "article",
+    "itemSource": "Manteca Bulletin",
+    "counties": [
+      "california/san-joaquin"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Marietta Times",
+    "url": "https://mariettatimes.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Marietta Times",
+    "counties": [
+      "ohio/washington"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Marietta Times (2)",
+    "url": "https://mariettatimes.com/rss",
+    "mediaType": "article",
+    "itemSource": "Marietta Times",
+    "counties": [
+      "ohio/washington"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "MarineLink",
+    "url": "https://www.marinelink.com/news/rss",
+    "mediaType": "article",
+    "itemSource": "MarineLink",
+    "counties": [
+      "washington/wahkiakum",
+      "virginia/virginia-beach"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "MarineLink (2)",
+    "url": "https://marinelink.com/rss",
+    "mediaType": "article",
+    "itemSource": "MarineLink",
+    "counties": [
+      "washington/wahkiakum",
+      "virginia/virginia-beach"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "MassLive",
+    "url": "https://masslive.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "MassLive",
+    "counties": [
+      "texas/orange",
+      "maine/york"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "McKenzie County Farmer",
+    "url": "https://www.watfordcitynd.com/index.rss",
+    "mediaType": "article",
+    "itemSource": "McKenzie County Farmer",
+    "counties": [
+      "north-dakota/mckenzie",
+      "north-dakota/oliver"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Memphis Flyer",
+    "url": "https://www.memphisflyer.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Memphis Flyer",
+    "counties": [
+      "tennessee/shelby",
+      "tennessee/fayette"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Memphis Flyer (2)",
+    "url": "https://memphisflyer.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Memphis Flyer",
+    "counties": [
+      "tennessee/shelby",
+      "tennessee/fayette"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Men's Journal",
+    "url": "https://mensjournal.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Men's Journal",
+    "counties": [
+      "florida/volusia",
+      "michigan/cheboygan",
+      "alaska/kodiak-island"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Men's Journal (2)",
+    "url": "https://mensjournal.com/rss",
+    "mediaType": "article",
+    "itemSource": "Men's Journal",
+    "counties": [
+      "florida/volusia",
+      "michigan/cheboygan",
+      "alaska/kodiak-island"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Metro",
+    "url": "https://metro.co.uk/feed/",
+    "mediaType": "article",
+    "itemSource": "Metro",
+    "counties": [
+      "new-hampshire/grafton",
+      "florida/walton"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Metro (2)",
+    "url": "https://metro.co.uk/entertainment/feed/",
+    "mediaType": "article",
+    "itemSource": "Metro",
+    "counties": [
+      "new-hampshire/grafton",
+      "florida/walton"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Miami Community Newspapers",
+    "url": "https://communitynewspapers.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Miami Community Newspapers",
+    "counties": [
+      "florida/broward"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Miami Community Newspapers (2)",
+    "url": "https://communitynewspapers.com/rss",
+    "mediaType": "article",
+    "itemSource": "Miami Community Newspapers",
+    "counties": [
+      "florida/broward"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Michigan Capitol Confidential",
+    "url": "https://michigancapitolconfidential.com/rss",
+    "mediaType": "article",
+    "itemSource": "Michigan Capitol Confidential",
+    "counties": [
+      "michigan/genesee"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Milan Mirror Exchange",
+    "url": "https://www.milanmirrorexchange.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Milan Mirror Exchange",
+    "counties": [
+      "tennessee/dyer",
+      "tennessee/gibson"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Milan Mirror Exchange (2)",
+    "url": "https://www.milanmirrorexchange.com/comments/feed/",
+    "mediaType": "article",
+    "itemSource": "Milan Mirror Exchange",
+    "counties": [
+      "tennessee/dyer",
+      "tennessee/gibson"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Military Times",
+    "url": "https://militarytimes.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "Military Times",
+    "counties": [
+      "ohio/pickaway",
+      "washington/thurston"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "MinnPost",
+    "url": "https://www.minnpost.com/feed/",
+    "mediaType": "article",
+    "itemSource": "MinnPost",
+    "counties": [
+      "minnesota/red-lake",
+      "minnesota/swift",
+      "minnesota/carver",
+      "minnesota/rice",
+      "minnesota/carlton",
+      "minnesota/clearwater",
+      "minnesota/hubbard",
+      "minnesota/todd",
+      "minnesota/itasca",
+      "minnesota/scott",
+      "minnesota/sherburne",
+      "minnesota/wright",
+      "minnesota/blue-earth",
+      "minnesota/douglas",
+      "minnesota/mille-lacs",
+      "minnesota/olmsted",
+      "minnesota/otter-tail",
+      "minnesota/ramsey",
+      "minnesota/stearns",
+      "minnesota/washington",
+      "minnesota/anoka",
+      "minnesota/becker",
+      "minnesota/cottonwood",
+      "minnesota/meeker",
+      "minnesota/dakota",
+      "minnesota/fillmore",
+      "minnesota/kandiyohi",
+      "minnesota/mower",
+      "minnesota/steele",
+      "minnesota/winona",
+      "minnesota/aitkin",
+      "minnesota/pipestone"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "MinnPost (2)",
+    "url": "https://minnpost.com/feed/",
+    "mediaType": "article",
+    "itemSource": "MinnPost",
+    "counties": [
+      "minnesota/red-lake",
+      "minnesota/swift",
+      "minnesota/carver",
+      "minnesota/rice",
+      "minnesota/carlton",
+      "minnesota/clearwater",
+      "minnesota/hubbard",
+      "minnesota/todd",
+      "minnesota/itasca",
+      "minnesota/scott",
+      "minnesota/sherburne",
+      "minnesota/wright",
+      "minnesota/blue-earth",
+      "minnesota/douglas",
+      "minnesota/mille-lacs",
+      "minnesota/olmsted",
+      "minnesota/otter-tail",
+      "minnesota/ramsey",
+      "minnesota/stearns",
+      "minnesota/washington",
+      "minnesota/anoka",
+      "minnesota/becker",
+      "minnesota/cottonwood",
+      "minnesota/meeker",
+      "minnesota/dakota",
+      "minnesota/fillmore",
+      "minnesota/kandiyohi",
+      "minnesota/mower",
+      "minnesota/steele",
+      "minnesota/winona",
+      "minnesota/aitkin",
+      "minnesota/pipestone"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Mint",
+    "url": "https://livemint.com/rss/news",
+    "mediaType": "article",
+    "itemSource": "Mint",
+    "counties": [
+      "california/napa",
+      "north-carolina/caswell",
+      "california/contra-costa",
+      "virginia/culpeper",
+      "west-virginia/mcdowell"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Mississippi Today",
+    "url": "https://mississippitoday.org/feed/",
+    "mediaType": "article",
+    "itemSource": "Mississippi Today",
+    "counties": [
+      "mississippi/madison"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Mississippi Today (2)",
+    "url": "https://mississippitoday.org/?feed=rss2",
+    "mediaType": "article",
+    "itemSource": "Mississippi Today",
+    "counties": [
+      "mississippi/madison"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Missourinet",
+    "url": "https://www.missourinet.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Missourinet",
+    "counties": [
+      "missouri/camden"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Missourinet (2)",
+    "url": "https://missourinet.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Missourinet",
+    "counties": [
+      "missouri/camden"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "mlive",
+    "url": "https://mlive.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "mlive",
+    "counties": [
+      "michigan/roscommon",
+      "michigan/hillsdale",
+      "michigan/jackson",
+      "michigan/lenawee",
+      "michigan/gogebic",
+      "michigan/cass",
+      "michigan/allegan",
+      "michigan/barry",
+      "michigan/clare",
+      "michigan/macomb",
+      "michigan/shiawassee",
+      "michigan/charlevoix",
+      "michigan/gratiot",
+      "michigan/kalkaska",
+      "michigan/bay",
+      "michigan/van-buren",
+      "michigan/muskegon",
+      "michigan/saginaw",
+      "michigan/marquette",
+      "michigan/ottawa",
+      "michigan/schoolcraft",
+      "michigan/wayne",
+      "tennessee/rutherford",
+      "michigan/alpena",
+      "michigan/menominee",
+      "michigan/otsego",
+      "michigan/benzie",
+      "michigan/cheboygan",
+      "michigan/crawford",
+      "michigan/emmet",
+      "michigan/grand-traverse",
+      "michigan/lapeer",
+      "michigan/luce",
+      "michigan/mackinac",
+      "michigan/missaukee",
+      "michigan/montmorency",
+      "michigan/oakland",
+      "michigan/ogemaw",
+      "michigan/delta",
+      "michigan/newaygo"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Montana Free Press",
+    "url": "https://montanafreepress.org/feed/",
+    "mediaType": "article",
+    "itemSource": "Montana Free Press",
+    "counties": [
+      "montana/yellowstone",
+      "montana/missoula"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Montana Free Press (2)",
+    "url": "https://montanafreepress.org/rss",
+    "mediaType": "article",
+    "itemSource": "Montana Free Press",
+    "counties": [
+      "montana/yellowstone",
+      "montana/missoula"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Morning Journal",
+    "url": "https://morningjournalnews.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Morning Journal",
+    "counties": [
+      "ohio/mahoning"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Morning Journal (2)",
+    "url": "https://morningjournalnews.com/rss",
+    "mediaType": "article",
+    "itemSource": "Morning Journal",
+    "counties": [
+      "ohio/mahoning"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Moscow-Pullman Daily News",
+    "url": "https://dnews.com/rss.xml",
+    "mediaType": "article",
+    "itemSource": "Moscow-Pullman Daily News",
+    "counties": [
+      "idaho/valley"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Mother Jones",
+    "url": "https://www.motherjones.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Mother Jones",
+    "counties": [
+      "iowa/linn",
+      "maine/york",
+      "mississippi/rankin",
+      "texas/val-verde"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Mother Jones (2)",
+    "url": "https://motherjones.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Mother Jones",
+    "counties": [
+      "iowa/linn",
+      "maine/york",
+      "mississippi/rankin",
+      "texas/val-verde"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Mountain Home News",
+    "url": "https://mountainhomenews.com/rss.xml",
+    "mediaType": "article",
+    "itemSource": "Mountain Home News",
+    "counties": [
+      "idaho/gem"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Mountain Top Media",
+    "url": "https://mountain-topmedia.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Mountain Top Media",
+    "counties": [
+      "virginia/dickenson",
+      "kentucky/wolfe",
+      "kentucky/letcher"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Mountain Top Media (2)",
+    "url": "https://mountain-topmedia.com/rss",
+    "mediaType": "article",
+    "itemSource": "Mountain Top Media",
+    "counties": [
+      "virginia/dickenson",
+      "kentucky/wolfe",
+      "kentucky/letcher"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
     "name": "MPR News",
     "url": "https://www.mprnews.org/feed/homepage",
     "mediaType": "article",
     "itemSource": "MPR News",
     "counties": [
-      "texas/washington"
+      "minnesota/chisago",
+      "minnesota/redwood",
+      "minnesota/houston",
+      "illinois/champaign",
+      "minnesota/nobles",
+      "minnesota/scott",
+      "minnesota/cook",
+      "minnesota/crow-wing",
+      "minnesota/faribault",
+      "minnesota/winona",
+      "texas/washington",
+      "minnesota/wilkin",
+      "minnesota/carver",
+      "minnesota/hennepin",
+      "minnesota/ramsey",
+      "minnesota/sherburne"
     ],
     "trustedForCountyTier": false
   },
@@ -1161,12 +9346,55 @@ export const discoveredRegionalSources: DirectSource[] = [
     "trustedForCountyTier": false
   },
   {
+    "name": "Mycentraloregon",
+    "url": "https://www.mycentraloregon.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Mycentraloregon",
+    "counties": [
+      "oregon/crook"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Mycentraloregon (2)",
+    "url": "https://mycentraloregon.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Mycentraloregon",
+    "counties": [
+      "oregon/crook"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Mychamplainvalley",
+    "url": "https://mychamplainvalley.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Mychamplainvalley",
+    "counties": [
+      "vermont/chittenden",
+      "new-york/clinton"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Mychamplainvalley (2)",
+    "url": "https://mychamplainvalley.com/rss",
+    "mediaType": "article",
+    "itemSource": "Mychamplainvalley",
+    "counties": [
+      "vermont/chittenden",
+      "new-york/clinton"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
     "name": "MyHighPlains",
     "url": "https://myhighplains.com/feed/",
     "mediaType": "article",
     "itemSource": "MyHighPlains",
     "counties": [
-      "texas/randall"
+      "texas/randall",
+      "california/monterey"
     ],
     "trustedForCountyTier": false
   },
@@ -1176,7 +9404,199 @@ export const discoveredRegionalSources: DirectSource[] = [
     "mediaType": "article",
     "itemSource": "MyHighPlains",
     "counties": [
-      "texas/randall"
+      "texas/randall",
+      "california/monterey"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Mysuncoast",
+    "url": "https://mysuncoast.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "Mysuncoast",
+    "counties": [
+      "florida/manatee",
+      "florida/charlotte"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Mywabashvalley",
+    "url": "https://mywabashvalley.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Mywabashvalley",
+    "counties": [
+      "indiana/martin"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Mywabashvalley (2)",
+    "url": "https://mywabashvalley.com/rss",
+    "mediaType": "article",
+    "itemSource": "Mywabashvalley",
+    "counties": [
+      "indiana/martin"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "NBC 10 Philadelphia",
+    "url": "https://www.nbcphiladelphia.com/?rss=y",
+    "mediaType": "article",
+    "itemSource": "NBC 10 Philadelphia",
+    "counties": [
+      "pennsylvania/bucks",
+      "pennsylvania/montgomery",
+      "new-jersey/atlantic",
+      "new-jersey/ocean",
+      "new-jersey/gloucester",
+      "delaware/kent",
+      "delaware/new-castle",
+      "new-jersey/cape-may",
+      "new-jersey/mercer",
+      "pennsylvania/delaware",
+      "pennsylvania/lehigh",
+      "new-jersey/camden",
+      "new-jersey/salem",
+      "new-jersey/cumberland",
+      "pennsylvania/berks",
+      "pennsylvania/dauphin",
+      "pennsylvania/lebanon",
+      "new-jersey/burlington",
+      "pennsylvania/northampton",
+      "pennsylvania/york"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "NBC 10 Philadelphia (2)",
+    "url": "https://nbcphiladelphia.com/news/feed/",
+    "mediaType": "article",
+    "itemSource": "NBC 10 Philadelphia",
+    "counties": [
+      "pennsylvania/bucks",
+      "pennsylvania/montgomery",
+      "new-jersey/atlantic",
+      "new-jersey/ocean",
+      "new-jersey/gloucester",
+      "delaware/kent",
+      "delaware/new-castle",
+      "new-jersey/cape-may",
+      "new-jersey/mercer",
+      "pennsylvania/delaware",
+      "pennsylvania/lehigh",
+      "new-jersey/camden",
+      "new-jersey/salem",
+      "new-jersey/cumberland",
+      "pennsylvania/berks",
+      "pennsylvania/dauphin",
+      "pennsylvania/lebanon",
+      "new-jersey/burlington",
+      "pennsylvania/northampton",
+      "pennsylvania/york"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "NBC 6 South Florida",
+    "url": "https://www.nbcmiami.com/?rss=y",
+    "mediaType": "article",
+    "itemSource": "NBC 6 South Florida",
+    "counties": [
+      "florida/orange",
+      "florida/broward",
+      "florida/marion"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "NBC 6 South Florida (2)",
+    "url": "https://nbcmiami.com/news/rss",
+    "mediaType": "article",
+    "itemSource": "NBC 6 South Florida",
+    "counties": [
+      "florida/orange",
+      "florida/broward",
+      "florida/marion"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "NBC 7 San Diego",
+    "url": "https://www.nbcsandiego.com/?rss=y",
+    "mediaType": "article",
+    "itemSource": "NBC 7 San Diego",
+    "counties": [
+      "california/san-diego"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "NBC 7 San Diego (2)",
+    "url": "https://nbcsandiego.com/news/feed/",
+    "mediaType": "article",
+    "itemSource": "NBC 7 San Diego",
+    "counties": [
+      "california/san-diego"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "NBC Bay Area",
+    "url": "https://nbcbayarea.com/news/feed/",
+    "mediaType": "article",
+    "itemSource": "NBC Bay Area",
+    "counties": [
+      "california/santa-clara",
+      "california/contra-costa"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "NBC Bay Area (2)",
+    "url": "https://nbcbayarea.com/news/local/feed/",
+    "mediaType": "article",
+    "itemSource": "NBC Bay Area",
+    "counties": [
+      "california/santa-clara",
+      "california/contra-costa"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "NBC Chicago",
+    "url": "https://www.nbcchicago.com/?rss=y",
+    "mediaType": "article",
+    "itemSource": "NBC Chicago",
+    "counties": [
+      "illinois/kankakee",
+      "illinois/dupage",
+      "indiana/lake",
+      "illinois/dekalb",
+      "illinois/winnebago",
+      "wisconsin/racine",
+      "illinois/shelby",
+      "illinois/stephenson",
+      "illinois/will"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "NBC Chicago (2)",
+    "url": "https://nbcchicago.com/news/feed/",
+    "mediaType": "article",
+    "itemSource": "NBC Chicago",
+    "counties": [
+      "illinois/kankakee",
+      "illinois/dupage",
+      "indiana/lake",
+      "illinois/dekalb",
+      "illinois/winnebago",
+      "wisconsin/racine",
+      "illinois/shelby",
+      "illinois/stephenson",
+      "illinois/will"
     ],
     "trustedForCountyTier": false
   },
@@ -1217,15 +9637,305 @@ export const discoveredRegionalSources: DirectSource[] = [
     "trustedForCountyTier": false
   },
   {
+    "name": "NBC Los Angeles",
+    "url": "https://www.nbclosangeles.com/?rss=y",
+    "mediaType": "article",
+    "itemSource": "NBC Los Angeles",
+    "counties": [
+      "california/mendocino",
+      "california/ventura"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "NBC Los Angeles (2)",
+    "url": "https://nbclosangeles.com/news/local/feed/",
+    "mediaType": "article",
+    "itemSource": "NBC Los Angeles",
+    "counties": [
+      "california/mendocino",
+      "california/ventura"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "NBC New York",
+    "url": "https://www.nbcnewyork.com/?rss=y",
+    "mediaType": "article",
+    "itemSource": "NBC New York",
+    "counties": [
+      "new-york/rockland",
+      "new-jersey/gloucester",
+      "new-jersey/bergen"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "NBC New York (2)",
+    "url": "https://nbcnewyork.com/news/local/feed/",
+    "mediaType": "article",
+    "itemSource": "NBC New York",
+    "counties": [
+      "new-york/rockland",
+      "new-jersey/gloucester",
+      "new-jersey/bergen"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "NBC Sports",
+    "url": "https://www.nbcsports.com/index.atom",
+    "mediaType": "article",
+    "itemSource": "NBC Sports",
+    "counties": [
+      "kentucky/simpson",
+      "florida/walton",
+      "virginia/charlottesville"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "NBC26",
+    "url": "https://www.nbc26.com/index.rss",
+    "mediaType": "article",
+    "itemSource": "NBC26",
+    "counties": [
+      "wisconsin/manitowoc"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "NBC4 Washington",
+    "url": "https://www.nbcwashington.com/?rss=y",
+    "mediaType": "article",
+    "itemSource": "NBC4 Washington",
+    "counties": [
+      "virginia/culpeper",
+      "virginia/fairfax",
+      "virginia/arlington",
+      "virginia/warren",
+      "virginia/greensville",
+      "virginia/stafford",
+      "maryland/calvert",
+      "virginia/prince-william",
+      "maryland/anne-arundel",
+      "virginia/loudoun",
+      "virginia/spotsylvania",
+      "virginia/alexandria",
+      "virginia/manassas",
+      "virginia/frederick",
+      "virginia/winchester",
+      "maryland/washington",
+      "maryland/wicomico",
+      "virginia/fauquier",
+      "virginia/fredericksburg"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "NBC4 Washington (2)",
+    "url": "https://nbcwashington.com/news/feed/",
+    "mediaType": "article",
+    "itemSource": "NBC4 Washington",
+    "counties": [
+      "virginia/culpeper",
+      "virginia/fairfax",
+      "virginia/arlington",
+      "virginia/warren",
+      "virginia/greensville",
+      "virginia/stafford",
+      "maryland/calvert",
+      "virginia/prince-william",
+      "maryland/anne-arundel",
+      "virginia/loudoun",
+      "virginia/spotsylvania",
+      "virginia/alexandria",
+      "virginia/manassas",
+      "virginia/frederick",
+      "virginia/winchester",
+      "maryland/washington",
+      "maryland/wicomico",
+      "virginia/fauquier",
+      "virginia/fredericksburg"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "NBC4i",
+    "url": "https://nbc4i.com/feed/",
+    "mediaType": "article",
+    "itemSource": "NBC4i",
+    "counties": [
+      "ohio/delaware",
+      "ohio/licking",
+      "ohio/ross",
+      "ohio/fayette",
+      "ohio/fairfield",
+      "ohio/hocking",
+      "ohio/logan",
+      "ohio/madison",
+      "ohio/marion",
+      "indiana/perry",
+      "ohio/hardin",
+      "ohio/pickaway",
+      "ohio/morrow",
+      "ohio/richland",
+      "ohio/athens",
+      "ohio/crawford",
+      "ohio/gallia",
+      "ohio/jackson",
+      "ohio/knox",
+      "ohio/washington",
+      "ohio/muskingum",
+      "ohio/perry",
+      "ohio/union"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "NBC4i (2)",
+    "url": "https://nbc4i.com/rss",
+    "mediaType": "article",
+    "itemSource": "NBC4i",
+    "counties": [
+      "ohio/delaware",
+      "ohio/licking",
+      "ohio/ross",
+      "ohio/fayette",
+      "ohio/fairfield",
+      "ohio/hocking",
+      "ohio/logan",
+      "ohio/madison",
+      "ohio/marion",
+      "indiana/perry",
+      "ohio/hardin",
+      "ohio/pickaway",
+      "ohio/morrow",
+      "ohio/richland",
+      "ohio/athens",
+      "ohio/crawford",
+      "ohio/gallia",
+      "ohio/jackson",
+      "ohio/knox",
+      "ohio/washington",
+      "ohio/muskingum",
+      "ohio/perry",
+      "ohio/union"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "NEA Town Courier",
+    "url": "https://neatowncourier.com/rss.xml",
+    "mediaType": "article",
+    "itemSource": "NEA Town Courier",
+    "counties": [
+      "arkansas/mississippi"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Nevada Daily Mail",
+    "url": "https://nevadadailymail.com/rss.xml",
+    "mediaType": "article",
+    "itemSource": "Nevada Daily Mail",
+    "counties": [
+      "missouri/vernon"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "New Hampshire Public Radio",
+    "url": "https://nhpr.org/rss.xml",
+    "mediaType": "article",
+    "itemSource": "New Hampshire Public Radio",
+    "counties": [
+      "connecticut/litchfield",
+      "new-hampshire/belknap",
+      "new-hampshire/sullivan",
+      "new-hampshire/grafton"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "New Jersey 101.5",
+    "url": "https://nj1015.com/feed/",
+    "mediaType": "article",
+    "itemSource": "New Jersey 101.5",
+    "counties": [
+      "new-jersey/warren",
+      "new-jersey/cape-may"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "New Orleans CityBusiness",
+    "url": "https://neworleanscitybusiness.com/feed/",
+    "mediaType": "article",
+    "itemSource": "New Orleans CityBusiness",
+    "counties": [
+      "louisiana/orleans",
+      "louisiana/terrebonne"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "New Orleans CityBusiness (2)",
+    "url": "https://neworleanscitybusiness.com/rss",
+    "mediaType": "article",
+    "itemSource": "New Orleans CityBusiness",
+    "counties": [
+      "louisiana/orleans",
+      "louisiana/terrebonne"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
     "name": "New York Post",
     "url": "https://nypost.com/feed/",
     "mediaType": "article",
     "itemSource": "New York Post",
     "counties": [
+      "california/calaveras",
+      "california/marin",
+      "california/solano",
+      "california/fresno",
+      "california/santa-cruz",
       "texas/maverick",
+      "california/kern",
+      "california/santa-clara",
+      "indiana/madison",
+      "california/alameda",
+      "california/mendocino",
+      "california/orange",
+      "washington/spokane",
+      "california/los-angeles",
+      "california/modoc",
+      "california/nevada",
+      "california/san-joaquin",
+      "california/san-luis-obispo",
+      "california/san-mateo",
+      "california/santa-barbara",
+      "georgia/bulloch",
+      "new-york/nassau",
+      "new-york/new-york",
+      "new-york/suffolk",
+      "new-york/westchester",
+      "north-carolina/washington",
+      "north-dakota/billings",
+      "california/lassen",
+      "california/madera",
+      "california/sacramento",
+      "california/tulare",
+      "hawaii/hawaii",
+      "oregon/clackamas",
+      "virginia/tazewell",
+      "washington/kitsap",
       "texas/parker",
       "texas/webb",
-      "texas/hemphill"
+      "alabama/lee",
+      "arizona/yavapai",
+      "california/el-dorado"
     ],
     "trustedForCountyTier": false
   },
@@ -1235,10 +9945,128 @@ export const discoveredRegionalSources: DirectSource[] = [
     "mediaType": "article",
     "itemSource": "New York Post",
     "counties": [
+      "california/calaveras",
+      "california/marin",
+      "california/solano",
+      "california/fresno",
+      "california/santa-cruz",
       "texas/maverick",
+      "california/kern",
+      "california/santa-clara",
+      "indiana/madison",
+      "california/alameda",
+      "california/mendocino",
+      "california/orange",
+      "washington/spokane",
+      "california/los-angeles",
+      "california/modoc",
+      "california/nevada",
+      "california/san-joaquin",
+      "california/san-luis-obispo",
+      "california/san-mateo",
+      "california/santa-barbara",
+      "georgia/bulloch",
+      "new-york/nassau",
+      "new-york/new-york",
+      "new-york/suffolk",
+      "new-york/westchester",
+      "north-carolina/washington",
+      "north-dakota/billings",
+      "california/lassen",
+      "california/madera",
+      "california/sacramento",
+      "california/tulare",
+      "hawaii/hawaii",
+      "oregon/clackamas",
+      "virginia/tazewell",
+      "washington/kitsap",
       "texas/parker",
       "texas/webb",
-      "texas/hemphill"
+      "alabama/lee",
+      "arizona/yavapai",
+      "california/el-dorado"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Newport Dispatch",
+    "url": "https://newportdispatch.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Newport Dispatch",
+    "counties": [
+      "new-york/cayuga",
+      "new-york/otsego",
+      "vermont/lamoille"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Newport Dispatch (2)",
+    "url": "https://newportdispatch.com/rss",
+    "mediaType": "article",
+    "itemSource": "Newport Dispatch",
+    "counties": [
+      "new-york/cayuga",
+      "new-york/otsego",
+      "vermont/lamoille"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "News 5 Cleveland WEWS",
+    "url": "https://www.news5cleveland.com/index.rss",
+    "mediaType": "article",
+    "itemSource": "News 5 Cleveland WEWS",
+    "counties": [
+      "ohio/ashland",
+      "ohio/lorain",
+      "ohio/cuyahoga",
+      "ohio/medina",
+      "ohio/geauga"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "News 6 WKMG",
+    "url": "https://clickorlando.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "News 6 WKMG",
+    "counties": [
+      "florida/lake",
+      "florida/seminole",
+      "florida/volusia",
+      "florida/marion",
+      "florida/orange",
+      "florida/sumter",
+      "florida/flagler",
+      "florida/brevard",
+      "florida/polk",
+      "michigan/osceola",
+      "florida/broward"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "NEWS CENTER Maine",
+    "url": "https://www.newscentermaine.com/feeds/syndication/rss/news",
+    "mediaType": "article",
+    "itemSource": "NEWS CENTER Maine",
+    "counties": [
+      "maine/knox",
+      "maine/sagadahoc",
+      "maine/cumberland"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "NEWS CENTER Maine (2)",
+    "url": "https://newscentermaine.com/feeds/syndication/rss/news",
+    "mediaType": "article",
+    "itemSource": "NEWS CENTER Maine",
+    "counties": [
+      "maine/knox",
+      "maine/sagadahoc",
+      "maine/cumberland"
     ],
     "trustedForCountyTier": false
   },
@@ -1253,6 +10081,150 @@ export const discoveredRegionalSources: DirectSource[] = [
     "trustedForCountyTier": false
   },
   {
+    "name": "News Letter Journal",
+    "url": "https://newslj.com/rss.xml",
+    "mediaType": "article",
+    "itemSource": "News Letter Journal",
+    "counties": [
+      "wyoming/weston"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "News Radio 1310 KLIX",
+    "url": "https://newsradio1310.com/feed/",
+    "mediaType": "article",
+    "itemSource": "News Radio 1310 KLIX",
+    "counties": [
+      "idaho/jerome"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "News Radio 1310 KLIX (2)",
+    "url": "https://newsradio1310.com/rss",
+    "mediaType": "article",
+    "itemSource": "News Radio 1310 KLIX",
+    "counties": [
+      "idaho/jerome"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "NEWS10 ABC",
+    "url": "https://news10.com/feed/",
+    "mediaType": "article",
+    "itemSource": "NEWS10 ABC",
+    "counties": [
+      "new-york/rensselaer",
+      "new-york/saratoga",
+      "new-york/ulster",
+      "new-york/albany",
+      "new-york/dutchess",
+      "new-york/hamilton",
+      "new-york/schoharie",
+      "new-york/greene",
+      "new-york/chemung",
+      "new-york/sullivan",
+      "new-york/warren",
+      "vermont/rutland"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "NEWS10 ABC (2)",
+    "url": "https://news10.com/rss",
+    "mediaType": "article",
+    "itemSource": "NEWS10 ABC",
+    "counties": [
+      "new-york/rensselaer",
+      "new-york/saratoga",
+      "new-york/ulster",
+      "new-york/albany",
+      "new-york/dutchess",
+      "new-york/hamilton",
+      "new-york/schoharie",
+      "new-york/greene",
+      "new-york/chemung",
+      "new-york/sullivan",
+      "new-york/warren",
+      "vermont/rutland"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "News10NBC",
+    "url": "https://whec.com/feed/",
+    "mediaType": "article",
+    "itemSource": "News10NBC",
+    "counties": [
+      "new-york/genesee"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "News10NBC (2)",
+    "url": "https://whec.com/rss",
+    "mediaType": "article",
+    "itemSource": "News10NBC",
+    "counties": [
+      "new-york/genesee"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "News4Jax",
+    "url": "https://news4jax.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "News4Jax",
+    "counties": [
+      "georgia/brantley",
+      "florida/clay",
+      "georgia/ware",
+      "georgia/glynn",
+      "florida/bradford",
+      "florida/nassau",
+      "florida/putnam",
+      "florida/flagler",
+      "florida/orange",
+      "georgia/camden",
+      "texas/clay",
+      "florida/alachua",
+      "georgia/charlton",
+      "georgia/pierce",
+      "florida/baker",
+      "florida/sumter",
+      "florida/union",
+      "florida/volusia",
+      "georgia/clinch"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "News9",
+    "url": "https://www.news9.com/index.rss",
+    "mediaType": "article",
+    "itemSource": "News9",
+    "counties": [
+      "oklahoma/caddo",
+      "oklahoma/logan",
+      "oklahoma/comanche",
+      "oklahoma/major",
+      "oklahoma/tulsa",
+      "oklahoma/harmon",
+      "oklahoma/murray",
+      "oklahoma/oklahoma",
+      "oklahoma/payne",
+      "oklahoma/love",
+      "oklahoma/bryan",
+      "oklahoma/garfield",
+      "oklahoma/grady",
+      "oklahoma/mccurtain",
+      "oklahoma/cleveland"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
     "name": "NewsChannel 10",
     "url": "https://newschannel10.com/arc/outboundfeeds/rss/?outputType=xml",
     "mediaType": "article",
@@ -1261,6 +10233,34 @@ export const discoveredRegionalSources: DirectSource[] = [
       "texas/deaf-smith",
       "texas/wheeler",
       "texas/hutchinson"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "NewsOne",
+    "url": "https://newsone.com/feed/",
+    "mediaType": "article",
+    "itemSource": "NewsOne",
+    "counties": [
+      "georgia/camden",
+      "georgia/muscogee",
+      "mississippi/adams",
+      "north-carolina/granville",
+      "texas/tarrant"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "NewsOne (2)",
+    "url": "https://newsone.com/rss",
+    "mediaType": "article",
+    "itemSource": "NewsOne",
+    "counties": [
+      "georgia/camden",
+      "georgia/muscogee",
+      "mississippi/adams",
+      "north-carolina/granville",
+      "texas/tarrant"
     ],
     "trustedForCountyTier": false
   },
@@ -1309,12 +10309,747 @@ export const discoveredRegionalSources: DirectSource[] = [
     "trustedForCountyTier": false
   },
   {
+    "name": "Next City",
+    "url": "https://nextcity.org/feeds/features",
+    "mediaType": "article",
+    "itemSource": "Next City",
+    "counties": [
+      "virginia/charlottesville"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Next City (2)",
+    "url": "https://nextcity.org/feeds/daily",
+    "mediaType": "article",
+    "itemSource": "Next City",
+    "counties": [
+      "virginia/charlottesville"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Nj",
+    "url": "https://nj.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "Nj",
+    "counties": [
+      "new-jersey/mercer",
+      "new-jersey/salem",
+      "pennsylvania/montgomery",
+      "new-jersey/hunterdon",
+      "new-jersey/ocean",
+      "new-jersey/passaic",
+      "new-jersey/somerset",
+      "florida/okaloosa",
+      "new-jersey/burlington",
+      "new-jersey/cape-may",
+      "ohio/stark",
+      "new-jersey/camden",
+      "new-jersey/morris"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "NKyTribune",
+    "url": "https://nkytribune.com/feed/",
+    "mediaType": "article",
+    "itemSource": "NKyTribune",
+    "counties": [
+      "kentucky/bourbon",
+      "kentucky/campbell",
+      "kentucky/kenton"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "North Carolina Health News",
+    "url": "https://www.northcarolinahealthnews.org/feed/",
+    "mediaType": "article",
+    "itemSource": "North Carolina Health News",
+    "counties": [
+      "north-carolina/davie"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "North Carolina Health News (2)",
+    "url": "https://www.northcarolinahealthnews.org/comments/feed/",
+    "mediaType": "article",
+    "itemSource": "North Carolina Health News",
+    "counties": [
+      "north-carolina/davie"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "North Forty News",
+    "url": "https://northfortynews.com/feed/",
+    "mediaType": "article",
+    "itemSource": "North Forty News",
+    "counties": [
+      "colorado/larimer"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "North Forty News (2)",
+    "url": "https://northfortynews.com/rss",
+    "mediaType": "article",
+    "itemSource": "North Forty News",
+    "counties": [
+      "colorado/larimer"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Northeast Mississippi Daily Journal",
+    "url": "https://djournal.com/rss",
+    "mediaType": "article",
+    "itemSource": "Northeast Mississippi Daily Journal",
+    "counties": [
+      "kentucky/lee",
+      "florida/lee"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Northeast Mississippi Daily Journal (2)",
+    "url": "https://djournal.com/rss/local",
+    "mediaType": "article",
+    "itemSource": "Northeast Mississippi Daily Journal",
+    "counties": [
+      "kentucky/lee",
+      "florida/lee"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Northescambia",
+    "url": "http://www.northescambia.com/feed",
+    "mediaType": "article",
+    "itemSource": "Northescambia",
+    "counties": [
+      "florida/escambia"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Northescambia (2)",
+    "url": "http://www.northescambia.com/feed/atom",
+    "mediaType": "article",
+    "itemSource": "Northescambia",
+    "counties": [
+      "florida/escambia"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Northwest Georgia News",
+    "url": "http://www.northwestgeorgianews.com/search/?f=rss&t=article&c=rome&l=50&s=start_time&sd=desc",
+    "mediaType": "article",
+    "itemSource": "Northwest Georgia News",
+    "counties": [
+      "georgia/catoosa"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "NRI Pulse",
+    "url": "https://nripulse.com/feed/",
+    "mediaType": "article",
+    "itemSource": "NRI Pulse",
+    "counties": [
+      "georgia/forsyth",
+      "georgia/gwinnett"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "NRI Pulse (2)",
+    "url": "https://nripulse.com/comments/feed/",
+    "mediaType": "article",
+    "itemSource": "NRI Pulse",
+    "counties": [
+      "georgia/forsyth",
+      "georgia/gwinnett"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "NTD News",
+    "url": "https://ntd.com/feed/",
+    "mediaType": "article",
+    "itemSource": "NTD News",
+    "counties": [
+      "california/mariposa",
+      "tennessee/shelby"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "NTD News (2)",
+    "url": "https://ntd.com/news/feed/",
+    "mediaType": "article",
+    "itemSource": "NTD News",
+    "counties": [
+      "california/mariposa",
+      "tennessee/shelby"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "NWAhomepage",
+    "url": "https://nwahomepage.com/feed/",
+    "mediaType": "article",
+    "itemSource": "NWAhomepage",
+    "counties": [
+      "oklahoma/sequoyah",
+      "arkansas/madison",
+      "arkansas/franklin"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "NWAhomepage (2)",
+    "url": "https://nwahomepage.com/rss",
+    "mediaType": "article",
+    "itemSource": "NWAhomepage",
+    "counties": [
+      "oklahoma/sequoyah",
+      "arkansas/madison",
+      "arkansas/franklin"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Observer Today",
+    "url": "https://observertoday.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Observer Today",
+    "counties": [
+      "new-york/chautauqua"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Observer Today (2)",
+    "url": "https://observertoday.com/rss",
+    "mediaType": "article",
+    "itemSource": "Observer Today",
+    "counties": [
+      "new-york/chautauqua"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Officer",
+    "url": "https://officer.com/__rss/website-scheduled-content.xml?input=%7B%22sectionAlias%22%3A%22home%22%7D",
+    "mediaType": "article",
+    "itemSource": "Officer",
+    "counties": [
+      "tennessee/weakley",
+      "oklahoma/creek",
+      "wyoming/carbon",
+      "arkansas/crittenden",
+      "oklahoma/oklahoma"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "OPB",
+    "url": "https://opb.org/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "OPB",
+    "counties": [
+      "oregon/lake",
+      "oregon/deschutes",
+      "oregon/marion",
+      "oregon/coos",
+      "oregon/crook",
+      "oregon/curry",
+      "oregon/grant",
+      "oregon/harney",
+      "oregon/morrow",
+      "washington/klickitat",
+      "oregon/lincoln",
+      "oregon/lane",
+      "oregon/umatilla",
+      "washington/clark",
+      "oregon/josephine",
+      "oregon/columbia",
+      "oregon/linn",
+      "oregon/wheeler",
+      "washington/pacific",
+      "washington/snohomish",
+      "idaho/owyhee",
+      "oregon/klamath",
+      "oregon/malheur",
+      "oregon/multnomah",
+      "oregon/benton",
+      "oregon/jackson",
+      "oregon/jefferson",
+      "oregon/sherman",
+      "oregon/union",
+      "oregon/wallowa",
+      "oregon/wasco",
+      "oregon/washington",
+      "oregon/clackamas",
+      "oregon/tillamook",
+      "washington/lewis",
+      "washington/skamania"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Oregon Business",
+    "url": "https://oregonbusiness.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Oregon Business",
+    "counties": [
+      "oregon/lake"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Oregon Business (2)",
+    "url": "https://oregonbusiness.com/rss",
+    "mediaType": "article",
+    "itemSource": "Oregon Business",
+    "counties": [
+      "oregon/lake"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Oregonian",
+    "url": "https://oregonlive.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "Oregonian",
+    "counties": [
+      "oregon/curry",
+      "oregon/crook",
+      "oregon/klamath",
+      "oregon/lane",
+      "oregon/morrow",
+      "oregon/tillamook",
+      "oregon/wasco",
+      "oregon/marion",
+      "oregon/yamhill",
+      "oregon/benton",
+      "oregon/deschutes",
+      "oregon/jackson",
+      "florida/washington",
+      "oregon/columbia",
+      "oregon/linn",
+      "oregon/sherman",
+      "oregon/lincoln",
+      "oregon/coos",
+      "oregon/douglas",
+      "oregon/umatilla",
+      "oregon/wallowa",
+      "washington/clark",
+      "washington/cowlitz"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Orlando Weekly",
+    "url": "https://www.orlandoweekly.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Orlando Weekly",
+    "counties": [
+      "florida/volusia",
+      "florida/lake"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Orlando Weekly (2)",
+    "url": "https://orlandoweekly.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Orlando Weekly",
+    "counties": [
+      "florida/volusia",
+      "florida/lake"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Osceola News Gazette",
+    "url": "https://aroundosceola.com/rss.xml",
+    "mediaType": "article",
+    "itemSource": "Osceola News Gazette",
+    "counties": [
+      "florida/osceola"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Osceola-Sentinel Tribune",
+    "url": "https://www.osceolaiowa.com/rss/articles",
+    "mediaType": "article",
+    "itemSource": "Osceola-Sentinel Tribune",
+    "counties": [
+      "iowa/clarke"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Oswego County Today",
+    "url": "https://oswegocountytoday.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Oswego County Today",
+    "counties": [
+      "new-york/oswego"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Oswego County Today (2)",
+    "url": "https://oswegocountytoday.com/comments/feed/",
+    "mediaType": "article",
+    "itemSource": "Oswego County Today",
+    "counties": [
+      "new-york/oswego"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "OurQuadCities",
+    "url": "https://ourquadcities.com/feed/",
+    "mediaType": "article",
+    "itemSource": "OurQuadCities",
+    "counties": [
+      "illinois/whiteside",
+      "illinois/rock-island",
+      "iowa/scott",
+      "iowa/clinton"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "OurQuadCities (2)",
+    "url": "https://ourquadcities.com/rss",
+    "mediaType": "article",
+    "itemSource": "OurQuadCities",
+    "counties": [
+      "illinois/whiteside",
+      "illinois/rock-island",
+      "iowa/scott",
+      "iowa/clinton"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Ozarks First",
+    "url": "https://ozarksfirst.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Ozarks First",
+    "counties": [
+      "missouri/cedar",
+      "missouri/shannon",
+      "missouri/taney",
+      "arkansas/marion",
+      "missouri/camden",
+      "missouri/greene",
+      "missouri/wright",
+      "arkansas/baxter",
+      "missouri/howell",
+      "missouri/polk",
+      "arkansas/boone",
+      "arkansas/carroll",
+      "arkansas/izard",
+      "missouri/laclede",
+      "missouri/phelps",
+      "missouri/texas",
+      "arkansas/ouachita",
+      "missouri/barry",
+      "missouri/oregon",
+      "missouri/webster",
+      "arkansas/newton",
+      "missouri/dallas"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Ozarks First (2)",
+    "url": "https://ozarksfirst.com/rss",
+    "mediaType": "article",
+    "itemSource": "Ozarks First",
+    "counties": [
+      "missouri/cedar",
+      "missouri/shannon",
+      "missouri/taney",
+      "arkansas/marion",
+      "missouri/camden",
+      "missouri/greene",
+      "missouri/wright",
+      "arkansas/baxter",
+      "missouri/howell",
+      "missouri/polk",
+      "arkansas/boone",
+      "arkansas/carroll",
+      "arkansas/izard",
+      "missouri/laclede",
+      "missouri/phelps",
+      "missouri/texas",
+      "arkansas/ouachita",
+      "missouri/barry",
+      "missouri/oregon",
+      "missouri/webster",
+      "arkansas/newton",
+      "missouri/dallas"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Palmyra Spectator",
+    "url": "https://palmyra-spectator.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Palmyra Spectator",
+    "counties": [
+      "missouri/marion"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Palmyra Spectator (2)",
+    "url": "https://palmyra-spectator.com/rss",
+    "mediaType": "article",
+    "itemSource": "Palmyra Spectator",
+    "counties": [
+      "missouri/marion"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Palo Alto Online",
+    "url": "https://www.paloaltoonline.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Palo Alto Online",
+    "counties": [
+      "california/san-mateo",
+      "california/santa-clara"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Palo Alto Online (2)",
+    "url": "https://www.paloaltoonline.com/comments/feed/",
+    "mediaType": "article",
+    "itemSource": "Palo Alto Online",
+    "counties": [
+      "california/san-mateo",
+      "california/santa-clara"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Parkersburg News and Sentinel",
+    "url": "https://newsandsentinel.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Parkersburg News and Sentinel",
+    "counties": [
+      "ohio/washington",
+      "ohio/morgan",
+      "west-virginia/wirt",
+      "washington/jefferson",
+      "west-virginia/calhoun",
+      "ohio/belmont",
+      "west-virginia/pleasants",
+      "west-virginia/randolph",
+      "west-virginia/ritchie",
+      "west-virginia/fayette"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Parkersburg News and Sentinel (2)",
+    "url": "https://newsandsentinel.com/rss",
+    "mediaType": "article",
+    "itemSource": "Parkersburg News and Sentinel",
+    "counties": [
+      "ohio/washington",
+      "ohio/morgan",
+      "west-virginia/wirt",
+      "washington/jefferson",
+      "west-virginia/calhoun",
+      "ohio/belmont",
+      "west-virginia/pleasants",
+      "west-virginia/randolph",
+      "west-virginia/ritchie",
+      "west-virginia/fayette"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Pbcommercial",
+    "url": "https://pbcommercial.com/rss",
+    "mediaType": "article",
+    "itemSource": "Pbcommercial",
+    "counties": [
+      "arkansas/jefferson",
+      "arkansas/ashley"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Pbcommercial (2)",
+    "url": "https://pbcommercial.com/category/news/feed/",
+    "mediaType": "article",
+    "itemSource": "Pbcommercial",
+    "counties": [
+      "arkansas/jefferson",
+      "arkansas/ashley"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Peninsula Daily News",
+    "url": "https://peninsuladailynews.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Peninsula Daily News",
+    "counties": [
+      "washington/jefferson",
+      "washington/clallam"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Peninsula Daily News (2)",
+    "url": "https://peninsuladailynews.com/rss",
+    "mediaType": "article",
+    "itemSource": "Peninsula Daily News",
+    "counties": [
+      "washington/jefferson",
+      "washington/clallam"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Pet Rescue Report",
+    "url": "https://petrescuereport.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Pet Rescue Report",
+    "counties": [
+      "florida/santa-rosa",
+      "oklahoma/mcclain",
+      "georgia/polk"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Pet Rescue Report (2)",
+    "url": "https://petrescuereport.com/rss",
+    "mediaType": "article",
+    "itemSource": "Pet Rescue Report",
+    "counties": [
+      "florida/santa-rosa",
+      "oklahoma/mcclain",
+      "georgia/polk"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Phillyvoice",
+    "url": "https://phillyvoice.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Phillyvoice",
+    "counties": [
+      "pennsylvania/bucks",
+      "new-jersey/burlington",
+      "new-jersey/salem",
+      "pennsylvania/blair"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Phys",
+    "url": "https://phys.org/rss-feed/",
+    "mediaType": "article",
+    "itemSource": "Phys",
+    "counties": [
+      "utah/salt-lake",
+      "colorado/broomfield",
+      "virginia/hanover"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Phys (2)",
+    "url": "https://phys.org/rss-feed/breaking/",
+    "mediaType": "article",
+    "itemSource": "Phys",
+    "counties": [
+      "utah/salt-lake",
+      "colorado/broomfield",
+      "virginia/hanover"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Pine and Lakes Echo Journal",
+    "url": "https://www.pineandlakes.com/index.rss",
+    "mediaType": "article",
+    "itemSource": "Pine and Lakes Echo Journal",
+    "counties": [
+      "minnesota/cass"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Pipe Dream",
+    "url": "https://www.bupipedream.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Pipe Dream",
+    "counties": [
+      "new-york/broome"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Pipe Dream (2)",
+    "url": "https://bupipedream.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Pipe Dream",
+    "counties": [
+      "new-york/broome"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Plant Services",
+    "url": "https://plantservices.com/__rss/website-scheduled-content.xml?input=%7B%22sectionAlias%22%3A%22home%22%7D",
+    "mediaType": "article",
+    "itemSource": "Plant Services",
+    "counties": [
+      "north-carolina/catawba",
+      "georgia/hall"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Plastics Today",
+    "url": "https://plasticstoday.com/rss.xml",
+    "mediaType": "article",
+    "itemSource": "Plastics Today",
+    "counties": [
+      "north-carolina/henderson"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
     "name": "PolitiFact",
     "url": "https://politifact.com/feed/",
     "mediaType": "article",
     "itemSource": "PolitiFact",
     "counties": [
-      "texas/gaines"
+      "ohio/clark",
+      "texas/gaines",
+      "new-york/nassau",
+      "illinois/will",
+      "new-york/rockland"
     ],
     "trustedForCountyTier": false
   },
@@ -1324,7 +11059,137 @@ export const discoveredRegionalSources: DirectSource[] = [
     "mediaType": "article",
     "itemSource": "PolitiFact",
     "counties": [
-      "texas/gaines"
+      "ohio/clark",
+      "texas/gaines",
+      "new-york/nassau",
+      "illinois/will",
+      "new-york/rockland"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Popular Mechanics",
+    "url": "https://popularmechanics.com/rss",
+    "mediaType": "article",
+    "itemSource": "Popular Mechanics",
+    "counties": [
+      "wisconsin/marinette",
+      "arkansas/van-buren"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Port City Daily",
+    "url": "https://portcitydaily.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Port City Daily",
+    "counties": [
+      "north-carolina/pender",
+      "north-carolina/brunswick",
+      "north-carolina/new-hanover"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Port City Daily (2)",
+    "url": "https://portcitydaily.com/rss",
+    "mediaType": "article",
+    "itemSource": "Port City Daily",
+    "counties": [
+      "north-carolina/pender",
+      "north-carolina/brunswick",
+      "north-carolina/new-hanover"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Portland Press Herald",
+    "url": "https://www.pressherald.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Portland Press Herald",
+    "counties": [
+      "maine/oxford",
+      "maine/piscataquis",
+      "maine/york",
+      "maine/penobscot",
+      "maine/aroostook",
+      "maine/hancock",
+      "maine/kennebec"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Portland Press Herald (2)",
+    "url": "https://pressherald.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Portland Press Herald",
+    "counties": [
+      "maine/oxford",
+      "maine/piscataquis",
+      "maine/york",
+      "maine/penobscot",
+      "maine/aroostook",
+      "maine/hancock",
+      "maine/kennebec"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Post-Bulletin",
+    "url": "https://www.postbulletin.com/index.rss",
+    "mediaType": "article",
+    "itemSource": "Post-Bulletin",
+    "counties": [
+      "iowa/allamakee",
+      "minnesota/wabasha"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Potomac Local News",
+    "url": "https://potomaclocal.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Potomac Local News",
+    "counties": [
+      "virginia/stafford",
+      "virginia/manassas"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Potomac Local News (2)",
+    "url": "https://potomaclocal.com/rss",
+    "mediaType": "article",
+    "itemSource": "Potomac Local News",
+    "counties": [
+      "virginia/stafford",
+      "virginia/manassas"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Power Engineering",
+    "url": "https://power-eng.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Power Engineering",
+    "counties": [
+      "idaho/twin-falls",
+      "georgia/walton",
+      "kansas/sumner",
+      "mississippi/greene"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Power Engineering (2)",
+    "url": "https://power-eng.com/rss",
+    "mediaType": "article",
+    "itemSource": "Power Engineering",
+    "counties": [
+      "idaho/twin-falls",
+      "georgia/walton",
+      "kansas/sumner",
+      "mississippi/greene"
     ],
     "trustedForCountyTier": false
   },
@@ -1334,8 +11199,22 @@ export const discoveredRegionalSources: DirectSource[] = [
     "mediaType": "article",
     "itemSource": "POWER Magazine",
     "counties": [
+      "west-virginia/brooke",
       "texas/milam",
+      "florida/brevard",
+      "kentucky/bell",
+      "new-york/orange",
       "texas/haskell",
+      "florida/okeechobee",
+      "illinois/montgomery",
+      "illinois/washington",
+      "nevada/churchill",
+      "nevada/eureka",
+      "ohio/columbiana",
+      "virginia/albemarle",
+      "virginia/fluvanna",
+      "virginia/rockingham",
+      "wisconsin/columbia",
       "texas/calhoun",
       "texas/runnels",
       "texas/somervell"
@@ -1348,11 +11227,45 @@ export const discoveredRegionalSources: DirectSource[] = [
     "mediaType": "article",
     "itemSource": "POWER Magazine",
     "counties": [
+      "west-virginia/brooke",
       "texas/milam",
+      "florida/brevard",
+      "kentucky/bell",
+      "new-york/orange",
       "texas/haskell",
+      "florida/okeechobee",
+      "illinois/montgomery",
+      "illinois/washington",
+      "nevada/churchill",
+      "nevada/eureka",
+      "ohio/columbiana",
+      "virginia/albemarle",
+      "virginia/fluvanna",
+      "virginia/rockingham",
+      "wisconsin/columbia",
       "texas/calhoun",
       "texas/runnels",
       "texas/somervell"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Poynter",
+    "url": "https://poynter.org/feed/",
+    "mediaType": "article",
+    "itemSource": "Poynter",
+    "counties": [
+      "alaska/northwest-arctic"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Poynter (2)",
+    "url": "https://poynter.org/rss",
+    "mediaType": "article",
+    "itemSource": "Poynter",
+    "counties": [
+      "alaska/northwest-arctic"
     ],
     "trustedForCountyTier": false
   },
@@ -1362,8 +11275,29 @@ export const discoveredRegionalSources: DirectSource[] = [
     "mediaType": "article",
     "itemSource": "ProPublica",
     "counties": [
+      "new-mexico/mckinley",
       "texas/goliad",
-      "texas/kerr"
+      "illinois/alexander",
+      "mississippi/benton",
+      "missouri/warren",
+      "texas/kerr",
+      "illinois/fulton",
+      "ohio/adams"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "ProPublica",
+    "url": "https://www.propublica.org/feeds/propublica/main",
+    "mediaType": "article",
+    "itemSource": "ProPublica",
+    "counties": [
+      "alabama/escambia",
+      "georgia/morgan",
+      "indiana/wayne",
+      "kentucky/russell",
+      "missouri/marion",
+      "new-jersey/mercer"
     ],
     "trustedForCountyTier": false
   },
@@ -1373,8 +11307,220 @@ export const discoveredRegionalSources: DirectSource[] = [
     "mediaType": "article",
     "itemSource": "ProPublica",
     "counties": [
+      "new-mexico/mckinley",
       "texas/goliad",
-      "texas/kerr"
+      "illinois/alexander",
+      "mississippi/benton",
+      "missouri/warren",
+      "texas/kerr",
+      "illinois/fulton",
+      "ohio/adams"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Providence Business News",
+    "url": "https://pbn.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Providence Business News",
+    "counties": [
+      "rhode-island/newport"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Providence Business News (2)",
+    "url": "https://pbn.com/comments/feed/",
+    "mediaType": "article",
+    "itemSource": "Providence Business News",
+    "counties": [
+      "rhode-island/newport"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Psychology Today",
+    "url": "https://www.psychologytoday.com/us/front/feed",
+    "mediaType": "article",
+    "itemSource": "Psychology Today",
+    "counties": [
+      "colorado/denver",
+      "pennsylvania/philadelphia",
+      "florida/desoto",
+      "maine/hancock",
+      "new-york/rockland"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Psychology Today (2)",
+    "url": "https://psychologytoday.com/news/feed/",
+    "mediaType": "article",
+    "itemSource": "Psychology Today",
+    "counties": [
+      "colorado/denver",
+      "pennsylvania/philadelphia",
+      "florida/desoto",
+      "maine/hancock",
+      "new-york/rockland"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Pueblo Star Journal",
+    "url": "https://pueblostarjournal.org/feed/",
+    "mediaType": "article",
+    "itemSource": "Pueblo Star Journal",
+    "counties": [
+      "colorado/pueblo"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Pueblo Star Journal (2)",
+    "url": "https://pueblostarjournal.org/rss",
+    "mediaType": "article",
+    "itemSource": "Pueblo Star Journal",
+    "counties": [
+      "colorado/pueblo"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Pullman Radio",
+    "url": "https://pullmanradio.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Pullman Radio",
+    "counties": [
+      "washington/whitman"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Pullman Radio (2)",
+    "url": "https://pullmanradio.com/rss",
+    "mediaType": "article",
+    "itemSource": "Pullman Radio",
+    "counties": [
+      "washington/whitman"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "PV Tech",
+    "url": "https://www.pv-tech.org/feed/",
+    "mediaType": "article",
+    "itemSource": "PV Tech",
+    "counties": [
+      "washington/grant",
+      "texas/coke",
+      "texas/hemphill"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "PV Tech (2)",
+    "url": "https://pv-tech.org/feed/",
+    "mediaType": "article",
+    "itemSource": "PV Tech",
+    "counties": [
+      "washington/grant",
+      "texas/coke",
+      "texas/hemphill"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "QSR magazine",
+    "url": "https://qsrmagazine.com/feed/",
+    "mediaType": "article",
+    "itemSource": "QSR magazine",
+    "counties": [
+      "california/orange",
+      "utah/tooele",
+      "texas/kleberg",
+      "georgia/forsyth",
+      "virginia/alexandria"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Radio Ink",
+    "url": "https://radioink.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Radio Ink",
+    "counties": [
+      "kentucky/morgan"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Radio Ink (2)",
+    "url": "https://radioink.com/comments/feed/",
+    "mediaType": "article",
+    "itemSource": "Radio Ink",
+    "counties": [
+      "kentucky/morgan"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Radio Iowa",
+    "url": "https://www.radioiowa.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Radio Iowa",
+    "counties": [
+      "iowa/emmet",
+      "iowa/scott",
+      "iowa/woodbury",
+      "iowa/johnson",
+      "iowa/ida",
+      "iowa/lee",
+      "iowa/sioux",
+      "iowa/winnebago"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Radio Iowa (2)",
+    "url": "https://radioiowa.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Radio Iowa",
+    "counties": [
+      "iowa/emmet",
+      "iowa/scott",
+      "iowa/woodbury",
+      "iowa/johnson",
+      "iowa/ida",
+      "iowa/lee",
+      "iowa/sioux",
+      "iowa/winnebago"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Reason",
+    "url": "https://reason.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Reason",
+    "counties": [
+      "wisconsin/dodge",
+      "georgia/glynn",
+      "california/sonoma",
+      "ohio/adams"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Reason (2)",
+    "url": "https://reason.com/?feed=rss2",
+    "mediaType": "article",
+    "itemSource": "Reason",
+    "counties": [
+      "wisconsin/dodge",
+      "georgia/glynn",
+      "california/sonoma",
+      "ohio/adams"
     ],
     "trustedForCountyTier": false
   },
@@ -1399,13 +11545,37 @@ export const discoveredRegionalSources: DirectSource[] = [
     "trustedForCountyTier": false
   },
   {
+    "name": "Recycling Today",
+    "url": "https://recyclingtoday.com/rss",
+    "mediaType": "article",
+    "itemSource": "Recycling Today",
+    "counties": [
+      "mississippi/lowndes",
+      "ohio/wood",
+      "south-carolina/barnwell",
+      "tennessee/hamblen",
+      "alabama/baldwin",
+      "tennessee/williamson",
+      "south-carolina/charleston",
+      "west-virginia/berkeley",
+      "florida/sumter",
+      "georgia/rockdale",
+      "michigan/emmet",
+      "washington/king"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
     "name": "Religion News Service",
     "url": "https://religionnews.com/feed/",
     "mediaType": "article",
     "itemSource": "Religion News Service",
     "counties": [
       "texas/hood",
-      "texas/tarrant"
+      "georgia/elbert",
+      "texas/tarrant",
+      "ohio/clark",
+      "pennsylvania/clearfield"
     ],
     "trustedForCountyTier": false
   },
@@ -1416,7 +11586,235 @@ export const discoveredRegionalSources: DirectSource[] = [
     "itemSource": "Religion News Service",
     "counties": [
       "texas/hood",
-      "texas/tarrant"
+      "georgia/elbert",
+      "texas/tarrant",
+      "ohio/clark",
+      "pennsylvania/clearfield"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Rental Equipment Register",
+    "url": "https://rermag.com/__rss/website-scheduled-content.xml?input=%7B%22sectionAlias%22%3A%22home%22%7D",
+    "mediaType": "article",
+    "itemSource": "Rental Equipment Register",
+    "counties": [
+      "virginia/culpeper"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Rental Equipment Register (2)",
+    "url": "https://rermag.com/rss.xml",
+    "mediaType": "article",
+    "itemSource": "Rental Equipment Register",
+    "counties": [
+      "virginia/culpeper"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Richland Source",
+    "url": "https://www.richlandsource.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Richland Source",
+    "counties": [
+      "ohio/richland"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Richland Source (2)",
+    "url": "https://richlandsource.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Richland Source",
+    "counties": [
+      "ohio/richland"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Richlandtoday",
+    "url": "https://richlandtoday.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Richlandtoday",
+    "counties": [
+      "wisconsin/richland"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Richlandtoday (2)",
+    "url": "https://richlandtoday.com/rss",
+    "mediaType": "article",
+    "itemSource": "Richlandtoday",
+    "counties": [
+      "wisconsin/richland"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Richmond Times-Dispatch",
+    "url": "http://richmond.com/search/?f=rss&t=article&l=50&s=start_time&sd=desc&k%5B%5D=%23topstory",
+    "mediaType": "article",
+    "itemSource": "Richmond Times-Dispatch",
+    "counties": [
+      "virginia/buckingham",
+      "virginia/culpeper",
+      "virginia/spotsylvania",
+      "virginia/james-city",
+      "new-york/erie"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Rocketcitynow",
+    "url": "https://www.rocketcitynow.com/feeds/syndication/rss/news",
+    "mediaType": "article",
+    "itemSource": "Rocketcitynow",
+    "counties": [
+      "alabama/limestone",
+      "alabama/escambia",
+      "alabama/madison"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Rocketcitynow (2)",
+    "url": "https://rocketcitynow.com/feeds/syndication/rss/news",
+    "mediaType": "article",
+    "itemSource": "Rocketcitynow",
+    "counties": [
+      "alabama/limestone",
+      "alabama/escambia",
+      "alabama/madison"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Rockland County Times",
+    "url": "https://rocklandtimes.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Rockland County Times",
+    "counties": [
+      "new-york/rockland"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Rockland County Times (2)",
+    "url": "https://rocklandtimes.com/rss",
+    "mediaType": "article",
+    "itemSource": "Rockland County Times",
+    "counties": [
+      "new-york/rockland"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Rolling Out",
+    "url": "https://rollingout.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Rolling Out",
+    "counties": [
+      "georgia/lamar",
+      "georgia/mitchell",
+      "colorado/ouray",
+      "north-carolina/caswell"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Rolling Out (2)",
+    "url": "https://rollingout.com/category/news/feed/",
+    "mediaType": "article",
+    "itemSource": "Rolling Out",
+    "counties": [
+      "georgia/lamar",
+      "georgia/mitchell",
+      "colorado/ouray",
+      "north-carolina/caswell"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Rolling Stone",
+    "url": "https://www.rollingstone.com/feed/rss/",
+    "mediaType": "article",
+    "itemSource": "Rolling Stone",
+    "counties": [
+      "georgia/spalding",
+      "tennessee/jackson",
+      "wyoming/natrona",
+      "texas/brewster",
+      "georgia/irwin"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Rolling Stone (2)",
+    "url": "https://rollingstone.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Rolling Stone",
+    "counties": [
+      "georgia/spalding",
+      "tennessee/jackson",
+      "wyoming/natrona",
+      "texas/brewster",
+      "georgia/irwin"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Runner's World",
+    "url": "https://runnersworld.com/rss/news",
+    "mediaType": "article",
+    "itemSource": "Runner's World",
+    "counties": [
+      "colorado/san-juan",
+      "colorado/lake"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Salem News",
+    "url": "https://salemnews.net/feed/",
+    "mediaType": "article",
+    "itemSource": "Salem News",
+    "counties": [
+      "ohio/columbiana"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Salem News (2)",
+    "url": "https://salemnews.net/rss",
+    "mediaType": "article",
+    "itemSource": "Salem News",
+    "counties": [
+      "ohio/columbiana"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Salisbury Post",
+    "url": "https://salisburypost.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Salisbury Post",
+    "counties": [
+      "north-carolina/rowan",
+      "georgia/bulloch"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Salisbury Post (2)",
+    "url": "https://salisburypost.com/rss",
+    "mediaType": "article",
+    "itemSource": "Salisbury Post",
+    "counties": [
+      "north-carolina/rowan",
+      "georgia/bulloch"
     ],
     "trustedForCountyTier": false
   },
@@ -1447,6 +11845,180 @@ export const discoveredRegionalSources: DirectSource[] = [
     "trustedForCountyTier": false
   },
   {
+    "name": "Santa Maria Sun",
+    "url": "https://www.santamariasun.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Santa Maria Sun",
+    "counties": [
+      "california/santa-barbara"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Santa Maria Sun (2)",
+    "url": "https://www.santamariasun.com/comments/feed/",
+    "mediaType": "article",
+    "itemSource": "Santa Maria Sun",
+    "counties": [
+      "california/santa-barbara"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Satellite News",
+    "url": "https://satnews.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Satellite News",
+    "counties": [
+      "arizona/cochise"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Satellite News (2)",
+    "url": "https://satnews.com/rss",
+    "mediaType": "article",
+    "itemSource": "Satellite News",
+    "counties": [
+      "arizona/cochise"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "School Transportation News",
+    "url": "https://stnonline.com/feed/",
+    "mediaType": "article",
+    "itemSource": "School Transportation News",
+    "counties": [
+      "nevada/churchill"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "School Transportation News (2)",
+    "url": "https://stnonline.com/rss",
+    "mediaType": "article",
+    "itemSource": "School Transportation News",
+    "counties": [
+      "nevada/churchill"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Science Daily",
+    "url": "https://www.sciencedaily.com/rss/all.xml",
+    "mediaType": "article",
+    "itemSource": "Science Daily",
+    "counties": [
+      "florida/okeechobee",
+      "new-mexico/sierra"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Science Daily (2)",
+    "url": "https://sciencedaily.com/rss",
+    "mediaType": "article",
+    "itemSource": "Science Daily",
+    "counties": [
+      "florida/okeechobee",
+      "new-mexico/sierra"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Scientific American magazine",
+    "url": "https://www.scientificamerican.com/platform/syndication/rss/",
+    "mediaType": "article",
+    "itemSource": "Scientific American magazine",
+    "counties": [
+      "north-carolina/wilson"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Scioto Post",
+    "url": "https://www.sciotopost.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Scioto Post",
+    "counties": [
+      "ohio/pickaway",
+      "ohio/ross"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Scioto Post (2)",
+    "url": "https://sciotopost.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Scioto Post",
+    "counties": [
+      "ohio/pickaway",
+      "ohio/ross"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "SCOTUSblog",
+    "url": "https://www.scotusblog.com/feed/",
+    "mediaType": "article",
+    "itemSource": "SCOTUSblog",
+    "counties": [
+      "california/san-francisco",
+      "michigan/isabella",
+      "michigan/oakland"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "SCOTUSblog (2)",
+    "url": "https://scotusblog.com/feed/",
+    "mediaType": "article",
+    "itemSource": "SCOTUSblog",
+    "counties": [
+      "california/san-francisco",
+      "michigan/isabella",
+      "michigan/oakland"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Seattle Times",
+    "url": "https://www.seattletimes.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Seattle Times",
+    "counties": [
+      "washington/grant",
+      "washington/whitman",
+      "washington/yakima",
+      "idaho/idaho",
+      "montana/daniels",
+      "kentucky/taylor",
+      "idaho/boundary",
+      "south-carolina/saluda",
+      "washington/okanogan"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Seattle Times (2)",
+    "url": "https://seattletimes.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Seattle Times",
+    "counties": [
+      "washington/grant",
+      "washington/whitman",
+      "washington/yakima",
+      "idaho/idaho",
+      "montana/daniels",
+      "kentucky/taylor",
+      "idaho/boundary",
+      "south-carolina/saluda",
+      "washington/okanogan"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
     "name": "Securities Io",
     "url": "https://www.securities.io/feed/",
     "mediaType": "article",
@@ -1467,12 +12039,188 @@ export const discoveredRegionalSources: DirectSource[] = [
     "trustedForCountyTier": false
   },
   {
+    "name": "Security Info Watch",
+    "url": "https://securityinfowatch.com/__rss/website-scheduled-content.xml?input=%7B%22sectionAlias%22%3A%22home%22%7D",
+    "mediaType": "article",
+    "itemSource": "Security Info Watch",
+    "counties": [
+      "california/sonoma",
+      "mississippi/tunica"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Sedona Red Rock News",
+    "url": "https://www.redrocknews.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Sedona Red Rock News",
+    "counties": [
+      "arizona/yavapai"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Sedona Red Rock News (2)",
+    "url": "https://redrocknews.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Sedona Red Rock News",
+    "counties": [
+      "arizona/yavapai"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Seeking Alpha",
+    "url": "https://seekingalpha.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Seeking Alpha",
+    "counties": [
+      "indiana/cass",
+      "new-mexico/sandoval",
+      "virginia/prince-william",
+      "kentucky/mccracken"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Seeking Alpha (2)",
+    "url": "https://seekingalpha.com/feed.xml",
+    "mediaType": "article",
+    "itemSource": "Seeking Alpha",
+    "counties": [
+      "indiana/cass",
+      "new-mexico/sandoval",
+      "virginia/prince-william",
+      "kentucky/mccracken"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Sentient Media",
+    "url": "https://sentientmedia.org/feed/",
+    "mediaType": "article",
+    "itemSource": "Sentient Media",
+    "counties": [
+      "iowa/monona"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Sentient Media (2)",
+    "url": "https://sentientmedia.org/?feed=rss2",
+    "mediaType": "article",
+    "itemSource": "Sentient Media",
+    "counties": [
+      "iowa/monona"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Seven Days",
+    "url": "https://www.sevendaysvt.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Seven Days",
+    "counties": [
+      "vermont/addison",
+      "vermont/franklin"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Seven Days (2)",
+    "url": "https://www.sevendaysvt.com/comments/feed/",
+    "mediaType": "article",
+    "itemSource": "Seven Days",
+    "counties": [
+      "vermont/addison",
+      "vermont/franklin"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Shelby County Reporter",
+    "url": "https://shelbycountyreporter.com/rss.xml",
+    "mediaType": "article",
+    "itemSource": "Shelby County Reporter",
+    "counties": [
+      "alabama/shelby"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Sheridan Media",
+    "url": "https://sheridanmedia.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Sheridan Media",
+    "counties": [
+      "montana/big-horn",
+      "montana/sheridan",
+      "wyoming/sheridan"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Sheridan Media (2)",
+    "url": "https://sheridanmedia.com/comments/feed/",
+    "mediaType": "article",
+    "itemSource": "Sheridan Media",
+    "counties": [
+      "montana/big-horn",
+      "montana/sheridan",
+      "wyoming/sheridan"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Shore News Network",
+    "url": "https://www.shorenewsnetwork.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Shore News Network",
+    "counties": [
+      "maryland/baltimore",
+      "new-jersey/ocean",
+      "new-jersey/cape-may",
+      "new-york/rockland",
+      "maryland/allegany",
+      "maryland/howard",
+      "virginia/virginia-beach",
+      "new-jersey/essex",
+      "pennsylvania/allegheny",
+      "virginia/nelson",
+      "maryland/harford",
+      "new-jersey/bergen"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Shore News Network (2)",
+    "url": "https://shorenewsnetwork.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Shore News Network",
+    "counties": [
+      "maryland/baltimore",
+      "new-jersey/ocean",
+      "new-jersey/cape-may",
+      "new-york/rockland",
+      "maryland/allegany",
+      "maryland/howard",
+      "virginia/virginia-beach",
+      "new-jersey/essex",
+      "pennsylvania/allegheny",
+      "virginia/nelson",
+      "maryland/harford",
+      "new-jersey/bergen"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
     "name": "SignalSCV",
     "url": "https://signalscv.com/feed/",
     "mediaType": "article",
     "itemSource": "SignalSCV",
     "counties": [
-      "texas/williamson"
+      "texas/williamson",
+      "california/los-angeles"
     ],
     "trustedForCountyTier": false
   },
@@ -1482,7 +12230,710 @@ export const discoveredRegionalSources: DirectSource[] = [
     "mediaType": "article",
     "itemSource": "SignalSCV",
     "counties": [
-      "texas/williamson"
+      "texas/williamson",
+      "california/los-angeles"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Silicon Prairie News",
+    "url": "https://siliconprairienews.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Silicon Prairie News",
+    "counties": [
+      "nebraska/sarpy",
+      "nebraska/thayer"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Silicon Prairie News (2)",
+    "url": "https://siliconprairienews.com/comments/feed/",
+    "mediaType": "article",
+    "itemSource": "Silicon Prairie News",
+    "counties": [
+      "nebraska/sarpy",
+      "nebraska/thayer"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Sioux County Radio",
+    "url": "https://siouxcountyradio.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Sioux County Radio",
+    "counties": [
+      "iowa/sioux",
+      "iowa/des-moines"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Sioux County Radio (2)",
+    "url": "https://siouxcountyradio.com/rss",
+    "mediaType": "article",
+    "itemSource": "Sioux County Radio",
+    "counties": [
+      "iowa/sioux",
+      "iowa/des-moines"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Skook News",
+    "url": "https://www.skooknews.com/feeds/posts/default",
+    "mediaType": "article",
+    "itemSource": "Skook News",
+    "counties": [
+      "pennsylvania/schuylkill"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Skook News (2)",
+    "url": "https://www.skooknews.com/feeds/posts/default?alt=rss",
+    "mediaType": "article",
+    "itemSource": "Skook News",
+    "counties": [
+      "pennsylvania/schuylkill"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Sky-Hi News",
+    "url": "https://skyhinews.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Sky-Hi News",
+    "counties": [
+      "colorado/grand"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Sky-Hi News (2)",
+    "url": "https://skyhinews.com/rss",
+    "mediaType": "article",
+    "itemSource": "Sky-Hi News",
+    "counties": [
+      "colorado/grand"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Smoky Mountain News",
+    "url": "https://smokymountainnews.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Smoky Mountain News",
+    "counties": [
+      "north-carolina/swain"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Smoky Mountain News (2)",
+    "url": "https://smokymountainnews.com/rss",
+    "mediaType": "article",
+    "itemSource": "Smoky Mountain News",
+    "counties": [
+      "north-carolina/swain"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "SNJ Today",
+    "url": "https://snjtoday.com/feed/",
+    "mediaType": "article",
+    "itemSource": "SNJ Today",
+    "counties": [
+      "new-jersey/salem"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Snopes",
+    "url": "https://snopes.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Snopes",
+    "counties": [
+      "georgia/fulton",
+      "new-york/rockland",
+      "connecticut/hartford",
+      "mississippi/jasper"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Snopes (2)",
+    "url": "https://snopes.com/news/feed/",
+    "mediaType": "article",
+    "itemSource": "Snopes",
+    "counties": [
+      "georgia/fulton",
+      "new-york/rockland",
+      "connecticut/hartford",
+      "mississippi/jasper"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "South Whidbey Record",
+    "url": "https://southwhidbeyrecord.com/feed/",
+    "mediaType": "article",
+    "itemSource": "South Whidbey Record",
+    "counties": [
+      "washington/island"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "South Whidbey Record (2)",
+    "url": "https://southwhidbeyrecord.com/rss",
+    "mediaType": "article",
+    "itemSource": "South Whidbey Record",
+    "counties": [
+      "washington/island"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Southside Sentinel",
+    "url": "https://ssentinel.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Southside Sentinel",
+    "counties": [
+      "virginia/middlesex"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Southside Sentinel (2)",
+    "url": "https://ssentinel.com/rss",
+    "mediaType": "article",
+    "itemSource": "Southside Sentinel",
+    "counties": [
+      "virginia/middlesex"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Space Coast Daily",
+    "url": "https://spacecoastdaily.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Space Coast Daily",
+    "counties": [
+      "florida/brevard"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Space Coast Daily (2)",
+    "url": "https://spacecoastdaily.com/rss",
+    "mediaType": "article",
+    "itemSource": "Space Coast Daily",
+    "counties": [
+      "florida/brevard"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Sports Illustrated",
+    "url": "https://www.si.com/feed",
+    "mediaType": "article",
+    "itemSource": "Sports Illustrated",
+    "counties": [
+      "kentucky/union",
+      "georgia/gordon",
+      "georgia/thomas",
+      "virginia/gloucester",
+      "kentucky/allen",
+      "delaware/sussex",
+      "florida/jefferson",
+      "georgia/camden",
+      "iowa/davis",
+      "maryland/allegany",
+      "mississippi/tunica",
+      "nebraska/johnson",
+      "new-york/essex",
+      "north-carolina/pamlico",
+      "north-carolina/polk",
+      "north-carolina/swain",
+      "oregon/josephine",
+      "pennsylvania/berks",
+      "virginia/grayson",
+      "texas/ellis",
+      "alabama/tuscaloosa",
+      "georgia/banks",
+      "kentucky/boyle",
+      "kentucky/johnson"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Sports Illustrated (2)",
+    "url": "https://si.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Sports Illustrated",
+    "counties": [
+      "kentucky/union",
+      "georgia/gordon",
+      "georgia/thomas",
+      "virginia/gloucester",
+      "kentucky/allen",
+      "delaware/sussex",
+      "florida/jefferson",
+      "georgia/camden",
+      "iowa/davis",
+      "maryland/allegany",
+      "mississippi/tunica",
+      "nebraska/johnson",
+      "new-york/essex",
+      "north-carolina/pamlico",
+      "north-carolina/polk",
+      "north-carolina/swain",
+      "oregon/josephine",
+      "pennsylvania/berks",
+      "virginia/grayson",
+      "texas/ellis",
+      "alabama/tuscaloosa",
+      "georgia/banks",
+      "kentucky/boyle",
+      "kentucky/johnson"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "St. Louis Magazine",
+    "url": "https://www.stlmag.com/feed/",
+    "mediaType": "article",
+    "itemSource": "St. Louis Magazine",
+    "counties": [
+      "missouri/pulaski"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "St. Louis Magazine (2)",
+    "url": "https://stlmag.com/feed/",
+    "mediaType": "article",
+    "itemSource": "St. Louis Magazine",
+    "counties": [
+      "missouri/pulaski"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "St. Louis Post-Dispatch",
+    "url": "http://www.stltoday.com/search/?f=rss&t=article&l=50&s=start_time&sd=desc&k%5B%5D=%23topstory",
+    "mediaType": "article",
+    "itemSource": "St. Louis Post-Dispatch",
+    "counties": [
+      "ohio/clermont",
+      "missouri/iron",
+      "missouri/montgomery",
+      "missouri/pulaski",
+      "missouri/reynolds",
+      "washington/franklin",
+      "missouri/johnson",
+      "missouri/platte",
+      "illinois/wayne",
+      "missouri/cole",
+      "missouri/lincoln"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "St. Louis Post-Dispatch (2)",
+    "url": "https://stltoday.com/rss/news",
+    "mediaType": "article",
+    "itemSource": "St. Louis Post-Dispatch",
+    "counties": [
+      "ohio/clermont",
+      "missouri/iron",
+      "missouri/montgomery",
+      "missouri/pulaski",
+      "missouri/reynolds",
+      "washington/franklin",
+      "missouri/johnson",
+      "missouri/platte",
+      "illinois/wayne",
+      "missouri/cole",
+      "missouri/lincoln"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Star Tribune",
+    "url": "https://startribune.com/rss",
+    "mediaType": "article",
+    "itemSource": "Star Tribune",
+    "counties": [
+      "minnesota/anoka",
+      "minnesota/hubbard",
+      "minnesota/murray",
+      "minnesota/nobles",
+      "minnesota/dakota",
+      "minnesota/stearns",
+      "minnesota/becker",
+      "minnesota/beltrami",
+      "minnesota/crow-wing",
+      "minnesota/ramsey",
+      "minnesota/yellow-medicine"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "STAT",
+    "url": "https://www.statnews.com/feed/",
+    "mediaType": "article",
+    "itemSource": "STAT",
+    "counties": [
+      "kentucky/estill"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "STAT (2)",
+    "url": "https://statnews.com/feed/",
+    "mediaType": "article",
+    "itemSource": "STAT",
+    "counties": [
+      "kentucky/estill"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "State College",
+    "url": "https://www.statecollege.com/feed/",
+    "mediaType": "article",
+    "itemSource": "State College",
+    "counties": [
+      "pennsylvania/centre"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "State College (2)",
+    "url": "https://statecollege.com/feed/",
+    "mediaType": "article",
+    "itemSource": "State College",
+    "counties": [
+      "pennsylvania/centre"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "StateScoop",
+    "url": "https://statescoop.com/feed/",
+    "mediaType": "article",
+    "itemSource": "StateScoop",
+    "counties": [
+      "ohio/wood",
+      "california/marin",
+      "kansas/sedgwick"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "StateScoop (2)",
+    "url": "https://statescoop.com/comments/feed/",
+    "mediaType": "article",
+    "itemSource": "StateScoop",
+    "counties": [
+      "ohio/wood",
+      "california/marin",
+      "kansas/sedgwick"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Steamboat Pilot & Today",
+    "url": "https://steamboatpilot.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Steamboat Pilot & Today",
+    "counties": [
+      "colorado/routt"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Steamboat Pilot & Today (2)",
+    "url": "https://steamboatpilot.com/rss",
+    "mediaType": "article",
+    "itemSource": "Steamboat Pilot & Today",
+    "counties": [
+      "colorado/routt"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Stuttgart Daily Leader",
+    "url": "https://stuttgartdailyleader.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Stuttgart Daily Leader",
+    "counties": [
+      "arkansas/arkansas"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Stuttgart Daily Leader (2)",
+    "url": "https://stuttgartdailyleader.com/rss",
+    "mediaType": "article",
+    "itemSource": "Stuttgart Daily Leader",
+    "counties": [
+      "arkansas/arkansas"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Summitdaily",
+    "url": "https://summitdaily.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Summitdaily",
+    "counties": [
+      "colorado/summit"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Summitdaily (2)",
+    "url": "https://summitdaily.com/rss",
+    "mediaType": "article",
+    "itemSource": "Summitdaily",
+    "counties": [
+      "colorado/summit"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Sumner NewsCow",
+    "url": "https://sumnernewscow.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Sumner NewsCow",
+    "counties": [
+      "kansas/sumner"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Sumner NewsCow (2)",
+    "url": "https://sumnernewscow.com/rss",
+    "mediaType": "article",
+    "itemSource": "Sumner NewsCow",
+    "counties": [
+      "kansas/sumner"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Sun Journal",
+    "url": "https://www.sunjournal.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Sun Journal",
+    "counties": [
+      "maine/oxford",
+      "maine/franklin"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Sun Journal (2)",
+    "url": "https://sunjournal.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Sun Journal",
+    "counties": [
+      "maine/oxford",
+      "maine/franklin"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "SuperTalk Mississippi",
+    "url": "https://www.supertalk.fm/feed/",
+    "mediaType": "article",
+    "itemSource": "SuperTalk Mississippi",
+    "counties": [
+      "mississippi/neshoba",
+      "mississippi/humphreys"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "SuperTalk Mississippi (2)",
+    "url": "https://supertalk.fm/feed/",
+    "mediaType": "article",
+    "itemSource": "SuperTalk Mississippi",
+    "counties": [
+      "mississippi/neshoba",
+      "mississippi/humphreys"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Syracuse",
+    "url": "https://syracuse.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "Syracuse",
+    "counties": [
+      "new-york/oswego",
+      "new-york/madison",
+      "ohio/adams",
+      "new-york/cortland",
+      "new-york/new-york"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Talbot Spy",
+    "url": "https://talbotspy.org/feed/",
+    "mediaType": "article",
+    "itemSource": "Talbot Spy",
+    "counties": [
+      "maryland/talbot"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Talbot Spy (2)",
+    "url": "https://talbotspy.org/rss",
+    "mediaType": "article",
+    "itemSource": "Talbot Spy",
+    "counties": [
+      "maryland/talbot"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Tallahassee Reports",
+    "url": "https://tallahasseereports.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Tallahassee Reports",
+    "counties": [
+      "florida/leon"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Tallahassee Reports (2)",
+    "url": "https://tallahasseereports.com/rss",
+    "mediaType": "article",
+    "itemSource": "Tallahassee Reports",
+    "counties": [
+      "florida/leon"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Tampa Bay Times",
+    "url": "https://tampabay.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "Tampa Bay Times",
+    "counties": [
+      "florida/bradford",
+      "florida/pasco"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Tampa Free Press",
+    "url": "https://www.tampafp.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Tampa Free Press",
+    "counties": [
+      "florida/nassau",
+      "florida/citrus",
+      "florida/monroe",
+      "south-carolina/charleston",
+      "florida/hillsborough"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Tampa Free Press (2)",
+    "url": "https://tampafp.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Tampa Free Press",
+    "counties": [
+      "florida/nassau",
+      "florida/citrus",
+      "florida/monroe",
+      "south-carolina/charleston",
+      "florida/hillsborough"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "TechCrunch",
+    "url": "https://techcrunch.com/feed/",
+    "mediaType": "article",
+    "itemSource": "TechCrunch",
+    "counties": [
+      "california/solano",
+      "texas/grimes"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "TechCrunch (2)",
+    "url": "https://techcrunch.com/rss",
+    "mediaType": "article",
+    "itemSource": "TechCrunch",
+    "counties": [
+      "california/solano",
+      "texas/grimes"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "techtimes",
+    "url": "https://techtimes.com/rss/archives/archives.xml",
+    "mediaType": "article",
+    "itemSource": "techtimes",
+    "counties": [
+      "kentucky/mccracken",
+      "indiana/tippecanoe"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Telangana Today",
+    "url": "https://telanganatoday.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Telangana Today",
+    "counties": [
+      "north-carolina/caswell",
+      "california/orange"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Telangana Today (2)",
+    "url": "https://telanganatoday.com/rss",
+    "mediaType": "article",
+    "itemSource": "Telangana Today",
+    "counties": [
+      "north-carolina/caswell",
+      "california/orange"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Tennessee Department of Economic & Community Development",
+    "url": "https://tnecd.com/news/feed/",
+    "mediaType": "article",
+    "itemSource": "Tennessee Department of Economic & Community Development",
+    "counties": [
+      "tennessee/hawkins"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Tennessee Department of Economic & Community Development (2)",
+    "url": "https://tnecd.com/news/rss",
+    "mediaType": "article",
+    "itemSource": "Tennessee Department of Economic & Community Development",
+    "counties": [
+      "tennessee/hawkins"
     ],
     "trustedForCountyTier": false
   },
@@ -1513,12 +12964,80 @@ export const discoveredRegionalSources: DirectSource[] = [
     "trustedForCountyTier": false
   },
   {
+    "name": "The American Bazaar",
+    "url": "https://americanbazaaronline.com/feed/",
+    "mediaType": "article",
+    "itemSource": "The American Bazaar",
+    "counties": [
+      "south-carolina/chester"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The American Bazaar (2)",
+    "url": "https://americanbazaaronline.com/comments/feed/",
+    "mediaType": "article",
+    "itemSource": "The American Bazaar",
+    "counties": [
+      "south-carolina/chester"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Aspen Times",
+    "url": "https://aspentimes.com/feed/",
+    "mediaType": "article",
+    "itemSource": "The Aspen Times",
+    "counties": [
+      "colorado/grand",
+      "colorado/lake"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Aspen Times (2)",
+    "url": "https://aspentimes.com/rss",
+    "mediaType": "article",
+    "itemSource": "The Aspen Times",
+    "counties": [
+      "colorado/grand",
+      "colorado/lake"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Assembly NC",
+    "url": "https://www.theassemblync.com/feed/",
+    "mediaType": "article",
+    "itemSource": "The Assembly NC",
+    "counties": [
+      "north-carolina/nash"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Assembly NC (2)",
+    "url": "https://theassemblync.com/feed/",
+    "mediaType": "article",
+    "itemSource": "The Assembly NC",
+    "counties": [
+      "north-carolina/nash"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
     "name": "The Atlantic",
     "url": "https://theatlantic.com/feed/all/",
     "mediaType": "article",
     "itemSource": "The Atlantic",
     "counties": [
-      "texas/starr"
+      "texas/starr",
+      "virginia/madison",
+      "indiana/lake",
+      "maine/hancock",
+      "mississippi/itawamba",
+      "new-york/westchester",
+      "north-carolina/gaston"
     ],
     "trustedForCountyTier": false
   },
@@ -1528,7 +13047,262 @@ export const discoveredRegionalSources: DirectSource[] = [
     "mediaType": "article",
     "itemSource": "The Atlantic",
     "counties": [
-      "texas/starr"
+      "texas/starr",
+      "virginia/madison",
+      "indiana/lake",
+      "maine/hancock",
+      "mississippi/itawamba",
+      "new-york/westchester",
+      "north-carolina/gaston"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Atmore Advance",
+    "url": "https://atmoreadvance.com/rss.xml",
+    "mediaType": "article",
+    "itemSource": "The Atmore Advance",
+    "counties": [
+      "alabama/escambia"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The B Square",
+    "url": "https://bsquarebulletin.com/rss/",
+    "mediaType": "article",
+    "itemSource": "The B Square",
+    "counties": [
+      "indiana/monroe"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The B Square (2)",
+    "url": "https://bsquarebulletin.com/feed/",
+    "mediaType": "article",
+    "itemSource": "The B Square",
+    "counties": [
+      "indiana/monroe"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Badger Herald",
+    "url": "https://badgerherald.com/feed/",
+    "mediaType": "article",
+    "itemSource": "The Badger Herald",
+    "counties": [
+      "wisconsin/dane",
+      "wisconsin/winnebago"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Badger Herald (2)",
+    "url": "https://badgerherald.com/feed/atom/",
+    "mediaType": "article",
+    "itemSource": "The Badger Herald",
+    "counties": [
+      "wisconsin/dane",
+      "wisconsin/winnebago"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The BayNet",
+    "url": "https://thebaynet.com/feed/",
+    "mediaType": "article",
+    "itemSource": "The BayNet",
+    "counties": [
+      "maryland/calvert",
+      "maryland/charles"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The BayNet (2)",
+    "url": "https://thebaynet.com/comments/feed/",
+    "mediaType": "article",
+    "itemSource": "The BayNet",
+    "counties": [
+      "maryland/calvert",
+      "maryland/charles"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Beacon",
+    "url": "https://thebeacon.net/feed/",
+    "mediaType": "article",
+    "itemSource": "The Beacon",
+    "counties": [
+      "ohio/ottawa"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Beacon (2)",
+    "url": "https://thebeacon.net/rss",
+    "mediaType": "article",
+    "itemSource": "The Beacon",
+    "counties": [
+      "ohio/ottawa"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Boston Globe",
+    "url": "https://bostonglobe.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "The Boston Globe",
+    "counties": [
+      "maine/aroostook",
+      "massachusetts/middlesex",
+      "new-hampshire/strafford",
+      "maine/sagadahoc"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Capital Journal",
+    "url": "https://www.capjournal.com/index.rss",
+    "mediaType": "article",
+    "itemSource": "The Capital Journal",
+    "counties": [
+      "south-dakota/stanley"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Central Virginian",
+    "url": "https://www.thecentralvirginian.com/feed/",
+    "mediaType": "article",
+    "itemSource": "The Central Virginian",
+    "counties": [
+      "virginia/louisa"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Clanton Advertiser",
+    "url": "https://clantonadvertiser.com/rss.xml",
+    "mediaType": "article",
+    "itemSource": "The Clanton Advertiser",
+    "counties": [
+      "alabama/chilton"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Clayton Tribune",
+    "url": "https://theclaytontribune.com/rss.xml",
+    "mediaType": "article",
+    "itemSource": "The Clayton Tribune",
+    "counties": [
+      "georgia/rabun"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Clermont Sun",
+    "url": "https://www.clermontsun.com/feed",
+    "mediaType": "article",
+    "itemSource": "The Clermont Sun",
+    "counties": [
+      "ohio/clermont"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Clermont Sun (2)",
+    "url": "https://clermontsun.com/feed/",
+    "mediaType": "article",
+    "itemSource": "The Clermont Sun",
+    "counties": [
+      "ohio/clermont"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Colorado Sun",
+    "url": "https://coloradosun.com/feed/",
+    "mediaType": "article",
+    "itemSource": "The Colorado Sun",
+    "counties": [
+      "colorado/cheyenne",
+      "colorado/grand"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Colorado Sun (2)",
+    "url": "https://coloradosun.com/rss",
+    "mediaType": "article",
+    "itemSource": "The Colorado Sun",
+    "counties": [
+      "colorado/cheyenne",
+      "colorado/grand"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Columbian",
+    "url": "https://columbian.com/feed/",
+    "mediaType": "article",
+    "itemSource": "The Columbian",
+    "counties": [
+      "washington/cowlitz"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Columbian (2)",
+    "url": "https://columbian.com/news/local/feed/",
+    "mediaType": "article",
+    "itemSource": "The Columbian",
+    "counties": [
+      "washington/cowlitz"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Crested Butte News",
+    "url": "https://crestedbuttenews.com/feed/",
+    "mediaType": "article",
+    "itemSource": "The Crested Butte News",
+    "counties": [
+      "colorado/gunnison"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Crested Butte News (2)",
+    "url": "https://crestedbuttenews.com/rss",
+    "mediaType": "article",
+    "itemSource": "The Crested Butte News",
+    "counties": [
+      "colorado/gunnison"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Cullman Tribune",
+    "url": "https://www.cullmantribune.com/feed/",
+    "mediaType": "article",
+    "itemSource": "The Cullman Tribune",
+    "counties": [
+      "alabama/cullman"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Cullman Tribune (2)",
+    "url": "https://cullmantribune.com/feed/",
+    "mediaType": "article",
+    "itemSource": "The Cullman Tribune",
+    "counties": [
+      "alabama/cullman"
     ],
     "trustedForCountyTier": false
   },
@@ -1538,9 +13312,77 @@ export const discoveredRegionalSources: DirectSource[] = [
     "mediaType": "article",
     "itemSource": "The Daily Beast",
     "counties": [
+      "vermont/addison",
       "texas/llano",
+      "colorado/gunnison",
       "texas/delta",
-      "texas/navarro"
+      "montana/sanders",
+      "north-carolina/moore",
+      "north-carolina/onslow",
+      "texas/navarro",
+      "florida/columbia"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Daily Illini",
+    "url": "https://dailyillini.com/feed/",
+    "mediaType": "article",
+    "itemSource": "The Daily Illini",
+    "counties": [
+      "illinois/champaign"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Daily Illini (2)",
+    "url": "https://dailyillini.com/feed/atom/",
+    "mediaType": "article",
+    "itemSource": "The Daily Illini",
+    "counties": [
+      "illinois/champaign"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Daily Iowan",
+    "url": "https://dailyiowan.com/feed/",
+    "mediaType": "article",
+    "itemSource": "The Daily Iowan",
+    "counties": [
+      "iowa/johnson",
+      "iowa/washington"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Daily Iowan (2)",
+    "url": "https://dailyiowan.com/feed/atom/",
+    "mediaType": "article",
+    "itemSource": "The Daily Iowan",
+    "counties": [
+      "iowa/johnson",
+      "iowa/washington"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Daily News",
+    "url": "https://ironmountaindailynews.com/feed/",
+    "mediaType": "article",
+    "itemSource": "The Daily News",
+    "counties": [
+      "wisconsin/florence"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Daily News (2)",
+    "url": "https://ironmountaindailynews.com/rss",
+    "mediaType": "article",
+    "itemSource": "The Daily News",
+    "counties": [
+      "wisconsin/florence"
     ],
     "trustedForCountyTier": false
   },
@@ -1550,8 +13392,123 @@ export const discoveredRegionalSources: DirectSource[] = [
     "mediaType": "article",
     "itemSource": "The Daily Signal",
     "counties": [
+      "virginia/fairfax",
+      "virginia/frederick",
+      "virginia/shenandoah",
       "texas/henderson",
       "texas/hudspeth"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Durango Herald",
+    "url": "https://durangoherald.com/feed/",
+    "mediaType": "article",
+    "itemSource": "The Durango Herald",
+    "counties": [
+      "colorado/montezuma"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Durango Herald (2)",
+    "url": "https://durangoherald.com/rss",
+    "mediaType": "article",
+    "itemSource": "The Durango Herald",
+    "counties": [
+      "colorado/montezuma"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Enterprise",
+    "url": "https://theenterprise.net/feed/",
+    "mediaType": "article",
+    "itemSource": "The Enterprise",
+    "counties": [
+      "virginia/patrick"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Enterprise (2)",
+    "url": "https://theenterprise.net/rss",
+    "mediaType": "article",
+    "itemSource": "The Enterprise",
+    "counties": [
+      "virginia/patrick"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Express - Lock Haven",
+    "url": "https://lockhaven.com/feed/",
+    "mediaType": "article",
+    "itemSource": "The Express - Lock Haven",
+    "counties": [
+      "pennsylvania/clinton"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Express - Lock Haven (2)",
+    "url": "https://lockhaven.com/rss",
+    "mediaType": "article",
+    "itemSource": "The Express - Lock Haven",
+    "counties": [
+      "pennsylvania/clinton"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Fallon Post",
+    "url": "https://www.thefallonpost.org/rss/articles",
+    "mediaType": "article",
+    "itemSource": "The Fallon Post",
+    "counties": [
+      "nevada/churchill"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Financial Times",
+    "url": "https://ft.com/news/rss.xml",
+    "mediaType": "article",
+    "itemSource": "The Financial Times",
+    "counties": [
+      "north-dakota/billings",
+      "florida/charlotte"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Financial Times (2)",
+    "url": "https://ft.com/rss/news",
+    "mediaType": "article",
+    "itemSource": "The Financial Times",
+    "counties": [
+      "north-dakota/billings",
+      "florida/charlotte"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Freeman Journal",
+    "url": "https://freemanjournal.net/feed/",
+    "mediaType": "article",
+    "itemSource": "The Freeman Journal",
+    "counties": [
+      "iowa/hamilton"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Freeman Journal (2)",
+    "url": "https://freemanjournal.net/rss",
+    "mediaType": "article",
+    "itemSource": "The Freeman Journal",
+    "counties": [
+      "iowa/hamilton"
     ],
     "trustedForCountyTier": false
   },
@@ -1561,7 +13518,35 @@ export const discoveredRegionalSources: DirectSource[] = [
     "mediaType": "article",
     "itemSource": "The Globe and Mail",
     "counties": [
-      "texas/hemphill"
+      "texas/hemphill",
+      "nevada/humboldt",
+      "montana/granite",
+      "nevada/elko",
+      "nevada/eureka"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Grio",
+    "url": "https://thegrio.com/feed/",
+    "mediaType": "article",
+    "itemSource": "The Grio",
+    "counties": [
+      "georgia/lee",
+      "georgia/webster",
+      "mississippi/bolivar"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Grio (2)",
+    "url": "https://thegrio.com/rss",
+    "mediaType": "article",
+    "itemSource": "The Grio",
+    "counties": [
+      "georgia/lee",
+      "georgia/webster",
+      "mississippi/bolivar"
     ],
     "trustedForCountyTier": false
   },
@@ -1571,8 +13556,46 @@ export const discoveredRegionalSources: DirectSource[] = [
     "mediaType": "article",
     "itemSource": "The Guardian",
     "counties": [
+      "kansas/marion",
+      "south-dakota/walworth",
       "texas/menard",
-      "texas/hemphill"
+      "alabama/lowndes",
+      "ohio/clark",
+      "california/shasta",
+      "georgia/walton",
+      "ohio/pike",
+      "georgia/fulton",
+      "texas/hemphill",
+      "georgia/coweta",
+      "indiana/lake",
+      "new-york/westchester",
+      "utah/garfield",
+      "arizona/gila",
+      "california/butte",
+      "kentucky/rowan",
+      "mississippi/amite",
+      "nevada/washoe",
+      "new-york/greene",
+      "pennsylvania/lancaster",
+      "vermont/chittenden",
+      "virginia/harrisonburg",
+      "wisconsin/kenosha",
+      "california/siskiyou",
+      "new-mexico/cibola",
+      "oregon/lincoln",
+      "alabama/etowah",
+      "california/orange",
+      "california/riverside",
+      "florida/clay",
+      "georgia/rockdale",
+      "maine/york",
+      "vermont/grand-isle",
+      "west-virginia/hancock",
+      "wisconsin/winnebago",
+      "florida/broward",
+      "kansas/washington",
+      "kentucky/harlan",
+      "michigan/washtenaw"
     ],
     "trustedForCountyTier": false
   },
@@ -1582,8 +13605,444 @@ export const discoveredRegionalSources: DirectSource[] = [
     "mediaType": "article",
     "itemSource": "The Guardian",
     "counties": [
+      "kansas/marion",
+      "south-dakota/walworth",
       "texas/menard",
-      "texas/hemphill"
+      "alabama/lowndes",
+      "ohio/clark",
+      "california/shasta",
+      "georgia/walton",
+      "ohio/pike",
+      "georgia/fulton",
+      "texas/hemphill",
+      "georgia/coweta",
+      "indiana/lake",
+      "new-york/westchester",
+      "utah/garfield",
+      "arizona/gila",
+      "california/butte",
+      "kentucky/rowan",
+      "mississippi/amite",
+      "nevada/washoe",
+      "new-york/greene",
+      "pennsylvania/lancaster",
+      "vermont/chittenden",
+      "virginia/harrisonburg",
+      "wisconsin/kenosha",
+      "california/siskiyou",
+      "new-mexico/cibola",
+      "oregon/lincoln",
+      "alabama/etowah",
+      "california/orange",
+      "california/riverside",
+      "florida/clay",
+      "georgia/rockdale",
+      "maine/york",
+      "vermont/grand-isle",
+      "west-virginia/hancock",
+      "wisconsin/winnebago",
+      "florida/broward",
+      "kansas/washington",
+      "kentucky/harlan",
+      "michigan/washtenaw"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The GW Hatchet",
+    "url": "https://gwhatchet.com/feed/",
+    "mediaType": "article",
+    "itemSource": "The GW Hatchet",
+    "counties": [
+      "virginia/loudoun"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The GW Hatchet (2)",
+    "url": "https://gwhatchet.com/feed/atom/",
+    "mediaType": "article",
+    "itemSource": "The GW Hatchet",
+    "counties": [
+      "virginia/loudoun"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Hancock Clarion",
+    "url": "https://www.hancockclarion.com/feed/",
+    "mediaType": "article",
+    "itemSource": "The Hancock Clarion",
+    "counties": [
+      "kentucky/hancock"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Hancock Clarion (2)",
+    "url": "https://www.hancockclarion.com/comments/feed/",
+    "mediaType": "article",
+    "itemSource": "The Hancock Clarion",
+    "counties": [
+      "kentucky/hancock"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Hechinger Report",
+    "url": "https://hechingerreport.org/feed/",
+    "mediaType": "article",
+    "itemSource": "The Hechinger Report",
+    "counties": [
+      "mississippi/issaquena",
+      "mississippi/oktibbeha"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Hechinger Report (2)",
+    "url": "https://hechingerreport.org/rss",
+    "mediaType": "article",
+    "itemSource": "The Hechinger Report",
+    "counties": [
+      "mississippi/issaquena",
+      "mississippi/oktibbeha"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Herald Star",
+    "url": "https://heraldstaronline.com/feed/",
+    "mediaType": "article",
+    "itemSource": "The Herald Star",
+    "counties": [
+      "ohio/jefferson",
+      "west-virginia/hancock"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Herald Star (2)",
+    "url": "https://heraldstaronline.com/rss",
+    "mediaType": "article",
+    "itemSource": "The Herald Star",
+    "counties": [
+      "ohio/jefferson",
+      "west-virginia/hancock"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Highland County Press",
+    "url": "https://highlandcountypress.com/rss.xml",
+    "mediaType": "article",
+    "itemSource": "The Highland County Press",
+    "counties": [
+      "ohio/highland",
+      "ohio/scioto"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Hollywood Reporter",
+    "url": "https://www.hollywoodreporter.com/feed/rss/",
+    "mediaType": "article",
+    "itemSource": "The Hollywood Reporter",
+    "counties": [
+      "ohio/union",
+      "california/calaveras",
+      "new-york/erie",
+      "texas/brewster"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Hollywood Reporter (2)",
+    "url": "https://hollywoodreporter.com/feed/",
+    "mediaType": "article",
+    "itemSource": "The Hollywood Reporter",
+    "counties": [
+      "ohio/union",
+      "california/calaveras",
+      "new-york/erie",
+      "texas/brewster"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Independent",
+    "url": "https://www.independent.co.uk/us/rss",
+    "mediaType": "article",
+    "itemSource": "The Independent",
+    "counties": [
+      "colorado/costilla",
+      "oklahoma/hughes",
+      "idaho/shoshone",
+      "oklahoma/pontotoc",
+      "virginia/giles",
+      "idaho/idaho",
+      "south-carolina/sumter",
+      "california/orange",
+      "colorado/clear-creek",
+      "kentucky/madison",
+      "north-carolina/harnett",
+      "wisconsin/rock",
+      "alaska/anchorage"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Independent (2)",
+    "url": "https://independent.co.uk/rss",
+    "mediaType": "article",
+    "itemSource": "The Independent",
+    "counties": [
+      "colorado/costilla",
+      "oklahoma/hughes",
+      "idaho/shoshone",
+      "oklahoma/pontotoc",
+      "virginia/giles",
+      "idaho/idaho",
+      "south-carolina/sumter",
+      "california/orange",
+      "colorado/clear-creek",
+      "kentucky/madison",
+      "north-carolina/harnett",
+      "wisconsin/rock",
+      "alaska/anchorage"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Intelligencer",
+    "url": "https://theintelligencer.net/feed/",
+    "mediaType": "article",
+    "itemSource": "The Intelligencer",
+    "counties": [
+      "ohio/jefferson",
+      "west-virginia/pleasants",
+      "west-virginia/marshall",
+      "ohio/harrison",
+      "west-virginia/upshur"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Intelligencer (2)",
+    "url": "https://theintelligencer.net/rss",
+    "mediaType": "article",
+    "itemSource": "The Intelligencer",
+    "counties": [
+      "ohio/jefferson",
+      "west-virginia/pleasants",
+      "west-virginia/marshall",
+      "ohio/harrison",
+      "west-virginia/upshur"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Intercept",
+    "url": "https://theintercept.com/feed/",
+    "mediaType": "article",
+    "itemSource": "The Intercept",
+    "counties": [
+      "tennessee/henderson",
+      "tennessee/perry",
+      "oklahoma/oklahoma",
+      "oregon/jackson",
+      "pennsylvania/butler"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Intercept (2)",
+    "url": "https://theintercept.com/rss",
+    "mediaType": "article",
+    "itemSource": "The Intercept",
+    "counties": [
+      "tennessee/henderson",
+      "tennessee/perry",
+      "oklahoma/oklahoma",
+      "oregon/jackson",
+      "pennsylvania/butler"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Journal",
+    "url": "https://nujournal.com/feed/",
+    "mediaType": "article",
+    "itemSource": "The Journal",
+    "counties": [
+      "minnesota/brown"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Journal (2)",
+    "url": "https://nujournal.com/rss",
+    "mediaType": "article",
+    "itemSource": "The Journal",
+    "counties": [
+      "minnesota/brown"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Journal of the San Juan Islands",
+    "url": "https://sanjuanjournal.com/feed/",
+    "mediaType": "article",
+    "itemSource": "The Journal of the San Juan Islands",
+    "counties": [
+      "washington/san-juan"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Journal of the San Juan Islands (2)",
+    "url": "https://sanjuanjournal.com/rss",
+    "mediaType": "article",
+    "itemSource": "The Journal of the San Juan Islands",
+    "counties": [
+      "washington/san-juan"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Journal Online",
+    "url": "https://thejournalonline.com/feed/",
+    "mediaType": "article",
+    "itemSource": "The Journal Online",
+    "counties": [
+      "south-carolina/anderson"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Journal Online (2)",
+    "url": "https://thejournalonline.com/rss",
+    "mediaType": "article",
+    "itemSource": "The Journal Online",
+    "counties": [
+      "south-carolina/anderson"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Manila Times",
+    "url": "https://manilatimes.net/news/feed/",
+    "mediaType": "article",
+    "itemSource": "The Manila Times",
+    "counties": [
+      "colorado/douglas",
+      "texas/hood",
+      "arizona/maricopa",
+      "new-york/westchester"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Manila Times (2)",
+    "url": "https://manilatimes.net/news/local/feed/",
+    "mediaType": "article",
+    "itemSource": "The Manila Times",
+    "counties": [
+      "colorado/douglas",
+      "texas/hood",
+      "arizona/maricopa",
+      "new-york/westchester"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Marshall Project",
+    "url": "https://www.themarshallproject.org/rss/recent",
+    "mediaType": "article",
+    "itemSource": "The Marshall Project",
+    "counties": [
+      "idaho/canyon",
+      "ohio/cuyahoga",
+      "mississippi/hinds",
+      "missouri/ozark"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Maui News",
+    "url": "https://mauinews.com/feed/",
+    "mediaType": "article",
+    "itemSource": "The Maui News",
+    "counties": [
+      "hawaii/kalawao"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Maui News (2)",
+    "url": "https://mauinews.com/rss",
+    "mediaType": "article",
+    "itemSource": "The Maui News",
+    "counties": [
+      "hawaii/kalawao"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Mirror",
+    "url": "https://www.mirror.co.uk/rss.xml",
+    "mediaType": "article",
+    "itemSource": "The Mirror",
+    "counties": [
+      "north-carolina/caswell",
+      "california/plumas",
+      "wisconsin/walworth"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Mirror (2)",
+    "url": "https://mirror.co.uk/rss.xml",
+    "mediaType": "article",
+    "itemSource": "The Mirror",
+    "counties": [
+      "north-carolina/caswell",
+      "california/plumas",
+      "wisconsin/walworth"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Nevada Independent",
+    "url": "https://thenevadaindependent.com/feed/",
+    "mediaType": "article",
+    "itemSource": "The Nevada Independent",
+    "counties": [
+      "nevada/washoe"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The New Republic",
+    "url": "https://newrepublic.com/rss.xml",
+    "mediaType": "article",
+    "itemSource": "The New Republic",
+    "counties": [
+      "florida/sarasota",
+      "texas/tarrant",
+      "georgia/houston"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The New Republic (2)",
+    "url": "https://newrepublic.com/rss/local",
+    "mediaType": "article",
+    "itemSource": "The New Republic",
+    "counties": [
+      "florida/sarasota",
+      "texas/tarrant",
+      "georgia/houston"
     ],
     "trustedForCountyTier": false
   },
@@ -1593,9 +14052,42 @@ export const discoveredRegionalSources: DirectSource[] = [
     "mediaType": "article",
     "itemSource": "The New Yorker",
     "counties": [
+      "oklahoma/mccurtain",
+      "oklahoma/cherokee",
       "texas/loving",
+      "pennsylvania/lackawanna",
       "texas/presidio",
-      "texas/hays"
+      "pennsylvania/columbia",
+      "california/humboldt",
+      "new-jersey/bergen",
+      "georgia/elbert",
+      "texas/hays",
+      "colorado/mesa",
+      "kentucky/jackson",
+      "tennessee/bedford",
+      "alaska/northwest-arctic"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The North State Journal",
+    "url": "https://nsjonline.com/feed/",
+    "mediaType": "article",
+    "itemSource": "The North State Journal",
+    "counties": [
+      "north-carolina/scotland",
+      "north-carolina/durham"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The North State Journal (2)",
+    "url": "https://nsjonline.com/rss",
+    "mediaType": "article",
+    "itemSource": "The North State Journal",
+    "counties": [
+      "north-carolina/scotland",
+      "north-carolina/durham"
     ],
     "trustedForCountyTier": false
   },
@@ -1620,12 +14112,453 @@ export const discoveredRegionalSources: DirectSource[] = [
     "trustedForCountyTier": false
   },
   {
+    "name": "The Park Record",
+    "url": "https://www.parkrecord.com/feed/",
+    "mediaType": "article",
+    "itemSource": "The Park Record",
+    "counties": [
+      "utah/wasatch"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Park Record (2)",
+    "url": "https://parkrecord.com/feed/",
+    "mediaType": "article",
+    "itemSource": "The Park Record",
+    "counties": [
+      "utah/wasatch"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Patriot-News",
+    "url": "https://pennlive.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "The Patriot-News",
+    "counties": [
+      "virginia/cumberland",
+      "pennsylvania/snyder",
+      "missouri/camden",
+      "north-carolina/cabarrus",
+      "pennsylvania/bucks",
+      "pennsylvania/cumberland",
+      "pennsylvania/somerset",
+      "virginia/harrisonburg",
+      "pennsylvania/lebanon",
+      "pennsylvania/tioga",
+      "virginia/newport-news"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Philadelphia Inquirer",
+    "url": "https://inquirer.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "The Philadelphia Inquirer",
+    "counties": [
+      "pennsylvania/lancaster",
+      "pennsylvania/chester"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Post-Journal",
+    "url": "https://post-journal.com/feed/",
+    "mediaType": "article",
+    "itemSource": "The Post-Journal",
+    "counties": [
+      "new-york/chautauqua"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Post-Journal (2)",
+    "url": "https://post-journal.com/rss",
+    "mediaType": "article",
+    "itemSource": "The Post-Journal",
+    "counties": [
+      "new-york/chautauqua"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Post-Searchlight",
+    "url": "https://thepostsearchlight.com/feed/",
+    "mediaType": "article",
+    "itemSource": "The Post-Searchlight",
+    "counties": [
+      "georgia/decatur"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Post-Searchlight (2)",
+    "url": "https://thepostsearchlight.com/rss",
+    "mediaType": "article",
+    "itemSource": "The Post-Searchlight",
+    "counties": [
+      "georgia/decatur"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Real News Network",
+    "url": "https://therealnews.com/feed",
+    "mediaType": "article",
+    "itemSource": "The Real News Network",
+    "counties": [
+      "maryland/howard",
+      "utah/morgan"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Real News Network (2)",
+    "url": "https://therealnews.com/feed/",
+    "mediaType": "article",
+    "itemSource": "The Real News Network",
+    "counties": [
+      "maryland/howard",
+      "utah/morgan"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Redmond Spokesman",
+    "url": "https://redmondspokesman.com/feed/",
+    "mediaType": "article",
+    "itemSource": "The Redmond Spokesman",
+    "counties": [
+      "oregon/crook"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Redmond Spokesman (2)",
+    "url": "https://redmondspokesman.com/rss",
+    "mediaType": "article",
+    "itemSource": "The Redmond Spokesman",
+    "counties": [
+      "oregon/crook"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Review",
+    "url": "https://reviewonline.com/feed/",
+    "mediaType": "article",
+    "itemSource": "The Review",
+    "counties": [
+      "west-virginia/hancock"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Review (2)",
+    "url": "https://reviewonline.com/rss",
+    "mediaType": "article",
+    "itemSource": "The Review",
+    "counties": [
+      "west-virginia/hancock"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Rhino Times",
+    "url": "https://www.rhinotimes.com/feed/",
+    "mediaType": "article",
+    "itemSource": "The Rhino Times",
+    "counties": [
+      "north-carolina/guilford"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Rhino Times (2)",
+    "url": "https://www.rhinotimes.com/comments/feed/",
+    "mediaType": "article",
+    "itemSource": "The Rhino Times",
+    "counties": [
+      "north-carolina/guilford"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Richwood Gazette",
+    "url": "https://rgnews.biz/feed/",
+    "mediaType": "article",
+    "itemSource": "The Richwood Gazette",
+    "counties": [
+      "ohio/union"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Richwood Gazette (2)",
+    "url": "https://rgnews.biz/?feed=rss2",
+    "mediaType": "article",
+    "itemSource": "The Richwood Gazette",
+    "counties": [
+      "ohio/union"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Roanoke-Chowan News-Herald",
+    "url": "https://roanoke-chowannewsherald.com/rss.xml",
+    "mediaType": "article",
+    "itemSource": "The Roanoke-Chowan News-Herald",
+    "counties": [
+      "north-carolina/gates",
+      "north-carolina/hertford"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Rocky Mountain Collegian",
+    "url": "https://collegian.com/feed/",
+    "mediaType": "article",
+    "itemSource": "The Rocky Mountain Collegian",
+    "counties": [
+      "colorado/weld",
+      "colorado/larimer"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Rocky Mountain Collegian (2)",
+    "url": "https://collegian.com/feed/atom/",
+    "mediaType": "article",
+    "itemSource": "The Rocky Mountain Collegian",
+    "counties": [
+      "colorado/weld",
+      "colorado/larimer"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Salt Lake Tribune",
+    "url": "https://www.sltrib.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "The Salt Lake Tribune",
+    "counties": [
+      "utah/box-elder",
+      "utah/summit",
+      "utah/iron"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Salt Lake Tribune (2)",
+    "url": "https://sltrib.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "The Salt Lake Tribune",
+    "counties": [
+      "utah/box-elder",
+      "utah/summit",
+      "utah/iron"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Sentinel",
+    "url": "https://lewistownsentinel.com/feed/",
+    "mediaType": "article",
+    "itemSource": "The Sentinel",
+    "counties": [
+      "pennsylvania/mifflin"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Sentinel (2)",
+    "url": "https://lewistownsentinel.com/rss",
+    "mediaType": "article",
+    "itemSource": "The Sentinel",
+    "counties": [
+      "pennsylvania/mifflin"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Source Weekly",
+    "url": "https://www.bendsource.com/feed/",
+    "mediaType": "article",
+    "itemSource": "The Source Weekly",
+    "counties": [
+      "oregon/deschutes"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Source Weekly (2)",
+    "url": "https://www.bendsource.com/comments/feed/",
+    "mediaType": "article",
+    "itemSource": "The Source Weekly",
+    "counties": [
+      "oregon/deschutes"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Southern Maryland Chronicle",
+    "url": "https://southernmarylandchronicle.com/feed/",
+    "mediaType": "article",
+    "itemSource": "The Southern Maryland Chronicle",
+    "counties": [
+      "maryland/calvert",
+      "maryland/st-mary-s",
+      "maryland/charles"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Southern Maryland Chronicle (2)",
+    "url": "https://southernmarylandchronicle.com/comments/feed/",
+    "mediaType": "article",
+    "itemSource": "The Southern Maryland Chronicle",
+    "counties": [
+      "maryland/calvert",
+      "maryland/st-mary-s",
+      "maryland/charles"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Star-Herald",
+    "url": "https://www.starherald.net/rss.xml",
+    "mediaType": "article",
+    "itemSource": "The Star-Herald",
+    "counties": [
+      "mississippi/attala",
+      "mississippi/choctaw"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Star-Herald (2)",
+    "url": "https://starherald.net/rss.xml",
+    "mediaType": "article",
+    "itemSource": "The Star-Herald",
+    "counties": [
+      "mississippi/attala",
+      "mississippi/choctaw"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Times and Democrat",
+    "url": "http://thetandd.com/search/?f=rss&t=article&l=50&s=start_time&sd=desc&k%5B%5D=%23topstory",
+    "mediaType": "article",
+    "itemSource": "The Times and Democrat",
+    "counties": [
+      "south-carolina/orangeburg"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Times Leader",
+    "url": "https://www.timesleader.com/feed",
+    "mediaType": "article",
+    "itemSource": "The Times Leader",
+    "counties": [
+      "pennsylvania/luzerne",
+      "pennsylvania/bradford",
+      "pennsylvania/lackawanna"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Times Leader",
+    "url": "https://timesleaderonline.com/feed/",
+    "mediaType": "article",
+    "itemSource": "The Times Leader",
+    "counties": [
+      "ohio/belmont"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Times Leader (2)",
+    "url": "https://timesleader.com/feed/",
+    "mediaType": "article",
+    "itemSource": "The Times Leader",
+    "counties": [
+      "pennsylvania/luzerne",
+      "pennsylvania/bradford",
+      "pennsylvania/lackawanna"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Times Leader (2)",
+    "url": "https://timesleaderonline.com/rss",
+    "mediaType": "article",
+    "itemSource": "The Times Leader",
+    "counties": [
+      "ohio/belmont"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Times of Houma/Thibodaux",
+    "url": "https://houmatimes.com/feed/",
+    "mediaType": "article",
+    "itemSource": "The Times of Houma/Thibodaux",
+    "counties": [
+      "louisiana/terrebonne"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Times of Houma/Thibodaux (2)",
+    "url": "https://houmatimes.com/rss",
+    "mediaType": "article",
+    "itemSource": "The Times of Houma/Thibodaux",
+    "counties": [
+      "louisiana/terrebonne"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Times of Northwest Indiana",
+    "url": "http://nwitimes.com/search/?f=rss&t=article&l=50&s=start_time&sd=desc&k%5B%5D=%23topstory",
+    "mediaType": "article",
+    "itemSource": "The Times of Northwest Indiana",
+    "counties": [
+      "indiana/laporte"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Urbanist",
+    "url": "https://www.theurbanist.org/rss/",
+    "mediaType": "article",
+    "itemSource": "The Urbanist",
+    "counties": [
+      "washington/snohomish"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Urbanist (2)",
+    "url": "https://theurbanist.org/feed/",
+    "mediaType": "article",
+    "itemSource": "The Urbanist",
+    "counties": [
+      "washington/snohomish"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
     "name": "The Verge",
     "url": "https://theverge.com/rss/index.xml",
     "mediaType": "article",
     "itemSource": "The Verge",
     "counties": [
-      "texas/pecos"
+      "texas/pecos",
+      "virginia/loudoun"
     ],
     "trustedForCountyTier": false
   },
@@ -1635,7 +14568,334 @@ export const discoveredRegionalSources: DirectSource[] = [
     "mediaType": "article",
     "itemSource": "The Verge",
     "counties": [
-      "texas/pecos"
+      "texas/pecos",
+      "virginia/loudoun"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Village Reporter",
+    "url": "https://thevillagereporter.com/feed/",
+    "mediaType": "article",
+    "itemSource": "The Village Reporter",
+    "counties": [
+      "ohio/fulton"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Village Reporter (2)",
+    "url": "https://thevillagereporter.com/comments/feed/",
+    "mediaType": "article",
+    "itemSource": "The Village Reporter",
+    "counties": [
+      "ohio/fulton"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Washington Examiner",
+    "url": "https://www.washingtonexaminer.com/feed/",
+    "mediaType": "article",
+    "itemSource": "The Washington Examiner",
+    "counties": [
+      "south-carolina/dorchester",
+      "pennsylvania/blair",
+      "arizona/santa-cruz",
+      "north-carolina/avery",
+      "virginia/culpeper",
+      "virginia/loudoun",
+      "virginia/stafford",
+      "michigan/macomb",
+      "west-virginia/kanawha"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Washington Examiner (2)",
+    "url": "https://www.washingtonexaminer.com/comments/feed/",
+    "mediaType": "article",
+    "itemSource": "The Washington Examiner",
+    "counties": [
+      "south-carolina/dorchester",
+      "pennsylvania/blair",
+      "arizona/santa-cruz",
+      "north-carolina/avery",
+      "virginia/culpeper",
+      "virginia/loudoun",
+      "virginia/stafford",
+      "michigan/macomb",
+      "west-virginia/kanawha"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The White House",
+    "url": "https://whitehouse.gov/news/feed/",
+    "mediaType": "article",
+    "itemSource": "The White House",
+    "counties": [
+      "district-of-columbia/district-of-columbia",
+      "texas/maverick"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The White House (2)",
+    "url": "https://whitehouse.gov/news/rss",
+    "mediaType": "article",
+    "itemSource": "The White House",
+    "counties": [
+      "district-of-columbia/district-of-columbia",
+      "texas/maverick"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "The Wilson Times",
+    "url": "https://wilsontimes.com/rss.xml",
+    "mediaType": "article",
+    "itemSource": "The Wilson Times",
+    "counties": [
+      "north-carolina/catawba",
+      "north-carolina/wilson"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Thedailyrecord",
+    "url": "https://thedailyrecord.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Thedailyrecord",
+    "counties": [
+      "maryland/calvert",
+      "maryland/carroll",
+      "maryland/frederick",
+      "maryland/cecil",
+      "maryland/harford",
+      "maryland/dorchester",
+      "maryland/talbot"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Thedailyrecord (2)",
+    "url": "https://thedailyrecord.com/rss",
+    "mediaType": "article",
+    "itemSource": "Thedailyrecord",
+    "counties": [
+      "maryland/calvert",
+      "maryland/carroll",
+      "maryland/frederick",
+      "maryland/cecil",
+      "maryland/harford",
+      "maryland/dorchester",
+      "maryland/talbot"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "theepochtimes",
+    "url": "https://theepochtimes.com/news/feed/",
+    "mediaType": "article",
+    "itemSource": "theepochtimes",
+    "counties": [
+      "arkansas/lafayette",
+      "michigan/antrim",
+      "pennsylvania/monroe",
+      "virginia/prince-william",
+      "california/mendocino",
+      "california/san-diego",
+      "new-york/orange"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "TheWrap",
+    "url": "https://www.thewrap.com/feed/",
+    "mediaType": "article",
+    "itemSource": "TheWrap",
+    "counties": [
+      "pennsylvania/bucks"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "TheWrap (2)",
+    "url": "https://thewrap.com/feed/",
+    "mediaType": "article",
+    "itemSource": "TheWrap",
+    "counties": [
+      "pennsylvania/bucks"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Thomasville Times-Enterprise",
+    "url": "https://timesenterprise.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Thomasville Times-Enterprise",
+    "counties": [
+      "georgia/thomas",
+      "georgia/camden"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Thomasville Times-Enterprise (2)",
+    "url": "https://timesenterprise.com/rss",
+    "mediaType": "article",
+    "itemSource": "Thomasville Times-Enterprise",
+    "counties": [
+      "georgia/thomas",
+      "georgia/camden"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "ThurstonTalk",
+    "url": "https://www.thurstontalk.com/feed/",
+    "mediaType": "article",
+    "itemSource": "ThurstonTalk",
+    "counties": [
+      "washington/thurston"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "ThurstonTalk (2)",
+    "url": "https://thurstontalk.com/feed/",
+    "mediaType": "article",
+    "itemSource": "ThurstonTalk",
+    "counties": [
+      "washington/thurston"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Tidewater News",
+    "url": "https://tidewaternews.com/category/news/feed/",
+    "mediaType": "article",
+    "itemSource": "Tidewater News",
+    "counties": [
+      "virginia/southampton"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Tiffinohio",
+    "url": "https://tiffinohio.net/feed/",
+    "mediaType": "article",
+    "itemSource": "Tiffinohio",
+    "counties": [
+      "ohio/seneca",
+      "ohio/sandusky"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Tiffinohio (2)",
+    "url": "https://tiffinohio.net/rss",
+    "mediaType": "article",
+    "itemSource": "Tiffinohio",
+    "counties": [
+      "ohio/seneca",
+      "ohio/sandusky"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Tillamook County Pioneer",
+    "url": "https://www.tillamookcountypioneer.net/feed/",
+    "mediaType": "article",
+    "itemSource": "Tillamook County Pioneer",
+    "counties": [
+      "oregon/clatsop",
+      "oregon/tillamook"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Tillamook County Pioneer (2)",
+    "url": "https://tillamookcountypioneer.net/feed/",
+    "mediaType": "article",
+    "itemSource": "Tillamook County Pioneer",
+    "counties": [
+      "oregon/clatsop",
+      "oregon/tillamook"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Times Now",
+    "url": "https://www.timesnownews.com/feeds/gns-en-latest.xml",
+    "mediaType": "article",
+    "itemSource": "Times Now",
+    "counties": [
+      "new-jersey/salem",
+      "california/humboldt",
+      "michigan/branch",
+      "pennsylvania/cumberland",
+      "california/ventura"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Times Republican",
+    "url": "https://timesrepublican.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Times Republican",
+    "counties": [
+      "indiana/owen"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Times Republican (2)",
+    "url": "https://timesrepublican.com/rss",
+    "mediaType": "article",
+    "itemSource": "Times Republican",
+    "counties": [
+      "indiana/owen"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Times Virginian",
+    "url": "https://www.timesvirginian.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Times Virginian",
+    "counties": [
+      "pennsylvania/fulton",
+      "virginia/warren",
+      "virginia/frederick",
+      "west-virginia/jefferson",
+      "west-virginia/berkeley"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Times Virginian (2)",
+    "url": "https://www.timesvirginian.com/comments/feed/",
+    "mediaType": "article",
+    "itemSource": "Times Virginian",
+    "counties": [
+      "pennsylvania/fulton",
+      "virginia/warren",
+      "virginia/frederick",
+      "west-virginia/jefferson",
+      "west-virginia/berkeley"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "TMJ4 News WTMJ-TV",
+    "url": "https://www.tmj4.com/index.rss",
+    "mediaType": "article",
+    "itemSource": "TMJ4 News WTMJ-TV",
+    "counties": [
+      "wisconsin/walworth",
+      "wisconsin/waukesha"
     ],
     "trustedForCountyTier": false
   },
@@ -1645,7 +14905,8 @@ export const discoveredRegionalSources: DirectSource[] = [
     "mediaType": "article",
     "itemSource": "Toronto Sun",
     "counties": [
-      "texas/hemphill"
+      "texas/hemphill",
+      "ohio/medina"
     ],
     "trustedForCountyTier": false
   },
@@ -1655,7 +14916,8 @@ export const discoveredRegionalSources: DirectSource[] = [
     "mediaType": "article",
     "itemSource": "Toronto Sun",
     "counties": [
-      "texas/hemphill"
+      "texas/hemphill",
+      "ohio/medina"
     ],
     "trustedForCountyTier": false
   },
@@ -1665,7 +14927,12 @@ export const discoveredRegionalSources: DirectSource[] = [
     "mediaType": "article",
     "itemSource": "Townhall",
     "counties": [
-      "texas/webb"
+      "georgia/columbia",
+      "west-virginia/berkeley",
+      "california/los-angeles",
+      "texas/webb",
+      "minnesota/hennepin",
+      "indiana/hendricks"
     ],
     "trustedForCountyTier": false
   },
@@ -1675,7 +14942,115 @@ export const discoveredRegionalSources: DirectSource[] = [
     "mediaType": "article",
     "itemSource": "Townhall",
     "counties": [
-      "texas/webb"
+      "georgia/columbia",
+      "west-virginia/berkeley",
+      "california/los-angeles",
+      "texas/webb",
+      "minnesota/hennepin",
+      "indiana/hendricks"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Transportation Today",
+    "url": "https://transportationtodaynews.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Transportation Today",
+    "counties": [
+      "north-carolina/scotland"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Transportation Today (2)",
+    "url": "https://transportationtodaynews.com/rss",
+    "mediaType": "article",
+    "itemSource": "Transportation Today",
+    "counties": [
+      "north-carolina/scotland"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Tri-State Livestock News",
+    "url": "https://tsln.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Tri-State Livestock News",
+    "counties": [
+      "south-dakota/meade"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Tri-State Livestock News (2)",
+    "url": "https://tsln.com/rss",
+    "mediaType": "article",
+    "itemSource": "Tri-State Livestock News",
+    "counties": [
+      "south-dakota/meade"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Triblive",
+    "url": "https://triblive.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Triblive",
+    "counties": [
+      "pennsylvania/lancaster",
+      "pennsylvania/butler",
+      "pennsylvania/greene",
+      "pennsylvania/westmoreland",
+      "pennsylvania/beaver",
+      "pennsylvania/washington",
+      "pennsylvania/berks"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Triblive (2)",
+    "url": "https://triblive.com/category/news/feed/",
+    "mediaType": "article",
+    "itemSource": "Triblive",
+    "counties": [
+      "pennsylvania/lancaster",
+      "pennsylvania/butler",
+      "pennsylvania/greene",
+      "pennsylvania/westmoreland",
+      "pennsylvania/beaver",
+      "pennsylvania/washington",
+      "pennsylvania/berks"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Tristatehomepage",
+    "url": "https://tristatehomepage.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Tristatehomepage",
+    "counties": [
+      "indiana/pike"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Tristatehomepage (2)",
+    "url": "https://tristatehomepage.com/rss",
+    "mediaType": "article",
+    "itemSource": "Tristatehomepage",
+    "counties": [
+      "indiana/pike"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "TRT World",
+    "url": "https://www.trtworld.com/feed/rss.xml",
+    "mediaType": "article",
+    "itemSource": "TRT World",
+    "counties": [
+      "texas/maverick",
+      "montana/flathead"
     ],
     "trustedForCountyTier": false
   },
@@ -1696,6 +15071,46 @@ export const discoveredRegionalSources: DirectSource[] = [
     "itemSource": "Truthout",
     "counties": [
       "texas/tarrant"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Turlock Journal",
+    "url": "https://turlockjournal.com/rss/",
+    "mediaType": "article",
+    "itemSource": "Turlock Journal",
+    "counties": [
+      "california/stanislaus"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Turlock Journal (2)",
+    "url": "https://turlockjournal.com/rss",
+    "mediaType": "article",
+    "itemSource": "Turlock Journal",
+    "counties": [
+      "california/stanislaus"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Tuscaloosa Thread",
+    "url": "https://tuscaloosathread.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Tuscaloosa Thread",
+    "counties": [
+      "alabama/shelby"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Tuscaloosa Thread (2)",
+    "url": "https://tuscaloosathread.com/rss",
+    "mediaType": "article",
+    "itemSource": "Tuscaloosa Thread",
+    "counties": [
+      "alabama/shelby"
     ],
     "trustedForCountyTier": false
   },
@@ -1730,12 +15145,121 @@ export const discoveredRegionalSources: DirectSource[] = [
     "trustedForCountyTier": false
   },
   {
+    "name": "U.S. News & World Report",
+    "url": "https://health.usnews.com/rss/news",
+    "mediaType": "article",
+    "itemSource": "U.S. News & World Report",
+    "counties": [
+      "georgia/lanier",
+      "georgia/dawson",
+      "kentucky/wayne",
+      "new-jersey/morris",
+      "wisconsin/vilas",
+      "florida/hernando",
+      "kansas/grant"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "U.S. News & World Report",
+    "url": "https://money.usnews.com/rss/news",
+    "mediaType": "article",
+    "itemSource": "U.S. News & World Report",
+    "counties": [
+      "virginia/fredericksburg",
+      "texas/grimes",
+      "north-carolina/camden",
+      "north-carolina/pasquotank",
+      "virginia/warren",
+      "virginia/charlottesville",
+      "virginia/manassas",
+      "virginia/williamsburg",
+      "pennsylvania/philadelphia",
+      "virginia/winchester"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "U.S. News & World Report",
+    "url": "https://realestate.usnews.com/rss/news",
+    "mediaType": "article",
+    "itemSource": "U.S. News & World Report",
+    "counties": [
+      "california/lassen",
+      "florida/charlotte",
+      "georgia/richmond",
+      "virginia/staunton",
+      "colorado/jackson",
+      "kentucky/mccracken",
+      "tennessee/hamblen",
+      "virginia/alexandria",
+      "virginia/chesapeake",
+      "california/del-norte",
+      "louisiana/terrebonne",
+      "virginia/charlottesville",
+      "texas/tom-green",
+      "california/modoc",
+      "florida/leon",
+      "georgia/dougherty",
+      "indiana/allen",
+      "indiana/hamilton",
+      "nevada/carson-city",
+      "new-jersey/atlantic",
+      "virginia/fredericksburg",
+      "virginia/lynchburg",
+      "virginia/portsmouth",
+      "virginia/suffolk",
+      "virginia/winchester",
+      "district-of-columbia/district-of-columbia",
+      "georgia/glynn",
+      "north-carolina/chatham",
+      "virginia/harrisonburg"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "UC San Francisco",
+    "url": "https://ucsf.edu/rss.xml",
+    "mediaType": "article",
+    "itemSource": "UC San Francisco",
+    "counties": [
+      "california/madera"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
     "name": "UPI",
     "url": "https://rss.upi.com/news/news.rss",
     "mediaType": "article",
     "itemSource": "UPI",
     "counties": [
-      "texas/real"
+      "texas/real",
+      "illinois/jefferson",
+      "wisconsin/juneau",
+      "kentucky/bourbon",
+      "pennsylvania/allegheny",
+      "ohio/madison",
+      "michigan/livingston"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Urban Milwaukee",
+    "url": "http://feeds.feedburner.com/UrbanMilwaukee",
+    "mediaType": "article",
+    "itemSource": "Urban Milwaukee",
+    "counties": [
+      "wisconsin/milwaukee"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Urban Milwaukee (2)",
+    "url": "https://urbanmilwaukee.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Urban Milwaukee",
+    "counties": [
+      "wisconsin/milwaukee"
     ],
     "trustedForCountyTier": false
   },
@@ -1746,7 +15270,11 @@ export const discoveredRegionalSources: DirectSource[] = [
     "itemSource": "Us Weekly",
     "counties": [
       "texas/henderson",
-      "texas/carson"
+      "oklahoma/noble",
+      "texas/carson",
+      "colorado/costilla",
+      "ohio/marion",
+      "washington/okanogan"
     ],
     "trustedForCountyTier": false
   },
@@ -1757,7 +15285,49 @@ export const discoveredRegionalSources: DirectSource[] = [
     "itemSource": "Us Weekly",
     "counties": [
       "texas/henderson",
-      "texas/carson"
+      "oklahoma/noble",
+      "texas/carson",
+      "colorado/costilla",
+      "ohio/marion",
+      "washington/okanogan"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Vail Daily",
+    "url": "https://vaildaily.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Vail Daily",
+    "counties": [
+      "colorado/summit",
+      "nebraska/nuckolls"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Vail Daily (2)",
+    "url": "https://vaildaily.com/rss",
+    "mediaType": "article",
+    "itemSource": "Vail Daily",
+    "counties": [
+      "colorado/summit",
+      "nebraska/nuckolls"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Valley News Live",
+    "url": "https://valleynewslive.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "Valley News Live",
+    "counties": [
+      "north-dakota/wells",
+      "north-dakota/richland",
+      "north-dakota/grant",
+      "minnesota/cass",
+      "minnesota/douglas",
+      "minnesota/marshall",
+      "north-dakota/nelson"
     ],
     "trustedForCountyTier": false
   },
@@ -1780,6 +15350,1261 @@ export const discoveredRegionalSources: DirectSource[] = [
     "counties": [
       "texas/bexar",
       "texas/hidalgo"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Variety",
+    "url": "https://variety.com/feed/rss/",
+    "mediaType": "article",
+    "itemSource": "Variety",
+    "counties": [
+      "arkansas/pulaski",
+      "arkansas/arkansas",
+      "ohio/union"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Variety (2)",
+    "url": "https://variety.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Variety",
+    "counties": [
+      "arkansas/pulaski",
+      "arkansas/arkansas",
+      "ohio/union"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Vermont Business Magazine",
+    "url": "https://vermontbiz.com/rss.xml",
+    "mediaType": "article",
+    "itemSource": "Vermont Business Magazine",
+    "counties": [
+      "vermont/addison",
+      "vermont/franklin"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Villages News",
+    "url": "https://www.villages-news.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Villages News",
+    "counties": [
+      "florida/sumter"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Villages News (2)",
+    "url": "https://villages-news.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Villages News",
+    "counties": [
+      "florida/sumter"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Virginia Business",
+    "url": "https://virginiabusiness.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Virginia Business",
+    "counties": [
+      "virginia/bland",
+      "virginia/brunswick",
+      "virginia/chesterfield",
+      "virginia/pittsylvania",
+      "virginia/newport-news",
+      "virginia/arlington",
+      "virginia/charles-city",
+      "virginia/frederick",
+      "virginia/halifax",
+      "virginia/james-city",
+      "virginia/orange",
+      "virginia/patrick",
+      "virginia/roanoke",
+      "virginia/shenandoah",
+      "virginia/wythe",
+      "virginia/henrico",
+      "virginia/bristol",
+      "virginia/amelia",
+      "virginia/appomattox",
+      "virginia/botetourt",
+      "virginia/goochland",
+      "virginia/henry",
+      "virginia/new-kent",
+      "virginia/prince-george",
+      "virginia/rockingham",
+      "virginia/scott",
+      "virginia/surry",
+      "virginia/washington",
+      "virginia/wise",
+      "virginia/harrisonburg",
+      "virginia/louisa",
+      "virginia/manassas"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Virginia Business (2)",
+    "url": "https://virginiabusiness.com/rss",
+    "mediaType": "article",
+    "itemSource": "Virginia Business",
+    "counties": [
+      "virginia/bland",
+      "virginia/brunswick",
+      "virginia/chesterfield",
+      "virginia/pittsylvania",
+      "virginia/newport-news",
+      "virginia/arlington",
+      "virginia/charles-city",
+      "virginia/frederick",
+      "virginia/halifax",
+      "virginia/james-city",
+      "virginia/orange",
+      "virginia/patrick",
+      "virginia/roanoke",
+      "virginia/shenandoah",
+      "virginia/wythe",
+      "virginia/henrico",
+      "virginia/bristol",
+      "virginia/amelia",
+      "virginia/appomattox",
+      "virginia/botetourt",
+      "virginia/goochland",
+      "virginia/henry",
+      "virginia/new-kent",
+      "virginia/prince-george",
+      "virginia/rockingham",
+      "virginia/scott",
+      "virginia/surry",
+      "virginia/washington",
+      "virginia/wise",
+      "virginia/harrisonburg",
+      "virginia/louisa",
+      "virginia/manassas"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Virginia Mercury",
+    "url": "https://virginiamercury.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Virginia Mercury",
+    "counties": [
+      "virginia/franklin",
+      "virginia/manassas"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Virginia Mercury (2)",
+    "url": "https://virginiamercury.com/rss",
+    "mediaType": "article",
+    "itemSource": "Virginia Mercury",
+    "counties": [
+      "virginia/franklin",
+      "virginia/manassas"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Vogue",
+    "url": "https://www.vogue.com/feed/rss",
+    "mediaType": "article",
+    "itemSource": "Vogue",
+    "counties": [
+      "rhode-island/newport"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "VTDigger",
+    "url": "https://vtdigger.org/feed/",
+    "mediaType": "article",
+    "itemSource": "VTDigger",
+    "counties": [
+      "vermont/windsor",
+      "vermont/addison",
+      "vermont/orange",
+      "vermont/chittenden",
+      "vermont/grand-isle",
+      "vermont/windham",
+      "vermont/essex",
+      "vermont/orleans",
+      "vermont/caledonia",
+      "vermont/rutland",
+      "vermont/franklin",
+      "vermont/bennington",
+      "vermont/washington",
+      "vermont/lamoille"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "VTDigger (2)",
+    "url": "https://vtdigger.org/rss",
+    "mediaType": "article",
+    "itemSource": "VTDigger",
+    "counties": [
+      "vermont/windsor",
+      "vermont/addison",
+      "vermont/orange",
+      "vermont/chittenden",
+      "vermont/grand-isle",
+      "vermont/windham",
+      "vermont/essex",
+      "vermont/orleans",
+      "vermont/caledonia",
+      "vermont/rutland",
+      "vermont/franklin",
+      "vermont/bennington",
+      "vermont/washington",
+      "vermont/lamoille"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WABC-TV",
+    "url": "https://abc7ny.com/feed/",
+    "mediaType": "article",
+    "itemSource": "WABC-TV",
+    "counties": [
+      "new-york/nassau",
+      "new-jersey/sussex",
+      "new-jersey/passaic",
+      "new-york/sullivan",
+      "new-york/westchester",
+      "new-jersey/monmouth",
+      "new-jersey/union",
+      "tennessee/stewart",
+      "new-jersey/essex",
+      "pennsylvania/york",
+      "new-jersey/ocean",
+      "new-york/orange",
+      "new-york/rockland",
+      "virginia/alexandria"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WABC-TV (2)",
+    "url": "https://abc7ny.com/rss",
+    "mediaType": "article",
+    "itemSource": "WABC-TV",
+    "counties": [
+      "new-york/nassau",
+      "new-jersey/sussex",
+      "new-jersey/passaic",
+      "new-york/sullivan",
+      "new-york/westchester",
+      "new-jersey/monmouth",
+      "new-jersey/union",
+      "tennessee/stewart",
+      "new-jersey/essex",
+      "pennsylvania/york",
+      "new-jersey/ocean",
+      "new-york/orange",
+      "new-york/rockland",
+      "virginia/alexandria"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WABI-TV",
+    "url": "https://wabi.tv/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "WABI-TV",
+    "counties": [
+      "maine/knox",
+      "maine/hancock",
+      "maine/penobscot",
+      "maine/piscataquis",
+      "maine/waldo",
+      "maine/washington",
+      "maine/aroostook"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WAFF 48",
+    "url": "https://waff.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "WAFF 48",
+    "counties": [
+      "tennessee/giles",
+      "alabama/colbert",
+      "tennessee/marshall",
+      "alabama/madison",
+      "tennessee/jackson",
+      "alabama/dekalb",
+      "alabama/marshall",
+      "indiana/marshall"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WAGM-TV",
+    "url": "https://wagmtv.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "WAGM-TV",
+    "counties": [
+      "maine/aroostook"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "walb",
+    "url": "https://walb.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "walb",
+    "counties": [
+      "georgia/atkinson",
+      "georgia/irwin",
+      "georgia/mitchell",
+      "georgia/calhoun",
+      "georgia/crisp",
+      "georgia/thomas",
+      "georgia/colquitt",
+      "georgia/dougherty",
+      "georgia/lowndes",
+      "georgia/lee",
+      "georgia/brooks",
+      "georgia/clinch",
+      "georgia/ben-hill",
+      "georgia/grady",
+      "georgia/crawford",
+      "georgia/early",
+      "georgia/sumter"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WAMC",
+    "url": "https://wamc.org/rss.xml",
+    "mediaType": "article",
+    "itemSource": "WAMC",
+    "counties": [
+      "new-york/rensselaer",
+      "new-york/saratoga",
+      "new-york/albany",
+      "new-york/sullivan",
+      "new-york/clinton",
+      "new-york/dutchess"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WAND",
+    "url": "https://wandtv.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "WAND",
+    "counties": [
+      "illinois/logan",
+      "illinois/macon",
+      "illinois/effingham",
+      "illinois/macoupin",
+      "illinois/vermilion"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Wane",
+    "url": "https://wane.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Wane",
+    "counties": [
+      "ohio/paulding",
+      "ohio/mercer",
+      "indiana/allen",
+      "ohio/defiance",
+      "indiana/adams",
+      "indiana/wells",
+      "indiana/crawford",
+      "indiana/kosciusko",
+      "ohio/van-wert",
+      "florida/glades",
+      "indiana/lagrange",
+      "indiana/noble",
+      "indiana/randolph"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Wane (2)",
+    "url": "https://wane.com/rss",
+    "mediaType": "article",
+    "itemSource": "Wane",
+    "counties": [
+      "ohio/paulding",
+      "ohio/mercer",
+      "indiana/allen",
+      "ohio/defiance",
+      "indiana/adams",
+      "indiana/wells",
+      "indiana/crawford",
+      "indiana/kosciusko",
+      "ohio/van-wert",
+      "florida/glades",
+      "indiana/lagrange",
+      "indiana/noble",
+      "indiana/randolph"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Washington Blade",
+    "url": "https://www.washingtonblade.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Washington Blade",
+    "counties": [
+      "maryland/baltimore",
+      "virginia/winchester"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Washington Blade (2)",
+    "url": "https://washingtonblade.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Washington Blade",
+    "counties": [
+      "maryland/baltimore",
+      "virginia/winchester"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Waste Advantage Magazine",
+    "url": "https://wasteadvantagemag.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Waste Advantage Magazine",
+    "counties": [
+      "new-mexico/bernalillo"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Waste Advantage Magazine (2)",
+    "url": "https://wasteadvantagemag.com/rss",
+    "mediaType": "article",
+    "itemSource": "Waste Advantage Magazine",
+    "counties": [
+      "new-mexico/bernalillo"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WATE 6 On Your Side",
+    "url": "https://wate.com/feed/",
+    "mediaType": "article",
+    "itemSource": "WATE 6 On Your Side",
+    "counties": [
+      "kentucky/bell",
+      "tennessee/sevier",
+      "tennessee/blount",
+      "tennessee/claiborne",
+      "tennessee/hamblen",
+      "tennessee/cumberland",
+      "tennessee/greene",
+      "tennessee/anderson",
+      "tennessee/grainger",
+      "tennessee/morgan",
+      "tennessee/scott",
+      "tennessee/loudon",
+      "tennessee/roane",
+      "georgia/union",
+      "kentucky/harlan",
+      "tennessee/campbell",
+      "tennessee/hawkins",
+      "tennessee/jefferson",
+      "tennessee/fentress",
+      "tennessee/knox",
+      "tennessee/monroe",
+      "tennessee/sullivan",
+      "tennessee/washington"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WATE 6 On Your Side (2)",
+    "url": "https://wate.com/rss",
+    "mediaType": "article",
+    "itemSource": "WATE 6 On Your Side",
+    "counties": [
+      "kentucky/bell",
+      "tennessee/sevier",
+      "tennessee/blount",
+      "tennessee/claiborne",
+      "tennessee/hamblen",
+      "tennessee/cumberland",
+      "tennessee/greene",
+      "tennessee/anderson",
+      "tennessee/grainger",
+      "tennessee/morgan",
+      "tennessee/scott",
+      "tennessee/loudon",
+      "tennessee/roane",
+      "georgia/union",
+      "kentucky/harlan",
+      "tennessee/campbell",
+      "tennessee/hawkins",
+      "tennessee/jefferson",
+      "tennessee/fentress",
+      "tennessee/knox",
+      "tennessee/monroe",
+      "tennessee/sullivan",
+      "tennessee/washington"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Wausau Pilot & Review",
+    "url": "https://wausaupilotandreview.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Wausau Pilot & Review",
+    "counties": [
+      "wisconsin/marathon",
+      "wisconsin/lincoln",
+      "wisconsin/sauk"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Wausau Pilot & Review (2)",
+    "url": "https://wausaupilotandreview.com/rss",
+    "mediaType": "article",
+    "itemSource": "Wausau Pilot & Review",
+    "counties": [
+      "wisconsin/marathon",
+      "wisconsin/lincoln",
+      "wisconsin/sauk"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WAVE3",
+    "url": "https://wave3.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "WAVE3",
+    "counties": [
+      "indiana/owen",
+      "kentucky/henry"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WAVY",
+    "url": "https://wavy.com/feed/",
+    "mediaType": "article",
+    "itemSource": "WAVY",
+    "counties": [
+      "virginia/northampton",
+      "virginia/suffolk",
+      "virginia/virginia-beach",
+      "north-carolina/bertie",
+      "north-carolina/gates",
+      "virginia/accomack",
+      "north-carolina/pasquotank",
+      "north-carolina/hertford",
+      "virginia/patrick",
+      "virginia/york",
+      "virginia/norfolk",
+      "north-carolina/camden",
+      "virginia/gloucester",
+      "virginia/greensville",
+      "virginia/poquoson",
+      "virginia/portsmouth"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WAVY (2)",
+    "url": "https://wavy.com/rss",
+    "mediaType": "article",
+    "itemSource": "WAVY",
+    "counties": [
+      "virginia/northampton",
+      "virginia/suffolk",
+      "virginia/virginia-beach",
+      "north-carolina/bertie",
+      "north-carolina/gates",
+      "virginia/accomack",
+      "north-carolina/pasquotank",
+      "north-carolina/hertford",
+      "virginia/patrick",
+      "virginia/york",
+      "virginia/norfolk",
+      "north-carolina/camden",
+      "virginia/gloucester",
+      "virginia/greensville",
+      "virginia/poquoson",
+      "virginia/portsmouth"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WBAL NewsRadio 1090/FM 101.5",
+    "url": "https://www.wbal.com/feed",
+    "mediaType": "article",
+    "itemSource": "WBAL NewsRadio 1090/FM 101.5",
+    "counties": [
+      "maryland/montgomery",
+      "maryland/anne-arundel",
+      "pennsylvania/cumberland",
+      "texas/tarrant",
+      "wisconsin/washington"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WBAL NewsRadio 1090/FM 101.5 (2)",
+    "url": "https://wbal.com/feed/",
+    "mediaType": "article",
+    "itemSource": "WBAL NewsRadio 1090/FM 101.5",
+    "counties": [
+      "maryland/montgomery",
+      "maryland/anne-arundel",
+      "pennsylvania/cumberland",
+      "texas/tarrant",
+      "wisconsin/washington"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WBAY",
+    "url": "https://wbay.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "WBAY",
+    "counties": [
+      "wisconsin/shawano",
+      "wisconsin/brown",
+      "wisconsin/oconto",
+      "wisconsin/washington"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WBBJ-TV",
+    "url": "https://wbbjtv.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "WBBJ-TV",
+    "counties": [
+      "tennessee/henderson",
+      "tennessee/gibson",
+      "tennessee/humphreys",
+      "tennessee/hardin"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WBIR",
+    "url": "https://www.wbir.com/feeds/syndication/rss/news",
+    "mediaType": "article",
+    "itemSource": "WBIR",
+    "counties": [
+      "tennessee/union",
+      "tennessee/morgan",
+      "tennessee/roane",
+      "tennessee/hamilton",
+      "tennessee/jefferson",
+      "kentucky/harlan",
+      "tennessee/blount",
+      "tennessee/fentress",
+      "tennessee/sevier",
+      "kentucky/laurel",
+      "kentucky/bell",
+      "tennessee/campbell",
+      "tennessee/greene",
+      "tennessee/monroe",
+      "tennessee/wilson",
+      "kentucky/fayette",
+      "tennessee/cocke"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WBIR (2)",
+    "url": "https://wbir.com/feeds/syndication/rss/news",
+    "mediaType": "article",
+    "itemSource": "WBIR",
+    "counties": [
+      "tennessee/union",
+      "tennessee/morgan",
+      "tennessee/roane",
+      "tennessee/hamilton",
+      "tennessee/jefferson",
+      "kentucky/harlan",
+      "tennessee/blount",
+      "tennessee/fentress",
+      "tennessee/sevier",
+      "kentucky/laurel",
+      "kentucky/bell",
+      "tennessee/campbell",
+      "tennessee/greene",
+      "tennessee/monroe",
+      "tennessee/wilson",
+      "kentucky/fayette",
+      "tennessee/cocke"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WBIW",
+    "url": "https://www.wbiw.com/feed/",
+    "mediaType": "article",
+    "itemSource": "WBIW",
+    "counties": [
+      "indiana/bartholomew",
+      "indiana/dekalb",
+      "indiana/pike",
+      "indiana/elkhart",
+      "indiana/white",
+      "indiana/lawrence",
+      "indiana/dubois",
+      "indiana/tippecanoe",
+      "pennsylvania/greene",
+      "indiana/dearborn",
+      "indiana/newton"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WBIW (2)",
+    "url": "https://wbiw.com/feed/",
+    "mediaType": "article",
+    "itemSource": "WBIW",
+    "counties": [
+      "indiana/bartholomew",
+      "indiana/dekalb",
+      "indiana/pike",
+      "indiana/elkhart",
+      "indiana/white",
+      "indiana/lawrence",
+      "indiana/dubois",
+      "indiana/tippecanoe",
+      "pennsylvania/greene",
+      "indiana/dearborn",
+      "indiana/newton"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WBKO",
+    "url": "https://wbko.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "WBKO",
+    "counties": [
+      "kentucky/grayson",
+      "kentucky/bourbon",
+      "kentucky/warren"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WBNG 12 News",
+    "url": "https://wbng.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "WBNG 12 News",
+    "counties": [
+      "pennsylvania/wayne",
+      "pennsylvania/susquehanna",
+      "new-york/broome"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WBOY 12 News",
+    "url": "https://wboy.com/feed/",
+    "mediaType": "article",
+    "itemSource": "WBOY 12 News",
+    "counties": [
+      "virginia/bland",
+      "west-virginia/braxton",
+      "west-virginia/tucker",
+      "west-virginia/upshur"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WBOY 12 News (2)",
+    "url": "https://wboy.com/rss",
+    "mediaType": "article",
+    "itemSource": "WBOY 12 News",
+    "counties": [
+      "virginia/bland",
+      "west-virginia/braxton",
+      "west-virginia/tucker",
+      "west-virginia/upshur"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WBRC",
+    "url": "https://wbrc.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "WBRC",
+    "counties": [
+      "alabama/hale",
+      "georgia/cherokee",
+      "alabama/blount",
+      "georgia/clay",
+      "alabama/shelby"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WBTW",
+    "url": "https://wbtw.com/feed/",
+    "mediaType": "article",
+    "itemSource": "WBTW",
+    "counties": [
+      "south-carolina/horry"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WBTW (2)",
+    "url": "https://wbtw.com/rss",
+    "mediaType": "article",
+    "itemSource": "WBTW",
+    "counties": [
+      "south-carolina/horry"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WBUR",
+    "url": "https://rss.wbur.org/wbur/rss",
+    "mediaType": "article",
+    "itemSource": "WBUR",
+    "counties": [
+      "massachusetts/plymouth",
+      "massachusetts/suffolk",
+      "new-hampshire/belknap",
+      "massachusetts/franklin",
+      "vermont/chittenden"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WBUR (2)",
+    "url": "https://wbur.org/feed/",
+    "mediaType": "article",
+    "itemSource": "WBUR",
+    "counties": [
+      "massachusetts/plymouth",
+      "massachusetts/suffolk",
+      "new-hampshire/belknap",
+      "massachusetts/franklin",
+      "vermont/chittenden"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WCAX",
+    "url": "https://wcax.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "WCAX",
+    "counties": [
+      "vermont/bennington",
+      "vermont/orleans",
+      "alabama/pickens",
+      "new-hampshire/grafton",
+      "vermont/addison"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WCBD",
+    "url": "https://counton2.com/feed/",
+    "mediaType": "article",
+    "itemSource": "WCBD",
+    "counties": [
+      "south-carolina/georgetown",
+      "south-carolina/charleston",
+      "south-carolina/berkeley",
+      "south-carolina/dorchester"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WCBD (2)",
+    "url": "https://counton2.com/rss",
+    "mediaType": "article",
+    "itemSource": "WCBD",
+    "counties": [
+      "south-carolina/georgetown",
+      "south-carolina/charleston",
+      "south-carolina/berkeley",
+      "south-carolina/dorchester"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WCCB Charlotte",
+    "url": "https://wccbcharlotte.com/feed/",
+    "mediaType": "article",
+    "itemSource": "WCCB Charlotte",
+    "counties": [
+      "south-carolina/georgetown"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WCCB Charlotte (2)",
+    "url": "https://wccbcharlotte.com/rss",
+    "mediaType": "article",
+    "itemSource": "WCCB Charlotte",
+    "counties": [
+      "south-carolina/georgetown"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WCHS Network",
+    "url": "https://wchsnetwork.com/feed/",
+    "mediaType": "article",
+    "itemSource": "WCHS Network",
+    "counties": [
+      "west-virginia/kanawha"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WCHS Network (2)",
+    "url": "https://wchsnetwork.com/rss",
+    "mediaType": "article",
+    "itemSource": "WCHS Network",
+    "counties": [
+      "west-virginia/kanawha"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WCJB TV20",
+    "url": "https://wcjb.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "WCJB TV20",
+    "counties": [
+      "florida/marion",
+      "georgia/marion"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WCLU Radio",
+    "url": "https://wcluradio.com/feed/",
+    "mediaType": "article",
+    "itemSource": "WCLU Radio",
+    "counties": [
+      "kentucky/barren",
+      "kentucky/hart",
+      "kentucky/edmonson",
+      "kentucky/warren"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WCLU Radio (2)",
+    "url": "https://wcluradio.com/rss",
+    "mediaType": "article",
+    "itemSource": "WCLU Radio",
+    "counties": [
+      "kentucky/barren",
+      "kentucky/hart",
+      "kentucky/edmonson",
+      "kentucky/warren"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WCPO-TV",
+    "url": "https://www.wcpo.com/index.rss",
+    "mediaType": "article",
+    "itemSource": "WCPO-TV",
+    "counties": [
+      "kentucky/boone",
+      "ohio/clermont",
+      "ohio/clinton",
+      "kentucky/pendleton",
+      "ohio/adams",
+      "indiana/ohio",
+      "indiana/dearborn",
+      "indiana/ripley",
+      "indiana/switzerland",
+      "kentucky/carroll",
+      "kentucky/mason",
+      "kentucky/owen",
+      "ohio/warren",
+      "ohio/highland"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WCTV",
+    "url": "https://wctv.tv/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "WCTV",
+    "counties": [
+      "florida/gadsden",
+      "florida/madison",
+      "florida/suwannee",
+      "georgia/decatur",
+      "georgia/mitchell",
+      "florida/jefferson",
+      "florida/lafayette",
+      "florida/leon",
+      "georgia/miller",
+      "georgia/thomas",
+      "iowa/lee",
+      "virginia/madison",
+      "alabama/baldwin",
+      "florida/taylor"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WDBJ",
+    "url": "https://wdbj7.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "WDBJ",
+    "counties": [
+      "virginia/roanoke",
+      "virginia/henry",
+      "virginia/pittsylvania",
+      "virginia/radford",
+      "virginia/campbell",
+      "virginia/pulaski",
+      "virginia/smyth",
+      "virginia/tazewell",
+      "virginia/danville",
+      "virginia/carroll",
+      "virginia/bland",
+      "virginia/floyd",
+      "virginia/franklin",
+      "virginia/wythe",
+      "virginia/bristol",
+      "virginia/bath",
+      "virginia/craig",
+      "virginia/salem"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WDEF",
+    "url": "https://www.wdef.com/feed/",
+    "mediaType": "article",
+    "itemSource": "WDEF",
+    "counties": [
+      "tennessee/hamilton",
+      "tennessee/sequatchie",
+      "georgia/whitfield",
+      "tennessee/grundy",
+      "tennessee/monroe",
+      "tennessee/bradley",
+      "alabama/blount"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WDEF (2)",
+    "url": "https://wdef.com/feed/",
+    "mediaType": "article",
+    "itemSource": "WDEF",
+    "counties": [
+      "tennessee/hamilton",
+      "tennessee/sequatchie",
+      "georgia/whitfield",
+      "tennessee/grundy",
+      "tennessee/monroe",
+      "tennessee/bradley",
+      "alabama/blount"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WDIO",
+    "url": "https://wdio.com/feed/",
+    "mediaType": "article",
+    "itemSource": "WDIO",
+    "counties": [
+      "minnesota/itasca",
+      "wisconsin/bayfield",
+      "wisconsin/rusk"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WDIO (2)",
+    "url": "https://wdio.com/rss",
+    "mediaType": "article",
+    "itemSource": "WDIO",
+    "counties": [
+      "minnesota/itasca",
+      "wisconsin/bayfield",
+      "wisconsin/rusk"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WDTN",
+    "url": "https://wdtn.com/feed/",
+    "mediaType": "article",
+    "itemSource": "WDTN",
+    "counties": [
+      "ohio/miami",
+      "ohio/clinton",
+      "ohio/preble",
+      "ohio/champaign",
+      "indiana/randolph",
+      "ohio/clark",
+      "ohio/montgomery",
+      "ohio/darke",
+      "ohio/greene",
+      "ohio/logan"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WDTN (2)",
+    "url": "https://wdtn.com/rss",
+    "mediaType": "article",
+    "itemSource": "WDTN",
+    "counties": [
+      "ohio/miami",
+      "ohio/clinton",
+      "ohio/preble",
+      "ohio/champaign",
+      "indiana/randolph",
+      "ohio/clark",
+      "ohio/montgomery",
+      "ohio/darke",
+      "ohio/greene",
+      "ohio/logan"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WDTV",
+    "url": "https://wdtv.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "WDTV",
+    "counties": [
+      "west-virginia/mason",
+      "west-virginia/upshur"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "We Are Iowa",
+    "url": "https://www.weareiowa.com/feeds/syndication/rss/news",
+    "mediaType": "article",
+    "itemSource": "We Are Iowa",
+    "counties": [
+      "iowa/wapello",
+      "iowa/poweshiek"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "We Are Iowa (2)",
+    "url": "https://weareiowa.com/feeds/syndication/rss/news",
+    "mediaType": "article",
+    "itemSource": "We Are Iowa",
+    "counties": [
+      "iowa/wapello",
+      "iowa/poweshiek"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WEAU",
+    "url": "https://weau.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "WEAU",
+    "counties": [
+      "wisconsin/chippewa",
+      "wisconsin/barron",
+      "wisconsin/eau-claire"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WECT TV6",
+    "url": "https://wect.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "WECT TV6",
+    "counties": [
+      "north-carolina/brunswick",
+      "north-carolina/new-hanover"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WEIS Radio",
+    "url": "https://weisradio.com/feed/",
+    "mediaType": "article",
+    "itemSource": "WEIS Radio",
+    "counties": [
+      "georgia/cherokee",
+      "alabama/cherokee",
+      "indiana/marshall"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WEIS Radio (2)",
+    "url": "https://weisradio.com/rss",
+    "mediaType": "article",
+    "itemSource": "WEIS Radio",
+    "counties": [
+      "georgia/cherokee",
+      "alabama/cherokee",
+      "indiana/marshall"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "West Central Tribune",
+    "url": "https://www.wctrib.com/index.rss",
+    "mediaType": "article",
+    "itemSource": "West Central Tribune",
+    "counties": [
+      "minnesota/chippewa",
+      "minnesota/renville",
+      "minnesota/swift",
+      "minnesota/meeker",
+      "minnesota/redwood",
+      "minnesota/lyon",
+      "minnesota/lac-qui-parle",
+      "minnesota/stevens",
+      "minnesota/crow-wing",
+      "minnesota/wabasha"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Westword",
+    "url": "https://westword.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Westword",
+    "counties": [
+      "colorado/adams"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Westword (2)",
+    "url": "https://westword.com/rss",
+    "mediaType": "article",
+    "itemSource": "Westword",
+    "counties": [
+      "colorado/adams"
     ],
     "trustedForCountyTier": false
   },
@@ -1860,12 +16685,1835 @@ export const discoveredRegionalSources: DirectSource[] = [
     "trustedForCountyTier": false
   },
   {
+    "name": "WFLA",
+    "url": "https://wfla.com/feed/",
+    "mediaType": "article",
+    "itemSource": "WFLA",
+    "counties": [
+      "florida/indian-river",
+      "florida/hardee",
+      "florida/volusia",
+      "florida/citrus",
+      "florida/desoto",
+      "florida/manatee",
+      "florida/sumter",
+      "florida/charlotte",
+      "florida/pasco"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WFLA (2)",
+    "url": "https://wfla.com/rss",
+    "mediaType": "article",
+    "itemSource": "WFLA",
+    "counties": [
+      "florida/indian-river",
+      "florida/hardee",
+      "florida/volusia",
+      "florida/citrus",
+      "florida/desoto",
+      "florida/manatee",
+      "florida/sumter",
+      "florida/charlotte",
+      "florida/pasco"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WFMD-AM",
+    "url": "https://wfmd.com/feed/",
+    "mediaType": "article",
+    "itemSource": "WFMD-AM",
+    "counties": [
+      "maryland/carroll"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WFMD-AM (2)",
+    "url": "https://wfmd.com/rss",
+    "mediaType": "article",
+    "itemSource": "WFMD-AM",
+    "counties": [
+      "maryland/carroll"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WFMY News 2",
+    "url": "https://www.wfmynews2.com/feeds/syndication/rss/news",
+    "mediaType": "article",
+    "itemSource": "WFMY News 2",
+    "counties": [
+      "north-carolina/caswell",
+      "north-carolina/guilford",
+      "north-carolina/davidson",
+      "north-carolina/surry",
+      "virginia/henry",
+      "north-carolina/alamance"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WFMY News 2 (2)",
+    "url": "https://wfmynews2.com/feeds/syndication/rss/news",
+    "mediaType": "article",
+    "itemSource": "WFMY News 2",
+    "counties": [
+      "north-carolina/caswell",
+      "north-carolina/guilford",
+      "north-carolina/davidson",
+      "north-carolina/surry",
+      "virginia/henry",
+      "north-carolina/alamance"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WFRV Local 5",
+    "url": "https://wearegreenbay.com/feed/",
+    "mediaType": "article",
+    "itemSource": "WFRV Local 5",
+    "counties": [
+      "wisconsin/vernon",
+      "wisconsin/columbia",
+      "wisconsin/trempealeau",
+      "minnesota/hennepin",
+      "wisconsin/dodge",
+      "wisconsin/marinette",
+      "wisconsin/richland",
+      "wisconsin/brown",
+      "wisconsin/fond-du-lac"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WFRV Local 5 (2)",
+    "url": "https://wearegreenbay.com/rss",
+    "mediaType": "article",
+    "itemSource": "WFRV Local 5",
+    "counties": [
+      "wisconsin/vernon",
+      "wisconsin/columbia",
+      "wisconsin/trempealeau",
+      "minnesota/hennepin",
+      "wisconsin/dodge",
+      "wisconsin/marinette",
+      "wisconsin/richland",
+      "wisconsin/brown",
+      "wisconsin/fond-du-lac"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WFTV",
+    "url": "https://wftv.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "WFTV",
+    "counties": [
+      "florida/flagler",
+      "florida/seminole",
+      "alabama/macon",
+      "florida/orange",
+      "florida/lake",
+      "florida/volusia",
+      "florida/brevard",
+      "kentucky/marion"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "wgel",
+    "url": "https://wgel.com/feed/",
+    "mediaType": "article",
+    "itemSource": "wgel",
+    "counties": [
+      "illinois/clinton"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "wgel (2)",
+    "url": "https://wgel.com/rss",
+    "mediaType": "article",
+    "itemSource": "wgel",
+    "counties": [
+      "illinois/clinton"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WGHP",
+    "url": "https://myfox8.com/feed/",
+    "mediaType": "article",
+    "itemSource": "WGHP",
+    "counties": [
+      "north-carolina/carteret",
+      "north-carolina/stokes",
+      "north-carolina/guilford",
+      "north-carolina/alamance",
+      "north-carolina/rutherford",
+      "south-carolina/georgetown",
+      "south-carolina/marion",
+      "north-carolina/davidson",
+      "tennessee/hickman",
+      "north-carolina/caswell",
+      "north-carolina/chatham",
+      "north-carolina/gates",
+      "north-carolina/surry",
+      "north-carolina/randolph",
+      "virginia/botetourt",
+      "virginia/hopewell",
+      "indiana/randolph",
+      "north-carolina/davie",
+      "north-carolina/gaston",
+      "north-carolina/forsyth",
+      "north-carolina/wilkes",
+      "north-carolina/durham",
+      "north-carolina/franklin",
+      "north-carolina/polk",
+      "north-carolina/rockingham"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WGHP (2)",
+    "url": "https://myfox8.com/rss",
+    "mediaType": "article",
+    "itemSource": "WGHP",
+    "counties": [
+      "north-carolina/carteret",
+      "north-carolina/stokes",
+      "north-carolina/guilford",
+      "north-carolina/alamance",
+      "north-carolina/rutherford",
+      "south-carolina/georgetown",
+      "south-carolina/marion",
+      "north-carolina/davidson",
+      "tennessee/hickman",
+      "north-carolina/caswell",
+      "north-carolina/chatham",
+      "north-carolina/gates",
+      "north-carolina/surry",
+      "north-carolina/randolph",
+      "virginia/botetourt",
+      "virginia/hopewell",
+      "indiana/randolph",
+      "north-carolina/davie",
+      "north-carolina/gaston",
+      "north-carolina/forsyth",
+      "north-carolina/wilkes",
+      "north-carolina/durham",
+      "north-carolina/franklin",
+      "north-carolina/polk",
+      "north-carolina/rockingham"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WGMD",
+    "url": "https://www.wgmd.com/feed/",
+    "mediaType": "article",
+    "itemSource": "WGMD",
+    "counties": [
+      "maryland/dorchester"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WGMD (2)",
+    "url": "https://wgmd.com/feed/",
+    "mediaType": "article",
+    "itemSource": "WGMD",
+    "counties": [
+      "maryland/dorchester"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WGN-TV",
+    "url": "https://wgntv.com/feed/",
+    "mediaType": "article",
+    "itemSource": "WGN-TV",
+    "counties": [
+      "indiana/porter",
+      "illinois/kankakee",
+      "illinois/lasalle",
+      "kentucky/crittenden",
+      "illinois/dupage",
+      "indiana/lake",
+      "illinois/cook",
+      "illinois/lake",
+      "indiana/madison"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WGN-TV (2)",
+    "url": "https://wgntv.com/rss",
+    "mediaType": "article",
+    "itemSource": "WGN-TV",
+    "counties": [
+      "indiana/porter",
+      "illinois/kankakee",
+      "illinois/lasalle",
+      "kentucky/crittenden",
+      "illinois/dupage",
+      "indiana/lake",
+      "illinois/cook",
+      "illinois/lake",
+      "indiana/madison"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WGNO",
+    "url": "https://wgno.com/feed/",
+    "mediaType": "article",
+    "itemSource": "WGNO",
+    "counties": [
+      "mississippi/wilkinson",
+      "louisiana/orleans"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WGNO (2)",
+    "url": "https://wgno.com/rss",
+    "mediaType": "article",
+    "itemSource": "WGNO",
+    "counties": [
+      "mississippi/wilkinson",
+      "louisiana/orleans"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WGRZ",
+    "url": "https://www.wgrz.com/feeds/syndication/rss/news",
+    "mediaType": "article",
+    "itemSource": "WGRZ",
+    "counties": [
+      "new-york/erie",
+      "new-york/allegany",
+      "pennsylvania/mckean",
+      "new-york/genesee"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WGRZ (2)",
+    "url": "https://wgrz.com/feeds/syndication/rss/news",
+    "mediaType": "article",
+    "itemSource": "WGRZ",
+    "counties": [
+      "new-york/erie",
+      "new-york/allegany",
+      "pennsylvania/mckean",
+      "new-york/genesee"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WHAS11",
+    "url": "https://www.whas11.com/feeds/syndication/rss/news",
+    "mediaType": "article",
+    "itemSource": "WHAS11",
+    "counties": [
+      "kentucky/russell",
+      "indiana/clark",
+      "kentucky/bourbon",
+      "kentucky/taylor",
+      "kentucky/nelson",
+      "indiana/jefferson",
+      "indiana/scott",
+      "kentucky/owen",
+      "indiana/perry",
+      "kentucky/crittenden",
+      "indiana/jennings",
+      "indiana/ohio",
+      "indiana/orange",
+      "indiana/washington",
+      "kentucky/boone",
+      "kentucky/grant",
+      "kentucky/oldham",
+      "kentucky/trimble",
+      "indiana/dubois",
+      "indiana/harrison",
+      "kentucky/bullitt",
+      "kentucky/henry",
+      "indiana/huntington",
+      "indiana/jasper",
+      "indiana/switzerland",
+      "kentucky/campbell",
+      "kentucky/franklin",
+      "kentucky/graves",
+      "kentucky/grayson",
+      "kentucky/hart",
+      "kentucky/laurel",
+      "south-carolina/chesterfield",
+      "indiana/crawford",
+      "indiana/floyd",
+      "indiana/jackson",
+      "kentucky/adair",
+      "kentucky/jackson",
+      "kentucky/jefferson",
+      "kentucky/marion",
+      "kentucky/scott"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WHAS11 (2)",
+    "url": "https://whas11.com/feeds/syndication/rss/news",
+    "mediaType": "article",
+    "itemSource": "WHAS11",
+    "counties": [
+      "kentucky/russell",
+      "indiana/clark",
+      "kentucky/bourbon",
+      "kentucky/taylor",
+      "kentucky/nelson",
+      "indiana/jefferson",
+      "indiana/scott",
+      "kentucky/owen",
+      "indiana/perry",
+      "kentucky/crittenden",
+      "indiana/jennings",
+      "indiana/ohio",
+      "indiana/orange",
+      "indiana/washington",
+      "kentucky/boone",
+      "kentucky/grant",
+      "kentucky/oldham",
+      "kentucky/trimble",
+      "indiana/dubois",
+      "indiana/harrison",
+      "kentucky/bullitt",
+      "kentucky/henry",
+      "indiana/huntington",
+      "indiana/jasper",
+      "indiana/switzerland",
+      "kentucky/campbell",
+      "kentucky/franklin",
+      "kentucky/graves",
+      "kentucky/grayson",
+      "kentucky/hart",
+      "kentucky/laurel",
+      "south-carolina/chesterfield",
+      "indiana/crawford",
+      "indiana/floyd",
+      "indiana/jackson",
+      "kentucky/adair",
+      "kentucky/jackson",
+      "kentucky/jefferson",
+      "kentucky/marion",
+      "kentucky/scott"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "What's Up Newp",
+    "url": "https://whatsupnewp.com/feed/",
+    "mediaType": "article",
+    "itemSource": "What's Up Newp",
+    "counties": [
+      "rhode-island/newport"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "What's Up Newp (2)",
+    "url": "https://whatsupnewp.com/comments/feed/",
+    "mediaType": "article",
+    "itemSource": "What's Up Newp",
+    "counties": [
+      "rhode-island/newport"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WHIO",
+    "url": "https://whio.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "WHIO",
+    "counties": [
+      "indiana/fayette",
+      "indiana/dearborn",
+      "ohio/greene",
+      "kentucky/boone",
+      "indiana/lagrange",
+      "indiana/union",
+      "kentucky/campbell",
+      "ohio/allen",
+      "ohio/champaign",
+      "ohio/coshocton",
+      "ohio/darke",
+      "ohio/montgomery",
+      "ohio/preble",
+      "indiana/jefferson",
+      "indiana/wayne",
+      "ohio/clark",
+      "ohio/lucas",
+      "ohio/marion",
+      "ohio/ottawa"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WHIZ News",
+    "url": "https://www.whiznews.com/feed/",
+    "mediaType": "article",
+    "itemSource": "WHIZ News",
+    "counties": [
+      "ohio/muskingum"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WHIZ News (2)",
+    "url": "https://whiznews.com/feed/",
+    "mediaType": "article",
+    "itemSource": "WHIZ News",
+    "counties": [
+      "ohio/muskingum"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WHNT",
+    "url": "https://whnt.com/feed/",
+    "mediaType": "article",
+    "itemSource": "WHNT",
+    "counties": [
+      "alabama/madison",
+      "alabama/dekalb",
+      "alabama/jackson",
+      "alabama/marshall",
+      "tennessee/madison",
+      "montana/powell",
+      "texas/madison",
+      "alabama/colbert",
+      "kentucky/madison",
+      "tennessee/lincoln",
+      "utah/washington"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WHNT (2)",
+    "url": "https://whnt.com/rss",
+    "mediaType": "article",
+    "itemSource": "WHNT",
+    "counties": [
+      "alabama/madison",
+      "alabama/dekalb",
+      "alabama/jackson",
+      "alabama/marshall",
+      "tennessee/madison",
+      "montana/powell",
+      "texas/madison",
+      "alabama/colbert",
+      "kentucky/madison",
+      "tennessee/lincoln",
+      "utah/washington"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WHO13",
+    "url": "https://who13.com/feed/",
+    "mediaType": "article",
+    "itemSource": "WHO13",
+    "counties": [
+      "iowa/polk",
+      "iowa/calhoun"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WHO13 (2)",
+    "url": "https://who13.com/rss",
+    "mediaType": "article",
+    "itemSource": "WHO13",
+    "counties": [
+      "iowa/polk",
+      "iowa/calhoun"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WHSV",
+    "url": "https://whsv.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "WHSV",
+    "counties": [
+      "virginia/rockingham",
+      "virginia/harrisonburg"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WHYY",
+    "url": "https://whyy.org/feed/",
+    "mediaType": "article",
+    "itemSource": "WHYY",
+    "counties": [
+      "delaware/sussex",
+      "delaware/new-castle",
+      "pennsylvania/mckean",
+      "oklahoma/seminole",
+      "new-jersey/mercer",
+      "new-jersey/ocean",
+      "pennsylvania/delaware",
+      "pennsylvania/fulton"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WHYY (2)",
+    "url": "https://whyy.org/rss",
+    "mediaType": "article",
+    "itemSource": "WHYY",
+    "counties": [
+      "delaware/sussex",
+      "delaware/new-castle",
+      "pennsylvania/mckean",
+      "oklahoma/seminole",
+      "new-jersey/mercer",
+      "new-jersey/ocean",
+      "pennsylvania/delaware",
+      "pennsylvania/fulton"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WIBC",
+    "url": "https://wibc.com/feed/",
+    "mediaType": "article",
+    "itemSource": "WIBC",
+    "counties": [
+      "arkansas/marion",
+      "indiana/allen",
+      "indiana/boone",
+      "indiana/wayne"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WIBC (2)",
+    "url": "https://wibc.com/?feed=rss2",
+    "mediaType": "article",
+    "itemSource": "WIBC",
+    "counties": [
+      "arkansas/marion",
+      "indiana/allen",
+      "indiana/boone",
+      "indiana/wayne"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WIBW",
+    "url": "https://wibw.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "WIBW",
+    "counties": [
+      "kansas/shawnee",
+      "kansas/riley",
+      "kansas/morris",
+      "kansas/nemaha"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Willamette Week",
+    "url": "https://wweek.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "Willamette Week",
+    "counties": [
+      "oregon/curry",
+      "oregon/grant",
+      "oregon/douglas"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Williston Herald",
+    "url": "https://www.willistonherald.com/index.rss",
+    "mediaType": "article",
+    "itemSource": "Williston Herald",
+    "counties": [
+      "north-dakota/williams"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WILX",
+    "url": "https://wilx.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "WILX",
+    "counties": [
+      "michigan/livingston",
+      "michigan/clare"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Wired",
+    "url": "https://www.wired.com/feed/rss",
+    "mediaType": "article",
+    "itemSource": "Wired",
+    "counties": [
+      "idaho/idaho",
+      "mississippi/jefferson",
+      "michigan/barry"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Wired (2)",
+    "url": "https://wired.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Wired",
+    "counties": [
+      "idaho/idaho",
+      "mississippi/jefferson",
+      "michigan/barry"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WIS News 10",
+    "url": "https://wistv.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "WIS News 10",
+    "counties": [
+      "south-carolina/lexington",
+      "south-carolina/sumter",
+      "south-carolina/richland"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Wisconsin Public Radio",
+    "url": "https://www.wpr.org/feed",
+    "mediaType": "article",
+    "itemSource": "Wisconsin Public Radio",
+    "counties": [
+      "wisconsin/rock",
+      "wisconsin/la-crosse"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Wisconsin Public Radio (2)",
+    "url": "https://wpr.org/feed/",
+    "mediaType": "article",
+    "itemSource": "Wisconsin Public Radio",
+    "counties": [
+      "wisconsin/rock",
+      "wisconsin/la-crosse"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WISHTV8",
+    "url": "https://wishtv.com/feed/",
+    "mediaType": "article",
+    "itemSource": "WISHTV8",
+    "counties": [
+      "indiana/dekalb",
+      "indiana/clinton",
+      "indiana/marion",
+      "indiana/hendricks",
+      "indiana/rush",
+      "indiana/johnson",
+      "indiana/white",
+      "indiana/boone",
+      "indiana/dubois",
+      "indiana/fayette",
+      "indiana/hancock",
+      "indiana/orange",
+      "indiana/randolph",
+      "indiana/vermillion",
+      "illinois/johnson",
+      "indiana/dearborn",
+      "indiana/franklin",
+      "indiana/hamilton",
+      "indiana/huntington",
+      "indiana/jay",
+      "indiana/jennings",
+      "indiana/miami",
+      "indiana/montgomery",
+      "indiana/morgan",
+      "indiana/newton",
+      "indiana/owen",
+      "indiana/sullivan",
+      "indiana/tippecanoe",
+      "indiana/tipton",
+      "indiana/allen",
+      "indiana/delaware",
+      "indiana/elkhart",
+      "indiana/greene",
+      "indiana/shelby",
+      "indiana/starke",
+      "indiana/wabash"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WISHTV8 (2)",
+    "url": "https://wishtv.com/rss",
+    "mediaType": "article",
+    "itemSource": "WISHTV8",
+    "counties": [
+      "indiana/dekalb",
+      "indiana/clinton",
+      "indiana/marion",
+      "indiana/hendricks",
+      "indiana/rush",
+      "indiana/johnson",
+      "indiana/white",
+      "indiana/boone",
+      "indiana/dubois",
+      "indiana/fayette",
+      "indiana/hancock",
+      "indiana/orange",
+      "indiana/randolph",
+      "indiana/vermillion",
+      "illinois/johnson",
+      "indiana/dearborn",
+      "indiana/franklin",
+      "indiana/hamilton",
+      "indiana/huntington",
+      "indiana/jay",
+      "indiana/jennings",
+      "indiana/miami",
+      "indiana/montgomery",
+      "indiana/morgan",
+      "indiana/newton",
+      "indiana/owen",
+      "indiana/sullivan",
+      "indiana/tippecanoe",
+      "indiana/tipton",
+      "indiana/allen",
+      "indiana/delaware",
+      "indiana/elkhart",
+      "indiana/greene",
+      "indiana/shelby",
+      "indiana/starke",
+      "indiana/wabash"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WITN",
+    "url": "https://witn.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "WITN",
+    "counties": [
+      "north-carolina/pitt",
+      "north-carolina/duplin",
+      "north-carolina/lenoir",
+      "pennsylvania/luzerne"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WJBF",
+    "url": "https://wjbf.com/feed/",
+    "mediaType": "article",
+    "itemSource": "WJBF",
+    "counties": [
+      "alabama/jefferson",
+      "georgia/jefferson",
+      "georgia/effingham"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WJBF (2)",
+    "url": "https://wjbf.com/rss",
+    "mediaType": "article",
+    "itemSource": "WJBF",
+    "counties": [
+      "alabama/jefferson",
+      "georgia/jefferson",
+      "georgia/effingham"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WJHG",
+    "url": "https://wjhg.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "WJHG",
+    "counties": [
+      "florida/walton",
+      "florida/liberty",
+      "georgia/liberty"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WJHL-TV",
+    "url": "https://wjhl.com/feed/",
+    "mediaType": "article",
+    "itemSource": "WJHL-TV",
+    "counties": [
+      "tennessee/washington",
+      "virginia/scott",
+      "virginia/washington",
+      "tennessee/greene",
+      "virginia/bristol",
+      "tennessee/hawkins",
+      "virginia/buchanan",
+      "virginia/smyth",
+      "virginia/lee",
+      "virginia/wise",
+      "virginia/norton",
+      "tennessee/unicoi",
+      "virginia/dickenson",
+      "kentucky/letcher",
+      "tennessee/sullivan"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WJHL-TV (2)",
+    "url": "https://wjhl.com/rss",
+    "mediaType": "article",
+    "itemSource": "WJHL-TV",
+    "counties": [
+      "tennessee/washington",
+      "virginia/scott",
+      "virginia/washington",
+      "tennessee/greene",
+      "virginia/bristol",
+      "tennessee/hawkins",
+      "virginia/buchanan",
+      "virginia/smyth",
+      "virginia/lee",
+      "virginia/wise",
+      "virginia/norton",
+      "tennessee/unicoi",
+      "virginia/dickenson",
+      "kentucky/letcher",
+      "tennessee/sullivan"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WJON",
+    "url": "https://wjon.com/feed/",
+    "mediaType": "article",
+    "itemSource": "WJON",
+    "counties": [
+      "minnesota/stearns"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WJON (2)",
+    "url": "https://wjon.com/rss",
+    "mediaType": "article",
+    "itemSource": "WJON",
+    "counties": [
+      "minnesota/stearns"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WJTV",
+    "url": "https://wjtv.com/feed/",
+    "mediaType": "article",
+    "itemSource": "WJTV",
+    "counties": [
+      "mississippi/george",
+      "mississippi/marshall",
+      "mississippi/rankin",
+      "mississippi/grenada",
+      "mississippi/perry"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WJTV (2)",
+    "url": "https://wjtv.com/rss",
+    "mediaType": "article",
+    "itemSource": "WJTV",
+    "counties": [
+      "mississippi/george",
+      "mississippi/marshall",
+      "mississippi/rankin",
+      "mississippi/grenada",
+      "mississippi/perry"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WKBN",
+    "url": "https://wkbn.com/feed/",
+    "mediaType": "article",
+    "itemSource": "WKBN",
+    "counties": [
+      "ohio/trumbull",
+      "ohio/columbiana",
+      "ohio/mahoning",
+      "ohio/geauga"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WKBN (2)",
+    "url": "https://wkbn.com/rss",
+    "mediaType": "article",
+    "itemSource": "WKBN",
+    "counties": [
+      "ohio/trumbull",
+      "ohio/columbiana",
+      "ohio/mahoning",
+      "ohio/geauga"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WKBW",
+    "url": "https://www.wkbw.com/index.rss",
+    "mediaType": "article",
+    "itemSource": "WKBW",
+    "counties": [
+      "new-york/erie"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WKDZ Radio",
+    "url": "https://www.wkdzradio.com/feed/",
+    "mediaType": "article",
+    "itemSource": "WKDZ Radio",
+    "counties": [
+      "kentucky/caldwell"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WKDZ Radio (2)",
+    "url": "https://wkdzradio.com/feed/",
+    "mediaType": "article",
+    "itemSource": "WKDZ Radio",
+    "counties": [
+      "kentucky/caldwell"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WKRG News 5",
+    "url": "https://wkrg.com/feed/",
+    "mediaType": "article",
+    "itemSource": "WKRG News 5",
+    "counties": [
+      "alabama/mobile",
+      "alabama/conecuh",
+      "florida/okaloosa",
+      "florida/escambia",
+      "alabama/monroe",
+      "florida/santa-rosa",
+      "mississippi/george",
+      "alabama/baldwin",
+      "alabama/washington",
+      "mississippi/greene",
+      "alabama/covington",
+      "alabama/escambia",
+      "alabama/wilcox",
+      "mississippi/lamar"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WKRG News 5 (2)",
+    "url": "https://wkrg.com/rss",
+    "mediaType": "article",
+    "itemSource": "WKRG News 5",
+    "counties": [
+      "alabama/mobile",
+      "alabama/conecuh",
+      "florida/okaloosa",
+      "florida/escambia",
+      "alabama/monroe",
+      "florida/santa-rosa",
+      "mississippi/george",
+      "alabama/baldwin",
+      "alabama/washington",
+      "mississippi/greene",
+      "alabama/covington",
+      "alabama/escambia",
+      "alabama/wilcox",
+      "mississippi/lamar"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WKRN News 2",
+    "url": "https://wkrn.com/feed/",
+    "mediaType": "article",
+    "itemSource": "WKRN News 2",
+    "counties": [
+      "tennessee/maury",
+      "kentucky/allen",
+      "tennessee/sumner",
+      "tennessee/putnam",
+      "tennessee/decatur",
+      "tennessee/overton",
+      "tennessee/trousdale",
+      "tennessee/cheatham",
+      "tennessee/dickson",
+      "tennessee/williamson",
+      "tennessee/giles",
+      "tennessee/robertson",
+      "tennessee/rutherford",
+      "tennessee/wilson",
+      "tennessee/franklin",
+      "tennessee/lawrence",
+      "tennessee/van-buren",
+      "kentucky/cumberland",
+      "tennessee/hickman",
+      "tennessee/perry",
+      "tennessee/stewart",
+      "tennessee/unicoi",
+      "kentucky/christian",
+      "tennessee/dekalb",
+      "tennessee/fayette",
+      "tennessee/hamblen",
+      "tennessee/pickett",
+      "kentucky/mccracken",
+      "tennessee/benton",
+      "tennessee/henry",
+      "tennessee/smith"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WKRN News 2 (2)",
+    "url": "https://wkrn.com/rss",
+    "mediaType": "article",
+    "itemSource": "WKRN News 2",
+    "counties": [
+      "tennessee/maury",
+      "kentucky/allen",
+      "tennessee/sumner",
+      "tennessee/putnam",
+      "tennessee/decatur",
+      "tennessee/overton",
+      "tennessee/trousdale",
+      "tennessee/cheatham",
+      "tennessee/dickson",
+      "tennessee/williamson",
+      "tennessee/giles",
+      "tennessee/robertson",
+      "tennessee/rutherford",
+      "tennessee/wilson",
+      "tennessee/franklin",
+      "tennessee/lawrence",
+      "tennessee/van-buren",
+      "kentucky/cumberland",
+      "tennessee/hickman",
+      "tennessee/perry",
+      "tennessee/stewart",
+      "tennessee/unicoi",
+      "kentucky/christian",
+      "tennessee/dekalb",
+      "tennessee/fayette",
+      "tennessee/hamblen",
+      "tennessee/pickett",
+      "kentucky/mccracken",
+      "tennessee/benton",
+      "tennessee/henry",
+      "tennessee/smith"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WKTN",
+    "url": "https://wktn.com/feed/",
+    "mediaType": "article",
+    "itemSource": "WKTN",
+    "counties": [
+      "ohio/hardin",
+      "ohio/wyandot",
+      "ohio/auglaize",
+      "ohio/fulton"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WKTN (2)",
+    "url": "https://wktn.com/rss",
+    "mediaType": "article",
+    "itemSource": "WKTN",
+    "counties": [
+      "ohio/hardin",
+      "ohio/wyandot",
+      "ohio/auglaize",
+      "ohio/fulton"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WKYC3",
+    "url": "https://www.wkyc.com/feeds/syndication/rss/news",
+    "mediaType": "article",
+    "itemSource": "WKYC3",
+    "counties": [
+      "ohio/lorain",
+      "ohio/lake",
+      "ohio/ashtabula",
+      "ohio/portage",
+      "ohio/union",
+      "ohio/medina",
+      "ohio/geauga",
+      "ohio/holmes",
+      "ohio/huron",
+      "ohio/richland",
+      "ohio/erie",
+      "ohio/wayne",
+      "ohio/columbiana",
+      "ohio/seneca",
+      "ohio/tuscarawas",
+      "tennessee/white",
+      "ohio/summit",
+      "ohio/ashland",
+      "ohio/crawford",
+      "ohio/lucas",
+      "ohio/stark"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WKYC3 (2)",
+    "url": "https://wkyc.com/feeds/syndication/rss/news",
+    "mediaType": "article",
+    "itemSource": "WKYC3",
+    "counties": [
+      "ohio/lorain",
+      "ohio/lake",
+      "ohio/ashtabula",
+      "ohio/portage",
+      "ohio/union",
+      "ohio/medina",
+      "ohio/geauga",
+      "ohio/holmes",
+      "ohio/huron",
+      "ohio/richland",
+      "ohio/erie",
+      "ohio/wayne",
+      "ohio/columbiana",
+      "ohio/seneca",
+      "ohio/tuscarawas",
+      "tennessee/white",
+      "ohio/summit",
+      "ohio/ashland",
+      "ohio/crawford",
+      "ohio/lucas",
+      "ohio/stark"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WKYT",
+    "url": "https://wkyt.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "WKYT",
+    "counties": [
+      "kentucky/fayette",
+      "kentucky/whitley",
+      "kentucky/jessamine",
+      "kentucky/adair",
+      "kentucky/spencer",
+      "kentucky/robertson",
+      "kentucky/laurel",
+      "kentucky/menifee",
+      "kentucky/bourbon",
+      "kentucky/breathitt",
+      "kentucky/casey",
+      "kentucky/franklin",
+      "kentucky/henry",
+      "kentucky/jackson",
+      "kentucky/lincoln",
+      "kentucky/russell",
+      "kentucky/wolfe",
+      "kentucky/estill",
+      "kentucky/magoffin",
+      "kentucky/powell",
+      "kentucky/scott",
+      "kentucky/woodford"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WLFI News 18",
+    "url": "https://wlfi.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "WLFI News 18",
+    "counties": [
+      "indiana/tippecanoe"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Wlns",
+    "url": "https://wlns.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Wlns",
+    "counties": [
+      "michigan/livingston",
+      "michigan/hillsdale",
+      "michigan/ingham",
+      "michigan/clinton",
+      "michigan/ionia",
+      "michigan/luce",
+      "michigan/jackson",
+      "michigan/monroe"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Wlns (2)",
+    "url": "https://wlns.com/rss",
+    "mediaType": "article",
+    "itemSource": "Wlns",
+    "counties": [
+      "michigan/livingston",
+      "michigan/hillsdale",
+      "michigan/ingham",
+      "michigan/clinton",
+      "michigan/ionia",
+      "michigan/luce",
+      "michigan/jackson",
+      "michigan/monroe"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WLTX",
+    "url": "https://www.wltx.com/feeds/syndication/rss/news",
+    "mediaType": "article",
+    "itemSource": "WLTX",
+    "counties": [
+      "south-carolina/lexington",
+      "south-carolina/mccormick",
+      "south-carolina/orangeburg",
+      "south-carolina/richland",
+      "illinois/union",
+      "south-carolina/chesterfield",
+      "south-carolina/darlington",
+      "south-carolina/lee",
+      "indiana/putnam"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WLTX (2)",
+    "url": "https://wltx.com/feeds/syndication/rss/news",
+    "mediaType": "article",
+    "itemSource": "WLTX",
+    "counties": [
+      "south-carolina/lexington",
+      "south-carolina/mccormick",
+      "south-carolina/orangeburg",
+      "south-carolina/richland",
+      "illinois/union",
+      "south-carolina/chesterfield",
+      "south-carolina/darlington",
+      "south-carolina/lee",
+      "indiana/putnam"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WMAL",
+    "url": "https://wmal.com/feed/",
+    "mediaType": "article",
+    "itemSource": "WMAL",
+    "counties": [
+      "virginia/manassas-park"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WMAL (2)",
+    "url": "https://wmal.com/rss",
+    "mediaType": "article",
+    "itemSource": "WMAL",
+    "counties": [
+      "virginia/manassas-park"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WMAR 2 News",
+    "url": "https://www.wmar2news.com/index.rss",
+    "mediaType": "article",
+    "itemSource": "WMAR 2 News",
+    "counties": [
+      "maryland/dorchester",
+      "maryland/harford",
+      "maryland/montgomery",
+      "maryland/howard",
+      "maryland/anne-arundel",
+      "maryland/frederick"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WMAZ",
+    "url": "https://www.13wmaz.com/feeds/syndication/rss/news",
+    "mediaType": "article",
+    "itemSource": "WMAZ",
+    "counties": [
+      "georgia/baldwin",
+      "georgia/hancock",
+      "georgia/houston",
+      "georgia/wheeler",
+      "georgia/dooly",
+      "georgia/taylor",
+      "georgia/peach",
+      "pennsylvania/monroe",
+      "georgia/bibb",
+      "georgia/johnson",
+      "georgia/lamar",
+      "georgia/pulaski",
+      "georgia/telfair",
+      "georgia/toombs",
+      "indiana/howard",
+      "georgia/putnam",
+      "georgia/twiggs",
+      "georgia/washington",
+      "georgia/atkinson",
+      "georgia/jones",
+      "georgia/montgomery",
+      "georgia/butts",
+      "georgia/crawford",
+      "georgia/glynn"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WMAZ (2)",
+    "url": "https://13wmaz.com/feeds/syndication/rss/news",
+    "mediaType": "article",
+    "itemSource": "WMAZ",
+    "counties": [
+      "georgia/baldwin",
+      "georgia/hancock",
+      "georgia/houston",
+      "georgia/wheeler",
+      "georgia/dooly",
+      "georgia/taylor",
+      "georgia/peach",
+      "pennsylvania/monroe",
+      "georgia/bibb",
+      "georgia/johnson",
+      "georgia/lamar",
+      "georgia/pulaski",
+      "georgia/telfair",
+      "georgia/toombs",
+      "indiana/howard",
+      "georgia/putnam",
+      "georgia/twiggs",
+      "georgia/washington",
+      "georgia/atkinson",
+      "georgia/jones",
+      "georgia/montgomery",
+      "georgia/butts",
+      "georgia/crawford",
+      "georgia/glynn"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WMBB",
+    "url": "https://mypanhandle.com/feed/",
+    "mediaType": "article",
+    "itemSource": "WMBB",
+    "counties": [
+      "florida/jackson",
+      "florida/leon",
+      "florida/okaloosa",
+      "florida/walton"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WMBB (2)",
+    "url": "https://mypanhandle.com/rss",
+    "mediaType": "article",
+    "itemSource": "WMBB",
+    "counties": [
+      "florida/jackson",
+      "florida/leon",
+      "florida/okaloosa",
+      "florida/walton"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WMBF News",
+    "url": "https://wmbfnews.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "WMBF News",
+    "counties": [
+      "south-carolina/horry",
+      "north-carolina/scotland",
+      "virginia/washington"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WMDT",
+    "url": "https://www.wmdt.com/feed/",
+    "mediaType": "article",
+    "itemSource": "WMDT",
+    "counties": [
+      "maryland/somerset",
+      "maryland/worcester"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WMDT (2)",
+    "url": "https://wmdt.com/feed/",
+    "mediaType": "article",
+    "itemSource": "WMDT",
+    "counties": [
+      "maryland/somerset",
+      "maryland/worcester"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WNDU",
+    "url": "https://wndu.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "WNDU",
+    "counties": [
+      "indiana/elkhart",
+      "michigan/berrien",
+      "michigan/cass",
+      "indiana/kosciusko",
+      "indiana/marshall",
+      "indiana/porter",
+      "indiana/starke",
+      "indiana/wabash"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WNEM-TV",
+    "url": "https://wnem.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "WNEM-TV",
+    "counties": [
+      "michigan/ogemaw",
+      "michigan/gratiot",
+      "michigan/isabella",
+      "michigan/midland",
+      "michigan/clare",
+      "michigan/genesee"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WNEP-TV",
+    "url": "https://www.wnep.com/feeds/syndication/rss/news",
+    "mediaType": "article",
+    "itemSource": "WNEP-TV",
+    "counties": [
+      "pennsylvania/clinton",
+      "pennsylvania/carbon",
+      "pennsylvania/union",
+      "pennsylvania/monroe",
+      "new-york/monroe",
+      "pennsylvania/lackawanna"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WNEP-TV (2)",
+    "url": "https://wnep.com/feeds/syndication/rss/news",
+    "mediaType": "article",
+    "itemSource": "WNEP-TV",
+    "counties": [
+      "pennsylvania/clinton",
+      "pennsylvania/carbon",
+      "pennsylvania/union",
+      "pennsylvania/monroe",
+      "new-york/monroe",
+      "pennsylvania/lackawanna"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WNKY",
+    "url": "https://www.wnky.com/feed/",
+    "mediaType": "article",
+    "itemSource": "WNKY",
+    "counties": [
+      "kentucky/bourbon",
+      "kentucky/allen",
+      "kentucky/hart",
+      "kentucky/grayson",
+      "tennessee/warren",
+      "tennessee/montgomery",
+      "kentucky/pike"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WNKY (2)",
+    "url": "https://wnky.com/feed/",
+    "mediaType": "article",
+    "itemSource": "WNKY",
+    "counties": [
+      "kentucky/bourbon",
+      "kentucky/allen",
+      "kentucky/hart",
+      "kentucky/grayson",
+      "tennessee/warren",
+      "tennessee/montgomery",
+      "kentucky/pike"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Wnyt",
+    "url": "https://wnyt.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Wnyt",
+    "counties": [
+      "new-york/rensselaer",
+      "vermont/washington"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Wnyt (2)",
+    "url": "https://wnyt.com/rss",
+    "mediaType": "article",
+    "itemSource": "Wnyt",
+    "counties": [
+      "new-york/rensselaer",
+      "vermont/washington"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Women's Wear Daily",
+    "url": "https://wwd.com/feed/rss/",
+    "mediaType": "article",
+    "itemSource": "Women's Wear Daily",
+    "counties": [
+      "california/los-angeles",
+      "north-carolina/yadkin",
+      "virginia/henry"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Women's Wear Daily (2)",
+    "url": "https://wwd.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Women's Wear Daily",
+    "counties": [
+      "california/los-angeles",
+      "north-carolina/yadkin",
+      "virginia/henry"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WOOD-TV",
+    "url": "https://woodtv.com/feed/",
+    "mediaType": "article",
+    "itemSource": "WOOD-TV",
+    "counties": [
+      "michigan/kalkaska",
+      "michigan/allegan",
+      "michigan/antrim",
+      "michigan/lake",
+      "michigan/mecosta"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WOOD-TV (2)",
+    "url": "https://woodtv.com/rss",
+    "mediaType": "article",
+    "itemSource": "WOOD-TV",
+    "counties": [
+      "michigan/kalkaska",
+      "michigan/allegan",
+      "michigan/antrim",
+      "michigan/lake",
+      "michigan/mecosta"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "World Nuclear News",
+    "url": "https://world-nuclear-news.org/rss",
+    "mediaType": "article",
+    "itemSource": "World Nuclear News",
+    "counties": [
+      "south-carolina/fairfield",
+      "texas/haskell",
+      "kentucky/mccracken"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WOWK-TV",
+    "url": "https://wowktv.com/feed/",
+    "mediaType": "article",
+    "itemSource": "WOWK-TV",
+    "counties": [
+      "ohio/meigs",
+      "ohio/scioto",
+      "ohio/gallia",
+      "west-virginia/logan",
+      "ohio/lawrence",
+      "kentucky/greenup",
+      "ohio/vinton",
+      "west-virginia/mason",
+      "west-virginia/kanawha",
+      "kentucky/floyd",
+      "kentucky/boyd",
+      "ohio/hocking",
+      "west-virginia/clay"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WOWK-TV (2)",
+    "url": "https://wowktv.com/rss",
+    "mediaType": "article",
+    "itemSource": "WOWK-TV",
+    "counties": [
+      "ohio/meigs",
+      "ohio/scioto",
+      "ohio/gallia",
+      "west-virginia/logan",
+      "ohio/lawrence",
+      "kentucky/greenup",
+      "ohio/vinton",
+      "west-virginia/mason",
+      "west-virginia/kanawha",
+      "kentucky/floyd",
+      "kentucky/boyd",
+      "ohio/hocking",
+      "west-virginia/clay"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WOWO",
+    "url": "https://wowo.com/feed/",
+    "mediaType": "article",
+    "itemSource": "WOWO",
+    "counties": [
+      "indiana/dekalb",
+      "indiana/noble",
+      "indiana/laporte",
+      "ohio/paulding",
+      "michigan/ionia"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WOWO (2)",
+    "url": "https://wowo.com/comments/feed/",
+    "mediaType": "article",
+    "itemSource": "WOWO",
+    "counties": [
+      "indiana/dekalb",
+      "indiana/noble",
+      "indiana/laporte",
+      "ohio/paulding",
+      "michigan/ionia"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WOWT",
+    "url": "https://wowt.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "WOWT",
+    "counties": [
+      "nebraska/dodge",
+      "iowa/mills",
+      "iowa/pottawattamie",
+      "nebraska/cass",
+      "nebraska/knox",
+      "iowa/taylor",
+      "iowa/carroll",
+      "iowa/shelby",
+      "nebraska/lancaster",
+      "nebraska/sarpy",
+      "iowa/montgomery"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WPG Talk Radio 95.5 FM",
+    "url": "https://wpgtalkradio.com/feed/",
+    "mediaType": "article",
+    "itemSource": "WPG Talk Radio 95.5 FM",
+    "counties": [
+      "new-jersey/atlantic"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WPG Talk Radio 95.5 FM (2)",
+    "url": "https://wpgtalkradio.com/rss",
+    "mediaType": "article",
+    "itemSource": "WPG Talk Radio 95.5 FM",
+    "counties": [
+      "new-jersey/atlantic"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WPLG Local 10",
+    "url": "https://local10.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "WPLG Local 10",
+    "counties": [
+      "florida/leon",
+      "florida/broward",
+      "florida/palm-beach",
+      "florida/taylor",
+      "georgia/dade",
+      "missouri/cole"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
     "name": "WPMT",
     "url": "https://www.fox43.com/feeds/syndication/rss/news",
     "mediaType": "article",
     "itemSource": "WPMT",
     "counties": [
-      "texas/anderson"
+      "texas/anderson",
+      "north-carolina/cumberland",
+      "pennsylvania/cumberland",
+      "pennsylvania/dauphin",
+      "pennsylvania/lebanon",
+      "new-jersey/cumberland",
+      "pennsylvania/york",
+      "virginia/cumberland"
     ],
     "trustedForCountyTier": false
   },
@@ -1875,13 +18523,1443 @@ export const discoveredRegionalSources: DirectSource[] = [
     "mediaType": "article",
     "itemSource": "WPMT",
     "counties": [
-      "texas/anderson"
+      "texas/anderson",
+      "north-carolina/cumberland",
+      "pennsylvania/cumberland",
+      "pennsylvania/dauphin",
+      "pennsylvania/lebanon",
+      "new-jersey/cumberland",
+      "pennsylvania/york",
+      "virginia/cumberland"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WPTV-TV",
+    "url": "https://www.wptv.com/index.rss",
+    "mediaType": "article",
+    "itemSource": "WPTV-TV",
+    "counties": [
+      "florida/palm-beach",
+      "florida/okeechobee",
+      "florida/charlotte",
+      "florida/leon",
+      "florida/martin",
+      "kentucky/bourbon"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WPXI",
+    "url": "https://wpxi.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "WPXI",
+    "counties": [
+      "pennsylvania/washington",
+      "pennsylvania/westmoreland",
+      "pennsylvania/butler",
+      "pennsylvania/allegheny",
+      "pennsylvania/mercer",
+      "west-virginia/ohio"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WQAD",
+    "url": "https://www.wqad.com/feeds/syndication/rss/news",
+    "mediaType": "article",
+    "itemSource": "WQAD",
+    "counties": [
+      "illinois/henry",
+      "illinois/piatt",
+      "illinois/carroll",
+      "iowa/scott",
+      "illinois/henderson",
+      "iowa/des-moines",
+      "iowa/dubuque",
+      "iowa/muscatine",
+      "illinois/bureau",
+      "illinois/lee",
+      "illinois/peoria",
+      "illinois/warren",
+      "iowa/henry",
+      "iowa/lee",
+      "iowa/poweshiek"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WQAD (2)",
+    "url": "https://wqad.com/feeds/syndication/rss/news",
+    "mediaType": "article",
+    "itemSource": "WQAD",
+    "counties": [
+      "illinois/henry",
+      "illinois/piatt",
+      "illinois/carroll",
+      "iowa/scott",
+      "illinois/henderson",
+      "iowa/des-moines",
+      "iowa/dubuque",
+      "iowa/muscatine",
+      "illinois/bureau",
+      "illinois/lee",
+      "illinois/peoria",
+      "illinois/warren",
+      "iowa/henry",
+      "iowa/lee",
+      "iowa/poweshiek"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WRBI Radio",
+    "url": "https://wrbiradio.com/feed/",
+    "mediaType": "article",
+    "itemSource": "WRBI Radio",
+    "counties": [
+      "indiana/switzerland",
+      "kentucky/clay"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WRBI Radio (2)",
+    "url": "https://wrbiradio.com/rss",
+    "mediaType": "article",
+    "itemSource": "WRBI Radio",
+    "counties": [
+      "indiana/switzerland",
+      "kentucky/clay"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WRBL",
+    "url": "https://wrbl.com/feed/",
+    "mediaType": "article",
+    "itemSource": "WRBL",
+    "counties": [
+      "georgia/muscogee",
+      "alabama/chambers",
+      "georgia/lee",
+      "georgia/troup",
+      "georgia/burke"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WRBL (2)",
+    "url": "https://wrbl.com/rss",
+    "mediaType": "article",
+    "itemSource": "WRBL",
+    "counties": [
+      "georgia/muscogee",
+      "alabama/chambers",
+      "georgia/lee",
+      "georgia/troup",
+      "georgia/burke"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WRDW",
+    "url": "https://wrdw.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "WRDW",
+    "counties": [
+      "south-carolina/chesterfield",
+      "georgia/henry",
+      "georgia/jenkins",
+      "georgia/effingham",
+      "south-carolina/aiken"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WREG",
+    "url": "https://wreg.com/feed/",
+    "mediaType": "article",
+    "itemSource": "WREG",
+    "counties": [
+      "mississippi/tunica",
+      "tennessee/fayette",
+      "arkansas/mississippi",
+      "mississippi/coahoma",
+      "tennessee/haywood",
+      "arkansas/crittenden",
+      "mississippi/lafayette",
+      "mississippi/tate",
+      "arkansas/cross",
+      "arkansas/poinsett",
+      "mississippi/marshall",
+      "mississippi/tippah",
+      "missouri/shelby",
+      "tennessee/obion",
+      "mississippi/grenada",
+      "mississippi/quitman"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WREG (2)",
+    "url": "https://wreg.com/rss",
+    "mediaType": "article",
+    "itemSource": "WREG",
+    "counties": [
+      "mississippi/tunica",
+      "tennessee/fayette",
+      "arkansas/mississippi",
+      "mississippi/coahoma",
+      "tennessee/haywood",
+      "arkansas/crittenden",
+      "mississippi/lafayette",
+      "mississippi/tate",
+      "arkansas/cross",
+      "arkansas/poinsett",
+      "mississippi/marshall",
+      "mississippi/tippah",
+      "missouri/shelby",
+      "tennessee/obion",
+      "mississippi/grenada",
+      "mississippi/quitman"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WRIC",
+    "url": "https://wric.com/feed/",
+    "mediaType": "article",
+    "itemSource": "WRIC",
+    "counties": [
+      "virginia/caroline",
+      "virginia/hanover",
+      "virginia/warren",
+      "virginia/henrico",
+      "virginia/emporia",
+      "virginia/brunswick",
+      "virginia/dinwiddie",
+      "virginia/greensville",
+      "virginia/northampton",
+      "virginia/prince-edward",
+      "virginia/fluvanna",
+      "virginia/louisa",
+      "virginia/colonial-heights",
+      "virginia/bath",
+      "virginia/nelson",
+      "virginia/new-kent",
+      "virginia/lynchburg",
+      "virginia/suffolk",
+      "virginia/hopewell",
+      "west-virginia/hardy"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WRIC (2)",
+    "url": "https://wric.com/rss",
+    "mediaType": "article",
+    "itemSource": "WRIC",
+    "counties": [
+      "virginia/caroline",
+      "virginia/hanover",
+      "virginia/warren",
+      "virginia/henrico",
+      "virginia/emporia",
+      "virginia/brunswick",
+      "virginia/dinwiddie",
+      "virginia/greensville",
+      "virginia/northampton",
+      "virginia/prince-edward",
+      "virginia/fluvanna",
+      "virginia/louisa",
+      "virginia/colonial-heights",
+      "virginia/bath",
+      "virginia/nelson",
+      "virginia/new-kent",
+      "virginia/lynchburg",
+      "virginia/suffolk",
+      "virginia/hopewell",
+      "west-virginia/hardy"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "wrnjradio",
+    "url": "https://wrnjradio.com/feed/",
+    "mediaType": "article",
+    "itemSource": "wrnjradio",
+    "counties": [
+      "new-jersey/hunterdon",
+      "new-jersey/morris",
+      "pennsylvania/monroe"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "wrnjradio (2)",
+    "url": "https://wrnjradio.com/rss",
+    "mediaType": "article",
+    "itemSource": "wrnjradio",
+    "counties": [
+      "new-jersey/hunterdon",
+      "new-jersey/morris",
+      "pennsylvania/monroe"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WROK 1440 AM / 96.1 FM",
+    "url": "https://1440wrok.com/feed/",
+    "mediaType": "article",
+    "itemSource": "WROK 1440 AM / 96.1 FM",
+    "counties": [
+      "indiana/madison"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WROK 1440 AM / 96.1 FM (2)",
+    "url": "https://1440wrok.com/rss",
+    "mediaType": "article",
+    "itemSource": "WROK 1440 AM / 96.1 FM",
+    "counties": [
+      "indiana/madison"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WRTV",
+    "url": "https://www.wrtv.com/index.rss",
+    "mediaType": "article",
+    "itemSource": "WRTV",
+    "counties": [
+      "indiana/allen",
+      "indiana/elkhart"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WSAV-TV",
+    "url": "https://wsav.com/feed/",
+    "mediaType": "article",
+    "itemSource": "WSAV-TV",
+    "counties": [
+      "south-carolina/hampton",
+      "south-carolina/beaufort"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WSAV-TV (2)",
+    "url": "https://wsav.com/rss",
+    "mediaType": "article",
+    "itemSource": "WSAV-TV",
+    "counties": [
+      "south-carolina/hampton",
+      "south-carolina/beaufort"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WSAW-TV",
+    "url": "https://wsaw.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "WSAW-TV",
+    "counties": [
+      "wisconsin/iowa",
+      "wisconsin/oneida",
+      "wisconsin/marathon",
+      "wisconsin/wood",
+      "wisconsin/clark",
+      "wisconsin/lincoln",
+      "wisconsin/shawano",
+      "wisconsin/grant"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WSAZ",
+    "url": "https://wsaz.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "WSAZ",
+    "counties": [
+      "ohio/gallia",
+      "ohio/meigs",
+      "west-virginia/mason",
+      "kentucky/lawrence",
+      "ohio/lawrence",
+      "ohio/scioto",
+      "west-virginia/logan",
+      "west-virginia/wyoming",
+      "ohio/vinton",
+      "ohio/jackson",
+      "west-virginia/nicholas",
+      "west-virginia/putnam",
+      "kentucky/bourbon",
+      "kentucky/boyd",
+      "kentucky/floyd",
+      "kentucky/lewis",
+      "kentucky/pike",
+      "ohio/athens",
+      "west-virginia/mingo"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WSB Radio",
+    "url": "https://wsbradio.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "WSB Radio",
+    "counties": [
+      "georgia/butts"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WSB-TV Channel 2",
+    "url": "https://wsbtv.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "WSB-TV Channel 2",
+    "counties": [
+      "georgia/stephens",
+      "georgia/henry",
+      "georgia/forsyth",
+      "georgia/spalding",
+      "georgia/troup",
+      "georgia/gwinnett",
+      "georgia/bartow",
+      "georgia/brantley",
+      "georgia/newton",
+      "georgia/carroll",
+      "georgia/echols",
+      "georgia/floyd",
+      "georgia/habersham",
+      "georgia/haralson",
+      "georgia/jackson",
+      "georgia/lee",
+      "georgia/richmond",
+      "georgia/tattnall",
+      "georgia/taylor",
+      "georgia/upson",
+      "georgia/white",
+      "georgia/whitfield",
+      "georgia/hall",
+      "georgia/monroe",
+      "georgia/murray",
+      "georgia/sumter",
+      "georgia/towns",
+      "georgia/walker",
+      "georgia/walton",
+      "illinois/dekalb",
+      "alabama/cherokee",
+      "florida/franklin",
+      "georgia/bryan",
+      "georgia/burke",
+      "georgia/catoosa",
+      "georgia/chatham",
+      "georgia/cherokee",
+      "georgia/coweta",
+      "georgia/harris",
+      "georgia/hart"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WSFA",
+    "url": "https://wsfa.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "WSFA",
+    "counties": [
+      "alabama/perry",
+      "alabama/macon",
+      "alabama/autauga",
+      "alabama/elmore",
+      "alabama/butler",
+      "alabama/coosa",
+      "alabama/lee",
+      "alabama/montgomery",
+      "alabama/bullock",
+      "alabama/wilcox"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WSLS 10",
+    "url": "https://wsls.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "WSLS 10",
+    "counties": [
+      "virginia/franklin",
+      "virginia/patrick",
+      "virginia/pittsylvania",
+      "virginia/pulaski",
+      "virginia/wythe",
+      "virginia/giles",
+      "virginia/alleghany",
+      "virginia/floyd",
+      "virginia/roanoke",
+      "virginia/lynchburg",
+      "virginia/bland",
+      "virginia/botetourt",
+      "virginia/buckingham",
+      "virginia/lancaster",
+      "virginia/buena-vista",
+      "georgia/montgomery",
+      "virginia/grayson",
+      "virginia/halifax",
+      "virginia/lexington",
+      "virginia/bedford",
+      "virginia/montgomery",
+      "virginia/galax",
+      "virginia/radford",
+      "virginia/amherst",
+      "virginia/craig",
+      "virginia/tazewell"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WSMV",
+    "url": "https://wsmv.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "WSMV",
+    "counties": [
+      "tennessee/williamson",
+      "tennessee/wilson",
+      "tennessee/clay",
+      "kentucky/trigg",
+      "tennessee/bedford",
+      "tennessee/dickson",
+      "tennessee/franklin",
+      "tennessee/montgomery",
+      "kentucky/allen",
+      "kentucky/christian",
+      "tennessee/cannon",
+      "tennessee/henry",
+      "tennessee/hickman",
+      "tennessee/sumner",
+      "tennessee/white",
+      "kentucky/monroe",
+      "kentucky/todd",
+      "tennessee/decatur"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WSOC-TV",
+    "url": "https://wsoctv.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "WSOC-TV",
+    "counties": [
+      "south-carolina/union",
+      "north-carolina/anson",
+      "south-carolina/chester",
+      "north-carolina/union",
+      "north-carolina/alexander",
+      "north-carolina/avery",
+      "north-carolina/cabarrus",
+      "north-carolina/caldwell",
+      "south-carolina/york"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WSPA",
+    "url": "https://wspa.com/feed/",
+    "mediaType": "article",
+    "itemSource": "WSPA",
+    "counties": [
+      "georgia/hart",
+      "louisiana/franklin",
+      "south-carolina/anderson",
+      "south-carolina/greenville",
+      "georgia/stephens"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WSPA (2)",
+    "url": "https://wspa.com/rss",
+    "mediaType": "article",
+    "itemSource": "WSPA",
+    "counties": [
+      "georgia/hart",
+      "louisiana/franklin",
+      "south-carolina/anderson",
+      "south-carolina/greenville",
+      "georgia/stephens"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WTAP",
+    "url": "https://wtap.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "WTAP",
+    "counties": [
+      "ohio/washington",
+      "south-carolina/chesterfield"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WTAQ News Talk",
+    "url": "https://wtaq.com/feed/",
+    "mediaType": "article",
+    "itemSource": "WTAQ News Talk",
+    "counties": [
+      "wisconsin/brown"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WTAQ News Talk (2)",
+    "url": "https://wtaq.com/rss",
+    "mediaType": "article",
+    "itemSource": "WTAQ News Talk",
+    "counties": [
+      "wisconsin/brown"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WTHI News10",
+    "url": "https://wthitv.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "WTHI News10",
+    "counties": [
+      "indiana/jackson"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WTHR",
+    "url": "https://www.wthr.com/feeds/syndication/rss/news",
+    "mediaType": "article",
+    "itemSource": "WTHR",
+    "counties": [
+      "indiana/greene",
+      "indiana/dekalb",
+      "indiana/delaware",
+      "indiana/clinton",
+      "indiana/cass",
+      "indiana/howard",
+      "indiana/benton",
+      "indiana/dubois",
+      "indiana/brown",
+      "indiana/hendricks",
+      "indiana/johnson",
+      "indiana/randolph",
+      "indiana/clark",
+      "indiana/fulton",
+      "indiana/huntington",
+      "indiana/jay",
+      "indiana/kosciusko",
+      "indiana/newton",
+      "indiana/ripley",
+      "missouri/crawford",
+      "indiana/floyd",
+      "indiana/jasper",
+      "indiana/warren",
+      "indiana/adams",
+      "indiana/bartholomew",
+      "indiana/boone",
+      "indiana/grant",
+      "indiana/monroe",
+      "indiana/montgomery",
+      "indiana/parke",
+      "indiana/perry",
+      "indiana/scott",
+      "indiana/spencer",
+      "indiana/switzerland",
+      "indiana/warrick",
+      "indiana/wells",
+      "indiana/decatur",
+      "indiana/elkhart",
+      "indiana/hancock",
+      "indiana/jennings"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WTHR (2)",
+    "url": "https://wthr.com/feeds/syndication/rss/news",
+    "mediaType": "article",
+    "itemSource": "WTHR",
+    "counties": [
+      "indiana/greene",
+      "indiana/dekalb",
+      "indiana/delaware",
+      "indiana/clinton",
+      "indiana/cass",
+      "indiana/howard",
+      "indiana/benton",
+      "indiana/dubois",
+      "indiana/brown",
+      "indiana/hendricks",
+      "indiana/johnson",
+      "indiana/randolph",
+      "indiana/clark",
+      "indiana/fulton",
+      "indiana/huntington",
+      "indiana/jay",
+      "indiana/kosciusko",
+      "indiana/newton",
+      "indiana/ripley",
+      "missouri/crawford",
+      "indiana/floyd",
+      "indiana/jasper",
+      "indiana/warren",
+      "indiana/adams",
+      "indiana/bartholomew",
+      "indiana/boone",
+      "indiana/grant",
+      "indiana/monroe",
+      "indiana/montgomery",
+      "indiana/parke",
+      "indiana/perry",
+      "indiana/scott",
+      "indiana/spencer",
+      "indiana/switzerland",
+      "indiana/warrick",
+      "indiana/wells",
+      "indiana/decatur",
+      "indiana/elkhart",
+      "indiana/hancock",
+      "indiana/jennings"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WTKR",
+    "url": "https://www.wtkr.com/index.rss",
+    "mediaType": "article",
+    "itemSource": "WTKR",
+    "counties": [
+      "virginia/goochland",
+      "virginia/chesapeake",
+      "virginia/virginia-beach",
+      "virginia/james-city",
+      "north-carolina/hertford",
+      "virginia/portsmouth",
+      "north-carolina/currituck",
+      "virginia/surry"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WTMJ",
+    "url": "https://wtmj.com/feed/",
+    "mediaType": "article",
+    "itemSource": "WTMJ",
+    "counties": [
+      "wisconsin/oneida",
+      "wisconsin/milwaukee",
+      "wisconsin/la-crosse",
+      "wisconsin/racine"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WTMJ (2)",
+    "url": "https://wtmj.com/category/news/feed/",
+    "mediaType": "article",
+    "itemSource": "WTMJ",
+    "counties": [
+      "wisconsin/oneida",
+      "wisconsin/milwaukee",
+      "wisconsin/la-crosse",
+      "wisconsin/racine"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WTOC-TV",
+    "url": "https://wtoc.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "WTOC-TV",
+    "counties": [
+      "south-carolina/beaufort",
+      "georgia/effingham",
+      "georgia/liberty",
+      "georgia/candler",
+      "south-carolina/chesterfield",
+      "georgia/bryan",
+      "georgia/atkinson",
+      "georgia/brantley",
+      "georgia/long",
+      "georgia/tattnall",
+      "georgia/ware",
+      "georgia/appling"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WTOL",
+    "url": "https://www.wtol.com/feeds/syndication/rss/news",
+    "mediaType": "article",
+    "itemSource": "WTOL",
+    "counties": [
+      "ohio/seneca",
+      "ohio/lucas",
+      "ohio/williams",
+      "michigan/hillsdale",
+      "ohio/defiance",
+      "ohio/wyandot",
+      "ohio/hancock",
+      "ohio/ottawa",
+      "ohio/sandusky",
+      "michigan/lenawee",
+      "ohio/henry",
+      "ohio/wood",
+      "ohio/fulton",
+      "ohio/huron",
+      "michigan/monroe",
+      "ohio/erie",
+      "ohio/monroe",
+      "michigan/manistee",
+      "ohio/paulding"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WTOL (2)",
+    "url": "https://wtol.com/feeds/syndication/rss/news",
+    "mediaType": "article",
+    "itemSource": "WTOL",
+    "counties": [
+      "ohio/seneca",
+      "ohio/lucas",
+      "ohio/williams",
+      "michigan/hillsdale",
+      "ohio/defiance",
+      "ohio/wyandot",
+      "ohio/hancock",
+      "ohio/ottawa",
+      "ohio/sandusky",
+      "michigan/lenawee",
+      "ohio/henry",
+      "ohio/wood",
+      "ohio/fulton",
+      "ohio/huron",
+      "michigan/monroe",
+      "ohio/erie",
+      "ohio/monroe",
+      "michigan/manistee",
+      "ohio/paulding"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WTOP",
+    "url": "https://wtop.com/feed/",
+    "mediaType": "article",
+    "itemSource": "WTOP",
+    "counties": [
+      "virginia/fairfax",
+      "maryland/montgomery",
+      "virginia/montgomery",
+      "maryland/harford",
+      "virginia/manassas",
+      "virginia/arlington",
+      "wyoming/laramie",
+      "maryland/anne-arundel",
+      "virginia/tazewell",
+      "maryland/frederick",
+      "maryland/howard",
+      "virginia/culpeper",
+      "virginia/prince-william",
+      "virginia/falls-church",
+      "virginia/fauquier",
+      "virginia/stafford"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WTOP (2)",
+    "url": "https://wtop.com/?feed=rss2",
+    "mediaType": "article",
+    "itemSource": "WTOP",
+    "counties": [
+      "virginia/fairfax",
+      "maryland/montgomery",
+      "virginia/montgomery",
+      "maryland/harford",
+      "virginia/manassas",
+      "virginia/arlington",
+      "wyoming/laramie",
+      "maryland/anne-arundel",
+      "virginia/tazewell",
+      "maryland/frederick",
+      "maryland/howard",
+      "virginia/culpeper",
+      "virginia/prince-william",
+      "virginia/falls-church",
+      "virginia/fauquier",
+      "virginia/stafford"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WTRF",
+    "url": "https://wtrf.com/feed/",
+    "mediaType": "article",
+    "itemSource": "WTRF",
+    "counties": [
+      "west-virginia/ohio",
+      "ohio/jefferson",
+      "ohio/muskingum",
+      "west-virginia/wayne"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WTRF (2)",
+    "url": "https://wtrf.com/rss",
+    "mediaType": "article",
+    "itemSource": "WTRF",
+    "counties": [
+      "west-virginia/ohio",
+      "ohio/jefferson",
+      "ohio/muskingum",
+      "west-virginia/wayne"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WTSP",
+    "url": "https://www.wtsp.com/feeds/syndication/rss/news",
+    "mediaType": "article",
+    "itemSource": "WTSP",
+    "counties": [
+      "florida/pinellas",
+      "florida/hillsborough",
+      "florida/manatee",
+      "florida/citrus",
+      "florida/hardee",
+      "florida/highlands",
+      "wisconsin/polk",
+      "florida/charlotte",
+      "florida/hernando",
+      "florida/madison"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WTSP (2)",
+    "url": "https://wtsp.com/feeds/syndication/rss/news",
+    "mediaType": "article",
+    "itemSource": "WTSP",
+    "counties": [
+      "florida/pinellas",
+      "florida/hillsborough",
+      "florida/manatee",
+      "florida/citrus",
+      "florida/hardee",
+      "florida/highlands",
+      "wisconsin/polk",
+      "florida/charlotte",
+      "florida/hernando",
+      "florida/madison"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WTVA 9 News",
+    "url": "https://wtva.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "WTVA 9 News",
+    "counties": [
+      "alabama/lamar",
+      "alabama/lee",
+      "mississippi/lafayette"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WTVD",
+    "url": "https://abc11.com/feed/",
+    "mediaType": "article",
+    "itemSource": "WTVD",
+    "counties": [
+      "north-carolina/wake",
+      "north-carolina/durham",
+      "north-carolina/nash",
+      "north-carolina/vance",
+      "california/mono",
+      "north-carolina/orange",
+      "north-carolina/pasquotank",
+      "tennessee/washington"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WTVD (2)",
+    "url": "https://abc11.com/rss",
+    "mediaType": "article",
+    "itemSource": "WTVD",
+    "counties": [
+      "north-carolina/wake",
+      "north-carolina/durham",
+      "north-carolina/nash",
+      "north-carolina/vance",
+      "california/mono",
+      "north-carolina/orange",
+      "north-carolina/pasquotank",
+      "tennessee/washington"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WTVM",
+    "url": "https://wtvm.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "WTVM",
+    "counties": [
+      "georgia/harris",
+      "georgia/muscogee",
+      "alabama/chambers",
+      "alabama/russell"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WTVR-TV",
+    "url": "https://www.wtvr.com/index.rss",
+    "mediaType": "article",
+    "itemSource": "WTVR-TV",
+    "counties": [
+      "virginia/prince-george",
+      "virginia/hanover",
+      "virginia/james-city",
+      "virginia/caroline",
+      "virginia/emporia",
+      "virginia/mathews",
+      "virginia/carroll",
+      "virginia/dinwiddie",
+      "virginia/colonial-heights",
+      "virginia/goochland",
+      "virginia/sussex",
+      "virginia/louisa",
+      "virginia/new-kent",
+      "virginia/henrico",
+      "virginia/northampton",
+      "virginia/rockingham",
+      "virginia/surry",
+      "virginia/hopewell",
+      "north-carolina/surry",
+      "virginia/brunswick",
+      "virginia/buckingham",
+      "virginia/nelson",
+      "virginia/rockbridge",
+      "virginia/wise",
+      "virginia/charlotte",
+      "virginia/cumberland",
+      "virginia/essex",
+      "virginia/grayson",
+      "virginia/bedford",
+      "virginia/greene",
+      "virginia/greensville",
+      "virginia/middlesex",
+      "virginia/powhatan",
+      "virginia/petersburg",
+      "virginia/radford",
+      "virginia/stafford"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WTVY",
+    "url": "https://wtvy.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "WTVY",
+    "counties": [
+      "alabama/henry",
+      "alabama/houston"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WTXL ABC 27",
+    "url": "https://www.wtxl.com/index.rss",
+    "mediaType": "article",
+    "itemSource": "WTXL ABC 27",
+    "counties": [
+      "florida/wakulla",
+      "georgia/decatur",
+      "florida/leon"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WUSA",
+    "url": "https://www.wusa9.com/feeds/syndication/rss/news",
+    "mediaType": "article",
+    "itemSource": "WUSA",
+    "counties": [
+      "virginia/spotsylvania",
+      "virginia/orange",
+      "new-york/montgomery",
+      "virginia/fairfax",
+      "maryland/frederick",
+      "south-carolina/georgetown",
+      "virginia/clarke",
+      "maryland/charles",
+      "virginia/arlington"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WUSA (2)",
+    "url": "https://wusa9.com/feeds/syndication/rss/news",
+    "mediaType": "article",
+    "itemSource": "WUSA",
+    "counties": [
+      "virginia/spotsylvania",
+      "virginia/orange",
+      "new-york/montgomery",
+      "virginia/fairfax",
+      "maryland/frederick",
+      "south-carolina/georgetown",
+      "virginia/clarke",
+      "maryland/charles",
+      "virginia/arlington"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WVEC",
+    "url": "https://www.13newsnow.com/feeds/syndication/rss/news",
+    "mediaType": "article",
+    "itemSource": "WVEC",
+    "counties": [
+      "north-carolina/dare",
+      "virginia/hampton",
+      "virginia/suffolk",
+      "north-carolina/bertie",
+      "north-carolina/currituck",
+      "north-carolina/pasquotank",
+      "virginia/newport-news",
+      "north-carolina/camden",
+      "north-carolina/northampton",
+      "virginia/gloucester",
+      "virginia/new-kent",
+      "virginia/york",
+      "virginia/virginia-beach",
+      "north-carolina/carteret",
+      "north-carolina/lee",
+      "virginia/buckingham",
+      "virginia/mathews",
+      "virginia/sussex",
+      "north-carolina/gaston",
+      "virginia/chesterfield",
+      "virginia/chesapeake",
+      "virginia/poquoson"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WVEC (2)",
+    "url": "https://13newsnow.com/feeds/syndication/rss/news",
+    "mediaType": "article",
+    "itemSource": "WVEC",
+    "counties": [
+      "north-carolina/dare",
+      "virginia/hampton",
+      "virginia/suffolk",
+      "north-carolina/bertie",
+      "north-carolina/currituck",
+      "north-carolina/pasquotank",
+      "virginia/newport-news",
+      "north-carolina/camden",
+      "north-carolina/northampton",
+      "virginia/gloucester",
+      "virginia/new-kent",
+      "virginia/york",
+      "virginia/virginia-beach",
+      "north-carolina/carteret",
+      "north-carolina/lee",
+      "virginia/buckingham",
+      "virginia/mathews",
+      "virginia/sussex",
+      "north-carolina/gaston",
+      "virginia/chesterfield",
+      "virginia/chesapeake",
+      "virginia/poquoson"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WVNS-TV",
+    "url": "https://wvnstv.com/feed/",
+    "mediaType": "article",
+    "itemSource": "WVNS-TV",
+    "counties": [
+      "west-virginia/wayne"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WVNS-TV (2)",
+    "url": "https://wvnstv.com/rss",
+    "mediaType": "article",
+    "itemSource": "WVNS-TV",
+    "counties": [
+      "west-virginia/wayne"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WVVA",
+    "url": "https://wvva.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "WVVA",
+    "counties": [
+      "virginia/tazewell",
+      "west-virginia/mcdowell",
+      "west-virginia/monroe"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WWAYTV3",
+    "url": "https://www.wwaytv3.com/feed/",
+    "mediaType": "article",
+    "itemSource": "WWAYTV3",
+    "counties": [
+      "north-carolina/pender",
+      "north-carolina/brunswick",
+      "north-carolina/new-hanover",
+      "north-carolina/wilkes"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WWAYTV3 (2)",
+    "url": "https://wwaytv3.com/feed/",
+    "mediaType": "article",
+    "itemSource": "WWAYTV3",
+    "counties": [
+      "north-carolina/pender",
+      "north-carolina/brunswick",
+      "north-carolina/new-hanover",
+      "north-carolina/wilkes"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WWL-TV",
+    "url": "https://www.wwltv.com/feeds/syndication/rss/news",
+    "mediaType": "article",
+    "itemSource": "WWL-TV",
+    "counties": [
+      "mississippi/stone",
+      "mississippi/pike"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WWL-TV (2)",
+    "url": "https://wwltv.com/feeds/syndication/rss/news",
+    "mediaType": "article",
+    "itemSource": "WWL-TV",
+    "counties": [
+      "mississippi/stone",
+      "mississippi/pike"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WWLP",
+    "url": "https://wwlp.com/feed/",
+    "mediaType": "article",
+    "itemSource": "WWLP",
+    "counties": [
+      "massachusetts/middlesex",
+      "massachusetts/hampden",
+      "washington/franklin"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WWLP (2)",
+    "url": "https://wwlp.com/rss",
+    "mediaType": "article",
+    "itemSource": "WWLP",
+    "counties": [
+      "massachusetts/middlesex",
+      "massachusetts/hampden",
+      "washington/franklin"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WXHC",
+    "url": "https://wxhc.com/feed/",
+    "mediaType": "article",
+    "itemSource": "WXHC",
+    "counties": [
+      "new-york/cortland"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WXHC (2)",
+    "url": "https://wxhc.com/rss",
+    "mediaType": "article",
+    "itemSource": "WXHC",
+    "counties": [
+      "new-york/cortland"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WXIX-TV",
+    "url": "https://fox19.com/arc/outboundfeeds/rss/?outputType=xml",
+    "mediaType": "article",
+    "itemSource": "WXIX-TV",
+    "counties": [
+      "ohio/butler",
+      "ohio/highland",
+      "north-carolina/warren",
+      "ohio/brown",
+      "kentucky/owen",
+      "ohio/hamilton",
+      "virginia/appomattox",
+      "ohio/warren"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WXXV News 25",
+    "url": "https://www.wxxv25.com/feed/",
+    "mediaType": "article",
+    "itemSource": "WXXV News 25",
+    "counties": [
+      "mississippi/hancock"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WXXV News 25 (2)",
+    "url": "https://wxxv25.com/feed/",
+    "mediaType": "article",
+    "itemSource": "WXXV News 25",
+    "counties": [
+      "mississippi/hancock"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WXYZ",
+    "url": "https://www.wxyz.com/index.rss",
+    "mediaType": "article",
+    "itemSource": "WXYZ",
+    "counties": [
+      "michigan/oakland",
+      "michigan/branch",
+      "michigan/lapeer",
+      "michigan/macomb"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WyoFile",
+    "url": "https://wyofile.com/feed/",
+    "mediaType": "article",
+    "itemSource": "WyoFile",
+    "counties": [
+      "wyoming/laramie"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WyoFile (2)",
+    "url": "https://wyofile.com/comments/feed/",
+    "mediaType": "article",
+    "itemSource": "WyoFile",
+    "counties": [
+      "wyoming/laramie"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WZZM",
+    "url": "https://www.wzzm13.com/feeds/syndication/rss/news",
+    "mediaType": "article",
+    "itemSource": "WZZM",
+    "counties": [
+      "indiana/grant",
+      "michigan/isabella",
+      "michigan/newaygo",
+      "michigan/ottawa",
+      "michigan/gladwin",
+      "michigan/kent",
+      "michigan/montcalm",
+      "michigan/muskegon",
+      "michigan/otsego",
+      "michigan/manistee",
+      "michigan/mason"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "WZZM (2)",
+    "url": "https://wzzm13.com/feeds/syndication/rss/news",
+    "mediaType": "article",
+    "itemSource": "WZZM",
+    "counties": [
+      "indiana/grant",
+      "michigan/isabella",
+      "michigan/newaygo",
+      "michigan/ottawa",
+      "michigan/gladwin",
+      "michigan/kent",
+      "michigan/montcalm",
+      "michigan/muskegon",
+      "michigan/otsego",
+      "michigan/manistee",
+      "michigan/mason"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Yellowhammer News",
+    "url": "https://yellowhammernews.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Yellowhammer News",
+    "counties": [
+      "georgia/cherokee",
+      "alabama/cherokee"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Yellowhammer News (2)",
+    "url": "https://yellowhammernews.com/rss",
+    "mediaType": "article",
+    "itemSource": "Yellowhammer News",
+    "counties": [
+      "georgia/cherokee",
+      "alabama/cherokee"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Your Observer",
+    "url": "https://yourobserver.com/rss/headlines/latest/all/",
+    "mediaType": "article",
+    "itemSource": "Your Observer",
+    "counties": [
+      "florida/sarasota",
+      "florida/manatee"
     ],
     "trustedForCountyTier": false
   },
   {
     "name": "Yourbasin | Big 2 - Fox 24",
-    "url": "https://www.yourbasin.com/feed/",
+    "url": "https://yourbasin.com/feed/",
     "mediaType": "article",
     "itemSource": "Yourbasin | Big 2 - Fox 24",
     "counties": [
@@ -1892,12 +19970,58 @@ export const discoveredRegionalSources: DirectSource[] = [
   },
   {
     "name": "Yourbasin | Big 2 - Fox 24 (2)",
-    "url": "https://www.yourbasin.com/comments/feed/",
+    "url": "https://yourbasin.com/rss",
     "mediaType": "article",
     "itemSource": "Yourbasin | Big 2 - Fox 24",
     "counties": [
       "texas/ector",
       "texas/reeves"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Yourcentralvalley",
+    "url": "https://yourcentralvalley.com/feed/",
+    "mediaType": "article",
+    "itemSource": "Yourcentralvalley",
+    "counties": [
+      "california/fresno",
+      "california/merced",
+      "california/madera"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "Yourcentralvalley (2)",
+    "url": "https://yourcentralvalley.com/rss",
+    "mediaType": "article",
+    "itemSource": "Yourcentralvalley",
+    "counties": [
+      "california/fresno",
+      "california/merced",
+      "california/madera"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "YourErie",
+    "url": "https://yourerie.com/feed/",
+    "mediaType": "article",
+    "itemSource": "YourErie",
+    "counties": [
+      "pennsylvania/warren",
+      "ohio/crawford"
+    ],
+    "trustedForCountyTier": false
+  },
+  {
+    "name": "YourErie (2)",
+    "url": "https://yourerie.com/rss",
+    "mediaType": "article",
+    "itemSource": "YourErie",
+    "counties": [
+      "pennsylvania/warren",
+      "ohio/crawford"
     ],
     "trustedForCountyTier": false
   }
