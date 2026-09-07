@@ -23,11 +23,7 @@ export async function getFeed(
   const feed = await cachedShared(cacheKey, config.cacheTtlSeconds, async () => {
     const plan = buildFeedPlan(scope, topic);
     const items = await loadPlanItems(plan);
-    const filtered = dedupeItems(
-      await enrichArticleImages(
-        newest(dedupeItems(filterItems(recentItems(items), topic, scope, plan.directSources)), config.maxLimit),
-      ),
-    );
+    const filtered = newest(dedupeItems(filterItems(recentItems(items), topic, scope, plan.directSources)), config.maxLimit);
     const fetchedAt = new Date().toISOString();
 
     const primaryFeed = {
@@ -41,7 +37,11 @@ export async function getFeed(
         cacheTtlSeconds: config.cacheTtlSeconds,
       },
     };
-    return withCountyCoverage(primaryFeed, scope, topic, config.maxLimit);
+    const covered = await withCountyCoverage(primaryFeed, scope, topic, config.maxLimit);
+    // Enrich once after choosing coverage. Each tier previously paid its own
+    // image deadline, adding several seconds before the same stories appeared.
+    const enriched = dedupeItems(await enrichArticleImages(covered.items));
+    return { ...covered, items: enriched, meta: { ...covered.meta, count: enriched.length } };
   }, { forceFresh });
   const feedItems = topic === "opinion" ? dedupeItems([featuredCountyPostOpinion, ...feed.items]) : feed.items;
   // Balancing and ordering apply to the whole result, then the requested
@@ -95,24 +95,14 @@ async function withCountyCoverage(feed: FeedResponse, scope: FeedScope, topic: T
 
   if (config.countyMarketTierEnabled) {
     const marketPlan = buildCountyMarketPlan(scope.county, topic);
-    const marketItems = dedupeItems(
-      await enrichArticleImages(
-        newest(
-          dedupeItems(
-            filterMarketItems(
-              recentItems(await loadPlanItems(marketPlan)),
-              topic,
-              scope,
-              getCountyPlaceTerms(scope.county, config.countyMarketLimit),
-              marketPlan.directSources,
-            ),
-          ),
-          config.maxLimit,
-        ),
-      ),
+    const marketItems = newest(
+      dedupeItems(filterMarketItems(
+        recentItems(await loadPlanItems(marketPlan)), topic, scope,
+        getCountyPlaceTerms(scope.county, config.countyMarketLimit), marketPlan.directSources,
+      )), config.maxLimit,
     );
     marketCount = marketItems.length;
-    items = dedupeItems(await enrichArticleImages(prioritizeUniqueItems(items, marketItems, limit)));
+    items = dedupeItems(prioritizeUniqueItems(items, marketItems, limit));
     sourcesUsed = Array.from(new Set([...sourcesUsed, ...marketPlan.sourcesUsed]));
   }
 
@@ -127,7 +117,7 @@ async function withCountyCoverage(feed: FeedResponse, scope: FeedScope, topic: T
         config.maxLimit,
       );
       nearbyCount = nearbyItems.length;
-      items = dedupeItems(await enrichArticleImages(prioritizeUniqueItems(items, nearbyItems, limit)));
+      items = dedupeItems(prioritizeUniqueItems(items, nearbyItems, limit));
       sourcesUsed = Array.from(new Set([...sourcesUsed, ...fallbackPlan.sourcesUsed]));
     }
   }

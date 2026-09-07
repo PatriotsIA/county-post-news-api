@@ -1,8 +1,10 @@
 import { describe, expect, it } from "vitest";
 import { countyPlaces } from "../src/county-places.js";
 import { getCountyByState } from "@nickgraffis/us-counties";
-import { getCounty, getCountyLocalPlaces, getCountyMarketCities, states } from "../src/geo.js";
+import { getCounty, getCountyLocalPlaces, getCountyMarketCities, getNearbyCounties, states } from "../src/geo.js";
+import { buildFeedPlan, buildCountyFallbackPlan } from "../src/feed-builders.js";
 import { filterItems } from "../src/filter.js";
+import { countySlug } from "../src/county-geography.js";
 import type { NewsFeedItem } from "../src/types.js";
 
 function story(title: string, description = ""): NewsFeedItem {
@@ -29,6 +31,7 @@ describe("county place data", () => {
       for (const county of getCountyByState(state.name)) {
         total += 1;
         if (!countyPlaces[county.FIPS]?.length) missing.push(`${state.slug}/${county.name}`);
+        expect(getCounty(state.slug, countySlug(county.name, county.FIPS))?.fips).toBe(county.FIPS);
       }
     }
     expect(total).toBe(3_143);
@@ -98,6 +101,29 @@ describe("county place data", () => {
 describe("county locality filtering", () => {
   const briscoe = getCounty("texas", "briscoe")!;
   const scope = { level: "county", state: briscoe.state, county: briscoe } as const;
+
+  it("finds Louisiana parish stories and keeps the same county API slugs", () => {
+    const county = getCounty("louisiana", "west-carroll")!;
+    const parishScope = { level: "county", state: county.state, county } as const;
+    expect(county.slug).toBe("west-carroll");
+    expect(county.displayName).toBe("West Carroll Parish");
+    const nearby = getNearbyCounties(county);
+    const plans = [buildFeedPlan(parishScope, "general"), buildCountyFallbackPlan(county, nearby, "general")];
+    for (const plan of plans) {
+      const queries = plan.rssUrls.map((url) => new URL(url).searchParams.get("q")).join(" ");
+      expect(queries).toContain("Parish");
+      expect(queries).not.toContain("Carroll County");
+    }
+    expect(filterItems([
+      story("West Carroll Parish starts water system improvements"),
+      story("West Carroll Parish council reviews Louisiana road funding"),
+      story("Carroll County announces an Arkansas development"),
+      story("Oak Grove schedules a meeting", "Missouri officials announced the project."),
+    ], "general", parishScope).map((item) => item.title)).toEqual([
+      "West Carroll Parish starts water system improvements",
+      "West Carroll Parish council reviews Louisiana road funding",
+    ]);
+  });
 
   it("accepts a distinctive town name on its own", () => {
     // Quitaque exists in one state, so a bare mention is evidence enough. This

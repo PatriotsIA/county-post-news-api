@@ -113,7 +113,7 @@ function matchesCountyScope(item: NewsFeedItem, state: StateSite, counties: Coun
  */
 export function textMentionsCounty(haystack: string, county: CountySite, state: StateSite, namesState?: boolean) {
   const inState = namesState ?? includesTerm(haystack, state.name.toLowerCase());
-  const mentionsCountyName = includesTerm(haystack, `${county.name.toLowerCase()} county`);
+  const mentionsCountyName = includesTerm(haystack, county.displayName.toLowerCase());
 
   // A distinctive county name identifies itself. Requiring the state as well
   // discarded the most obviously county-local stories there are — headlines
@@ -193,7 +193,7 @@ function matchesMarketScope(
   if (mentionsOtherState) return false;
 
   if (!includesTerm(fullHaystack, stateName)) return false;
-  const hasCounty = includesTerm(fullHaystack, `${scope.county.name.toLowerCase()} county`);
+  const hasCounty = includesTerm(fullHaystack, scope.county.displayName.toLowerCase());
   const hasPlace = places.some((place) => includesTerm(fullHaystack, place.toLowerCase()));
   return hasCounty || hasPlace || isTrustedMarketSource(item, trustedSources);
 }

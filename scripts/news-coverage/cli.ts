@@ -1,6 +1,7 @@
 import { appendFile, mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { getCountyByState, type UsCounty } from "@nickgraffis/us-counties";
+import { countySlug as canonicalCountySlug } from "../../src/county-geography.js";
 import { states } from "../../src/geo.js";
 
 type FeedItem = {
@@ -337,7 +338,7 @@ function buildRoster(options: AuditOptions) {
     .filter((state) => !options.stateSlugs.size || options.stateSlugs.has(state.slug))
     .flatMap((state) =>
       getCountyByState(state.name).map((county: UsCounty) => {
-        const countySlug = slugify(county.name);
+        const countySlug = canonicalCountySlug(county.name, county.FIPS);
         return {
           key: `${state.slug}/${countySlug}`,
           fips: county.FIPS,

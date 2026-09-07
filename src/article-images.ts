@@ -13,17 +13,23 @@ export async function enrichArticleImages(items: NewsFeedItem[]) {
   // inside the budget ships, the rest keep loading into the per-URL cache and
   // appear when the feed next rebuilds. Without the deadline, two dozen
   // article-page fetches sat between the reader and their first story.
-  const lookups = mapLimited(candidates, IMAGE_LOOKUP_CONCURRENCY, async (item) => ({
-    id: item.id,
-    imageUrl: await getArticleImage(item.link),
-  }));
-  const resolved = await Promise.race([
-    lookups,
-    new Promise<Awaited<typeof lookups>>((resolve) =>
-      setTimeout(() => resolve([]), config.imageEnrichmentBudgetMs).unref?.(),
-    ),
-  ]);
-  const imageUrls = new Map(resolved.filter((result): result is { id: string; imageUrl: string } => Boolean(result.imageUrl)).map((result) => [result.id, result.imageUrl]));
+  const imageUrls = new Map<string, string>();
+  let accepting = true;
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  const lookups = mapLimited(candidates, IMAGE_LOOKUP_CONCURRENCY, async (item) => {
+    if (!accepting) return;
+    const imageUrl = await getArticleImage(item.link);
+    if (accepting && imageUrl) imageUrls.set(item.id, imageUrl);
+  });
+  try {
+    await Promise.race([
+      lookups,
+      new Promise<void>((resolve) => { timer = setTimeout(resolve, config.imageEnrichmentBudgetMs); }),
+    ]);
+  } finally {
+    accepting = false;
+    if (timer) clearTimeout(timer);
+  }
 
   return items.map((item) => (imageUrls.has(item.id) ? { ...item, imageUrl: imageUrls.get(item.id) } : item));
 }

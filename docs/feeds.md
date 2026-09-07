@@ -133,6 +133,8 @@ Texas is complete.
 
 ## Speed (`src/cache.ts`, `src/warmer.ts`)
 
+For PIA operations, use `aws --profile pia` and region `us-east-2`; verify account `426771918029` before writes. The PIA frontend is separately hosted in `us-west-1`. CodeBuild uses its assigned role.
+
 Building a feed costs 9–27 seconds of upstream fan-out; serving one costs under
 half a second. The design keeps those on different actors:
 
@@ -145,20 +147,26 @@ half a second. The design keeps those on different actors:
   requests with `x-warm-refresh: 1` — the sole trigger for a forced rebuild —
   and sending the site's own `Origin` header, which matters once a CDN with
   Origin in its cache key sits in front. With `WARM_STATES=all` it covers all
-  3,143 counties in **shard rotation** (`WARM_MAX_PER_PASS`, default 150 per
+  3,143 counties plus all 51 state/DC general and politics feeds in **shard rotation** (`WARM_MAX_PER_PASS`, default 50 per
   pass): one pass cannot rebuild the whole country without blowing the
   function timeout and the upstream search feeds' rate limits, so each pass
   walks one shard and every county refreshes on a cycle well inside the S3
-  stale window. A county nobody ever visited builds inline once, then joins
-  the rotation.
+  stale window. Three workers leave capacity for readers under the PIA
+  account's ten-execution Lambda limit. Ten workers plus the warmer itself
+  previously caused 141–142 failures per 150-target pass. Transient HTTP
+  failures now retry up to three times with backoff; terminal status counts
+  appear in `warmer.pass` logs. A county nobody ever visited builds inline
+  once, then joins the rotation. The full 3,245-target cycle is about 325 minutes.
 - **CloudFront is written but parked** behind the `EnableEdgeCache` template
   parameter (default `"false"`): the AWS account awaits CloudFront verification
   by AWS Support. When that clears, flipping the parameter adds the edge on top
   and re-points the warmer automatically. The deploy role already carries the
   CloudFront permissions (`CloudFrontEdgeCacheDeploy`).
 
-Supporting behavior: thumbnail enrichment runs under a hard budget
-(`imageEnrichmentBudgetMs`) with misses landing in cache for the next rebuild;
+Supporting behavior: thumbnail enrichment runs once after coverage selection
+under a 750 ms budget (`imageEnrichmentBudgetMs`), retaining completed images
+when another publisher is slow. Already-started lookups can populate the
+per-URL cache while the runtime remains active;
 ordering is banded by recency (fortnight, 60 days, 180, older, undated last)
 with undated items kept rather than dropped; feeds accept `offset` and report
 `hasMore`/`totalAvailable` for the client's infinite scroll; publisher
@@ -177,5 +185,24 @@ diversity search off by accident.
   CodeBuild. Tests assert against `config`; keep `.env` aligned with the
   template.
 - Pipeline failures are diagnosed from
-  `aws cloudformation describe-stack-events --stack-name county-news-api`; CI
+  `aws --profile pia cloudformation describe-stack-events --stack-name county-news-api --region us-east-2`; CI
   test output is in the CodeBuild log group.
+
+## PIA integration
+
+PIA reads the API's locality/topic decisions directly, validates the response
+scope and topic, and uses general/politics on state landing pages. Its county
+elections widget maps to `politics`; video selects video items from the shared
+general feed. It does not repeat County Post's browser locality filter.
+
+Louisiana display names and search queries use **Parish**, including nearby
+expansion. Locality matches that display name too. The URL contract retains
+county slugs such as `/v1/feeds/counties/louisiana/west-carroll/general`. The
+previous County suffix produced an empty West Carroll feed; a live-source
+run after correction returned 21 stories. Clients that mirror locality must
+honor `scope.displayName` for parish-name evidence.
+
+Independent cities sharing a county name use `-city` routes for FIPS 24510,
+29510, 51600, 51620, 51760 and 51770. `county-geography.ts` supplies the same
+mapping to lookup, warming, discovery and audits. Existing county routes keep
+their meaning. Tests verify each of the 3,143 records resolves to its own FIPS.

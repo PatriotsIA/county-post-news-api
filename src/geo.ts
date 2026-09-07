@@ -1,4 +1,5 @@
 import { getCountyByState } from "@nickgraffis/us-counties";
+import { countySlug as canonicalCountySlug, countyDisplayName } from "./county-geography.js";
 import { countyPlaces } from "./county-places.js";
 import { getCountyCentroid } from "./county-centroids.js";
 import type { CountySite, StateSite } from "./types.js";
@@ -287,7 +288,7 @@ export function getCounty(stateSlug: string, countySlug: string) {
   if (!state) return undefined;
 
   const normalizedCountySlug = countySlug.toLowerCase();
-  const countyRecord = getCountyByState(state.name).find((county) => slugify(county.name) === normalizedCountySlug);
+  const countyRecord = getCountyByState(state.name).find((county) => canonicalCountySlug(county.name, county.FIPS) === normalizedCountySlug);
   if (!countyRecord) return undefined;
 
   const name = countyRecord.name;
@@ -324,7 +325,7 @@ export function getCounty(stateSlug: string, countySlug: string) {
     name,
     slug: normalizedCountySlug,
     fips: countyRecord.FIPS,
-    displayName: `${name} County`,
+    displayName: countyDisplayName(name, state.slug, countyRecord.FIPS),
     state,
     primaryCity,
     localCities,
@@ -380,9 +381,9 @@ export function getNearbyCounties(county: CountySite, limit = 3) {
       return [
         {
           name: record.name,
-          slug: slugify(record.name),
+          slug: canonicalCountySlug(record.name, record.FIPS),
           fips: record.FIPS,
-          displayName: `${record.name} County`,
+          displayName: countyDisplayName(record.name, county.state.slug, record.FIPS),
           state: county.state,
           localCities: countyPlaces[record.FIPS] ?? [],
           latitude: centroid[0],

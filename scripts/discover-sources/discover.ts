@@ -20,6 +20,7 @@ import { textMentionsCounty } from "../../src/filter.js";
 import { fetchRssItems } from "../../src/rss.js";
 import { getCountyNativeSources } from "../../src/source-registry.js";
 import { getCountyByState, slugify } from "./shared.js";
+import { countySlug } from "../../src/county-geography.js";
 import type { CountyDiscovery, PublisherObservation } from "./shared.js";
 import type { Topic } from "../../src/types.js";
 
@@ -258,7 +259,7 @@ function buildRoster(options: DiscoverOptions) {
     .flatMap((state) =>
       getCountyByState(state.name).map((county) => ({
         stateSlug: state.slug,
-        countySlug: slugify(county.name),
+        countySlug: countySlug(county.name, county.FIPS),
       })),
     );
   return options.maxCounties ? roster.slice(0, options.maxCounties) : roster;

@@ -10,7 +10,7 @@ export const config = {
    * that miss it continue in the background and land in the per-URL cache for
    * the next rebuild.
    */
-  imageEnrichmentBudgetMs: Number(process.env.IMAGE_ENRICHMENT_BUDGET_MS || 2500),
+  imageEnrichmentBudgetMs: Number(process.env.IMAGE_ENRICHMENT_BUDGET_MS || 750),
   defaultLimit: Number(process.env.DEFAULT_LIMIT || 120),
   maxLimit: Number(process.env.MAX_LIMIT || 600),
   countyFallbackMinItems: Number(process.env.COUNTY_FALLBACK_MIN_ITEMS || 12),

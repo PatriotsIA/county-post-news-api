@@ -94,6 +94,7 @@ Globals:
         PAGE_SECTION_CONCURRENCY: "4"
         UPSTREAM_CONCURRENCY: "20"
         ARTICLE_IMAGE_LOOKUP_LIMIT: "24"
+        IMAGE_ENRICHMENT_BUDGET_MS: "750"
         MAX_RSS_URLS_PER_FEED: "30"
         MAX_ARTICLE_QUERIES_PER_FEED: "10"
         # Both providers are used. Bing surfaces results Google misses and names
@@ -264,8 +265,8 @@ Resources:
             - !GetAtt NewsApiFunctionUrl.FunctionUrl
           WARM_ORIGIN: "https://thecountypost.com"
           WARM_STATES: "all"
-          WARM_MAX_PER_PASS: "150"
-          WARM_CONCURRENCY: "10"
+          WARM_MAX_PER_PASS: "50"
+          WARM_CONCURRENCY: "3"
       Events:
         WarmSchedule:
           Type: Schedule

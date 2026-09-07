@@ -1,4 +1,5 @@
-import { getCounty, states } from "./geo.js";
+import { states } from "./geo.js";
+import { countySlug } from "./county-geography.js";
 import { getCountyByState } from "@nickgraffis/us-counties";
 
 /**
@@ -10,9 +11,9 @@ import { getCountyByState } from "@nickgraffis/us-counties";
  * because Origin is part of the CDN cache key — warming without it would fill
  * an entry the browser never reads.
  *
- * With stale-while-revalidate on the responses, steady-state passes are cheap:
- * CloudFront answers each warm request from cache immediately and refreshes in
- * the background, so this function mostly just keeps the clock ticking.
+ * Each refresh performs an origin rebuild. Leave Lambda capacity for readers:
+ * this account currently has only ten concurrent executions, including the
+ * warmer itself and other services.
  */
 const WARM_TIMEOUT_MS = 90_000;
 
@@ -23,7 +24,7 @@ export async function handler(): Promise<WarmerResult> {
   if (!baseUrl) throw new Error("WARM_BASE_URL is not set.");
 
   const origin = process.env.WARM_ORIGIN || "https://thecountypost.com";
-  const concurrency = Math.max(1, Number(process.env.WARM_CONCURRENCY || 10));
+  const concurrency = Math.max(1, Math.min(4, Number(process.env.WARM_CONCURRENCY || 3)));
   const limit = Number(process.env.WARM_FEED_LIMIT || process.env.DEFAULT_LIMIT || 120);
   const warmStatesEnv = process.env.WARM_STATES || "texas";
   const stateSlugs =
@@ -38,10 +39,16 @@ export async function handler(): Promise<WarmerResult> {
     const state = states.find((entry) => entry.slug === stateSlug);
     if (!state) return [];
     return getCountyByState(state.name)
-      .map((county) => getCounty(stateSlug, county.name.toLowerCase().replace(/&/g, " and ").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "")))
-      .filter((county): county is NonNullable<typeof county> => Boolean(county))
-      .map((county) => `${baseUrl}/v1/feeds/counties/${county.state.slug}/${county.slug}/general?limit=${limit}`);
+      .map((county) => `${baseUrl}/v1/feeds/counties/${stateSlug}/${countySlug(county.name, county.FIPS)}/general?limit=${limit}`);
   });
+  // PIA state landing pages read both desks. Include them in the same bounded
+  // rotation instead of leaving every state's first visitor with a cold build.
+  for (const stateSlug of stateSlugs) {
+    if (!states.some((state) => state.slug === stateSlug)) continue;
+    for (const topic of ["general", "politics"]) {
+      allTargets.push(`${baseUrl}/v1/feeds/states/${stateSlug}/${topic}?limit=${limit}`);
+    }
+  }
 
   // One pass cannot rebuild every county in the country: 3,143 rebuilds would
   // blow the function timeout and hammer the upstream search feeds. Each pass
@@ -49,7 +56,7 @@ export async function handler(): Promise<WarmerResult> {
   // runs walk the whole list in order. Every county still gets rebuilt well
   // inside the S3 cache's stale window; readers in between are served the
   // stored copy instantly.
-  const maxPerPass = Math.max(25, Number(process.env.WARM_MAX_PER_PASS || 150));
+  const maxPerPass = Math.max(25, Number(process.env.WARM_MAX_PER_PASS || 50));
   const shardCount = Math.max(1, Math.ceil(allTargets.length / maxPerPass));
   const intervalMs = Math.max(1, Number(process.env.WARM_INTERVAL_MINUTES || 5)) * 60_000;
   const shardIndex = Math.floor(Date.now() / intervalMs) % shardCount;
@@ -58,6 +65,7 @@ export async function handler(): Promise<WarmerResult> {
   const started = Date.now();
   let warmed = 0;
   let failed = 0;
+  const failureStatuses: Record<string, number> = {};
   const queue = [...targets];
 
   await Promise.all(
@@ -68,21 +76,32 @@ export async function handler(): Promise<WarmerResult> {
         const controller = new AbortController();
         const timeout = setTimeout(() => controller.abort(), WARM_TIMEOUT_MS);
         try {
-          const response = await fetch(url, {
-            signal: controller.signal,
-            headers: {
-              origin,
-              "user-agent": "TheCountyPost cache warmer",
-              // Marks this as the pass that rebuilds; reader requests never do.
-              "x-warm-refresh": "1",
-            },
-          });
-          if (response.ok) warmed += 1;
-          else failed += 1;
-          // Drain so the connection can be reused; the body itself is the point.
-          await response.arrayBuffer();
+          for (let attempt = 0; ; attempt++) {
+            const response = await fetch(url, {
+              signal: controller.signal,
+              headers: {
+                origin,
+                "user-agent": "TheCountyPost cache warmer",
+                "x-warm-refresh": "1",
+              },
+            });
+            // Drain before retrying so throttled requests do not consume the
+            // whole shard immediately or hold connections while backing off.
+            await response.arrayBuffer();
+            if ([429, 502, 503, 504].includes(response.status) && attempt < 3) {
+              await new Promise((resolve) => setTimeout(resolve, 2_000 * (attempt + 1)));
+              continue;
+            }
+            if (response.ok) warmed += 1;
+            else {
+              failed += 1;
+              failureStatuses[response.status] = (failureStatuses[response.status] || 0) + 1;
+            }
+            break;
+          }
         } catch {
           failed += 1;
+          failureStatuses.network = (failureStatuses.network || 0) + 1;
         } finally {
           clearTimeout(timeout);
         }
@@ -91,6 +110,6 @@ export async function handler(): Promise<WarmerResult> {
   );
 
   const result = { warmed, failed, ms: Date.now() - started };
-  console.info(JSON.stringify({ event: "warmer.pass", targets: targets.length, totalTargets: allTargets.length, shard: `${shardIndex + 1}/${shardCount}`, ...result }));
+  console.info(JSON.stringify({ event: "warmer.pass", targets: targets.length, totalTargets: allTargets.length, shard: `${shardIndex + 1}/${shardCount}`, failureStatuses, ...result }));
   return result;
 }
