@@ -23,7 +23,8 @@ export async function getFeed(
   const cacheKey = `feed:${scopeKey(scope)}:${topic}`;
   const feed = await cachedShared(cacheKey, config.cacheTtlSeconds, async () => {
     const plan = buildFeedPlan(scope, topic);
-    const items = await loadPlanItems(plan, true);
+    const retrieval = { attempted: 0, failed: 0 };
+    const items = await loadPlanItems(plan, true, retrieval);
     const filtered = newest(dedupeItems(filterItems(recentItems(items), topic, scope, plan.directSources)), config.maxLimit);
     const fetchedAt = new Date().toISOString();
 
@@ -36,6 +37,7 @@ export async function getFeed(
         sourcesUsed: plan.sourcesUsed,
         fetchedAt,
         cacheTtlSeconds: config.cacheTtlSeconds,
+        retrieval,
       },
     };
     const covered = await withCountyCoverage(primaryFeed, scope, topic, config.maxLimit);
@@ -43,7 +45,14 @@ export async function getFeed(
     // image deadline, adding several seconds before the same stories appeared.
     const enriched = dedupeItems(await enrichArticleImages(covered.items));
     return { ...covered, items: enriched, meta: { ...covered.meta, count: enriched.length } };
-  }, { forceFresh, onStale: () => enqueueRefresh(refreshTarget(scope, topic)) });
+  }, {
+    forceFresh, onStale: () => enqueueRefresh(refreshTarget(scope, topic)),
+    shouldReplace: (previous, next) => {
+      const before = previous as FeedResponse;
+      const after = next as FeedResponse;
+      return !(after.meta.retrieval?.failed && before.items.length > 0 && after.items.length < before.items.length * 0.25);
+    },
+  });
   const feedItems = topic === "opinion" ? dedupeItems([featuredCountyPostOpinion, ...feed.items]) : feed.items;
   // Balancing and ordering apply to the whole result, then the requested
   // window is taken from it, so paging through a feed keeps one stable order
@@ -237,7 +246,7 @@ function otherSourcesTarget() {
   return Math.max(1, Math.floor(config.countyOtherSourcesTarget));
 }
 
-async function loadPlanItems(plan: ReturnType<typeof buildFeedPlan>, requireSource = false) {
+async function loadPlanItems(plan: ReturnType<typeof buildFeedPlan>, requireSource = false, diagnostics?: { attempted: number; failed: number }) {
   const [rssResults, directResults, gdeltResults] = await Promise.all([
     settleLimited(plan.rssUrls, (url) => fetchRssItems(url)),
     settleLimited(plan.directSources, async (source) => {
@@ -253,6 +262,13 @@ async function loadPlanItems(plan: ReturnType<typeof buildFeedPlan>, requireSour
   // An upstream outage must not replace a useful cached feed with an empty one.
   // A successfully fetched but genuinely empty source remains a valid result.
   const rssSources = [...rssResults, ...directResults];
+  if (diagnostics) {
+    const results = [...rssSources, ...gdeltResults];
+    diagnostics.attempted = results.length;
+    diagnostics.failed = results.filter(result => result.status === "rejected").length;
+    if (diagnostics.failed) console.warn(JSON.stringify({ event: "feed.sources_partial", ...diagnostics,
+      errors: [...new Set(results.flatMap(result => result.status === "rejected" ? [String(result.reason)] : []))] }));
+  }
   if (requireSource && rssSources.length && rssSources.every(result => result.status === "rejected") && !settledItems(gdeltResults).length) {
     throw new Error("All news sources failed; retaining the previous feed");
   }

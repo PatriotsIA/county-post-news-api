@@ -47,6 +47,8 @@ export type SharedCacheOptions = {
   staleTtlSeconds?: number;
   /** Enqueue refresh while serving stale data. Queue acceptance is awaited. */
   onStale?: () => Promise<unknown>;
+  /** Preserve an existing bounded snapshot when a partial outage degrades a build. */
+  shouldReplace?: (previous: unknown, next: unknown) => boolean;
 };
 
 const DEFAULT_STALE_TTL_SECONDS = 24 * 60 * 60;
@@ -71,6 +73,7 @@ export async function cachedShared<T>(
 ): Promise<T> {
   const now = Date.now();
   const staleTtlMs = (options.staleTtlSeconds ?? DEFAULT_STALE_TTL_SECONDS) * 1000;
+  let previous: SharedEntry<T> | undefined;
 
   {
     const hit = cache.get(key);
@@ -82,6 +85,7 @@ export async function cachedShared<T>(
         const object = await s3Cache().send(new GetObjectCommand({ Bucket: bucket, Key: sharedKey(key) }));
         const entry = JSON.parse((await object.Body?.transformToString()) || "") as SharedEntry<T>;
         const age = now - entry.storedAt;
+        if (Number.isFinite(age) && age >= 0 && age < staleTtlMs) previous = entry;
         if (Number.isFinite(age) && age >= 0 && age < (options.forceFresh ? ttlSeconds * 1000 : staleTtlMs)) {
           if (age >= ttlSeconds * 1000 && options.onStale) {
             try { await options.onStale(); }
@@ -108,6 +112,11 @@ export async function cachedShared<T>(
   cache.set(key, { expiresAt: now + ttlSeconds * 1000, value });
 
   const resolved = await value;
+  if (previous && options.shouldReplace && !options.shouldReplace(previous.value, resolved)) {
+    console.warn(JSON.stringify({ event: "feed.refresh_retained", key, storedAt: previous.storedAt }));
+    cache.set(key, { expiresAt: Math.min(Date.now() + STALE_MEMORY_HOLD_MS, previous.storedAt + staleTtlMs), value: Promise.resolve(previous.value) });
+    return previous.value;
+  }
   const bucket = sharedBucket();
   if (bucket) {
     try {

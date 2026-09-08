@@ -60,3 +60,13 @@ it("retries the worker job if a refreshed feed cannot be stored", async () => {
   });
   await expect(cachedShared("feed:test", 300, async () => ({ articles: ["new"] }), { forceFresh: true })).rejects.toThrow("S3 write failed");
 });
+
+it("retains the original snapshot without resetting its age during a degraded refresh", async () => {
+  const send = vi.spyOn(S3Client.prototype, "send").mockResolvedValue(stored(600) as never);
+  vi.spyOn(console, "warn").mockImplementation(() => {});
+  const result = await cachedShared("feed:test", 300, async () => ({ articles: [] }), {
+    forceFresh: true, shouldReplace: () => false,
+  });
+  expect(result).toEqual({ articles: ["existing"] });
+  expect(send.mock.calls.some(([command]) => command instanceof PutObjectCommand)).toBe(false);
+});

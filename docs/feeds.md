@@ -177,7 +177,10 @@ Feed `meta.fetchedAt` retains the provider-data timestamp; `ageSeconds` and
 calculate current data age from `fetchedAt` rather than treating `Age` as data
 freshness. Page timestamps use the oldest included feed. A complete provider
 failure leaves the old shared feed intact instead of replacing it with an
-empty result. A successfully fetched empty source can still produce an empty
+empty result. A partial outage returning fewer than a quarter of the prior
+articles also retains that snapshot without resetting its age; this protection
+ends at the existing 24-hour stale limit. The background worker allows eight
+seconds per provider and records attempted/failed source counts. A successfully fetched empty source can still produce an empty
 feed: the cache does not invent articles or create an archive.
 
 Supporting behavior: thumbnail enrichment runs once after coverage selection

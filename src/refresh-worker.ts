@@ -15,7 +15,8 @@ export async function handler(event: SQSEvent): Promise<SQSBatchResponse> {
       const feed = await getFeed(scope, target.topic, 120, 0, true);
       console.info(JSON.stringify({ event: "feed.refresh", ok: true, ...target,
         count: feed.meta.totalAvailable ?? feed.items.length, fetchedAt: feed.meta.fetchedAt,
-        ageSeconds: Math.max(0, (Date.now() - Date.parse(feed.meta.fetchedAt)) / 1000), durationMs: Date.now() - started }));
+        ageSeconds: Math.max(0, (Date.now() - Date.parse(feed.meta.fetchedAt)) / 1000), stale: feed.meta.stale,
+        retrieval: feed.meta.retrieval, durationMs: Date.now() - started }));
       const base = process.env.FEED_EDGE_URL;
       if (base) {
         const origins = (process.env.FEED_EDGE_ORIGINS || "https://thecountypost.com").split(",").filter(Boolean);

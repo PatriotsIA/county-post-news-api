@@ -71,6 +71,7 @@ export type FeedResponse = {
     /** Age of underlying provider data, independent of CDN response age. */
     ageSeconds?: number;
     stale?: boolean;
+    retrieval?: { attempted: number; failed: number };
   };
 };
 

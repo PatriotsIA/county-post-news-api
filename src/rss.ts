@@ -36,6 +36,7 @@ function parseRss(xml: string, options: RssOptions): NewsFeedItem[] {
     rss?: { channel?: { title?: string; item?: unknown } };
     feed?: { title?: unknown; entry?: unknown };
   };
+  if (!document.rss?.channel && !document.feed) throw new Error("Response is not an RSS or Atom feed");
 
   const rssItems = asArray(document.rss?.channel?.item);
   if (rssItems.length) {
