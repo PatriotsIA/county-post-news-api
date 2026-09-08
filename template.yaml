@@ -8,10 +8,8 @@ Parameters:
     Default: "false"
     AllowedValues: ["true", "false"]
     Description: >-
-      Create the CloudFront distribution in front of the API. Off until AWS
-      Support verifies the account for CloudFront; the S3 shared cache carries
-      the load either way, and flipping this to "true" is the only change
-      needed once verification lands.
+      Enable the API edge cache after AWS account verification. The shared
+      cache and queued refreshes also work with this disabled.
   CorsOrigins:
     Type: String
     Default: "https://main.d2z6lt4e5q50in.amplifyapp.com,https://advertiser-preview.d2z6lt4e5q50in.amplifyapp.com,https://thecountypost.com,https://www.thecountypost.com,https://advertise.thecountypost.com,https://www.advertise.thecountypost.com,https://patriotsinaction.com,https://www.patriotsinaction.com"
@@ -113,9 +111,6 @@ Globals:
         CORS_ORIGINS: !Ref CorsOrigins
         METALS_PROVIDER_URL: "https://mintedmetal.com/api/prices.json"
         METALS_CACHE_TTL_SECONDS: "900"
-        USDA_MARS_API_KEY: !Ref UsdaMarsApiKey
-        MARS_API_KEY: !Ref UsdaMarsApiKey
-        FRED_API_KEY: !Ref FredApiKey
         FRED_CACHE_TTL_SECONDS: "21600"
         NWS_API_BASE: "https://api.weather.gov"
         NWS_USER_AGENT: "TheCountyPost/1.0 (https://thecountypost.com; contact@thecountypost.com)"
@@ -133,7 +128,6 @@ Globals:
         ATLAS_CACHE_TTL_SECONDS: "3600"
         ATLAS_MANIFEST_CACHE_TTL_SECONDS: "300"
         ATLAS_PUBLIC_CACHE_TTL_SECONDS: "86400"
-        STRIPE_SK_KEY: !Ref StripeSecretKey
         STRIPE_CHECKOUT_SUCCESS_URL: !Ref StripeCheckoutSuccessUrl
         STRIPE_CHECKOUT_CANCEL_URL: !Ref StripeCheckoutCancelUrl
         ADVERTISING_CREATIVE_BUCKET: !Ref AdvertisingCreativeBucket
@@ -155,9 +149,16 @@ Resources:
             BucketName: !Ref AtlasDataBucket
         - S3CrudPolicy:
             BucketName: !Ref FeedCacheBucket
+        - SQSSendMessagePolicy:
+            QueueName: !GetAtt FeedRefreshQueue.QueueName
       Environment:
         Variables:
           FEED_CACHE_BUCKET: !Ref FeedCacheBucket
+          FEED_REFRESH_QUEUE_URL: !Ref FeedRefreshQueue
+          USDA_MARS_API_KEY: !Ref UsdaMarsApiKey
+          MARS_API_KEY: !Ref UsdaMarsApiKey
+          FRED_API_KEY: !Ref FredApiKey
+          STRIPE_SK_KEY: !Ref StripeSecretKey
       FunctionUrlConfig:
         AuthType: NONE
 
@@ -170,7 +171,7 @@ Resources:
   # the API already sends real, and stale-while-revalidate means an expired
   # entry is served instantly while the edge refreshes it in the background.
   # Origin Shield funnels every edge location through one regional cache, so the
-  # scheduled warmer below warms the world, not just the nearest POP.
+  # worker can prime a shared regional entry behind the edge locations.
   # ---------------------------------------------------------------------------
   NewsApiCachePolicy:
     Type: AWS::CloudFront::CachePolicy
@@ -192,7 +193,8 @@ Resources:
             Headers:
               - Origin
           QueryStringsConfig:
-            QueryStringBehavior: all
+            QueryStringBehavior: whitelist
+            QueryStrings: [limit, offset, sections]
 
   NewsApiDistribution:
     Type: AWS::CloudFront::Distribution
@@ -214,11 +216,20 @@ Resources:
             OriginShield:
               Enabled: true
               OriginShieldRegion: !Ref AWS::Region
+        CustomErrorResponses:
+          - ErrorCode: 500
+            ErrorCachingMinTTL: 0
+          - ErrorCode: 502
+            ErrorCachingMinTTL: 0
+          - ErrorCode: 503
+            ErrorCachingMinTTL: 0
+          - ErrorCode: 504
+            ErrorCachingMinTTL: 0
         DefaultCacheBehavior:
           TargetOriginId: news-api-function
           ViewerProtocolPolicy: https-only
           AllowedMethods: [GET, HEAD, OPTIONS, PUT, POST, PATCH, DELETE]
-          CachedMethods: [GET, HEAD, OPTIONS]
+          CachedMethods: [GET, HEAD]
           Compress: true
           CachePolicyId: !Ref NewsApiCachePolicy
           # Managed AllViewerExceptHostHeader: forward everything except Host,
@@ -247,32 +258,125 @@ Resources:
             Status: Enabled
             ExpirationInDays: 3
 
-  # Keeps every covered county's lead feed warm, so the first
-  # reader is never the one who pays for the fan-out.
+  FeedRefreshDeadLetterQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: !Sub "${AWS::StackName}-feed-refresh-dlq.fifo"
+      FifoQueue: true
+      SqsManagedSseEnabled: true
+      MessageRetentionPeriod: 1209600
+
+  FeedRefreshQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: !Sub "${AWS::StackName}-feed-refresh.fifo"
+      FifoQueue: true
+      SqsManagedSseEnabled: true
+      VisibilityTimeout: 1080
+      MessageRetentionPeriod: 86400
+      RedrivePolicy:
+        deadLetterTargetArn: !GetAtt FeedRefreshDeadLetterQueue.Arn
+        maxReceiveCount: 5
+
+  FeedRefreshFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: .
+      Handler: dist/src/refresh-worker.handler
+      Timeout: 180
+      MemorySize: 1536
+      Policies:
+        - S3CrudPolicy:
+            BucketName: !Ref FeedCacheBucket
+      Environment:
+        Variables:
+          FEED_CACHE_BUCKET: !Ref FeedCacheBucket
+          FEED_EDGE_URL: !If [EdgeCacheEnabled, !Sub "https://${NewsApiDistribution.DomainName}", ""]
+          FEED_EDGE_ORIGINS: "https://thecountypost.com,https://patriotsinaction.com"
+      Events:
+        RefreshQueue:
+          Type: SQS
+          Properties:
+            Queue: !GetAtt FeedRefreshQueue.Arn
+            BatchSize: 1
+            FunctionResponseTypes: [ReportBatchItemFailures]
+            ScalingConfig:
+              MaximumConcurrency: 3
+
+  FeedRefreshLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub "/aws/lambda/${FeedRefreshFunction}"
+      RetentionInDays: 30
+
   FeedWarmerFunction:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: .
       Handler: dist/src/warmer.handler
-      Timeout: 840
+      Timeout: 60
       MemorySize: 512
+      Policies:
+        - SQSSendMessagePolicy:
+            QueueName: !GetAtt FeedRefreshQueue.QueueName
       Environment:
         Variables:
-          # Warms the edge when it exists, the origin's shared cache otherwise.
-          WARM_BASE_URL: !If
-            - EdgeCacheEnabled
-            - !Sub "https://${NewsApiDistribution.DomainName}"
-            - !GetAtt NewsApiFunctionUrl.FunctionUrl
-          WARM_ORIGIN: "https://thecountypost.com"
+          FEED_REFRESH_QUEUE_URL: !Ref FeedRefreshQueue
           WARM_STATES: "all"
-          WARM_MAX_PER_PASS: "50"
-          WARM_CONCURRENCY: "3"
       Events:
         WarmSchedule:
           Type: Schedule
           Properties:
             Schedule: rate(5 minutes)
-            Description: Refresh the edge cache for every covered county desk.
+            Description: Queue bounded national, state, and county feed refreshes.
+
+  FeedRefreshBacklogAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmDescription: Feed refreshes have waited over 15 minutes; inspect worker capacity and source failures.
+      Namespace: AWS/SQS
+      MetricName: ApproximateAgeOfOldestMessage
+      Dimensions:
+        - Name: QueueName
+          Value: !GetAtt FeedRefreshQueue.QueueName
+      Statistic: Maximum
+      Period: 300
+      EvaluationPeriods: 2
+      Threshold: 900
+      ComparisonOperator: GreaterThanThreshold
+      TreatMissingData: notBreaching
+
+  FeedRefreshDeadLetterAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmDescription: Feed refreshes exhausted retries; inspect the dead-letter queue.
+      Namespace: AWS/SQS
+      MetricName: ApproximateNumberOfMessagesVisible
+      Dimensions:
+        - Name: QueueName
+          Value: !GetAtt FeedRefreshDeadLetterQueue.QueueName
+      Statistic: Maximum
+      Period: 300
+      EvaluationPeriods: 1
+      Threshold: 0
+      ComparisonOperator: GreaterThanThreshold
+      TreatMissingData: notBreaching
+
+  FeedWarmerFailureAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmDescription: Scheduled feed refresh jobs could not be queued.
+      Namespace: AWS/Lambda
+      MetricName: Errors
+      Dimensions:
+        - Name: FunctionName
+          Value: !Ref FeedWarmerFunction
+      Statistic: Sum
+      Period: 300
+      EvaluationPeriods: 1
+      Threshold: 0
+      ComparisonOperator: GreaterThanThreshold
+      TreatMissingData: notBreaching
 
   AdvertisingCreativeBucket:
     Type: AWS::S3::Bucket
@@ -534,6 +638,9 @@ Outputs:
     Condition: EdgeCacheEnabled
     Description: CloudFront domain the site should call; edge-cached with stale-while-revalidate.
     Value: !Sub "https://${NewsApiDistribution.DomainName}"
+  FeedRefreshQueueUrl:
+    Description: FIFO queue for scheduled and reader-triggered feed refreshes.
+    Value: !Ref FeedRefreshQueue
   AtlasDataBucketName:
     Description: Private versioned bucket containing active County Data Atlas snapshots.
     Value: !Ref AtlasDataBucket

@@ -1,115 +1,64 @@
 import { states } from "./geo.js";
 import { countySlug } from "./county-geography.js";
 import { getCountyByState } from "@nickgraffis/us-counties";
+import { topics } from "./feed-builders.js";
+import { enqueueRefresh, type RefreshTarget } from "./feed-refresh.js";
 
-/**
- * Scheduled cache warmer.
- *
- * Runs every few minutes and requests each covered county's lead feed through
- * CloudFront, so the reader who lands on a county desk is never the one paying
- * for the upstream fan-out. The requests carry the site's own Origin header,
- * because Origin is part of the CDN cache key — warming without it would fill
- * an entry the browser never reads.
- *
- * Each refresh performs an origin rebuild. Leave Lambda capacity for readers:
- * this account currently has only ten concurrent executions, including the
- * warmer itself and other services.
- */
-const WARM_TIMEOUT_MS = 90_000;
+function rotate<T>(items: T[], count: number, pass: number): T[] {
+  return Array.from({ length: Math.min(count, items.length) }, (_, index) => items[(pass * count + index) % items.length]);
+}
 
-type WarmerResult = { warmed: number; failed: number; ms: number };
+/** Fifty queued builds per pass. Reader-triggered refreshes cover active desks
+ * between scheduled visits; dormant specialized desks have a slower rotation. */
+let poolKey = "";
+let pools: RefreshTarget[][] = [];
 
-export async function handler(): Promise<WarmerResult> {
-  const baseUrl = (process.env.WARM_BASE_URL || "").replace(/\/$/, "");
-  if (!baseUrl) throw new Error("WARM_BASE_URL is not set.");
-
-  const origin = process.env.WARM_ORIGIN || "https://thecountypost.com";
-  const concurrency = Math.max(1, Math.min(4, Number(process.env.WARM_CONCURRENCY || 3)));
-  const limit = Number(process.env.WARM_FEED_LIMIT || process.env.DEFAULT_LIMIT || 120);
-  const warmStatesEnv = process.env.WARM_STATES || "texas";
-  const stateSlugs =
-    warmStatesEnv.trim() === "all"
-      ? states.map((state) => state.slug)
-      : warmStatesEnv
-          .split(",")
-          .map((slug) => slug.trim())
-          .filter(Boolean);
-
-  const allTargets = stateSlugs.flatMap((stateSlug) => {
-    const state = states.find((entry) => entry.slug === stateSlug);
-    if (!state) return [];
-    return getCountyByState(state.name)
-      .map((county) => `${baseUrl}/v1/feeds/counties/${stateSlug}/${countySlug(county.name, county.FIPS)}/general?limit=${limit}`);
-  });
-  // PIA state landing pages read both desks. Include them in the same bounded
-  // rotation instead of leaving every state's first visitor with a cold build.
-  for (const stateSlug of stateSlugs) {
-    if (!states.some((state) => state.slug === stateSlug)) continue;
-    for (const topic of ["general", "politics"]) {
-      allTargets.push(`${baseUrl}/v1/feeds/states/${stateSlug}/${topic}?limit=${limit}`);
-    }
+export function scheduledTargets(pass: number, stateSlugs = states.map(state => state.slug)): RefreshTarget[] {
+  const key = stateSlugs.join(",");
+  if (key !== poolKey || !pools.length) {
+    pools = targetPools(stateSlugs);
+    poolKey = key;
   }
+  const [national, statePrimary, stateOther, counties, countyOther] = pools;
+  return [
+    ...national.slice(0, 8), ...rotate(national.slice(8), 2, pass),
+    ...rotate(statePrimary, 8, pass), ...rotate(stateOther, 4, pass),
+    ...rotate(counties, 20, pass), ...rotate(countyOther, 8, pass),
+  ];
+}
 
-  // One pass cannot rebuild every county in the country: 3,143 rebuilds would
-  // blow the function timeout and hammer the upstream search feeds. Each pass
-  // therefore warms one shard, chosen by wall-clock so consecutive scheduled
-  // runs walk the whole list in order. Every county still gets rebuilt well
-  // inside the S3 cache's stale window; readers in between are served the
-  // stored copy instantly.
-  const maxPerPass = Math.max(25, Number(process.env.WARM_MAX_PER_PASS || 50));
-  const shardCount = Math.max(1, Math.ceil(allTargets.length / maxPerPass));
-  const intervalMs = Math.max(1, Number(process.env.WARM_INTERVAL_MINUTES || 5)) * 60_000;
-  const shardIndex = Math.floor(Date.now() / intervalMs) % shardCount;
-  const targets = allTargets.filter((_, index) => index % shardCount === shardIndex);
+function targetPools(stateSlugs: string[]): RefreshTarget[][] {
+  const selectedStates = states.filter(state => stateSlugs.includes(state.slug));
+  const national = topics.map(topic => ({ level: "national", topic } as RefreshTarget));
+  const statePrimary = selectedStates.flatMap(state => ["general", "politics"].map(topic =>
+    ({ level: "state", state: state.slug, topic } as RefreshTarget)));
+  const stateOther = selectedStates.flatMap(state => topics.filter(topic => !["general", "politics"].includes(topic)).map(topic =>
+    ({ level: "state", state: state.slug, topic } as RefreshTarget)));
+  const counties = selectedStates.flatMap(state => getCountyByState(state.name).map(county =>
+    ({ level: "county", state: state.slug, county: countySlug(county.name, county.FIPS), topic: "general" } as RefreshTarget)));
+  const countyOther = counties.flatMap(county => topics.filter(topic => topic !== "general").map(topic => ({ ...county, topic })));
+  return [national, statePrimary, stateOther, counties, countyOther];
+}
 
-  const started = Date.now();
-  let warmed = 0;
+export async function handler() {
+  if (!process.env.FEED_REFRESH_QUEUE_URL) throw new Error("FEED_REFRESH_QUEUE_URL is not set");
+  const pass = Math.floor(Date.now() / (5 * 60_000));
+  const warmStates = process.env.WARM_STATES || "all";
+  const targets = scheduledTargets(pass, warmStates === "all" ? undefined : warmStates.split(",").map(value => value.trim()));
+  let queued = 0;
   let failed = 0;
-  const failureStatuses: Record<string, number> = {};
-  const queue = [...targets];
-
-  await Promise.all(
-    Array.from({ length: concurrency }, async () => {
-      for (;;) {
-        const url = queue.shift();
-        if (!url) return;
-        const controller = new AbortController();
-        const timeout = setTimeout(() => controller.abort(), WARM_TIMEOUT_MS);
-        try {
-          for (let attempt = 0; ; attempt++) {
-            const response = await fetch(url, {
-              signal: controller.signal,
-              headers: {
-                origin,
-                "user-agent": "TheCountyPost cache warmer",
-                "x-warm-refresh": "1",
-              },
-            });
-            // Drain before retrying so throttled requests do not consume the
-            // whole shard immediately or hold connections while backing off.
-            await response.arrayBuffer();
-            if ([429, 502, 503, 504].includes(response.status) && attempt < 3) {
-              await new Promise((resolve) => setTimeout(resolve, 2_000 * (attempt + 1)));
-              continue;
-            }
-            if (response.ok) warmed += 1;
-            else {
-              failed += 1;
-              failureStatuses[response.status] = (failureStatuses[response.status] || 0) + 1;
-            }
-            break;
-          }
-        } catch {
-          failed += 1;
-          failureStatuses.network = (failureStatuses.network || 0) + 1;
-        } finally {
-          clearTimeout(timeout);
-        }
-      }
-    }),
-  );
-
-  const result = { warmed, failed, ms: Date.now() - started };
-  console.info(JSON.stringify({ event: "warmer.pass", targets: targets.length, totalTargets: allTargets.length, shard: `${shardIndex + 1}/${shardCount}`, failureStatuses, ...result }));
+  const started = Date.now();
+  const pending = [...targets];
+  await Promise.all(Array.from({ length: 3 }, async () => {
+    for (;;) {
+      const target = pending.shift();
+      if (!target) return;
+      try { await enqueueRefresh(target); queued++; }
+      catch (error) { failed++; console.error(JSON.stringify({ event: "warmer.enqueue_failed", ...target, error: String(error) })); }
+    }
+  }));
+  const result = { queued, failed, targets: targets.length, ms: Date.now() - started };
+  console.info(JSON.stringify({ event: "warmer.pass", ...result }));
+  if (failed) throw new Error(`${failed} feed refresh jobs could not be queued`);
   return result;
 }

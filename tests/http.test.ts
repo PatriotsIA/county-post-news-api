@@ -1299,6 +1299,12 @@ describe("handleRequest", () => {
 });
 
 describe("county sources directory endpoint", () => {
+  it("never caches failures or health checks at the edge", async () => {
+    for (const path of ["/health", "/v1/feeds/counties/texas/not-a-county/general"]) {
+      const response = await handleRequest({ method: "GET", path, query: new URLSearchParams() });
+      expect(response.headers["cache-control"]).toBe("no-store");
+    }
+  });
   it("lists the reviewed outlets for a county with a populated registry", async () => {
     const response = await handleRequest({
       method: "GET",

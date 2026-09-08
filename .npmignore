@@ -1,0 +1,9 @@
+.env
+.env.*
+coverage/
+tests/
+scripts/
+.aws-sam/
+.git/
+.claude/
+docs/

@@ -68,6 +68,9 @@ export type FeedResponse = {
     offset?: number;
     totalAvailable?: number;
     hasMore?: boolean;
+    /** Age of underlying provider data, independent of CDN response age. */
+    ageSeconds?: number;
+    stale?: boolean;
   };
 };
 

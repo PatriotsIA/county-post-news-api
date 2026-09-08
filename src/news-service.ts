@@ -1,6 +1,7 @@
 import { cached, cachedShared } from "./cache.js";
 import { enrichArticleImages } from "./article-images.js";
 import { config } from "./config.js";
+import { enqueueRefresh, refreshTarget } from "./feed-refresh.js";
 import { buildCountyFallbackPlan, buildCountyMarketPlan, buildFeedPlan, topics } from "./feed-builders.js";
 import { filterCountyFallbackItems, filterItems, filterMarketItems, isAmbiguousPlaceName } from "./filter.js";
 import { fetchGdeltItems } from "./gdelt.js";
@@ -22,7 +23,7 @@ export async function getFeed(
   const cacheKey = `feed:${scopeKey(scope)}:${topic}`;
   const feed = await cachedShared(cacheKey, config.cacheTtlSeconds, async () => {
     const plan = buildFeedPlan(scope, topic);
-    const items = await loadPlanItems(plan);
+    const items = await loadPlanItems(plan, true);
     const filtered = newest(dedupeItems(filterItems(recentItems(items), topic, scope, plan.directSources)), config.maxLimit);
     const fetchedAt = new Date().toISOString();
 
@@ -42,7 +43,7 @@ export async function getFeed(
     // image deadline, adding several seconds before the same stories appeared.
     const enriched = dedupeItems(await enrichArticleImages(covered.items));
     return { ...covered, items: enriched, meta: { ...covered.meta, count: enriched.length } };
-  }, { forceFresh });
+  }, { forceFresh, onStale: () => enqueueRefresh(refreshTarget(scope, topic)) });
   const feedItems = topic === "opinion" ? dedupeItems([featuredCountyPostOpinion, ...feed.items]) : feed.items;
   // Balancing and ordering apply to the whole result, then the requested
   // window is taken from it, so paging through a feed keeps one stable order
@@ -71,6 +72,8 @@ export async function getFeed(
       // What the client needs to know whether another page exists.
       totalAvailable: ordered.length,
       hasMore: start + sliced.length < ordered.length,
+      ageSeconds: Math.max(0, Math.floor((Date.now() - Date.parse(feed.meta.fetchedAt)) / 1000)),
+      stale: Date.now() - Date.parse(feed.meta.fetchedAt) >= config.cacheTtlSeconds * 1000,
       sourcesUsed: publisherBalanceApplied
         ? Array.from(new Set([...sourcesUsed, "county:publisher-balanced"]))
         : sourcesUsed,
@@ -234,7 +237,7 @@ function otherSourcesTarget() {
   return Math.max(1, Math.floor(config.countyOtherSourcesTarget));
 }
 
-async function loadPlanItems(plan: ReturnType<typeof buildFeedPlan>) {
+async function loadPlanItems(plan: ReturnType<typeof buildFeedPlan>, requireSource = false) {
   const [rssResults, directResults, gdeltResults] = await Promise.all([
     settleLimited(plan.rssUrls, (url) => fetchRssItems(url)),
     settleLimited(plan.directSources, async (source) => {
@@ -247,6 +250,12 @@ async function loadPlanItems(plan: ReturnType<typeof buildFeedPlan>) {
     }),
     settleLimited(plan.articleQueries, (query) => fetchGdeltItems(query)),
   ]);
+  // An upstream outage must not replace a useful cached feed with an empty one.
+  // A successfully fetched but genuinely empty source remains a valid result.
+  const rssSources = [...rssResults, ...directResults];
+  if (requireSource && rssSources.length && rssSources.every(result => result.status === "rejected") && !settledItems(gdeltResults).length) {
+    throw new Error("All news sources failed; retaining the previous feed");
+  }
   return [...settledItems(rssResults), ...settledItems(directResults), ...settledItems(gdeltResults)];
 }
 
@@ -287,7 +296,7 @@ export async function getPage(scope: FeedScope, sectionNames: string[], limit: n
     sections,
     meta: {
       count,
-      fetchedAt: new Date().toISOString(),
+      fetchedAt: entries.length ? entries.map(([, feed]) => feed.meta.fetchedAt).sort()[0] : new Date().toISOString(),
       cacheTtlSeconds: config.cacheTtlSeconds,
     },
   };

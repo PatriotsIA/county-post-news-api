@@ -30,11 +30,12 @@
   "license": "UNLICENSED",
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1107.0",
+    "@aws-sdk/client-sqs": "^3.1128.0",
     "@aws-sdk/s3-presigned-post": "^3.1107.0",
     "@nickgraffis/us-counties": "^0.0.2",
     "@turf/centroid": "^7.3.5",
     "dotenv": "^17.4.2",
-    "fast-xml-parser": "^5.9.3",
+    "fast-xml-parser": "^5.11.1",
     "fflate": "^0.8.3",
     "stripe": "^22.4.0",
     "topojson-client": "^3.1.0",

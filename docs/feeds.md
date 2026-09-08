@@ -143,25 +143,42 @@ half a second. The design keeps those on different actors:
   a day — from any Lambda instance. The S3 write is awaited on purpose: work
   started after a Lambda response is sent freezes with the sandbox, so a
   fire-and-forget put is lost.
-- **Only the warmer rebuilds.** It runs every five minutes, marking its
-  requests with `x-warm-refresh: 1` — the sole trigger for a forced rebuild —
-  and sending the site's own `Origin` header, which matters once a CDN with
-  Origin in its cache key sits in front. With `WARM_STATES=all` it covers all
-  3,143 counties plus all 51 state/DC general and politics feeds in **shard rotation** (`WARM_MAX_PER_PASS`, default 50 per
-  pass): one pass cannot rebuild the whole country without blowing the
-  function timeout and the upstream search feeds' rate limits, so each pass
-  walks one shard and every county refreshes on a cycle well inside the S3
-  stale window. Three workers leave capacity for readers under the PIA
-  account's ten-execution Lambda limit. Ten workers plus the warmer itself
-  previously caused 141–142 failures per 150-target pass. Transient HTTP
-  failures now retry up to three times with backoff; terminal status counts
-  appear in `warmer.pass` logs. A county nobody ever visited builds inline
-  once, then joins the rotation. The full 3,245-target cycle is about 325 minutes.
-- **CloudFront is written but parked** behind the `EnableEdgeCache` template
-  parameter (default `"false"`): the AWS account awaits CloudFront verification
-  by AWS Support. When that clears, flipping the parameter adds the edge on top
-  and re-points the warmer automatically. The deploy role already carries the
-  CloudFront permissions (`CloudFrontEdgeCacheDeploy`).
+- **Stale reads enqueue a refresh.** All national, state, and county topics
+  use the same shared cache. After five minutes, a reader receives the stored
+  feed while an awaited SQS send requests rebuilding. FIFO deduplication and
+  per-feed message groups suppress duplicate work. The worker calls the feed
+  service directly, so CloudFront cannot swallow a refresh request. The old
+  public `x-warm-refresh` bypass is removed.
+- **The schedule queues at most 50 jobs every five minutes.** Eight core
+  national topics are visited every pass; ten specialist national topics rotate
+  two at a time (25-minute cycle). State general/politics rotate eight per pass
+  (65 minutes); other state topics four per pass (17 hours). County general
+  rotates twenty per pass (about 13 hours 10 minutes), and specialist county
+  topics eight per pass (about 56 hours). These are baseline visits to dormant
+  desks, not freshness guarantees: active desks request their own refresh after
+  five minutes. Failed enqueue passes retry through EventBridge.
+- **Three workers leave reader capacity.** SQS invokes the refresh Lambda with
+  batch size one and maximum concurrency three under the PIA ten-execution
+  regional quota. Failed work retries and eventually enters a dead-letter queue.
+  CloudWatch alarms track a backlog over 15 minutes, dead letters, and schedule
+  failures. Queue and worker roles are scoped to their required resources;
+  payment and economic API secrets are not inherited by refresh functions.
+- **CloudFront remains controlled by `EnableEdgeCache`.** It caches `limit`,
+  `offset`, `sections`, and browser Origin variants, with gzip/Brotli and Origin
+  Shield in the API region. Workers prime actual County Post page URLs and
+  first-feed limits, plus PIA's 40-item feeds. A prime may hit an existing edge
+  response; the direct worker rebuild has already updated S3. Subsequent edge
+  revalidation adopts that update. Health, writes, and errors are not cached.
+  CloudFront account verification previously blocked creation; see the current
+  deployment record for the result of the September 8 rollout.
+
+Feed `meta.fetchedAt` retains the provider-data timestamp; `ageSeconds` and
+`stale` describe its age when the API generated the response. At the edge,
+calculate current data age from `fetchedAt` rather than treating `Age` as data
+freshness. Page timestamps use the oldest included feed. A complete provider
+failure leaves the old shared feed intact instead of replacing it with an
+empty result. A successfully fetched empty source can still produce an empty
+feed: the cache does not invent articles or create an archive.
 
 Supporting behavior: thumbnail enrichment runs once after coverage selection
 under a 750 ms budget (`imageEnrichmentBudgetMs`), retaining completed images

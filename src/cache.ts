@@ -41,15 +41,12 @@ function sharedBucket() {
 type SharedEntry<T> = { storedAt: number; value: T };
 
 export type SharedCacheOptions = {
-  /**
-   * Rebuild even when a cached copy exists. The warmer sets this: readers are
-   * always served whatever is stored, and the scheduled pass is what keeps it
-   * current — the same division of labour a CDN's stale-while-revalidate has,
-   * without needing anything to run after a Lambda response is sent.
-   */
+  /** Worker refresh: reuse only fresh shared data; rebuild stale or absent data. */
   forceFresh?: boolean;
   /** How old a stored copy may be and still be served. */
   staleTtlSeconds?: number;
+  /** Enqueue refresh while serving stale data. Queue acceptance is awaited. */
+  onStale?: () => Promise<unknown>;
 };
 
 const DEFAULT_STALE_TTL_SECONDS = 24 * 60 * 60;
@@ -75,9 +72,9 @@ export async function cachedShared<T>(
   const now = Date.now();
   const staleTtlMs = (options.staleTtlSeconds ?? DEFAULT_STALE_TTL_SECONDS) * 1000;
 
-  if (!options.forceFresh) {
+  {
     const hit = cache.get(key);
-    if (hit && hit.expiresAt > now) return hit.value as Promise<T>;
+    if (!options.forceFresh && hit && hit.expiresAt > now) return hit.value as Promise<T>;
 
     const bucket = sharedBucket();
     if (bucket) {
@@ -85,7 +82,11 @@ export async function cachedShared<T>(
         const object = await s3Cache().send(new GetObjectCommand({ Bucket: bucket, Key: sharedKey(key) }));
         const entry = JSON.parse((await object.Body?.transformToString()) || "") as SharedEntry<T>;
         const age = now - entry.storedAt;
-        if (Number.isFinite(age) && age >= 0 && age < staleTtlMs) {
+        if (Number.isFinite(age) && age >= 0 && age < (options.forceFresh ? ttlSeconds * 1000 : staleTtlMs)) {
+          if (age >= ttlSeconds * 1000 && options.onStale) {
+            try { await options.onStale(); }
+            catch (error) { console.warn(JSON.stringify({ event: "feed.refresh_enqueue_failed", key, error: String(error) })); }
+          }
           // Hold it in memory briefly — long enough to spare S3 a read per
           // request, short enough that the warmer's next refresh is picked up.
           const remainingFreshMs = ttlSeconds * 1000 - age;
@@ -120,8 +121,10 @@ export async function cachedShared<T>(
           ContentType: "application/json",
         }),
       );
-    } catch {
-      // A failed write costs the next reader a rebuild, nothing more.
+    } catch (error) {
+      console.error(JSON.stringify({ event: "feed.cache_write_failed", key, error: String(error) }));
+      // Queued refreshes retry; readers still receive their freshly built feed.
+      if (options.forceFresh) { cache.delete(key); throw error; }
     }
   }
   return resolved;

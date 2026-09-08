@@ -1,52 +1,42 @@
 import { afterEach, expect, it, vi } from "vitest";
-import { handler } from "../src/warmer.js";
+import { handler, scheduledTargets } from "../src/warmer.js";
+import { targetPath } from "../src/feed-refresh.js";
 
-afterEach(() => { vi.restoreAllMocks(); vi.unstubAllEnvs(); vi.unstubAllGlobals(); vi.useRealTimers(); });
+vi.mock("../src/feed-refresh.js", async (original) => ({ ...await original<typeof import("../src/feed-refresh.js")>(), enqueueRefresh: vi.fn(async () => true) }));
+import { enqueueRefresh } from "../src/feed-refresh.js";
+afterEach(() => { vi.restoreAllMocks(); vi.unstubAllEnvs(); vi.clearAllMocks(); });
 
-it("rotates through every county and both state desks with bounded passes", async () => {
-  vi.useFakeTimers();
-  vi.stubEnv("WARM_BASE_URL", "https://news.example");
-  vi.stubEnv("WARM_STATES", "all");
-  vi.stubEnv("WARM_MAX_PER_PASS", "50");
-  vi.stubEnv("WARM_CONCURRENCY", "3");
-  vi.spyOn(console, "info").mockImplementation(() => {});
+it("rotates every supported geography and topic within a fifty-job budget", () => {
   const seen = new Set<string>();
-  let active = 0;
-  let peak = 0;
-  vi.stubGlobal("fetch", vi.fn(async (url: string, options: RequestInit) => {
-    active++;
-    peak = Math.max(peak, active);
-    expect(seen.has(url)).toBe(false);
-    seen.add(url);
-    expect(options.headers).toMatchObject({ "x-warm-refresh": "1" });
-    await Promise.resolve();
-    active--;
-    return new Response("{}");
-  }));
-  for (let shard = 0; shard < 65; shard++) {
-    vi.setSystemTime(shard * 5 * 60_000);
-    const result = await handler();
-    expect(result.failed).toBe(0);
-    expect(result.warmed).toBeLessThanOrEqual(50);
+  // Slowest tier: 3,143 counties * 17 specialist topics / 8 per pass.
+  for (let pass = 0; pass < Math.ceil(3143 * 17 / 8); pass++) {
+    const targets = scheduledTargets(pass);
+    expect(targets.length).toBe(50);
+    const paths = targets.map(targetPath);
+    expect(new Set(paths).size).toBe(paths.length);
+    for (const path of paths) seen.add(path);
   }
-  expect(seen.size).toBe(3245);
-  expect([...seen].filter(url => url.includes("/states/")).length).toBe(102);
-  expect(peak).toBeLessThanOrEqual(3);
+  expect(seen.size).toBe((3143 + 51 + 1) * 18);
+  expect(seen.has("/v1/feeds/counties/virginia/richmond-city/general")).toBe(true);
+  expect(seen.has("/v1/feeds/counties/louisiana/west-carroll/weather")).toBe(true);
 });
 
-it("backs off throttled requests before continuing the shard", async () => {
-  vi.useFakeTimers();
-  vi.stubEnv("WARM_BASE_URL", "https://news.example");
-  vi.stubEnv("WARM_STATES", "district-of-columbia");
-  vi.stubEnv("WARM_CONCURRENCY", "1");
+it("refreshes core national desks each pass and every national topic within five passes", () => {
+  const seen = new Set<string>();
+  for (let pass = 0; pass < 5; pass++) {
+    const national = scheduledTargets(pass).filter(target => target.level === "national");
+    expect(national.some(target => target.topic === "general")).toBe(true);
+    expect(national.some(target => target.topic === "politics")).toBe(true);
+    national.forEach(target => seen.add(target.topic));
+  }
+  expect(seen.size).toBe(18);
+});
+
+it("queues bounded work and reports enqueue failures for EventBridge retry", async () => {
+  vi.stubEnv("FEED_REFRESH_QUEUE_URL", "https://sqs.example/news.fifo");
   vi.spyOn(console, "info").mockImplementation(() => {});
-  const fetcher = vi.fn(async () => new Response("{}"));
-  fetcher.mockResolvedValueOnce(new Response("Too many requests", { status: 429 }));
-  vi.stubGlobal("fetch", fetcher);
-  const pending = handler();
-  await vi.runAllTimersAsync();
-  const result = await pending;
-  expect(result).toMatchObject({ warmed: 3, failed: 0 });
-  expect(fetcher).toHaveBeenCalledTimes(4);
-  expect(result.ms).toBeGreaterThanOrEqual(2_000);
+  vi.spyOn(console, "error").mockImplementation(() => {});
+  expect(await handler()).toMatchObject({ queued: 50, failed: 0 });
+  vi.mocked(enqueueRefresh).mockRejectedValueOnce(new Error("queue unavailable"));
+  await expect(handler()).rejects.toThrow("1 feed refresh jobs");
 });

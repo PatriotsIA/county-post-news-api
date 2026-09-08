@@ -339,3 +339,34 @@ Fix:
 
 - Open the `county-news-api` application stack, not the `CodePipelineStarterTemplate...` stack.
 - Check the `Outputs` tab for `NewsApiUrl`.
+
+## Feed cache and edge deployment (September 2026)
+
+Use `aws --profile pia` in account `426771918029`, region `us-east-2`.
+The production pipeline is `county-news-api-pipeline`, reading
+`PatriotsIA/county-post-news-api` branch `main`.
+
+The template adds a FIFO refresh queue, FIFO dead-letter queue, three-concurrent
+SQS worker, and queue/schedule alarms. The existing five-minute warmer now
+queues up to fifty jobs, and stale API reads queue on-demand jobs for all scopes
+and topics. The queue visibility timeout is six times the worker timeout.
+Allow the CloudFormation deploy role to manage only this stack's refresh queues.
+
+Set `EnableEdgeCache=true` in the pipeline's CloudFormation parameter overrides,
+preserving every existing override and secret. Deploy the committed, tested SAM
+package through CodeBuild; validate with `sam validate --lint`. If AWS still
+rejects account verification, restore that parameter to false and deploy the
+queue/cache improvements while the verification is resolved.
+
+After stack success, verify real news responses, browser Origin CORS, pagination,
+cache headers, queue drain, and `feed.refresh` success logs. Then set County Post
+Amplify app `d2z6lt4e5q50in`'s `VITE_NEWS_API_URL` to `NewsApiEdgeUrl`, preserving
+all other app/branch variables, and rebuild `main`. Weather, atlas, sources, and
+checkout share this base URL; preserve their distinct caching and POST behavior.
+The separate PIA frontend can continue to call the Function URL and still gets
+queued refreshes; migrating its build-time URL is an independent rollout.
+
+Check `FeedRefreshBacklogAlarm`, `FeedRefreshDeadLetterAlarm`, and
+`FeedWarmerFailureAlarm`. No notification recipient is configured automatically.
+Rollback the frontend URL to `NewsApiUrl` and rebuild before disabling the edge
+in a later stack deployment. Retain the shared cache and queue pipeline.

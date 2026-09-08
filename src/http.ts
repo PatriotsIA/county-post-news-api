@@ -48,7 +48,7 @@ export async function handleRequest(request: ApiRequest): Promise<ApiResponse> {
     } else if (request.method !== "GET") {
       response = json(405, { error: "Method not allowed" });
     } else if (path === "/health") {
-      response = json(200, { ok: true, service: "county-post-news-api", uptimeMs: process.uptime() * 1000 });
+      response = json(200, { ok: true, service: "county-post-news-api", uptimeMs: process.uptime() * 1000 }, "no-store");
     } else if (path === "/v1/states") {
       response = json(200, { states });
     } else {
@@ -83,9 +83,9 @@ export async function handleRequest(request: ApiRequest): Promise<ApiResponse> {
           "public, max-age=300, s-maxage=3600, stale-while-revalidate=86400",
         );
       } else if (parts[1] === "feeds") {
-        response = await handleFeed(parts.slice(2), request.query, request);
+        response = await handleFeed(parts.slice(2), request.query);
       } else if (parts[1] === "pages") {
-        response = await handlePage(parts.slice(2), request.query, request);
+        response = await handlePage(parts.slice(2), request.query);
       } else if (parts[1] === "markets" && parts[2] === "metals" && parts.length === 3) {
         response = json(200, await getMetalsTicker());
       } else if (parts[1] === "markets" && parts[2] === "cattle" && parts.length === 3) {
@@ -115,7 +115,7 @@ export async function handleRequest(request: ApiRequest): Promise<ApiResponse> {
   return corsResponse;
 }
 
-async function handleFeed(parts: string[], query: URLSearchParams, request: ApiRequest) {
+async function handleFeed(parts: string[], query: URLSearchParams) {
   const { scope, topic } = parseFeedScope(parts);
   return json(
     200,
@@ -124,15 +124,14 @@ async function handleFeed(parts: string[], query: URLSearchParams, request: ApiR
       topic,
       numberParam(query, "limit", config.defaultLimit),
       numberParam(query, "offset", 0),
-      wantsFreshRebuild(request),
     ),
   );
 }
 
-async function handlePage(parts: string[], query: URLSearchParams, request: ApiRequest) {
+async function handlePage(parts: string[], query: URLSearchParams) {
   const scope = parsePageScope(parts);
   const sections = csvParam(query, "sections");
-  return json(200, await getPage(scope, sections, numberParam(query, "limit", config.defaultLimit), wantsFreshRebuild(request)));
+  return json(200, await getPage(scope, sections, numberParam(query, "limit", config.defaultLimit)));
 }
 
 function parseFeedScope(parts: string[]): { scope: FeedScope; topic: Topic } {
@@ -201,7 +200,7 @@ function empty(statusCode: number): ApiResponse {
 function json(statusCode: number, body: unknown, cacheControl?: string): ApiResponse {
   return {
     statusCode,
-    headers: responseHeaders(cacheControl),
+    headers: responseHeaders(statusCode >= 400 ? "no-store" : cacheControl),
     body: JSON.stringify(body),
   };
 }
@@ -304,13 +303,4 @@ class ApiError extends Error {
   ) {
     super(message);
   }
-}
-
-/**
- * True for the scheduled warmer's requests. Readers are always served whatever
- * is cached, however stale within its window; the warmer is what rebuilds, so
- * nobody waits on the upstream fan-out who did not explicitly ask to.
- */
-function wantsFreshRebuild(request: ApiRequest) {
-  return (request.headers?.["x-warm-refresh"] ?? request.headers?.["X-Warm-Refresh"]) === "1";
 }
