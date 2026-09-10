@@ -1,0 +1,25 @@
+{
+  "date": "2026-09-10",
+  "counties": 3143,
+  "countiesWithReviewedBefore": 602,
+  "countiesWithReviewedAfter": 3143,
+  "countiesWithIncrease": 3143,
+  "countiesWithNewCountyOrRegional": 138,
+  "countiesWithOnlyStatewide": 2462,
+  "directoryListingsBefore": 808,
+  "directoryListingsAfter": 4175,
+  "distinctPublisherWebsitesBefore": 722,
+  "distinctPublisherWebsitesAfter": 863,
+  "approvedProfiles": 144,
+  "approvedLocalRegionalProfiles": 92,
+  "approvedStatewideProfiles": 52,
+  "approvedProfileFeeds": 135,
+  "candidates": {
+    "countiesSearched": 3143,
+    "countiesWithObservations": 2293,
+    "countiesWithoutObservations": 850,
+    "distinctDomains": 1391,
+    "countyPublisherPairs": 5900,
+    "approvedAutomatically": 0
+  }
+}

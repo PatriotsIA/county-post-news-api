@@ -1,0 +1,48 @@
+{
+  "checkedAt": "2026-09-10T21:38:16.967Z",
+  "apiDirectories": 3143,
+  "allIncreased": true,
+  "httpErrors": 0,
+  "directoryRequestMedianMs": 2,
+  "directoryRequestP95Ms": 3,
+  "browserSamples": [
+    {
+      "route": "arkansas/polk",
+      "sources": 3,
+      "mobileOverflow": false
+    },
+    {
+      "route": "florida/polk",
+      "sources": 2,
+      "mobileOverflow": false
+    },
+    {
+      "route": "texas/loving",
+      "sources": 1,
+      "mobileOverflow": false
+    },
+    {
+      "route": "wyoming/campbell",
+      "sources": 2,
+      "mobileOverflow": false
+    },
+    {
+      "route": "new-york/ulster",
+      "sources": 2,
+      "mobileOverflow": false
+    },
+    {
+      "route": "district-of-columbia/district-of-columbia",
+      "sources": 4,
+      "mobileOverflow": false
+    },
+    {
+      "route": "hawaii/honolulu",
+      "sources": 3,
+      "mobileOverflow": false
+    }
+  ],
+  "pageErrors": [],
+  "thirdPartyWidgets": "excluded; only localhost requests allowed",
+  "localOnly": true
+}

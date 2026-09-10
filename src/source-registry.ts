@@ -1,4 +1,5 @@
 import { discoveredCountyNativeSources, discoveredRegionalSources } from "./county-discovered-sources.js";
+import { reviewedSupplementalSources } from "./reviewed-supplemental-sources.js";
 import type { CountySite, FeedScope, NewsFeedItem, StateSite, Topic } from "./types.js";
 
 export type DirectSource = {
@@ -10,6 +11,7 @@ export type DirectSource = {
   states?: string[];
   markets?: string[];
   counties?: string[];
+  coverage?: "local" | "regional" | "statewide";
   maxAgeDays?: number;
   maxItems?: number;
   trustedForMarketTier?: boolean;
@@ -40,6 +42,10 @@ export type CountyNativeSource = {
   aliases?: string[];
   topics?: Topic[];
   counties: string[];
+  /** Explicit statewide service, separate from county-native provenance. */
+  states?: string[];
+  coverage?: "local" | "regional" | "statewide";
+  coverageUrl?: string;
   /**
    * Reviewed is not the same as trusted. A reviewed outlet is listed on its
    * counties' Local Sources pages and its feeds are fetched — but only a
@@ -5172,20 +5178,23 @@ const directSources: DirectSource[] = [
 ];
 
 export function getDirectSources(scope: FeedScope, topic: Topic, marketCities: string[] = []) {
-  return allDirectSources().filter(
+  const sources = allDirectSources().filter(
     (source) => sourceMatchesTopic(source, topic) && sourceMatchesScope(source, scope, marketCities),
   );
+  // A reviewed feed may already be present in raw discovery. Fetch it once,
+  // retaining the reviewed publisher name and the explicit trust decision.
+  return [...new Map(sources.map((source) => [source.url, source])).values()];
 }
 
-/** Reviewed outlets first, then the ones discovery observed. */
+/** Directory approval and county-tier trust remain independent. */
 function allCountyNativeSources(): CountyNativeSource[] {
-  return [...countyNativeSources, ...discoveredCountyNativeSources];
+  return [...countyNativeSources, ...discoveredCountyNativeSources, ...reviewedSupplementalSources];
 }
 
 export function getCountyNativeSources(county: CountySite, topic?: Topic) {
   const countyKey = countySourceKey(county);
   return allCountyNativeSources().filter(
-    (source) => source.counties.includes(countyKey) && (!topic || !source.topics?.length || source.topics.includes(topic)),
+    (source) => (source.counties.includes(countyKey) || source.states?.includes(county.state.slug)) && (!topic || !source.topics?.length || source.topics.includes(topic)),
   );
 }
 
@@ -5198,10 +5207,25 @@ export function getCountyNativeSources(county: CountySite, topic?: Topic) {
  * were trusted here.
  */
 export function getReviewedCountySourceProfiles(county: CountySite) {
-  const countyKey = countySourceKey(county);
-  return countyNativeSources
-    .filter((source) => source.counties.includes(countyKey))
-    .map(({ name, websiteUrl, outletTypes, aliases }) => ({ name, websiteUrl, outletTypes, aliases }));
+  const profiles = new Map<string, {
+    name: string; websiteUrl: string; outletTypes: CountyNativeSource["outletTypes"];
+    aliases?: string[]; coverage?: CountyNativeSource["coverage"]; coverageUrl?: string;
+  }>();
+  for (const { name, websiteUrl, outletTypes, aliases, coverage, coverageUrl } of getCountyNativeSources(county)) {
+    // Retain paths: different local editions may share a publisher's domain.
+    const url = new URL(websiteUrl);
+    const key = `${hostname(websiteUrl)}${url.pathname.replace(/\/+$/, "")}`;
+    const existing = profiles.get(key);
+    profiles.set(key, {
+      name: existing?.name || name, websiteUrl: existing?.websiteUrl || websiteUrl,
+      outletTypes: [...new Set([...(existing?.outletTypes || []), ...outletTypes])],
+      aliases: existing?.aliases || aliases,
+      ...(coverage || existing?.coverage ? { coverage: coverage || existing?.coverage } : {}),
+      ...(coverageUrl || existing?.coverageUrl ? { coverageUrl: coverageUrl || existing?.coverageUrl } : {}),
+    });
+  }
+  const order = { local: 0, regional: 1, statewide: 2 };
+  return [...profiles.values()].sort((a, b) => (order[a.coverage || "local"] - order[b.coverage || "local"]) || a.name.localeCompare(b.name));
 }
 
 export function getMarketSourcesForCounty(county: CountySite, topic: Topic, marketCities: string[]) {
@@ -5280,6 +5304,8 @@ function allDirectSources(): DirectSource[] {
         itemSource: source.name,
         topics: feed.topics || source.topics,
         counties: source.counties,
+        states: source.states,
+        coverage: source.coverage,
         maxAgeDays: feed.maxAgeDays,
         maxItems: feed.maxItems,
         // Reviewed-but-untrusted outlets must stay untrusted when their feeds
@@ -5301,6 +5327,7 @@ function sourceMatchesScope(source: DirectSource, scope: FeedScope, marketCities
   if (scope.level === "county") {
     const countyKey = countySourceKey(scope.county);
     if (source.counties?.includes(countyKey)) return true;
+    if (source.coverage === "statewide" && source.states?.includes(scope.county.state.slug)) return true;
     const markets = marketCities.map((city) => city.toLowerCase());
     return Boolean(source.markets?.some((market) => markets.includes(market)));
   }

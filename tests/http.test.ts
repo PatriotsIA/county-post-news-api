@@ -647,9 +647,11 @@ describe("handleRequest", () => {
     vi.stubGlobal(
       "fetch",
       vi.fn(async (url: URL | string) => new Response(
-        String(url).includes("mypulsenews.com")
-          ? `<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"><channel><title>Empty</title></channel></rss>`
-          : relatedStoryRss,
+        // Only the search providers carry this fixture. Other direct feeds
+        // must not relabel these same records as an unrelated publisher.
+        /news\.google\.com|bing\.com/.test(new URL(String(url)).hostname)
+          ? relatedStoryRss
+          : `<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"><channel><title>Empty</title></channel></rss>`,
         { status: 200, headers: { "content-type": "application/rss+xml" } },
       )),
     );
@@ -1325,14 +1327,16 @@ describe("county sources directory endpoint", () => {
     }
   });
 
-  it("returns an empty list, not an error, for a county with no reviewed outlets", async () => {
+  it("labels the statewide supplement for a county with no county-based reviewed outlets", async () => {
     const response = await handleRequest({
       method: "GET",
       path: "/v1/sources/counties/texas/loving",
       query: new URLSearchParams(),
     });
     expect(response.statusCode).toBe(200);
-    expect(JSON.parse(response.body).sources).toEqual([]);
+    expect(JSON.parse(response.body).sources).toEqual([
+      expect.objectContaining({ name: "The Texas Tribune", coverage: "statewide", outletTypes: ["digital"] }),
+    ]);
   });
 
   it("404s an unknown county", async () => {

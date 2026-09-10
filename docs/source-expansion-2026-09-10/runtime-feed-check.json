@@ -1,0 +1,1231 @@
+[
+  {
+    "name": "Dubois County Free Press",
+    "url": "https://duboiscountyfreepress.com/feed/",
+    "status": "ok",
+    "items": 10,
+    "recentItems": 10,
+    "validDates": 10,
+    "ms": 340
+  },
+  {
+    "name": "County 17",
+    "url": "https://county17.com/feed/",
+    "status": "ok",
+    "items": 51,
+    "recentItems": 51,
+    "validDates": 51,
+    "ms": 518
+  },
+  {
+    "name": "Henrico Citizen",
+    "url": "https://www.henricocitizen.com/latest/rss/",
+    "status": "ok",
+    "items": 15,
+    "recentItems": 15,
+    "validDates": 15,
+    "ms": 384
+  },
+  {
+    "name": "Gibson County News / Milan Mirror-Exchange",
+    "url": "https://www.milanmirrorexchange.com/feed/",
+    "status": "ok",
+    "items": 10,
+    "recentItems": 10,
+    "validDates": 10,
+    "ms": 802
+  },
+  {
+    "name": "Iredell Free News",
+    "url": "https://www.iredellfreenews.com/feed/",
+    "status": "ok",
+    "items": 20,
+    "recentItems": 20,
+    "validDates": 20,
+    "ms": 350
+  },
+  {
+    "name": "Lake County News",
+    "url": "https://lakeconews.com/en/?format=feed&type=rss",
+    "status": "ok",
+    "items": 9,
+    "recentItems": 9,
+    "validDates": 9,
+    "ms": 304
+  },
+  {
+    "name": "Los Alamos Reporter",
+    "url": "https://losalamosreporter.com/feed/",
+    "status": "ok",
+    "items": 50,
+    "recentItems": 50,
+    "validDates": 50,
+    "ms": 357
+  },
+  {
+    "name": "Observer Today",
+    "url": "https://www.observertoday.com/feed/",
+    "status": "ok",
+    "items": 10,
+    "recentItems": 10,
+    "validDates": 10,
+    "ms": 363
+  },
+  {
+    "name": "Fergus Falls Journal",
+    "url": "https://www.fergusfallsjournal.com/index.rss",
+    "status": "ok",
+    "items": 59,
+    "recentItems": 59,
+    "validDates": 59,
+    "ms": 1499
+  },
+  {
+    "name": "Pipe Dream",
+    "url": "https://www.bupipedream.com/feed/",
+    "status": "ok",
+    "items": 30,
+    "recentItems": 30,
+    "validDates": 30,
+    "ms": 454
+  },
+  {
+    "name": "South Whidbey Record",
+    "url": "https://www.southwhidbeyrecord.com/feed/",
+    "status": "ok",
+    "items": 10,
+    "recentItems": 10,
+    "validDates": 10,
+    "ms": 282
+  },
+  {
+    "name": "Santa Maria Sun",
+    "url": "https://www.santamariasun.com/feed/",
+    "status": "ok",
+    "items": 10,
+    "recentItems": 10,
+    "validDates": 10,
+    "ms": 451
+  },
+  {
+    "name": "Space Coast Daily",
+    "url": "https://spacecoastdaily.com/feed/",
+    "status": "ok",
+    "items": 12,
+    "recentItems": 12,
+    "validDates": 12,
+    "ms": 345
+  },
+  {
+    "name": "Summit Daily News",
+    "url": "https://www.summitdaily.com/feed/",
+    "status": "ok",
+    "items": 20,
+    "recentItems": 20,
+    "validDates": 20,
+    "ms": 229
+  },
+  {
+    "name": "Steamboat Pilot & Today",
+    "url": "https://www.steamboatpilot.com/feed/",
+    "status": "ok",
+    "items": 20,
+    "recentItems": 20,
+    "validDates": 20,
+    "ms": 315
+  },
+  {
+    "name": "McKenzie County Farmer",
+    "url": "https://www.watfordcitynd.com/index.rss",
+    "status": "ok",
+    "items": 57,
+    "recentItems": 57,
+    "validDates": 57,
+    "ms": 1331
+  },
+  {
+    "name": "Tallahassee Reports",
+    "url": "https://tallahasseereports.com/feed/",
+    "status": "ok",
+    "items": 10,
+    "recentItems": 10,
+    "validDates": 10,
+    "ms": 404
+  },
+  {
+    "name": "The Journal of the San Juan Islands",
+    "url": "https://www.sanjuanjournal.com/feed/",
+    "status": "ok",
+    "items": 10,
+    "recentItems": 10,
+    "validDates": 10,
+    "ms": 317
+  },
+  {
+    "name": "The Clermont Sun",
+    "url": "https://www.clermontsun.com/feed",
+    "status": "ok",
+    "items": 10,
+    "recentItems": 10,
+    "validDates": 10,
+    "ms": 855
+  },
+  {
+    "name": "The Central Virginian",
+    "url": "https://www.thecentralvirginian.com/feed/",
+    "status": "ok",
+    "items": 10,
+    "recentItems": 10,
+    "validDates": 10,
+    "ms": 1009
+  },
+  {
+    "name": "The Fallon Post",
+    "url": "https://www.thefallonpost.org/rss/articles",
+    "status": "ok",
+    "items": 20,
+    "recentItems": 20,
+    "validDates": 20,
+    "ms": 1049
+  },
+  {
+    "name": "The Paisano",
+    "url": "https://paisano-online.com/feed/",
+    "status": "ok",
+    "items": 10,
+    "recentItems": 10,
+    "validDates": 10,
+    "ms": 638
+  },
+  {
+    "name": "What's Up Newp",
+    "url": "https://whatsupnewp.com/feed/",
+    "status": "ok",
+    "items": 25,
+    "recentItems": 25,
+    "validDates": 25,
+    "ms": 318
+  },
+  {
+    "name": "Urban Milwaukee",
+    "url": "http://feeds.feedburner.com/UrbanMilwaukee",
+    "status": "ok",
+    "items": 60,
+    "recentItems": 60,
+    "validDates": 60,
+    "ms": 442
+  },
+  {
+    "name": "The Rocky Mountain Collegian",
+    "url": "https://collegian.com/feed/",
+    "status": "ok",
+    "items": 10,
+    "recentItems": 10,
+    "validDates": 10,
+    "ms": 751
+  },
+  {
+    "name": "ABC57",
+    "url": "https://abc57.com/rss",
+    "status": "ok",
+    "items": 100,
+    "recentItems": 100,
+    "validDates": 100,
+    "ms": 263
+  },
+  {
+    "name": "Tillamook County Pioneer",
+    "url": "https://www.tillamookcountypioneer.net/feed/",
+    "status": "ok",
+    "items": 10,
+    "recentItems": 10,
+    "validDates": 10,
+    "ms": 930
+  },
+  {
+    "name": "Business Observer",
+    "url": "https://www.businessobserverfl.com/rss/headlines/all/",
+    "status": "ok",
+    "items": 20,
+    "recentItems": 20,
+    "validDates": 20,
+    "ms": 384
+  },
+  {
+    "name": "Hudson Valley One",
+    "url": "https://hudsonvalleyone.com/feed/",
+    "status": "ok",
+    "items": 20,
+    "recentItems": 20,
+    "validDates": 20,
+    "ms": 541
+  },
+  {
+    "name": "KSCB Radio News",
+    "url": "https://www.kscbnews.net/feed/",
+    "status": "ok",
+    "items": 10,
+    "recentItems": 10,
+    "validDates": 10,
+    "ms": 522
+  },
+  {
+    "name": "KIWA Radio",
+    "url": "https://kiwaradio.com/feed/",
+    "status": "ok",
+    "items": 10,
+    "recentItems": 10,
+    "validDates": 10,
+    "ms": 803
+  },
+  {
+    "name": "Scioto Post",
+    "url": "https://www.sciotopost.com/feed/",
+    "status": "ok",
+    "items": 25,
+    "recentItems": 25,
+    "validDates": 25,
+    "ms": 425
+  },
+  {
+    "name": "Pine and Lakes Echo Journal",
+    "url": "https://www.pineandlakes.com/index.rss",
+    "status": "ok",
+    "items": 63,
+    "recentItems": 63,
+    "validDates": 63,
+    "ms": 1596
+  },
+  {
+    "name": "The Herald Star",
+    "url": "https://www.heraldstaronline.com/feed/",
+    "status": "ok",
+    "items": 10,
+    "recentItems": 10,
+    "validDates": 10,
+    "ms": 1229
+  },
+  {
+    "name": "The Village Reporter",
+    "url": "https://thevillagereporter.com/feed/",
+    "status": "ok",
+    "items": 30,
+    "recentItems": 30,
+    "validDates": 30,
+    "ms": 624
+  },
+  {
+    "name": "WJON",
+    "url": "https://wjon.com/feed/",
+    "status": "ok",
+    "items": 35,
+    "recentItems": 35,
+    "validDates": 35,
+    "ms": 480
+  },
+  {
+    "name": "WKBW",
+    "url": "https://www.wkbw.com/index.rss",
+    "status": "ok",
+    "items": 4,
+    "recentItems": 4,
+    "validDates": 4,
+    "ms": 310
+  },
+  {
+    "name": "WNYT NewsChannel 13",
+    "url": "https://wnyt.com/feed/",
+    "status": "ok",
+    "items": 24,
+    "recentItems": 24,
+    "validDates": 24,
+    "ms": 370
+  },
+  {
+    "name": "KGAB",
+    "url": "https://kgab.com/feed/",
+    "status": "ok",
+    "items": 35,
+    "recentItems": 35,
+    "validDates": 35,
+    "ms": 608
+  },
+  {
+    "name": "WPG Talk Radio 95.5 FM",
+    "url": "https://wpgtalkradio.com/feed/",
+    "status": "ok",
+    "items": 35,
+    "recentItems": 35,
+    "validDates": 35,
+    "ms": 497
+  },
+  {
+    "name": "WTOP News",
+    "url": "https://wtop.com/feed/",
+    "status": "ok",
+    "items": 10,
+    "recentItems": 10,
+    "validDates": 10,
+    "ms": 295
+  },
+  {
+    "name": "NBC 7 San Diego",
+    "url": "https://www.nbcsandiego.com/?rss=y",
+    "status": "failed",
+    "error": "AbortError: This operation was aborted",
+    "ms": 3502
+  },
+  {
+    "name": "Alabama Reflector",
+    "url": "https://alabamareflector.com/feed/localFeed/",
+    "status": "ok",
+    "items": 100,
+    "recentItems": 100,
+    "validDates": 100,
+    "ms": 677
+  },
+  {
+    "name": "WXHC",
+    "url": "https://www.wxhc.com/feed/",
+    "status": "ok",
+    "items": 10,
+    "recentItems": 10,
+    "validDates": 10,
+    "ms": 702
+  },
+  {
+    "name": "Alaska Beacon",
+    "url": "https://alaskabeacon.com/feed/localFeed/",
+    "status": "ok",
+    "items": 100,
+    "recentItems": 100,
+    "validDates": 100,
+    "ms": 678
+  },
+  {
+    "name": "WTVY",
+    "url": "https://www.wtvy.com:443/arc/outboundfeeds/rss/?outputType=xml",
+    "status": "ok",
+    "items": 20,
+    "recentItems": 20,
+    "validDates": 20,
+    "ms": 1449
+  },
+  {
+    "name": "Arkansas Advocate",
+    "url": "https://arkansasadvocate.com/feed/localFeed/",
+    "status": "ok",
+    "items": 100,
+    "recentItems": 100,
+    "validDates": 100,
+    "ms": 565
+  },
+  {
+    "name": "CT Mirror",
+    "url": "https://ctmirror.org/feed/",
+    "status": "ok",
+    "items": 40,
+    "recentItems": 40,
+    "validDates": 40,
+    "ms": 467
+  },
+  {
+    "name": "Arizona Mirror",
+    "url": "https://azmirror.com/feed/localFeed/",
+    "status": "ok",
+    "items": 100,
+    "recentItems": 100,
+    "validDates": 100,
+    "ms": 689
+  },
+  {
+    "name": "CalMatters",
+    "url": "https://calmatters.org/feed/",
+    "status": "ok",
+    "items": 10,
+    "recentItems": 10,
+    "validDates": 10,
+    "ms": 367
+  },
+  {
+    "name": "Commonwealth Beacon",
+    "url": "https://commonwealthbeacon.org/feed/",
+    "status": "ok",
+    "items": 10,
+    "recentItems": 10,
+    "validDates": 10,
+    "ms": 438
+  },
+  {
+    "name": "Colorado Newsline",
+    "url": "https://coloradonewsline.com/feed/localFeed/",
+    "status": "ok",
+    "items": 100,
+    "recentItems": 100,
+    "validDates": 100,
+    "ms": 698
+  },
+  {
+    "name": "Daily Montanan",
+    "url": "https://dailymontanan.com/feed/localFeed/",
+    "status": "ok",
+    "items": 100,
+    "recentItems": 100,
+    "validDates": 100,
+    "ms": 670
+  },
+  {
+    "name": "Florida Phoenix",
+    "url": "https://floridaphoenix.com/feed/localFeed/",
+    "status": "ok",
+    "items": 100,
+    "recentItems": 100,
+    "validDates": 100,
+    "ms": 543
+  },
+  {
+    "name": "Honolulu Civil Beat",
+    "url": "https://www.civilbeat.org/feed/",
+    "status": "ok",
+    "items": 10,
+    "recentItems": 10,
+    "validDates": 10,
+    "ms": 234
+  },
+  {
+    "name": "Georgia Recorder",
+    "url": "https://georgiarecorder.com/feed/localFeed/",
+    "status": "ok",
+    "items": 100,
+    "recentItems": 100,
+    "validDates": 100,
+    "ms": 671
+  },
+  {
+    "name": "Hawaiʻi Public Radio",
+    "url": "https://www.hawaiipublicradio.org/local-news.rss",
+    "status": "ok",
+    "items": 10,
+    "recentItems": 10,
+    "validDates": 10,
+    "ms": 472
+  },
+  {
+    "name": "Idaho Capital Sun",
+    "url": "https://idahocapitalsun.com/feed/localFeed/",
+    "status": "ok",
+    "items": 100,
+    "recentItems": 100,
+    "validDates": 100,
+    "ms": 529
+  },
+  {
+    "name": "Indiana Capital Chronicle",
+    "url": "https://indianacapitalchronicle.com/feed/localFeed/",
+    "status": "ok",
+    "items": 100,
+    "recentItems": 100,
+    "validDates": 100,
+    "ms": 678
+  },
+  {
+    "name": "Iowa Capital Dispatch",
+    "url": "https://iowacapitaldispatch.com/feed/localFeed/",
+    "status": "ok",
+    "items": 100,
+    "recentItems": 100,
+    "validDates": 100,
+    "ms": 570
+  },
+  {
+    "name": "Kansas Reflector",
+    "url": "https://kansasreflector.com/feed/localFeed/",
+    "status": "ok",
+    "items": 100,
+    "recentItems": 100,
+    "validDates": 100,
+    "ms": 558
+  },
+  {
+    "name": "Kentucky Lantern",
+    "url": "https://kentuckylantern.com/feed/localFeed/",
+    "status": "ok",
+    "items": 100,
+    "recentItems": 100,
+    "validDates": 100,
+    "ms": 709
+  },
+  {
+    "name": "Louisiana Illuminator",
+    "url": "https://lailluminator.com/feed/localFeed/",
+    "status": "ok",
+    "items": 100,
+    "recentItems": 100,
+    "validDates": 100,
+    "ms": 618
+  },
+  {
+    "name": "Maine Morning Star",
+    "url": "https://mainemorningstar.com/feed/localFeed/",
+    "status": "ok",
+    "items": 100,
+    "recentItems": 100,
+    "validDates": 100,
+    "ms": 671
+  },
+  {
+    "name": "Maryland Matters",
+    "url": "https://marylandmatters.org/feed/localFeed/",
+    "status": "ok",
+    "items": 100,
+    "recentItems": 100,
+    "validDates": 100,
+    "ms": 654
+  },
+  {
+    "name": "Mississippi Free Press",
+    "url": "https://www.mississippifreepress.org/feed/",
+    "status": "ok",
+    "items": 6,
+    "recentItems": 6,
+    "validDates": 6,
+    "ms": 278
+  },
+  {
+    "name": "Michigan Advance",
+    "url": "https://michiganadvance.com/feed/localFeed/",
+    "status": "ok",
+    "items": 100,
+    "recentItems": 100,
+    "validDates": 100,
+    "ms": 664
+  },
+  {
+    "name": "Mississippi Today",
+    "url": "https://mississippitoday.org/feed/",
+    "status": "ok",
+    "items": 10,
+    "recentItems": 10,
+    "validDates": 10,
+    "ms": 406
+  },
+  {
+    "name": "Minnesota Reformer",
+    "url": "https://minnesotareformer.com/feed/localFeed/",
+    "status": "ok",
+    "items": 100,
+    "recentItems": 100,
+    "validDates": 100,
+    "ms": 717
+  },
+  {
+    "name": "Missouri Independent",
+    "url": "https://missouriindependent.com/feed/localFeed/",
+    "status": "ok",
+    "items": 100,
+    "recentItems": 100,
+    "validDates": 100,
+    "ms": 593
+  },
+  {
+    "name": "Nebraska Examiner",
+    "url": "https://nebraskaexaminer.com/feed/localFeed/",
+    "status": "ok",
+    "items": 100,
+    "recentItems": 100,
+    "validDates": 100,
+    "ms": 594
+  },
+  {
+    "name": "NC Newsline",
+    "url": "https://ncnewsline.com/feed/localFeed/",
+    "status": "ok",
+    "items": 100,
+    "recentItems": 100,
+    "validDates": 100,
+    "ms": 605
+  },
+  {
+    "name": "Nevada Current",
+    "url": "https://nevadacurrent.com/feed/localFeed/",
+    "status": "ok",
+    "items": 100,
+    "recentItems": 100,
+    "validDates": 100,
+    "ms": 615
+  },
+  {
+    "name": "New Hampshire Bulletin",
+    "url": "https://newhampshirebulletin.com/feed/localFeed/",
+    "status": "ok",
+    "items": 100,
+    "recentItems": 100,
+    "validDates": 100,
+    "ms": 610
+  },
+  {
+    "name": "New Jersey Monitor",
+    "url": "https://newjerseymonitor.com/feed/localFeed/",
+    "status": "ok",
+    "items": 100,
+    "recentItems": 100,
+    "validDates": 100,
+    "ms": 644
+  },
+  {
+    "name": "North Dakota Monitor",
+    "url": "https://northdakotamonitor.com/feed/localFeed/",
+    "status": "ok",
+    "items": 100,
+    "recentItems": 100,
+    "validDates": 100,
+    "ms": 707
+  },
+  {
+    "name": "Ohio Capital Journal",
+    "url": "https://ohiocapitaljournal.com/feed/localFeed/",
+    "status": "ok",
+    "items": 100,
+    "recentItems": 100,
+    "validDates": 100,
+    "ms": 688
+  },
+  {
+    "name": "Oklahoma Voice",
+    "url": "https://oklahomavoice.com/feed/localFeed/",
+    "status": "ok",
+    "items": 100,
+    "recentItems": 100,
+    "validDates": 100,
+    "ms": 843
+  },
+  {
+    "name": "Oregon Capital Chronicle",
+    "url": "https://oregoncapitalchronicle.com/feed/localFeed/",
+    "status": "ok",
+    "items": 100,
+    "recentItems": 100,
+    "validDates": 100,
+    "ms": 942
+  },
+  {
+    "name": "Pennsylvania Capital-Star",
+    "url": "https://penncapital-star.com/feed/localFeed/",
+    "status": "ok",
+    "items": 100,
+    "recentItems": 100,
+    "validDates": 100,
+    "ms": 1006
+  },
+  {
+    "name": "Rhode Island Current",
+    "url": "https://rhodeislandcurrent.com/feed/localFeed/",
+    "status": "ok",
+    "items": 100,
+    "recentItems": 100,
+    "validDates": 100,
+    "ms": 954
+  },
+  {
+    "name": "Source New Mexico",
+    "url": "https://sourcenm.com/feed/localFeed/",
+    "status": "ok",
+    "items": 100,
+    "recentItems": 100,
+    "validDates": 100,
+    "ms": 550
+  },
+  {
+    "name": "South Carolina Daily Gazette",
+    "url": "https://scdailygazette.com/feed/localFeed/",
+    "status": "ok",
+    "items": 100,
+    "recentItems": 100,
+    "validDates": 100,
+    "ms": 887
+  },
+  {
+    "name": "Spotlight Delaware",
+    "url": "https://spotlightdelaware.org/feed/",
+    "status": "ok",
+    "items": 10,
+    "recentItems": 10,
+    "validDates": 10,
+    "ms": 683
+  },
+  {
+    "name": "South Dakota Searchlight",
+    "url": "https://southdakotasearchlight.com/feed/localFeed/",
+    "status": "ok",
+    "items": 100,
+    "recentItems": 100,
+    "validDates": 100,
+    "ms": 1064
+  },
+  {
+    "name": "New York Focus",
+    "url": "https://nysfocus.com/feed",
+    "status": "failed",
+    "error": "AbortError: This operation was aborted",
+    "ms": 3502
+  },
+  {
+    "name": "Tennessee Lookout",
+    "url": "https://tennesseelookout.com/feed/localFeed/",
+    "status": "ok",
+    "items": 100,
+    "recentItems": 100,
+    "validDates": 100,
+    "ms": 579
+  },
+  {
+    "name": "VT Digger",
+    "url": "https://vtdigger.org/feed/",
+    "status": "ok",
+    "items": 30,
+    "recentItems": 30,
+    "validDates": 30,
+    "ms": 547
+  },
+  {
+    "name": "The Texas Tribune",
+    "url": "https://feeds.texastribune.org/feeds/main/",
+    "status": "ok",
+    "items": 20,
+    "recentItems": 20,
+    "validDates": 20,
+    "ms": 1006
+  },
+  {
+    "name": "Utah News Dispatch",
+    "url": "https://utahnewsdispatch.com/feed/localFeed/",
+    "status": "ok",
+    "items": 100,
+    "recentItems": 100,
+    "validDates": 100,
+    "ms": 809
+  },
+  {
+    "name": "Virginia Mercury",
+    "url": "https://virginiamercury.com/feed/localFeed/",
+    "status": "ok",
+    "items": 100,
+    "recentItems": 100,
+    "validDates": 100,
+    "ms": 788
+  },
+  {
+    "name": "Washington State Standard",
+    "url": "https://washingtonstatestandard.com/feed/localFeed/",
+    "status": "ok",
+    "items": 100,
+    "recentItems": 100,
+    "validDates": 100,
+    "ms": 695
+  },
+  {
+    "name": "West Virginia Watch",
+    "url": "https://westvirginiawatch.com/feed/localFeed/",
+    "status": "ok",
+    "items": 100,
+    "recentItems": 100,
+    "validDates": 100,
+    "ms": 876
+  },
+  {
+    "name": "WyoFile",
+    "url": "https://wyofile.com/feed/",
+    "status": "ok",
+    "items": 10,
+    "recentItems": 10,
+    "validDates": 10,
+    "ms": 610
+  },
+  {
+    "name": "Wisconsin Examiner",
+    "url": "https://wisconsinexaminer.com/feed/localFeed/",
+    "status": "ok",
+    "items": 100,
+    "recentItems": 100,
+    "validDates": 100,
+    "ms": 754
+  },
+  {
+    "name": "Addison Independent",
+    "url": "https://www.addisonindependent.com/feed/",
+    "status": "ok",
+    "items": 10,
+    "recentItems": 10,
+    "validDates": 10,
+    "ms": 660
+  },
+  {
+    "name": "Buckrail",
+    "url": "https://buckrail.com/feed/",
+    "status": "ok",
+    "items": 60,
+    "recentItems": 60,
+    "validDates": 60,
+    "ms": 673
+  },
+  {
+    "name": "Berks Weekly",
+    "url": "https://berksweekly.com/feed/",
+    "status": "ok",
+    "items": 10,
+    "recentItems": 10,
+    "validDates": 10,
+    "ms": 741
+  },
+  {
+    "name": "Memphis Flyer",
+    "url": "https://www.memphisflyer.com/feed/",
+    "status": "ok",
+    "items": 10,
+    "recentItems": 10,
+    "validDates": 10,
+    "ms": 195
+  },
+  {
+    "name": "Falls Church News-Press",
+    "url": "https://www.fcnp.com/feed/",
+    "status": "ok",
+    "items": 10,
+    "recentItems": 10,
+    "validDates": 10,
+    "ms": 311
+  },
+  {
+    "name": "Cobb Courier",
+    "url": "https://cobbcountycourier.com/feed/",
+    "status": "ok",
+    "items": 10,
+    "recentItems": 10,
+    "validDates": 10,
+    "ms": 1205
+  },
+  {
+    "name": "Osceola News Gazette",
+    "url": "https://www.aroundosceola.com/rss.xml",
+    "status": "ok",
+    "items": 10,
+    "recentItems": 10,
+    "validDates": 10,
+    "ms": 400
+  },
+  {
+    "name": "Rockland County Times",
+    "url": "https://rocklandtimes.com/feed/",
+    "status": "ok",
+    "items": 10,
+    "recentItems": 10,
+    "validDates": 10,
+    "ms": 401
+  },
+  {
+    "name": "Sedona Red Rock News",
+    "url": "https://www.redrocknews.com/feed/",
+    "status": "ok",
+    "items": 5,
+    "recentItems": 5,
+    "validDates": 5,
+    "ms": 398
+  },
+  {
+    "name": "Stuttgart Daily Leader",
+    "url": "https://www.stuttgartdailyleader.com/feed/",
+    "status": "ok",
+    "items": 40,
+    "recentItems": 40,
+    "validDates": 40,
+    "ms": 631
+  },
+  {
+    "name": "Deming Headlight",
+    "url": "https://www.demingheadlight.com/feed/",
+    "status": "ok",
+    "items": 10,
+    "recentItems": 10,
+    "validDates": 10,
+    "ms": 1405
+  },
+  {
+    "name": "The Clayton Tribune",
+    "url": "https://www.theclaytontribune.com/rss.xml",
+    "status": "ok",
+    "items": 10,
+    "recentItems": 10,
+    "validDates": 10,
+    "ms": 199
+  },
+  {
+    "name": "Talbot Spy",
+    "url": "https://talbotspy.org/feed/",
+    "status": "ok",
+    "items": 20,
+    "recentItems": 20,
+    "validDates": 20,
+    "ms": 890
+  },
+  {
+    "name": "The Express - Lock Haven",
+    "url": "https://www.lockhaven.com/feed/",
+    "status": "ok",
+    "items": 10,
+    "recentItems": 10,
+    "validDates": 10,
+    "ms": 282
+  },
+  {
+    "name": "The Badger Herald",
+    "url": "https://badgerherald.com/feed/",
+    "status": "ok",
+    "items": 10,
+    "recentItems": 10,
+    "validDates": 10,
+    "ms": 1157
+  },
+  {
+    "name": "The Highland County Press",
+    "url": "https://highlandcountypress.com/rss.xml",
+    "status": "ok",
+    "items": 10,
+    "recentItems": 10,
+    "validDates": 10,
+    "ms": 526
+  },
+  {
+    "name": "The Daily Illini",
+    "url": "https://dailyillini.com/feed/",
+    "status": "ok",
+    "items": 20,
+    "recentItems": 20,
+    "validDates": 20,
+    "ms": 1069
+  },
+  {
+    "name": "The Sentinel",
+    "url": "https://www.lewistownsentinel.com/feed/",
+    "status": "ok",
+    "items": 10,
+    "recentItems": 10,
+    "validDates": 10,
+    "ms": 368
+  },
+  {
+    "name": "The Daily Iowan",
+    "url": "https://dailyiowan.com/feed/",
+    "status": "ok",
+    "items": 10,
+    "recentItems": 10,
+    "validDates": 10,
+    "ms": 964
+  },
+  {
+    "name": "23ABC News Bakersfield",
+    "url": "https://www.turnto23.com/index.rss",
+    "status": "ok",
+    "items": 3,
+    "recentItems": 3,
+    "validDates": 3,
+    "ms": 361
+  },
+  {
+    "name": "The Source / Source Weekly",
+    "url": "https://www.bendsource.com/feed/",
+    "status": "ok",
+    "items": 10,
+    "recentItems": 10,
+    "validDates": 10,
+    "ms": 412
+  },
+  {
+    "name": "Clinton County Daily News",
+    "url": "https://clintoncountydailynews.com/feed/",
+    "status": "ok",
+    "items": 18,
+    "recentItems": 18,
+    "validDates": 18,
+    "ms": 730
+  },
+  {
+    "name": "Indy Week",
+    "url": "https://indyweek.com/feed/",
+    "status": "ok",
+    "items": 10,
+    "recentItems": 10,
+    "validDates": 10,
+    "ms": 222
+  },
+  {
+    "name": "Great Bend Tribune",
+    "url": "https://www.gbtribune.com:443/rss/",
+    "status": "ok",
+    "items": 10,
+    "recentItems": 9,
+    "validDates": 9,
+    "ms": 723
+  },
+  {
+    "name": "Williston Herald",
+    "url": "https://www.willistonherald.com/index.rss",
+    "status": "ok",
+    "items": 59,
+    "recentItems": 59,
+    "validDates": 59,
+    "ms": 1135
+  },
+  {
+    "name": "KBHB Radio",
+    "url": "https://kbhbradio.com/feed/",
+    "status": "ok",
+    "items": 100,
+    "recentItems": 100,
+    "validDates": 100,
+    "ms": 283
+  },
+  {
+    "name": "KPAX News",
+    "url": "https://www.kpax.com/index.rss",
+    "status": "ok",
+    "items": 3,
+    "recentItems": 3,
+    "validDates": 3,
+    "ms": 216
+  },
+  {
+    "name": "KPBS",
+    "url": "https://www.kpbs.org/index.rss",
+    "status": "ok",
+    "items": 12,
+    "recentItems": 12,
+    "validDates": 12,
+    "ms": 355
+  },
+  {
+    "name": "Crawford County Now",
+    "url": "https://crawfordcountynow.com/sitemap.rss",
+    "status": "ok",
+    "items": 50,
+    "recentItems": 50,
+    "validDates": 50,
+    "ms": 1311
+  },
+  {
+    "name": "Long Island Press",
+    "url": "https://www.longislandpress.com/feed/",
+    "status": "ok",
+    "items": 10,
+    "recentItems": 10,
+    "validDates": 10,
+    "ms": 451
+  },
+  {
+    "name": "Palo Alto Online",
+    "url": "https://www.paloaltoonline.com/feed/",
+    "status": "ok",
+    "items": 10,
+    "recentItems": 10,
+    "validDates": 10,
+    "ms": 185
+  },
+  {
+    "name": "North Forty News",
+    "url": "https://northfortynews.com/feed/",
+    "status": "ok",
+    "items": 10,
+    "recentItems": 10,
+    "validDates": 10,
+    "ms": 569
+  },
+  {
+    "name": "Post-Bulletin",
+    "url": "https://www.postbulletin.com/index.rss",
+    "status": "ok",
+    "items": 71,
+    "recentItems": 71,
+    "validDates": 71,
+    "ms": 297
+  },
+  {
+    "name": "KTVQ",
+    "url": "https://www.ktvq.com/index.rss",
+    "status": "ok",
+    "items": 3,
+    "recentItems": 3,
+    "validDates": 3,
+    "ms": 1249
+  },
+  {
+    "name": "Potomac Local News",
+    "url": "https://www.potomaclocal.com/feed/",
+    "status": "ok",
+    "items": 10,
+    "recentItems": 10,
+    "validDates": 10,
+    "ms": 325
+  },
+  {
+    "name": "The Urbanist",
+    "url": "https://www.theurbanist.org/rss/",
+    "status": "ok",
+    "items": 15,
+    "recentItems": 15,
+    "validDates": 15,
+    "ms": 164
+  },
+  {
+    "name": "The Times of Houma/Thibodaux",
+    "url": "https://houmatimes.com/feed/",
+    "status": "ok",
+    "items": 10,
+    "recentItems": 10,
+    "validDates": 10,
+    "ms": 317
+  },
+  {
+    "name": "WECT TV6",
+    "url": "https://www.wect.com:443/arc/outboundfeeds/rss/?outputType=xml",
+    "status": "ok",
+    "items": 20,
+    "recentItems": 20,
+    "validDates": 20,
+    "ms": 201
+  },
+  {
+    "name": "Sioux County Radio",
+    "url": "https://siouxcountyradio.com/feed/",
+    "status": "ok",
+    "items": 10,
+    "recentItems": 10,
+    "validDates": 10,
+    "ms": 823
+  },
+  {
+    "name": "WCJB TV20",
+    "url": "https://www.wcjb.com:443/arc/outboundfeeds/rss/?outputType=xml",
+    "status": "ok",
+    "items": 20,
+    "recentItems": 20,
+    "validDates": 20,
+    "ms": 786
+  },
+  {
+    "name": "WHSV",
+    "url": "https://www.whsv.com:443/arc/outboundfeeds/rss/?outputType=xml",
+    "status": "ok",
+    "items": 20,
+    "recentItems": 20,
+    "validDates": 20,
+    "ms": 540
+  },
+  {
+    "name": "WTAP",
+    "url": "https://www.wtap.com:443/arc/outboundfeeds/rss/?outputType=xml",
+    "status": "ok",
+    "items": 20,
+    "recentItems": 20,
+    "validDates": 20,
+    "ms": 864
+  }
+]
