@@ -14,6 +14,7 @@ import {
   getCountyAtlasOverview,
 } from "./atlas-service.js";
 import { getCountyWeather, WeatherServiceError } from "./weather-service.js";
+import { getCountyPublicNotices } from "./public-notices/service.js";
 import type { FeedScope, Topic } from "./types.js";
 
 export type ApiRequest = {
@@ -65,6 +66,11 @@ export async function handleRequest(request: ApiRequest): Promise<ApiResponse> {
           await getCountyFredData(county),
           `public, max-age=1800, s-maxage=${config.fredCacheTtlSeconds}`,
         );
+      } else if (parts[1] === "counties" && parts[2] && parts[3] && parts[4] === "public-notices" && parts.length === 5) {
+        const county = getCounty(parts[2], parts[3]);
+        if (!county) throw new ApiError(404, "Unknown county");
+        const notices = await getCountyPublicNotices(county, request.query.has("limit") ? numberParam(request.query, "limit", 50) : 50, numberParam(request.query, "offset", 0));
+        response = json(200, notices, notices.meta.status === "unavailable" || notices.meta.status === "partial" ? "no-store" : "public, max-age=300, s-maxage=300");
       } else if (parts[1] === "counties" && parts[2] && parts[3] && parts[4] === "weather" && parts.length === 5) {
         response = json(200, await getCountyWeather(parts[2], parts[3]), weatherCacheControl());
       } else if (parts[1] === "counties" && parts[2] && parts[3] && parts[4] === "atlas" && parts.length === 5) {

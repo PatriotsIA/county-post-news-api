@@ -62,6 +62,7 @@ type NewsFeedItem = {
 - `GET /v1/counties/:stateSlug/:countySlug/population`
 - `GET /v1/counties/:stateSlug/:countySlug/economic-data`
 - `GET /v1/counties/:stateSlug/:countySlug/weather`
+- `GET /v1/counties/:stateSlug/:countySlug/public-notices?limit=50&offset=0` — Texas-first official notices, with exact county/region coverage and source availability. See [public notices](docs/public-notices.md).
 - `GET /v1/counties/:stateSlug/:countySlug/atlas`
 - `GET /v1/counties/:stateSlug/:countySlug/atlas/:domain`
 - `POST /v1/advertising/creatives/upload`

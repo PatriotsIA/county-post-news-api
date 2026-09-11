@@ -1,0 +1,12 @@
+{
+  "Jefferson": {
+    "websiteUrl": "https://jeffersoncountytx.gov/",
+    "noticeUrl": "https://jeffersoncountytx.gov/jcagenda/default.aspx"
+  },
+  "Potter": {
+    "noticeUrl": "https://www.co.potter.tx.us/page/Court.Live"
+  },
+  "Randall": {
+    "noticeUrl": "https://www.randallcounty.gov/494/Public-Notices"
+  }
+}
