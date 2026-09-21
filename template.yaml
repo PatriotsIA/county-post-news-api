@@ -334,6 +334,10 @@ Resources:
   FeedRefreshBacklogAlarm:
     Type: AWS::CloudWatch::Alarm
     Properties:
+      AlarmActions:
+        - !Sub arn:${AWS::Partition}:sns:${AWS::Region}:${AWS::AccountId}:pia-operations-alerts
+      OKActions:
+        - !Sub arn:${AWS::Partition}:sns:${AWS::Region}:${AWS::AccountId}:pia-operations-alerts
       AlarmDescription: Feed refreshes have waited over 15 minutes; inspect worker capacity and source failures.
       Namespace: AWS/SQS
       MetricName: ApproximateAgeOfOldestMessage
@@ -350,6 +354,10 @@ Resources:
   FeedRefreshDeadLetterAlarm:
     Type: AWS::CloudWatch::Alarm
     Properties:
+      AlarmActions:
+        - !Sub arn:${AWS::Partition}:sns:${AWS::Region}:${AWS::AccountId}:pia-operations-alerts
+      OKActions:
+        - !Sub arn:${AWS::Partition}:sns:${AWS::Region}:${AWS::AccountId}:pia-operations-alerts
       AlarmDescription: Feed refreshes exhausted retries; inspect the dead-letter queue.
       Namespace: AWS/SQS
       MetricName: ApproximateNumberOfMessagesVisible
@@ -366,6 +374,10 @@ Resources:
   FeedWarmerFailureAlarm:
     Type: AWS::CloudWatch::Alarm
     Properties:
+      AlarmActions:
+        - !Sub arn:${AWS::Partition}:sns:${AWS::Region}:${AWS::AccountId}:pia-operations-alerts
+      OKActions:
+        - !Sub arn:${AWS::Partition}:sns:${AWS::Region}:${AWS::AccountId}:pia-operations-alerts
       AlarmDescription: Scheduled feed refresh jobs could not be queued.
       Namespace: AWS/Lambda
       MetricName: Errors
@@ -588,6 +600,10 @@ Resources:
   AtlasBuildFailureAlarm:
     Type: AWS::CloudWatch::Alarm
     Properties:
+      AlarmActions:
+        - !Sub arn:${AWS::Partition}:sns:${AWS::Region}:${AWS::AccountId}:pia-operations-alerts
+      OKActions:
+        - !Sub arn:${AWS::Partition}:sns:${AWS::Region}:${AWS::AccountId}:pia-operations-alerts
       AlarmDescription: Atlas ingestion reported a failed CodeBuild run.
       Namespace: AWS/CodeBuild
       MetricName: FailedBuilds
@@ -604,6 +620,10 @@ Resources:
   AtlasStaleDataAlarm:
     Type: AWS::CloudWatch::Alarm
     Properties:
+      AlarmActions:
+        - !Sub arn:${AWS::Partition}:sns:${AWS::Region}:${AWS::AccountId}:pia-operations-alerts
+      OKActions:
+        - !Sub arn:${AWS::Partition}:sns:${AWS::Region}:${AWS::AccountId}:pia-operations-alerts
       AlarmDescription: No successful validated atlas publication has been observed for six days.
       Namespace: CountyPost/Atlas
       MetricName: SuccessfulPublish
@@ -618,6 +638,10 @@ Resources:
   AtlasScheduleFailureAlarm:
     Type: AWS::CloudWatch::Alarm
     Properties:
+      AlarmActions:
+        - !Sub arn:${AWS::Partition}:sns:${AWS::Region}:${AWS::AccountId}:pia-operations-alerts
+      OKActions:
+        - !Sub arn:${AWS::Partition}:sns:${AWS::Region}:${AWS::AccountId}:pia-operations-alerts
       AlarmDescription: EventBridge could not start the atlas ingestion project.
       Namespace: AWS/Events
       MetricName: FailedInvocations
