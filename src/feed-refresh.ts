@@ -111,7 +111,15 @@ export async function enqueueRefresh(target: RefreshTarget, source: RefreshSourc
   acceptedTargets.set(localKey, { expiresAt: now + DEDUPLICATION_MS, pending });
   try {
     const accepted = await pending;
-    if (!accepted && acceptedTargets.get(localKey)?.pending === pending) acceptedTargets.delete(localKey);
+    const entry = acceptedTargets.get(localKey);
+    if (entry?.pending === pending) {
+      // SQS's deduplication window starts when it accepts the message, not when
+      // we begin the depth read/send. Wait a full window after acknowledgement
+      // so a slow send cannot cause the next local attempt to be deduplicated
+      // while suppressing a real refresh for another five minutes.
+      if (accepted) entry.expiresAt = Date.now() + DEDUPLICATION_MS;
+      else acceptedTargets.delete(localKey);
+    }
     return accepted;
   } catch (error) {
     if (acceptedTargets.get(localKey)?.pending === pending) acceptedTargets.delete(localKey);

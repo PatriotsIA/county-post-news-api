@@ -6,6 +6,12 @@ service and all AWS alarm/recovery destinations at **erik@patriotsinaction.com**
 This branch includes the earlier notification source changes so a later release
 keeps the verified live alert routing.
 
+**September 22 follow-up:** the complete PR now defaults to twenty reserved API
+executions and six workers, with reader API throttle/execution alarms and an
+acknowledgement-window fix for local refresh deduplication. The [release runbook](news-reliability-2026-09-22.md)
+supersedes the proposed settings and validation below; this document retains
+the original investigation and mitigation history.
+
 ## Observed production state before the quota increase
 
 - PIA account `426771918029`, `us-east-2`: regional Lambda concurrency is **10**,

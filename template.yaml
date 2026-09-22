@@ -5,20 +5,21 @@ Description: County Post News API on a low-cost Lambda Function URL.
 Parameters:
   NewsApiReservedConcurrency:
     Type: Number
-    Default: 0
+    Default: 20
     MinValue: 0
     MaxValue: 100
     Description: >-
-      Zero keeps the API unreserved. Set to 20 only after the regional Lambda
-      quota increase is applied and at least 100 slots remain unreserved.
+      Protect 20 reader API executions using the approved regional quota.
+      This is also an API ceiling. Zero removes the reservation; it does not
+      disable the API. Keep at least 100 regional executions unreserved.
   FeedRefreshMaximumConcurrency:
     Type: Number
-    Default: 3
+    Default: 6
     MinValue: 2
     MaxValue: 10
     Description: >-
-      Keep 3 while the regional Lambda quota is 10. After the quota increase,
-      start with 6 and verify API throttles and worker duration before raising it.
+      Six workers use the approved regional quota to drain refresh backlog.
+      Lower to 3 for capacity rollback; verify throughput before raising it.
   EnableEdgeCache:
     Type: String
     Default: "false"
@@ -362,6 +363,46 @@ Resources:
           Properties:
             Schedule: rate(5 minutes)
             Description: Queue bounded national, state, and county feed refreshes.
+
+  NewsApiThrottleAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmActions:
+        - !Sub arn:${AWS::Partition}:sns:${AWS::Region}:${AWS::AccountId}:pia-operations-alerts
+      OKActions:
+        - !Sub arn:${AWS::Partition}:sns:${AWS::Region}:${AWS::AccountId}:pia-operations-alerts
+      AlarmDescription: Reader API requests are being throttled; check its reservation and regional concurrency before increasing workers.
+      Namespace: AWS/Lambda
+      MetricName: Throttles
+      Dimensions:
+        - Name: FunctionName
+          Value: !Ref NewsApiFunction
+      Statistic: Sum
+      Period: 300
+      EvaluationPeriods: 1
+      Threshold: 0
+      ComparisonOperator: GreaterThanThreshold
+      TreatMissingData: notBreaching
+
+  NewsApiExecutionFailureAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmActions:
+        - !Sub arn:${AWS::Partition}:sns:${AWS::Region}:${AWS::AccountId}:pia-operations-alerts
+      OKActions:
+        - !Sub arn:${AWS::Partition}:sns:${AWS::Region}:${AWS::AccountId}:pia-operations-alerts
+      AlarmDescription: Reader API execution failed or timed out; inspect Lambda logs and public feed health.
+      Namespace: AWS/Lambda
+      MetricName: Errors
+      Dimensions:
+        - Name: FunctionName
+          Value: !Ref NewsApiFunction
+      Statistic: Sum
+      Period: 300
+      EvaluationPeriods: 1
+      Threshold: 0
+      ComparisonOperator: GreaterThanThreshold
+      TreatMissingData: notBreaching
 
   FeedRefreshBacklogAlarm:
     Type: AWS::CloudWatch::Alarm

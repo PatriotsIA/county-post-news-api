@@ -41,6 +41,22 @@ it("defers scheduled specialist desks before general desks and active readers", 
   expect(send.mock.calls.filter(([command]) => command instanceof SendMessageCommand)).toHaveLength(2);
 });
 
+it("starts local suppression after SQS acknowledgement, including a slow send", async () => {
+  vi.useFakeTimers({ toFake: ["Date"] });
+  const send = vi.spyOn(SQSClient.prototype, "send").mockImplementation(async (command: unknown) => {
+    if (command instanceof GetQueueAttributesCommand) return attributes(0) as never;
+    vi.advanceTimersByTime(1000);
+    return {} as never;
+  });
+  expect(await enqueueRefresh(general)).toBe(true);
+  // More than five minutes after starting, but within five minutes of receipt.
+  vi.advanceTimersByTime(299_500);
+  expect(await enqueueRefresh(general)).toBe(false);
+  vi.advanceTimersByTime(501);
+  expect(await enqueueRefresh(general)).toBe(true);
+  expect(send.mock.calls.filter(([command]) => command instanceof SendMessageCommand)).toHaveLength(2);
+});
+
 it("leaves room for county general readers after other reader refreshes defer", async () => {
   const send = vi.spyOn(SQSClient.prototype, "send").mockResolvedValue(attributes(1000) as never);
   expect(await enqueueRefresh(general, "schedule")).toBe(false);

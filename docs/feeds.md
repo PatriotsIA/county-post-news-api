@@ -173,17 +173,20 @@ half a second. The design keeps those on different actors:
   `warmer.pass` records accepted, deferred and failed counts separately.
 - **Worker concurrency is bounded independently of the account quota.** SQS
   invokes the refresh Lambda with batch size one and default maximum concurrency
-  three. The regional Lambda quota increased from 10 to 1,000 on September 21;
+  six. The regional Lambda quota increased from 10 to 1,000 on September 21;
   this does not change the worker limit or deploy new code. Failed work retries
   and eventually enters a dead-letter queue.
-  CloudWatch alarms track a backlog over 15 minutes, dead letters, and schedule
-  failures. Queue and worker roles are scoped to their required resources;
+  CloudWatch alarms track API throttles and execution failures, a backlog over
+  15 minutes, dead letters, and schedule failures. All alarm and recovery actions
+  use the shared operations topic confirmed by erik@patriotsinaction.com.
+  Queue and worker roles are scoped to their required resources;
   payment and economic API secrets are not inherited by refresh functions.
   The queue retains jobs for four days. `FeedRefreshMaximumConcurrency` defaults
-  to three; raise it only as part of the reviewed capacity rollout. The optional
-  `NewsApiReservedConcurrency` defaults to zero, which leaves the API unreserved
-  rather than disabling it. See [the reliability rollout](news-reliability-2026-09-21.md)
-  for the proposed allocation and deployment gates.
+  to six. `NewsApiReservedConcurrency` defaults to twenty, above the observed
+  September 15–22 reader API peak of twelve. This protects capacity but also caps
+  the API; zero removes the reservation without disabling it. At the approved
+  regional quota, 980 executions remain unreserved for workers and other projects.
+  See [the release runbook](news-reliability-2026-09-22.md) for verification and rollback.
 - **CloudFront remains controlled by `EnableEdgeCache`.** It caches `limit`,
   `offset`, `sections`, and browser Origin variants, with gzip/Brotli and Origin
   Shield in the API region. Workers prime actual County Post page URLs and
@@ -212,7 +215,10 @@ when another publisher is slow. Already-started lookups can populate the
 per-URL cache while the runtime remains active;
 ordering is banded by recency (fortnight, 60 days, 180, older, undated last)
 with undated items kept rather than dropped; feeds accept `offset` and report
-`hasMore`/`totalAvailable` for the client's infinite scroll; publisher
+`hasMore`/`totalAvailable` from the full eligible inventory. County Post currently
+loads more by increasing `limit` and replacing its feed. Dominant-publisher
+selection can shift with the requested window, so external offset consumers do
+not have a stable cursor/order guarantee for that case. Publisher
 balancing caps a dominant outlet (`countySinglePublisherMax`) on a different
 knob than the one that triggers the search for more outlets
 (`countyPublisherDiversityThreshold`) — tying those together once switched the
