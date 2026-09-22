@@ -145,24 +145,43 @@ half a second. The design keeps those on different actors:
   fire-and-forget put is lost.
 - **Stale reads enqueue a refresh.** All national, state, and county topics
   use the same shared cache. After five minutes, a reader receives the stored
-  feed while an awaited SQS send requests rebuilding. FIFO deduplication and
-  per-feed message groups suppress duplicate work. The worker calls the feed
+  feed while an awaited SQS send requests rebuilding when queue depth permits.
+  FIFO deduplication suppresses duplicate sends for five minutes; per-feed
+  message groups serialize workers. Local coalescing avoids repeated sends in
+  the same instance, but is not a persistent pending-job lease. The worker calls the feed
   service directly, so CloudFront cannot swallow a refresh request. The old
   public `x-warm-refresh` bypass is removed.
-- **The schedule queues at most 50 jobs every five minutes.** Eight core
-  national topics are visited every pass; ten specialist national topics rotate
-  two at a time (25-minute cycle). State general/politics rotate eight per pass
-  (65 minutes); other state topics four per pass (17 hours). County general
-  rotates twenty per pass (about 13 hours 10 minutes), and specialist county
-  topics eight per pass (about 56 hours). These are baseline visits to dormant
-  desks, not freshness guarantees: active desks request their own refresh after
-  five minutes. Failed enqueue passes retry through EventBridge.
+- **The schedule considers at most 30 jobs every five minutes.** National
+  general/politics are visited every pass; other national topics rotate four at
+  a time (20-minute cycle). State general/politics rotate two per pass
+  (4 hours 15 minutes); other state topics two per pass (34 hours). County
+  general rotates fourteen per pass (18 hours 45 minutes), and specialist county
+  topics six per pass (about 30.9 days). Every geography/topic remains in rotation.
+  These are dormant-desk rotation windows before backpressure, not freshness
+  guarantees: active desks request their own refresh after five minutes. The
+  previous 50-job schedule supplied 14,400 jobs/day against observed completion
+  of 13–15k/day, leaving almost no reader capacity. This budget supplies at most
+  8,640/day. The previous documented 56-hour county-specialty cycle was incorrect;
+  its actual cycle was about 23.2 days. Failed enqueue passes retry through EventBridge.
+- **Deep queues defer new work.** `FEED_REFRESH_MAX_PENDING` defaults to 1,000.
+  Scheduled specialties defer at 250 pending jobs, scheduled general at 500,
+  reader specialties at 1,000, and reader general at 2,000. Pending counts include
+  visible, in-flight and delayed jobs and are cached for 30 seconds per instance.
+  These are approximate admission thresholds, not a strict distributed limit.
+  A failed depth read logs a warning and permits enqueueing. Deferrals do not
+  remove existing jobs or stored feeds; later readers and scheduled visits retry.
+  `warmer.pass` records accepted, deferred and failed counts separately.
 - **Three workers leave reader capacity.** SQS invokes the refresh Lambda with
   batch size one and maximum concurrency three under the PIA ten-execution
   regional quota. Failed work retries and eventually enters a dead-letter queue.
   CloudWatch alarms track a backlog over 15 minutes, dead letters, and schedule
   failures. Queue and worker roles are scoped to their required resources;
   payment and economic API secrets are not inherited by refresh functions.
+  The queue retains jobs for four days. `FeedRefreshMaximumConcurrency` defaults
+  to three; only raise it after the regional quota is applied. The optional
+  `NewsApiReservedConcurrency` defaults to zero, which leaves the API unreserved
+  rather than disabling it. See [the reliability rollout](news-reliability-2026-09-21.md)
+  for the proposed allocation and deployment gates.
 - **CloudFront remains controlled by `EnableEdgeCache`.** It caches `limit`,
   `offset`, `sections`, and browser Origin variants, with gzip/Brotli and Origin
   Shield in the API region. Workers prime actual County Post page URLs and

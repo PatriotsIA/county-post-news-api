@@ -8,8 +8,9 @@ function rotate<T>(items: T[], count: number, pass: number): T[] {
   return Array.from({ length: Math.min(count, items.length) }, (_, index) => items[(pass * count + index) % items.length]);
 }
 
-/** Fifty queued builds per pass. Reader-triggered refreshes cover active desks
- * between scheduled visits; dormant specialized desks have a slower rotation. */
+/** Thirty targets per pass (8,640/day before deferrals) leave room below the
+ * observed 13–15k/day worker capacity for reader-triggered refreshes. County
+ * general desks retain the largest slice; every specialty stays in rotation. */
 let poolKey = "";
 let pools: RefreshTarget[][] = [];
 
@@ -21,9 +22,10 @@ export function scheduledTargets(pass: number, stateSlugs = states.map(state => 
   }
   const [national, statePrimary, stateOther, counties, countyOther] = pools;
   return [
-    ...national.slice(0, 8), ...rotate(national.slice(8), 2, pass),
-    ...rotate(statePrimary, 8, pass), ...rotate(stateOther, 4, pass),
-    ...rotate(counties, 20, pass), ...rotate(countyOther, 8, pass),
+    ...national.filter(target => ["general", "politics"].includes(target.topic)),
+    ...rotate(national.filter(target => !["general", "politics"].includes(target.topic)), 4, pass),
+    ...rotate(statePrimary, 2, pass), ...rotate(stateOther, 2, pass),
+    ...rotate(counties, 14, pass), ...rotate(countyOther, 6, pass),
   ];
 }
 
@@ -46,6 +48,7 @@ export async function handler() {
   const warmStates = process.env.WARM_STATES || "all";
   const targets = scheduledTargets(pass, warmStates === "all" ? undefined : warmStates.split(",").map(value => value.trim()));
   let queued = 0;
+  let deferred = 0;
   let failed = 0;
   const started = Date.now();
   const pending = [...targets];
@@ -53,11 +56,14 @@ export async function handler() {
     for (;;) {
       const target = pending.shift();
       if (!target) return;
-      try { await enqueueRefresh(target); queued++; }
+      try {
+        if (await enqueueRefresh(target, "schedule")) queued++;
+        else deferred++;
+      }
       catch (error) { failed++; console.error(JSON.stringify({ event: "warmer.enqueue_failed", ...target, error: String(error) })); }
     }
   }));
-  const result = { queued, failed, targets: targets.length, ms: Date.now() - started };
+  const result = { queued, deferred, failed, targets: targets.length, ms: Date.now() - started };
   console.info(JSON.stringify({ event: "warmer.pass", ...result }));
   if (failed) throw new Error(`${failed} feed refresh jobs could not be queued`);
   return result;

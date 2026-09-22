@@ -3,6 +3,22 @@ Transform: AWS::Serverless-2016-10-31
 Description: County Post News API on a low-cost Lambda Function URL.
 
 Parameters:
+  NewsApiReservedConcurrency:
+    Type: Number
+    Default: 0
+    MinValue: 0
+    MaxValue: 100
+    Description: >-
+      Zero keeps the API unreserved. Set to 20 only after the regional Lambda
+      quota increase is applied and at least 100 slots remain unreserved.
+  FeedRefreshMaximumConcurrency:
+    Type: Number
+    Default: 3
+    MinValue: 2
+    MaxValue: 10
+    Description: >-
+      Keep 3 while the regional Lambda quota is 10. After the quota increase,
+      start with 6 and verify API throttles and worker duration before raising it.
   EnableEdgeCache:
     Type: String
     Default: "false"
@@ -135,6 +151,7 @@ Globals:
 
 Conditions:
   EdgeCacheEnabled: !Equals [!Ref EnableEdgeCache, "true"]
+  ReserveNewsApiConcurrency: !Not [!Equals [!Ref NewsApiReservedConcurrency, "0"]]
 
 Resources:
   NewsApiFunction:
@@ -142,6 +159,10 @@ Resources:
     Properties:
       CodeUri: .
       Handler: dist/src/handler.handler
+      ReservedConcurrentExecutions: !If
+        - ReserveNewsApiConcurrency
+        - !Ref NewsApiReservedConcurrency
+        - !Ref AWS::NoValue
       Policies:
         - S3WritePolicy:
             BucketName: !Ref AdvertisingCreativeBucket
@@ -151,6 +172,10 @@ Resources:
             BucketName: !Ref FeedCacheBucket
         - SQSSendMessagePolicy:
             QueueName: !GetAtt FeedRefreshQueue.QueueName
+        - Statement:
+            - Effect: Allow
+              Action: sqs:GetQueueAttributes
+              Resource: !GetAtt FeedRefreshQueue.Arn
       Environment:
         Variables:
           FEED_CACHE_BUCKET: !Ref FeedCacheBucket
@@ -273,7 +298,9 @@ Resources:
       FifoQueue: true
       SqsManagedSseEnabled: true
       VisibilityTimeout: 1080
-      MessageRetentionPeriod: 86400
+      # Preserve queued work during a backlog; throughput and admission controls
+      # must still bring arrival rate below completion rate.
+      MessageRetentionPeriod: 345600
       RedrivePolicy:
         deadLetterTargetArn: !GetAtt FeedRefreshDeadLetterQueue.Arn
         maxReceiveCount: 5
@@ -302,7 +329,7 @@ Resources:
             BatchSize: 1
             FunctionResponseTypes: [ReportBatchItemFailures]
             ScalingConfig:
-              MaximumConcurrency: 3
+              MaximumConcurrency: !Ref FeedRefreshMaximumConcurrency
 
   FeedRefreshLogGroup:
     Type: AWS::Logs::LogGroup
@@ -320,6 +347,10 @@ Resources:
       Policies:
         - SQSSendMessagePolicy:
             QueueName: !GetAtt FeedRefreshQueue.QueueName
+        - Statement:
+            - Effect: Allow
+              Action: sqs:GetQueueAttributes
+              Resource: !GetAtt FeedRefreshQueue.Arn
       Environment:
         Variables:
           FEED_REFRESH_QUEUE_URL: !Ref FeedRefreshQueue
