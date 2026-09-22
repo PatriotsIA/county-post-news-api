@@ -8,6 +8,7 @@ phases:
       - npm ci
   pre_build:
     commands:
+      - sam validate --lint
       - npm run typecheck
       - npm test
   build:

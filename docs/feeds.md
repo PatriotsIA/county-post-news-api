@@ -145,28 +145,54 @@ half a second. The design keeps those on different actors:
   fire-and-forget put is lost.
 - **Stale reads enqueue a refresh.** All national, state, and county topics
   use the same shared cache. After five minutes, a reader receives the stored
-  feed while an awaited SQS send requests rebuilding. FIFO deduplication and
-  per-feed message groups suppress duplicate work. The worker calls the feed
+  feed while an awaited SQS send requests rebuilding when queue depth permits.
+  FIFO deduplication suppresses duplicate sends for five minutes; per-feed
+  message groups serialize workers. Local coalescing avoids repeated sends in
+  the same instance, but is not a persistent pending-job lease. The worker calls the feed
   service directly, so CloudFront cannot swallow a refresh request. The old
   public `x-warm-refresh` bypass is removed.
-- **The schedule queues at most 50 jobs every five minutes.** Eight core
-  national topics are visited every pass; ten specialist national topics rotate
-  two at a time (25-minute cycle). State general/politics rotate eight per pass
-  (65 minutes); other state topics four per pass (17 hours). County general
-  rotates twenty per pass (about 13 hours 10 minutes), and specialist county
-  topics eight per pass (about 56 hours). These are baseline visits to dormant
-  desks, not freshness guarantees: active desks request their own refresh after
-  five minutes. Failed enqueue passes retry through EventBridge.
-- **Three workers leave reader capacity.** SQS invokes the refresh Lambda with
-  batch size one and maximum concurrency three under the PIA ten-execution
-  regional quota. Failed work retries and eventually enters a dead-letter queue.
-  CloudWatch alarms track a backlog over 15 minutes, dead letters, and schedule
-  failures. Queue and worker roles are scoped to their required resources;
+- **The schedule considers at most 30 jobs every five minutes.** National
+  general/politics are visited every pass; other national topics rotate four at
+  a time (20-minute cycle). State general/politics rotate two per pass
+  (4 hours 15 minutes); other state topics two per pass (34 hours). County
+  general rotates fourteen per pass (18 hours 45 minutes), and specialist county
+  topics six per pass (about 30.9 days). Every geography/topic remains in rotation.
+  These are dormant-desk rotation windows before backpressure, not freshness
+  guarantees: active desks request their own refresh after five minutes. The
+  previous 50-job schedule supplied 14,400 jobs/day against observed completion
+  of 13–15k/day, leaving almost no reader capacity. This budget supplies at most
+  8,640/day. The previous documented 56-hour county-specialty cycle was incorrect;
+  its actual cycle was about 23.2 days. Failed enqueue passes retry through EventBridge.
+- **Deep queues defer new work.** `FEED_REFRESH_MAX_PENDING` defaults to 1,000.
+  Scheduled specialties defer at 250 pending jobs, scheduled general at 500,
+  reader specialties at 1,000, and reader general at 2,000. Pending counts include
+  visible, in-flight and delayed jobs and are cached for 30 seconds per instance.
+  These are approximate admission thresholds, not a strict distributed limit.
+  A failed depth read logs a warning and permits enqueueing. Deferrals do not
+  remove existing jobs or stored feeds; later readers and scheduled visits retry.
+  `warmer.pass` records accepted, deferred and failed counts separately.
+- **Worker concurrency is bounded independently of the account quota.** SQS
+  invokes the refresh Lambda with batch size one and default maximum concurrency
+  six. The regional Lambda quota increased from 10 to 1,000 on September 21;
+  this does not change the worker limit or deploy new code. Failed work retries
+  and eventually enters a dead-letter queue.
+  CloudWatch alarms track API throttles and execution failures, a backlog over
+  15 minutes, dead letters, and schedule failures. All alarm and recovery actions
+  use the shared operations topic confirmed by erik@patriotsinaction.com.
+  Queue and worker roles are scoped to their required resources;
   payment and economic API secrets are not inherited by refresh functions.
+  The queue retains jobs for four days. `FeedRefreshMaximumConcurrency` defaults
+  to six. `NewsApiReservedConcurrency` defaults to twenty, above the observed
+  September 15–22 reader API peak of twelve. This protects capacity but also caps
+  the API; zero removes the reservation without disabling it. At the approved
+  regional quota, 980 executions remain unreserved for workers and other projects.
+  See [the release runbook](news-reliability-2026-09-22.md) for verification and rollback.
 - **CloudFront remains controlled by `EnableEdgeCache`.** It caches `limit`,
   `offset`, `sections`, and browser Origin variants, with gzip/Brotli and Origin
   Shield in the API region. Workers prime actual County Post page URLs and
-  first-feed limits, plus PIA's 40-item feeds. A prime may hit an existing edge
+  first-feed limits. PIA no longer embeds news feeds, so it is excluded from
+  `FEED_EDGE_ORIGINS` in the deployment template. Explicit additional origins
+  remain configurable. A prime may hit an existing edge
   response; the direct worker rebuild has already updated S3. Subsequent edge
   revalidation adopts that update. Health, writes, and errors are not cached.
   CloudFront account verification previously blocked creation; see the current
@@ -189,7 +215,10 @@ when another publisher is slow. Already-started lookups can populate the
 per-URL cache while the runtime remains active;
 ordering is banded by recency (fortnight, 60 days, 180, older, undated last)
 with undated items kept rather than dropped; feeds accept `offset` and report
-`hasMore`/`totalAvailable` for the client's infinite scroll; publisher
+`hasMore`/`totalAvailable` from the full eligible inventory. County Post currently
+loads more by increasing `limit` and replacing its feed. Dominant-publisher
+selection can shift with the requested window, so external offset consumers do
+not have a stable cursor/order guarantee for that case. Publisher
 balancing caps a dominant outlet (`countySinglePublisherMax`) on a different
 knob than the one that triggers the search for more outlets
 (`countyPublisherDiversityThreshold`) — tying those together once switched the
@@ -208,12 +237,14 @@ diversity search off by accident.
   `aws --profile pia cloudformation describe-stack-events --stack-name county-news-api --region us-east-2`; CI
   test output is in the CodeBuild log group.
 
-## PIA integration
+## PIA architecture and locality contracts
 
-PIA reads the API's locality/topic decisions directly, validates the response
-scope and topic, and uses general/politics on state landing pages. Its county
-elections widget maps to `politics`; video selects video items from the shared
-general feed. It does not repeat County Post's browser locality filter.
+Patriots in Action, including state and county pages, links out to The County
+Post instead of embedding this news API. PIA retains Vimeo and Mighty API feeds;
+those integrations and shared RSS support must remain. Unused PIA news client
+code or environment variables do not establish an active news dependency.
+County Post still uses this API, cache, queue and refresh workers. Existing
+API routes, CORS allowances and explicit origin configuration remain compatible.
 
 Louisiana display names and search queries use **Parish**, including nearby
 expansion. Locality matches that display name too. The URL contract retains

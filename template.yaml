@@ -3,6 +3,23 @@ Transform: AWS::Serverless-2016-10-31
 Description: County Post News API on a low-cost Lambda Function URL.
 
 Parameters:
+  NewsApiReservedConcurrency:
+    Type: Number
+    Default: 20
+    MinValue: 0
+    MaxValue: 100
+    Description: >-
+      Protect 20 reader API executions using the approved regional quota.
+      This is also an API ceiling. Zero removes the reservation; it does not
+      disable the API. Keep at least 100 regional executions unreserved.
+  FeedRefreshMaximumConcurrency:
+    Type: Number
+    Default: 6
+    MinValue: 2
+    MaxValue: 10
+    Description: >-
+      Six workers use the approved regional quota to drain refresh backlog.
+      Lower to 3 for capacity rollback; verify throughput before raising it.
   EnableEdgeCache:
     Type: String
     Default: "false"
@@ -135,6 +152,7 @@ Globals:
 
 Conditions:
   EdgeCacheEnabled: !Equals [!Ref EnableEdgeCache, "true"]
+  ReserveNewsApiConcurrency: !Not [!Equals [!Ref NewsApiReservedConcurrency, "0"]]
 
 Resources:
   NewsApiFunction:
@@ -142,6 +160,10 @@ Resources:
     Properties:
       CodeUri: .
       Handler: dist/src/handler.handler
+      ReservedConcurrentExecutions: !If
+        - ReserveNewsApiConcurrency
+        - !Ref NewsApiReservedConcurrency
+        - !Ref AWS::NoValue
       Policies:
         - S3WritePolicy:
             BucketName: !Ref AdvertisingCreativeBucket
@@ -151,6 +173,10 @@ Resources:
             BucketName: !Ref FeedCacheBucket
         - SQSSendMessagePolicy:
             QueueName: !GetAtt FeedRefreshQueue.QueueName
+        - Statement:
+            - Effect: Allow
+              Action: sqs:GetQueueAttributes
+              Resource: !GetAtt FeedRefreshQueue.Arn
       Environment:
         Variables:
           FEED_CACHE_BUCKET: !Ref FeedCacheBucket
@@ -273,7 +299,9 @@ Resources:
       FifoQueue: true
       SqsManagedSseEnabled: true
       VisibilityTimeout: 1080
-      MessageRetentionPeriod: 86400
+      # Preserve queued work during a backlog; throughput and admission controls
+      # must still bring arrival rate below completion rate.
+      MessageRetentionPeriod: 345600
       RedrivePolicy:
         deadLetterTargetArn: !GetAtt FeedRefreshDeadLetterQueue.Arn
         maxReceiveCount: 5
@@ -293,7 +321,8 @@ Resources:
           FEED_CACHE_BUCKET: !Ref FeedCacheBucket
           FEED_EDGE_URL: !If [EdgeCacheEnabled, !Sub "https://${NewsApiDistribution.DomainName}", ""]
           REQUEST_TIMEOUT_MS: "8000"
-          FEED_EDGE_ORIGINS: "https://thecountypost.com,https://patriotsinaction.com"
+          # PIA links out to County Post; it no longer consumes news feeds.
+          FEED_EDGE_ORIGINS: "https://thecountypost.com"
       Events:
         RefreshQueue:
           Type: SQS
@@ -302,7 +331,7 @@ Resources:
             BatchSize: 1
             FunctionResponseTypes: [ReportBatchItemFailures]
             ScalingConfig:
-              MaximumConcurrency: 3
+              MaximumConcurrency: !Ref FeedRefreshMaximumConcurrency
 
   FeedRefreshLogGroup:
     Type: AWS::Logs::LogGroup
@@ -320,6 +349,10 @@ Resources:
       Policies:
         - SQSSendMessagePolicy:
             QueueName: !GetAtt FeedRefreshQueue.QueueName
+        - Statement:
+            - Effect: Allow
+              Action: sqs:GetQueueAttributes
+              Resource: !GetAtt FeedRefreshQueue.Arn
       Environment:
         Variables:
           FEED_REFRESH_QUEUE_URL: !Ref FeedRefreshQueue
@@ -331,9 +364,53 @@ Resources:
             Schedule: rate(5 minutes)
             Description: Queue bounded national, state, and county feed refreshes.
 
+  NewsApiThrottleAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmActions:
+        - !Sub arn:${AWS::Partition}:sns:${AWS::Region}:${AWS::AccountId}:pia-operations-alerts
+      OKActions:
+        - !Sub arn:${AWS::Partition}:sns:${AWS::Region}:${AWS::AccountId}:pia-operations-alerts
+      AlarmDescription: Reader API requests are being throttled; check its reservation and regional concurrency before increasing workers.
+      Namespace: AWS/Lambda
+      MetricName: Throttles
+      Dimensions:
+        - Name: FunctionName
+          Value: !Ref NewsApiFunction
+      Statistic: Sum
+      Period: 300
+      EvaluationPeriods: 1
+      Threshold: 0
+      ComparisonOperator: GreaterThanThreshold
+      TreatMissingData: notBreaching
+
+  NewsApiExecutionFailureAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmActions:
+        - !Sub arn:${AWS::Partition}:sns:${AWS::Region}:${AWS::AccountId}:pia-operations-alerts
+      OKActions:
+        - !Sub arn:${AWS::Partition}:sns:${AWS::Region}:${AWS::AccountId}:pia-operations-alerts
+      AlarmDescription: Reader API execution failed or timed out; inspect Lambda logs and public feed health.
+      Namespace: AWS/Lambda
+      MetricName: Errors
+      Dimensions:
+        - Name: FunctionName
+          Value: !Ref NewsApiFunction
+      Statistic: Sum
+      Period: 300
+      EvaluationPeriods: 1
+      Threshold: 0
+      ComparisonOperator: GreaterThanThreshold
+      TreatMissingData: notBreaching
+
   FeedRefreshBacklogAlarm:
     Type: AWS::CloudWatch::Alarm
     Properties:
+      AlarmActions:
+        - !Sub arn:${AWS::Partition}:sns:${AWS::Region}:${AWS::AccountId}:pia-operations-alerts
+      OKActions:
+        - !Sub arn:${AWS::Partition}:sns:${AWS::Region}:${AWS::AccountId}:pia-operations-alerts
       AlarmDescription: Feed refreshes have waited over 15 minutes; inspect worker capacity and source failures.
       Namespace: AWS/SQS
       MetricName: ApproximateAgeOfOldestMessage
@@ -350,6 +427,10 @@ Resources:
   FeedRefreshDeadLetterAlarm:
     Type: AWS::CloudWatch::Alarm
     Properties:
+      AlarmActions:
+        - !Sub arn:${AWS::Partition}:sns:${AWS::Region}:${AWS::AccountId}:pia-operations-alerts
+      OKActions:
+        - !Sub arn:${AWS::Partition}:sns:${AWS::Region}:${AWS::AccountId}:pia-operations-alerts
       AlarmDescription: Feed refreshes exhausted retries; inspect the dead-letter queue.
       Namespace: AWS/SQS
       MetricName: ApproximateNumberOfMessagesVisible
@@ -366,6 +447,10 @@ Resources:
   FeedWarmerFailureAlarm:
     Type: AWS::CloudWatch::Alarm
     Properties:
+      AlarmActions:
+        - !Sub arn:${AWS::Partition}:sns:${AWS::Region}:${AWS::AccountId}:pia-operations-alerts
+      OKActions:
+        - !Sub arn:${AWS::Partition}:sns:${AWS::Region}:${AWS::AccountId}:pia-operations-alerts
       AlarmDescription: Scheduled feed refresh jobs could not be queued.
       Namespace: AWS/Lambda
       MetricName: Errors
@@ -588,6 +673,10 @@ Resources:
   AtlasBuildFailureAlarm:
     Type: AWS::CloudWatch::Alarm
     Properties:
+      AlarmActions:
+        - !Sub arn:${AWS::Partition}:sns:${AWS::Region}:${AWS::AccountId}:pia-operations-alerts
+      OKActions:
+        - !Sub arn:${AWS::Partition}:sns:${AWS::Region}:${AWS::AccountId}:pia-operations-alerts
       AlarmDescription: Atlas ingestion reported a failed CodeBuild run.
       Namespace: AWS/CodeBuild
       MetricName: FailedBuilds
@@ -604,6 +693,10 @@ Resources:
   AtlasStaleDataAlarm:
     Type: AWS::CloudWatch::Alarm
     Properties:
+      AlarmActions:
+        - !Sub arn:${AWS::Partition}:sns:${AWS::Region}:${AWS::AccountId}:pia-operations-alerts
+      OKActions:
+        - !Sub arn:${AWS::Partition}:sns:${AWS::Region}:${AWS::AccountId}:pia-operations-alerts
       AlarmDescription: No successful validated atlas publication has been observed for six days.
       Namespace: CountyPost/Atlas
       MetricName: SuccessfulPublish
@@ -618,6 +711,10 @@ Resources:
   AtlasScheduleFailureAlarm:
     Type: AWS::CloudWatch::Alarm
     Properties:
+      AlarmActions:
+        - !Sub arn:${AWS::Partition}:sns:${AWS::Region}:${AWS::AccountId}:pia-operations-alerts
+      OKActions:
+        - !Sub arn:${AWS::Partition}:sns:${AWS::Region}:${AWS::AccountId}:pia-operations-alerts
       AlarmDescription: EventBridge could not start the atlas ingestion project.
       Namespace: AWS/Events
       MetricName: FailedInvocations

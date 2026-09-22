@@ -54,13 +54,21 @@ export async function getFeed(
     },
   });
   const feedItems = topic === "opinion" ? dedupeItems([featuredCountyPostOpinion, ...feed.items]) : feed.items;
-  // Balancing and ordering apply to the whole result, then the requested
-  // window is taken from it, so paging through a feed keeps one stable order
-  // rather than re-balancing each page against itself.
+  // Preserve the request-sized publisher mix used by the frontend's increasing
+  // limit requests. Dominant-publisher selections can change as that limit grows;
+  // they are not a stable ordering contract for offset-based pagination.
   const ordered =
     scope.level === "county" && topic === "general"
       ? balanceCountyPublisherMix(feedItems, start + cappedLimit)
       : feedItems;
+  // Availability describes the full publisher-eligible inventory, not just the
+  // current selection. Counting the latter incorrectly hides Load More even
+  // when a larger limit can return additional stories from this same snapshot.
+  // Use the largest supported request so unequal publisher allowances neither
+  // undercount available alternatives nor advertise rows beyond that window.
+  const totalAvailable = scope.level === "county" && topic === "general"
+    ? balanceCountyPublisherMix(feedItems, config.maxLimit).length
+    : feedItems.length;
   const sliced = ordered.slice(start, start + cappedLimit);
   const publisherBalanceApplied =
     scope.level === "county" &&
@@ -79,8 +87,8 @@ export async function getFeed(
       count: sliced.length,
       offset: start,
       // What the client needs to know whether another page exists.
-      totalAvailable: ordered.length,
-      hasMore: start + sliced.length < ordered.length,
+      totalAvailable,
+      hasMore: start + sliced.length < totalAvailable,
       ageSeconds: Math.max(0, Math.floor((Date.now() - Date.parse(feed.meta.fetchedAt)) / 1000)),
       stale: Date.now() - Date.parse(feed.meta.fetchedAt) >= config.cacheTtlSeconds * 1000,
       sourcesUsed: publisherBalanceApplied

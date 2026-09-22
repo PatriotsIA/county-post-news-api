@@ -145,7 +145,7 @@ After the first stack deployment:
 2. Confirm the build validates the ACS county count and logs `atlas.publish.succeeded`.
 3. In `AtlasDataBucketName`, confirm a version prefix exists and `manifest/current.json` points to it.
 4. Call `/v1/counties/arkansas/polk/atlas` and confirm `meta.version` matches the manifest.
-5. Attach SNS or another notification action to `AtlasBuildFailureAlarm`, `AtlasScheduleFailureAlarm`, and `AtlasStaleDataAlarm`. The template creates alarms but cannot choose an account-specific recipient.
+5. Verify `AtlasBuildFailureAlarm`, `AtlasScheduleFailureAlarm`, and `AtlasStaleDataAlarm` retain their ALARM and OK actions to `pia-operations-alerts`, whose confirmed email destination is `erik@patriotsinaction.com`.
 
 `CensusApiKey` is free but required for live Census Data API queries as of May 2026. Offline fixture ingestion does not need it. `FRED_API_KEY` is used by the API's development fallback and existing economic endpoint; FRED scheduled snapshot ingestion is not yet enabled.
 
@@ -346,10 +346,12 @@ Use `aws --profile pia` in account `426771918029`, region `us-east-2`.
 The production pipeline is `county-news-api-pipeline`, reading
 `PatriotsIA/county-post-news-api` branch `main`.
 
-The template adds a FIFO refresh queue, FIFO dead-letter queue, three-concurrent
-SQS worker, and queue/schedule alarms. The existing five-minute warmer now
-queues up to fifty jobs, and stale API reads queue on-demand jobs for all scopes
-and topics. The queue visibility timeout is six times the worker timeout.
+The template adds a FIFO refresh queue, FIFO dead-letter queue, six-concurrent
+SQS worker, and queue/schedule alarms. The five-minute warmer considers up to
+thirty jobs, and stale API reads request on-demand jobs for all scopes and topics.
+Queue-depth admission favors readers and general desks; see `docs/feeds.md` for
+thresholds and dormant rotation tradeoffs. The queue visibility timeout is six
+times the worker timeout and retention is four days.
 Allow the CloudFormation deploy role to manage only this stack's refresh queues.
 
 Set `EnableEdgeCache=true` in the pipeline's CloudFormation parameter overrides,
@@ -363,10 +365,21 @@ cache headers, queue drain, and `feed.refresh` success logs. Then set County Pos
 Amplify app `d2z6lt4e5q50in`'s `VITE_NEWS_API_URL` to `NewsApiEdgeUrl`, preserving
 all other app/branch variables, and rebuild `main`. Weather, atlas, sources, and
 checkout share this base URL; preserve their distinct caching and POST behavior.
-The separate PIA frontend can continue to call the Function URL and still gets
-queued refreshes; migrating its build-time URL is an independent rollout.
+PIA does not embed news feeds on its home, state or county pages; it links to
+County Post and retains its Vimeo and Mighty API feeds. No PIA news URL migration
+or Amplify rebuild is needed for this rollout. The template primes only County
+Post's origin; explicit additional origins remain configurable through
+`FEED_EDGE_ORIGINS`. Existing CORS/API compatibility is preserved.
 
-Check `FeedRefreshBacklogAlarm`, `FeedRefreshDeadLetterAlarm`, and
-`FeedWarmerFailureAlarm`. No notification recipient is configured automatically.
+Check `NewsApiThrottleAlarm`, `NewsApiExecutionFailureAlarm`,
+`FeedRefreshBacklogAlarm`, `FeedRefreshDeadLetterAlarm`, and
+`FeedWarmerFailureAlarm`. All eight stack alarms route ALARM and OK notifications
+to `pia-operations-alerts`, whose confirmed email destination is
+`erik@patriotsinaction.com`; preserve these actions in future releases.
 Rollback the frontend URL to `NewsApiUrl` and rebuild before disabling the edge
 in a later stack deployment. Retain the shared cache and queue pipeline.
+
+See [the September 22 release runbook](news-reliability-2026-09-22.md) for the
+20-API / six-worker allocation, pipeline parameter preservation, release
+verification and rollback. The earlier [September 21 record](news-reliability-2026-09-21.md)
+documents the retention-only mitigation and original backlog diagnosis.
