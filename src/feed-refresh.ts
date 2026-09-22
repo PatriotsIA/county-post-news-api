@@ -119,7 +119,8 @@ export async function enqueueRefresh(target: RefreshTarget, source: RefreshSourc
   }
 }
 
-/** Prime the exact first-page variants used by County Post and PIA. */
+/** Prime County Post's first-page variants. Explicit legacy origins retain
+ * their own feed limit; PIA is excluded from the template's default warm targets. */
 export function edgePaths(target: RefreshTarget, origin = "https://thecountypost.com"): string[] {
   const feed = targetPath(target);
   const paths = [`${feed}?limit=${origin.includes("patriotsinaction.com") ? 40 : target.topic === "general" ? 16 : 12}`];

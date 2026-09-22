@@ -320,7 +320,8 @@ Resources:
           FEED_CACHE_BUCKET: !Ref FeedCacheBucket
           FEED_EDGE_URL: !If [EdgeCacheEnabled, !Sub "https://${NewsApiDistribution.DomainName}", ""]
           REQUEST_TIMEOUT_MS: "8000"
-          FEED_EDGE_ORIGINS: "https://thecountypost.com,https://patriotsinaction.com"
+          # PIA links out to County Post; it no longer consumes news feeds.
+          FEED_EDGE_ORIGINS: "https://thecountypost.com"
       Events:
         RefreshQueue:
           Type: SQS
