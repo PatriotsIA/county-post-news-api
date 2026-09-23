@@ -27,6 +27,7 @@ ALARM_IDS = (
     "AtlasScheduleFailureAlarm",
     "NewsApiThrottleAlarm",
     "NewsApiExecutionFailureAlarm",
+    "NewsApiHttpFailureAlarm",
 )
 
 
@@ -142,6 +143,8 @@ def main():
         ("queue_oldest_age_peak", "AWS/SQS", "ApproximateAgeOfOldestMessage", "QueueName", queue_name, "Maximum"),
         ("api_throttles", "AWS/Lambda", "Throttles", "FunctionName", api, "Sum"),
         ("api_errors", "AWS/Lambda", "Errors", "FunctionName", api, "Sum"),
+        ("api_http_5xx", "AWS/Lambda", "Url5xxCount", "FunctionName", api, "Sum"),
+        ("api_url_requests", "AWS/Lambda", "UrlRequestCount", "FunctionName", api, "Sum"),
         ("worker_throttles", "AWS/Lambda", "Throttles", "FunctionName", worker, "Sum"),
         ("worker_errors", "AWS/Lambda", "Errors", "FunctionName", worker, "Sum"),
         ("api_peak", "AWS/Lambda", "ConcurrentExecutions", "FunctionName", api, "Maximum"),

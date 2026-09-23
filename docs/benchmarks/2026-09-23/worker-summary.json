@@ -1,0 +1,107 @@
+{
+  "baseline-1536": {
+    "runs": 5,
+    "warmMedianMs": 63735.33,
+    "warmMaxMs": 63961.11,
+    "GBSecondsPerBatch": 95.602995,
+    "requests": 364,
+    "unrecordedFetches": 39,
+    "signature": [
+      [
+        "national",
+        120,
+        "dcc24cfbece43c16efbdae18b0ee08da79fb7593eef4b142a1f9edde79c2fb23"
+      ],
+      [
+        "state",
+        120,
+        "711aac004db74b81f67f5e91fbafa57335d30f438a1ca78f2d8af204c4107574"
+      ],
+      [
+        "county",
+        120,
+        "cfd5fa15e7c30c8bcba577ff4802d80870f266d178379b32cb6d3b40a3ff92b8"
+      ],
+      [
+        "neighbor",
+        120,
+        "f702ee7fda2bfddbe7cd11da00b9d8942087dc76c194dbf395bcccd84f76d417"
+      ],
+      [
+        "specialty",
+        4,
+        "4518756d377f7fc16aa56b5955fb21ae87c85ab81446e5e3eafc4ba6e7bc8726"
+      ]
+    ]
+  },
+  "candidate-1024": {
+    "runs": 5,
+    "warmMedianMs": 65421.64,
+    "warmMaxMs": 65576.1,
+    "GBSecondsPerBatch": 65.42164,
+    "requests": 353,
+    "unrecordedFetches": 39,
+    "signature": [
+      [
+        "national",
+        120,
+        "dcc24cfbece43c16efbdae18b0ee08da79fb7593eef4b142a1f9edde79c2fb23"
+      ],
+      [
+        "state",
+        120,
+        "711aac004db74b81f67f5e91fbafa57335d30f438a1ca78f2d8af204c4107574"
+      ],
+      [
+        "county",
+        120,
+        "cfd5fa15e7c30c8bcba577ff4802d80870f266d178379b32cb6d3b40a3ff92b8"
+      ],
+      [
+        "neighbor",
+        120,
+        "f702ee7fda2bfddbe7cd11da00b9d8942087dc76c194dbf395bcccd84f76d417"
+      ],
+      [
+        "specialty",
+        4,
+        "4518756d377f7fc16aa56b5955fb21ae87c85ab81446e5e3eafc4ba6e7bc8726"
+      ]
+    ]
+  },
+  "candidate-1536": {
+    "runs": 5,
+    "warmMedianMs": 63776.369999999995,
+    "warmMaxMs": 63846.41,
+    "GBSecondsPerBatch": 95.664555,
+    "requests": 353,
+    "unrecordedFetches": 39,
+    "signature": [
+      [
+        "national",
+        120,
+        "dcc24cfbece43c16efbdae18b0ee08da79fb7593eef4b142a1f9edde79c2fb23"
+      ],
+      [
+        "state",
+        120,
+        "711aac004db74b81f67f5e91fbafa57335d30f438a1ca78f2d8af204c4107574"
+      ],
+      [
+        "county",
+        120,
+        "cfd5fa15e7c30c8bcba577ff4802d80870f266d178379b32cb6d3b40a3ff92b8"
+      ],
+      [
+        "neighbor",
+        120,
+        "f702ee7fda2bfddbe7cd11da00b9d8942087dc76c194dbf395bcccd84f76d417"
+      ],
+      [
+        "specialty",
+        4,
+        "4518756d377f7fc16aa56b5955fb21ae87c85ab81446e5e3eafc4ba6e7bc8726"
+      ]
+    ]
+  }
+}

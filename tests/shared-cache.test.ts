@@ -70,3 +70,40 @@ it("retains the original snapshot without resetting its age during a degraded re
   expect(result).toEqual({ articles: ["existing"] });
   expect(send.mock.calls.some(([command]) => command instanceof PutObjectCommand)).toBe(false);
 });
+
+it("coalesces concurrent shared misses through the completed S3 write", async () => {
+  const send = vi.spyOn(S3Client.prototype, "send").mockImplementation(async (command: unknown) => {
+    if (command instanceof GetObjectCommand) throw new Error("NoSuchKey");
+    return {} as never;
+  });
+  const build = vi.fn(async () => ({ articles: ["new"] }));
+  const results = await Promise.all(Array.from({ length: 20 }, () => cachedShared("feed:burst", 300, build)));
+  expect(results.every(result => result.articles[0] === "new")).toBe(true);
+  expect(build).toHaveBeenCalledOnce();
+  expect(send).toHaveBeenCalledTimes(2);
+});
+
+it("provider fallback retains its timestamp across cold starts and never overwrites S3", async () => {
+  const snapshot = { storedAt: Date.now() - 3600_000, value: { fetchedAt: "2026-09-23T10:00:00Z", data: [1] } };
+  const send = vi.spyOn(S3Client.prototype, "send").mockResolvedValue({ Body: { transformToString: async () => JSON.stringify(snapshot) } } as never);
+  vi.spyOn(console, "warn").mockImplementation(() => {});
+  const build = vi.fn(async (): Promise<typeof snapshot.value & { stale?: boolean }> => { throw new Error("Provider timeout"); });
+  const result = await cachedShared("provider:test", 300, build, { revalidate: true, staleTtlSeconds: 7200, staleIfError: old => ({ ...old, stale: true }) });
+  expect(result).toEqual({ ...snapshot.value, stale: true });
+  expect(send.mock.calls.every(([command]) => command instanceof GetObjectCommand)).toBe(true);
+});
+
+it("refuses a provider fallback older than its limit", async () => {
+  vi.spyOn(S3Client.prototype, "send").mockResolvedValue(stored(7201) as never);
+  await expect(cachedShared("provider:expired", 300, async () => { throw new Error("timeout"); }, {
+    revalidate: true, staleTtlSeconds: 7200, staleIfError: old => old,
+  })).rejects.toThrow("timeout");
+});
+
+it("does not mistake a partial provider snapshot for a full-TTL cache hit", async () => {
+  vi.spyOn(S3Client.prototype, "send").mockImplementation(async (command: unknown) => command instanceof GetObjectCommand
+    ? { Body: { transformToString: async () => JSON.stringify({ storedAt: Date.now() - 120_000, freshForSeconds: 60, value: { partial: true } }) } } as never : {} as never);
+  const build = vi.fn(async () => ({ partial: false }));
+  expect(await cachedShared("provider:partial", 3600, build, { revalidate: true })).toEqual({ partial: false });
+  expect(build).toHaveBeenCalledOnce();
+});

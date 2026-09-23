@@ -61,10 +61,11 @@ export async function handleRequest(request: ApiRequest): Promise<ApiResponse> {
       } else if (parts[1] === "counties" && parts[2] && parts[3] && parts[4] === "economic-data" && parts.length === 5) {
         const county = getCounty(parts[2], parts[3]);
         if (!county) throw new ApiError(404, "Unknown county");
+        const economicData = await getCountyFredData(county);
         response = json(
           200,
-          await getCountyFredData(county),
-          `public, max-age=1800, s-maxage=${config.fredCacheTtlSeconds}`,
+          economicData,
+          economicData.meta.stale || economicData.meta.partial ? "public, max-age=60, s-maxage=60" : `public, max-age=1800, s-maxage=${config.fredCacheTtlSeconds}, stale-if-error=86400`,
         );
       } else if (parts[1] === "counties" && parts[2] && parts[3] && parts[4] === "public-notices" && parts.length === 5) {
         const county = getCounty(parts[2], parts[3]);
@@ -95,7 +96,8 @@ export async function handleRequest(request: ApiRequest): Promise<ApiResponse> {
       } else if (parts[1] === "markets" && parts[2] === "metals" && parts.length === 3) {
         response = json(200, await getMetalsTicker());
       } else if (parts[1] === "markets" && parts[2] === "cattle" && parts.length === 3) {
-        response = json(200, await getCattleTicker());
+        const cattle = await getCattleTicker();
+        response = json(200, cattle, cattle.stale || cattle.partial ? "public, max-age=60, s-maxage=60" : `public, max-age=${config.metalsCacheTtlSeconds}, s-maxage=${config.metalsCacheTtlSeconds}, stale-if-error=3600`);
       } else {
         response = json(404, { error: "Not found" });
       }
@@ -113,7 +115,7 @@ export async function handleRequest(request: ApiRequest): Promise<ApiResponse> {
       error instanceof AtlasServiceError;
     const message = isExpectedError ? error.message : "Internal server error";
     const status = isExpectedError ? error.statusCode : 500;
-    response = json(status, { error: message, durationMs: Date.now() - startedAt }, request.method === "POST" ? "no-store" : undefined);
+    response = json(status, { error: message, durationMs: Date.now() - startedAt }, "no-store");
   }
 
   const corsResponse = withCorsHeaders(response, request.headers);

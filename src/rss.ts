@@ -1,5 +1,5 @@
 import { XMLParser } from "fast-xml-parser";
-import { config } from "./config.js";
+import { cachedRssSource } from "./rss-source-cache.js";
 import type { NewsFeedItem } from "./types.js";
 
 type RssOptions = {
@@ -17,26 +17,18 @@ const parser = new XMLParser({
 });
 
 export async function fetchRssItems(feedUrl: string, options: RssOptions = {}) {
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), config.requestTimeoutMs);
-  try {
-    const response = await fetch(feedUrl, {
-      signal: controller.signal,
-      headers: { "user-agent": "county-post-news-api/1.0" },
-    });
-    if (!response.ok) throw new Error(`RSS fetch failed: ${response.status}`);
-    return parseRss(await response.text(), options);
-  } finally {
-    clearTimeout(timeout);
-  }
+  return parseRss(await cachedRssSource(feedUrl, parseDocument), options);
 }
 
-function parseRss(xml: string, options: RssOptions): NewsFeedItem[] {
-  const document = parser.parse(xml) as {
-    rss?: { channel?: { title?: string; item?: unknown } };
-    feed?: { title?: unknown; entry?: unknown };
-  };
+type RssDocument = { rss?: { channel?: { title?: string; item?: unknown } }; feed?: { title?: unknown; entry?: unknown } };
+
+function parseDocument(xml: string): RssDocument {
+  const document = parser.parse(xml) as RssDocument;
   if (!document.rss?.channel && !document.feed) throw new Error("Response is not an RSS or Atom feed");
+  return document;
+}
+
+function parseRss(document: RssDocument, options: RssOptions): NewsFeedItem[] {
 
   const rssItems = asArray(document.rss?.channel?.item);
   if (rssItems.length) {

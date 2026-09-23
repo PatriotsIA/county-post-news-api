@@ -1,4 +1,4 @@
-import { cached } from "./cache.js";
+import { cached, cachedShared } from "./cache.js";
 import { config } from "./config.js";
 
 const metalNames = ["gold", "silver", "platinum", "palladium"] as const;
@@ -69,6 +69,9 @@ type CattleTickerItem = {
 export type CattleTickerResponse = {
   updatedAt?: string;
   items: CattleTickerItem[];
+  stale?: boolean;
+  fetchedAt?: string;
+  partial?: boolean;
 };
 
 export class MarketServiceError extends Error {
@@ -128,12 +131,16 @@ export function getCattleTicker() {
     throw new MarketServiceError(503, "Cattle ticker is awaiting USDA MARS API configuration.");
   }
 
-  return cached("markets:cattle:recent", config.metalsCacheTtlSeconds, async () => {
+  return cachedShared<CattleTickerResponse>("markets:cattle:recent", config.metalsCacheTtlSeconds, async () => {
     const reports = await Promise.allSettled([
       fetchMarsCattleReport({ key: "feeder-cattle", label: "Feeder cattle", reportId: 1280, commodity: "Feeder Cattle" }),
       fetchMarsCattleReport({ key: "slaughter-cattle", label: "Slaughter cattle", reportId: 2154, commodity: "Slaughter Cattle" }),
     ]);
     const items = reports.flatMap((report) => (report.status === "fulfilled" ? [report.value] : []));
+    reports.forEach((report, index) => {
+      if (report.status === "rejected") console.warn(JSON.stringify({ event: "mars.report_failed", reportId: index === 0 ? 1280 : 2154,
+        errorType: report.reason instanceof Error ? report.reason.name : "UnknownError" }));
+    });
     if (!items.length) {
       throw new MarketServiceError(502, "USDA MARS cattle provider is unavailable.");
     }
@@ -141,7 +148,14 @@ export function getCattleTicker() {
     return {
       updatedAt: newestValue(items.map((item) => item.reportDate)),
       items,
+      fetchedAt: new Date().toISOString(),
+      partial: items.length < reports.length,
     };
+  }, {
+    revalidate: true, staleTtlSeconds: 86400,
+    staleIfError: previous => ({ ...previous, stale: true }),
+    shouldReplace: (before, after) => (after as CattleTickerResponse).items.length >= (before as CattleTickerResponse).items.length,
+    ttlForValue: value => value.partial ? 60 : config.metalsCacheTtlSeconds,
   });
 }
 
@@ -160,7 +174,7 @@ async function fetchMarsCattleReport(report: {
       authorization: `Basic ${Buffer.from(`${config.usdaMarsApiKey}:`).toString("base64")}`,
       "user-agent": "county-post-news-api/1.0",
     },
-    signal: AbortSignal.timeout(config.requestTimeoutMs),
+    signal: AbortSignal.timeout(config.marsTimeoutMs),
   });
   if (!response.ok) {
     throw new MarketServiceError(502, `USDA MARS report ${report.reportId} is unavailable.`);

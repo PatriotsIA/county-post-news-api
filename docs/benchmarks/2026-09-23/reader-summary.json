@@ -1,0 +1,290 @@
+{
+  "baseline-1536": {
+    "warmMedianBatchMs": 32053.614999999998,
+    "warmMaxBatchMs": 32079.48,
+    "warmGBSecondsPerBatch": 48.0804225,
+    "memoryPeakMB": 448,
+    "requests": 332,
+    "cases": {
+      "national": {
+        "medianMs": 5023.895432999998,
+        "maxMs": 5026.882832000003
+      },
+      "national:memory-hit": {
+        "medianMs": 0.030864500004099682,
+        "maxMs": 0.03291100001661107
+      },
+      "state": {
+        "medianMs": 4483.585523000002,
+        "maxMs": 4502.878608999978
+      },
+      "state:memory-hit": {
+        "medianMs": 0.03494399999908637,
+        "maxMs": 0.03674200002569705
+      },
+      "county": {
+        "medianMs": 5458.734056500005,
+        "maxMs": 5512.726410000003
+      },
+      "county:memory-hit": {
+        "medianMs": 3.8301625000167405,
+        "maxMs": 3.9224230000108946
+      },
+      "neighbor": {
+        "medianMs": 5759.666752999998,
+        "maxMs": 5782.571798000019
+      },
+      "neighbor:memory-hit": {
+        "medianMs": 4.130560000005062,
+        "maxMs": 14.233513999992283
+      },
+      "specialty": {
+        "medianMs": 11125.81187949999,
+        "maxMs": 11131.203842000046
+      },
+      "specialty:memory-hit": {
+        "medianMs": 0.020643499985453673,
+        "maxMs": 0.024658000009367242
+      },
+      "national:shared-hit": {
+        "medianMs": 41.908453499985626,
+        "maxMs": 99.43239599998924
+      },
+      "state:shared-hit": {
+        "medianMs": 31.43748300000152,
+        "maxMs": 53.65961900004186
+      },
+      "county:shared-hit": {
+        "medianMs": 29.44215700001223,
+        "maxMs": 36.49430600000778
+      },
+      "neighbor:shared-hit": {
+        "medianMs": 27.838012500011246,
+        "maxMs": 35.2416390000144
+      },
+      "specialty:shared-hit": {
+        "medianMs": 27.425193999995827,
+        "maxMs": 30.5450739999942
+      }
+    },
+    "signatures": [
+      [
+        "national",
+        120,
+        "867a97f86d37ad52d53de37fe7da567612bd368dbf32103d0324c3810a4aeec1"
+      ],
+      [
+        "state",
+        120,
+        "17fb68d1eacb2b6fd70f1287e6bf72627bda00b66be66e439719828a26f47efe"
+      ],
+      [
+        "county",
+        120,
+        "35822551305ab333d39fa0fc4ec75d9c7a68704de4de96ef7ad4fee179c418e3"
+      ],
+      [
+        "neighbor",
+        120,
+        "c3246b36989ba68c6b5f2f1b9495a38d2b99c30f296741319258581ab65fbf7f"
+      ],
+      [
+        "specialty",
+        4,
+        "4518756d377f7fc16aa56b5955fb21ae87c85ab81446e5e3eafc4ba6e7bc8726"
+      ]
+    ]
+  },
+  "candidate-1024": {
+    "warmMedianBatchMs": 33788.845,
+    "warmMaxBatchMs": 33882.02,
+    "warmGBSecondsPerBatch": 33.788845,
+    "memoryPeakMB": 483,
+    "requests": 321,
+    "cases": {
+      "national": {
+        "medianMs": 5388.456716000004,
+        "maxMs": 5400.592212000003
+      },
+      "national:memory-hit": {
+        "medianMs": 0.04168050000589574,
+        "maxMs": 0.053372000002127606
+      },
+      "state": {
+        "medianMs": 4600.177435499998,
+        "maxMs": 4636.701512999993
+      },
+      "state:memory-hit": {
+        "medianMs": 0.04422049999629962,
+        "maxMs": 0.05963500001234934
+      },
+      "county": {
+        "medianMs": 6002.315022499999,
+        "maxMs": 6044.938718999998
+      },
+      "county:memory-hit": {
+        "medianMs": 13.906725500011817,
+        "maxMs": 14.199403000005987
+      },
+      "neighbor": {
+        "medianMs": 6471.934240999995,
+        "maxMs": 6517.826100000006
+      },
+      "neighbor:memory-hit": {
+        "medianMs": 9.298031499998615,
+        "maxMs": 14.31044399998791
+      },
+      "specialty": {
+        "medianMs": 11145.615446999996,
+        "maxMs": 11167.447114999988
+      },
+      "specialty:memory-hit": {
+        "medianMs": 0.024747999996179715,
+        "maxMs": 0.029162000006181188
+      },
+      "national:shared-hit": {
+        "medianMs": 46.577575499992236,
+        "maxMs": 57.568442000003415
+      },
+      "state:shared-hit": {
+        "medianMs": 27.924126500001876,
+        "maxMs": 33.63021299999673
+      },
+      "county:shared-hit": {
+        "medianMs": 28.598330499997246,
+        "maxMs": 32.170160000008764
+      },
+      "neighbor:shared-hit": {
+        "medianMs": 24.158503500002553,
+        "maxMs": 27.539625999997952
+      },
+      "specialty:shared-hit": {
+        "medianMs": 26.763670500004082,
+        "maxMs": 27.742345000006026
+      }
+    },
+    "signatures": [
+      [
+        "national",
+        120,
+        "867a97f86d37ad52d53de37fe7da567612bd368dbf32103d0324c3810a4aeec1"
+      ],
+      [
+        "state",
+        120,
+        "17fb68d1eacb2b6fd70f1287e6bf72627bda00b66be66e439719828a26f47efe"
+      ],
+      [
+        "county",
+        120,
+        "35822551305ab333d39fa0fc4ec75d9c7a68704de4de96ef7ad4fee179c418e3"
+      ],
+      [
+        "neighbor",
+        120,
+        "c3246b36989ba68c6b5f2f1b9495a38d2b99c30f296741319258581ab65fbf7f"
+      ],
+      [
+        "specialty",
+        4,
+        "4518756d377f7fc16aa56b5955fb21ae87c85ab81446e5e3eafc4ba6e7bc8726"
+      ]
+    ]
+  },
+  "candidate-1536": {
+    "warmMedianBatchMs": 32015.795,
+    "warmMaxBatchMs": 32081.68,
+    "warmGBSecondsPerBatch": 48.023692499999996,
+    "memoryPeakMB": 491,
+    "requests": 321,
+    "cases": {
+      "national": {
+        "medianMs": 5023.437460500005,
+        "maxMs": 5030.7542600000015
+      },
+      "national:memory-hit": {
+        "medianMs": 0.03717500000493601,
+        "maxMs": 0.04812500000116415
+      },
+      "state": {
+        "medianMs": 4482.064301499995,
+        "maxMs": 4497.354641999991
+      },
+      "state:memory-hit": {
+        "medianMs": 0.04265399999712827,
+        "maxMs": 0.04466099999990547
+      },
+      "county": {
+        "medianMs": 5431.650779,
+        "maxMs": 5475.824980000005
+      },
+      "county:memory-hit": {
+        "medianMs": 3.8699740000047314,
+        "maxMs": 4.659895999997389
+      },
+      "neighbor": {
+        "medianMs": 5778.231499500012,
+        "maxMs": 5826.143078000001
+      },
+      "neighbor:memory-hit": {
+        "medianMs": 3.9144090000045253,
+        "maxMs": 14.330106999994314
+      },
+      "specialty": {
+        "medianMs": 11124.2238315,
+        "maxMs": 11137.50830300001
+      },
+      "specialty:memory-hit": {
+        "medianMs": 0.02622499999415595,
+        "maxMs": 0.03382099998998456
+      },
+      "national:shared-hit": {
+        "medianMs": 39.71452949999366,
+        "maxMs": 40.91030000001774
+      },
+      "state:shared-hit": {
+        "medianMs": 27.176139500006684,
+        "maxMs": 29.05317400000058
+      },
+      "county:shared-hit": {
+        "medianMs": 26.87128450000455,
+        "maxMs": 30.975634000002174
+      },
+      "neighbor:shared-hit": {
+        "medianMs": 26.439980000002834,
+        "maxMs": 66.14508499999647
+      },
+      "specialty:shared-hit": {
+        "medianMs": 27.019256500003394,
+        "maxMs": 31.30046399999992
+      }
+    },
+    "signatures": [
+      [
+        "national",
+        120,
+        "867a97f86d37ad52d53de37fe7da567612bd368dbf32103d0324c3810a4aeec1"
+      ],
+      [
+        "state",
+        120,
+        "17fb68d1eacb2b6fd70f1287e6bf72627bda00b66be66e439719828a26f47efe"
+      ],
+      [
+        "county",
+        120,
+        "35822551305ab333d39fa0fc4ec75d9c7a68704de4de96ef7ad4fee179c418e3"
+      ],
+      [
+        "neighbor",
+        120,
+        "c3246b36989ba68c6b5f2f1b9495a38d2b99c30f296741319258581ab65fbf7f"
+      ],
+      [
+        "specialty",
+        4,
+        "4518756d377f7fc16aa56b5955fb21ae87c85ab81446e5e3eafc4ba6e7bc8726"
+      ]
+    ]
+  }
+}

@@ -1,4 +1,4 @@
-import { cached } from "./cache.js";
+import { cachedShared } from "./cache.js";
 import { config } from "./config.js";
 import type { CountySite } from "./types.js";
 
@@ -55,6 +55,8 @@ export type FredCountyResponse = {
     fetchedAt: string;
     latestObservationDate?: string;
     cacheTtlSeconds: number;
+    stale?: boolean;
+    partial?: boolean;
   };
 };
 
@@ -86,7 +88,7 @@ export function getCountyFredData(county: CountySite): Promise<FredCountyRespons
   }
 
   const fips = county.fips.padStart(5, "0");
-  return cached(`fred:county:${fips}`, config.fredCacheTtlSeconds, async () => {
+  return cachedShared<FredCountyResponse>(`fred:county:${fips}`, config.fredCacheTtlSeconds, async () => {
     const definitions = countyMetricDefinitions(fips, county.state.abbr);
     const results = await Promise.allSettled(definitions.map(fetchFredMetric));
     const metrics = results.flatMap((result) => (result.status === "fulfilled" ? [result.value] : []));
@@ -98,7 +100,7 @@ export function getCountyFredData(county: CountySite): Promise<FredCountyRespons
             event: "fred.county.metric_failed",
             fips,
             seriesId: definitions[index].seriesId,
-            error: result.reason instanceof Error ? result.reason.message : String(result.reason),
+            errorType: result.reason instanceof Error ? result.reason.name : "UnknownError",
           }),
         );
       }
@@ -126,8 +128,14 @@ export function getCountyFredData(county: CountySite): Promise<FredCountyRespons
         fetchedAt: new Date().toISOString(),
         latestObservationDate: newestDate(metrics.map((metric) => metric.latest.date)),
         cacheTtlSeconds: config.fredCacheTtlSeconds,
+        partial: metrics.length < definitions.length,
       },
     };
+  }, {
+    revalidate: true, staleTtlSeconds: 3 * 86400,
+    staleIfError: previous => ({ ...previous, meta: { ...previous.meta, stale: true } }),
+    shouldReplace: (before, after) => (after as FredCountyResponse).metrics.length >= (before as FredCountyResponse).metrics.length,
+    ttlForValue: value => value.meta.partial ? 300 : config.fredCacheTtlSeconds,
   });
 }
 
@@ -199,11 +207,12 @@ async function fetchFredMetric(definition: FredMetricDefinition): Promise<FredCo
       accept: "application/json",
       "user-agent": "county-post-news-api/1.0",
     },
-    signal: AbortSignal.timeout(config.requestTimeoutMs),
+    signal: AbortSignal.timeout(config.fredTimeoutMs),
   });
   const data = (await response.json().catch(() => ({}))) as FredObservationResponse;
   if (!response.ok) {
-    throw new Error(data.error_message || `FRED series ${definition.seriesId} returned ${response.status}.`);
+    // Do not log provider error bodies: they can contain authenticated URLs.
+    throw new Error(`FRED series ${definition.seriesId} returned HTTP ${response.status}.`);
   }
 
   const observations = (data.observations || [])

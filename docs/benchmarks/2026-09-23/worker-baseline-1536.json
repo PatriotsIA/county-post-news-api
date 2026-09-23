@@ -1,0 +1,492 @@
+[
+  {
+    "run": 0,
+    "result": {
+      "variant": "baseline",
+      "memory": "1536",
+      "requests": 364,
+      "misses": 39,
+      "results": [
+        {
+          "name": "national",
+          "ms": 9797.488897999981,
+          "requests": 49,
+          "items": 120,
+          "signature": "dcc24cfbece43c16efbdae18b0ee08da79fb7593eef4b142a1f9edde79c2fb23"
+        },
+        {
+          "name": "national:memory-hit",
+          "ms": 0.04087900000740774,
+          "items": 120
+        },
+        {
+          "name": "state",
+          "ms": 9013.623732000007,
+          "requests": 71,
+          "items": 120,
+          "signature": "711aac004db74b81f67f5e91fbafa57335d30f438a1ca78f2d8af204c4107574"
+        },
+        {
+          "name": "state:memory-hit",
+          "ms": 0.04345800000010058,
+          "items": 120
+        },
+        {
+          "name": "county",
+          "ms": 10094.999003000004,
+          "requests": 62,
+          "items": 120,
+          "signature": "cfd5fa15e7c30c8bcba577ff4802d80870f266d178379b32cb6d3b40a3ff92b8"
+        },
+        {
+          "name": "county:memory-hit",
+          "ms": 4.289242999977432,
+          "items": 120
+        },
+        {
+          "name": "neighbor",
+          "ms": 10470.041970999999,
+          "requests": 69,
+          "items": 120,
+          "signature": "f702ee7fda2bfddbe7cd11da00b9d8942087dc76c194dbf395bcccd84f76d417"
+        },
+        {
+          "name": "neighbor:memory-hit",
+          "ms": 10.02125300001353,
+          "items": 120
+        },
+        {
+          "name": "specialty",
+          "ms": 24491.363339000003,
+          "requests": 113,
+          "items": 4,
+          "signature": "4518756d377f7fc16aa56b5955fb21ae87c85ab81446e5e3eafc4ba6e7bc8726"
+        },
+        {
+          "name": "specialty:memory-hit",
+          "ms": 0.022299000003840774,
+          "items": 4
+        },
+        {
+          "name": "national:shared-hit",
+          "ms": 64.62585300003411,
+          "items": 120
+        },
+        {
+          "name": "state:shared-hit",
+          "ms": 30.641281000047456,
+          "items": 120
+        },
+        {
+          "name": "county:shared-hit",
+          "ms": 71.0631890000077,
+          "items": 120
+        },
+        {
+          "name": "neighbor:shared-hit",
+          "ms": 38.75574599998072,
+          "items": 120
+        },
+        {
+          "name": "specialty:shared-hit",
+          "ms": 26.282857000012882,
+          "items": 4
+        }
+      ]
+    },
+    "report": "REPORT RequestId: d758be19-819a-4a79-8fd9-7c6b6d4ce6f9\tDuration: 64226.56 ms\tBilled Duration: 64227 ms\tMemory Size: 1536 MB\tMax Memory Used: 490 MB\t",
+    "error": null
+  },
+  {
+    "run": 1,
+    "result": {
+      "variant": "baseline",
+      "memory": "1536",
+      "requests": 364,
+      "misses": 39,
+      "results": [
+        {
+          "name": "national",
+          "ms": 9612.84102599998,
+          "requests": 49,
+          "items": 120,
+          "signature": "dcc24cfbece43c16efbdae18b0ee08da79fb7593eef4b142a1f9edde79c2fb23"
+        },
+        {
+          "name": "national:memory-hit",
+          "ms": 0.04088200000114739,
+          "items": 120
+        },
+        {
+          "name": "state",
+          "ms": 8980.197363000014,
+          "requests": 71,
+          "items": 120,
+          "signature": "711aac004db74b81f67f5e91fbafa57335d30f438a1ca78f2d8af204c4107574"
+        },
+        {
+          "name": "state:memory-hit",
+          "ms": 0.0621650000102818,
+          "items": 120
+        },
+        {
+          "name": "county",
+          "ms": 10021.837199000001,
+          "requests": 62,
+          "items": 120,
+          "signature": "cfd5fa15e7c30c8bcba577ff4802d80870f266d178379b32cb6d3b40a3ff92b8"
+        },
+        {
+          "name": "county:memory-hit",
+          "ms": 3.931434000027366,
+          "items": 120
+        },
+        {
+          "name": "neighbor",
+          "ms": 10374.313920000044,
+          "requests": 69,
+          "items": 120,
+          "signature": "f702ee7fda2bfddbe7cd11da00b9d8942087dc76c194dbf395bcccd84f76d417"
+        },
+        {
+          "name": "neighbor:memory-hit",
+          "ms": 20.50256100000115,
+          "items": 120
+        },
+        {
+          "name": "specialty",
+          "ms": 24495.31116600003,
+          "requests": 113,
+          "items": 4,
+          "signature": "4518756d377f7fc16aa56b5955fb21ae87c85ab81446e5e3eafc4ba6e7bc8726"
+        },
+        {
+          "name": "specialty:memory-hit",
+          "ms": 0.026087000034749508,
+          "items": 4
+        },
+        {
+          "name": "national:shared-hit",
+          "ms": 44.708855999982916,
+          "items": 120
+        },
+        {
+          "name": "state:shared-hit",
+          "ms": 26.982701999950223,
+          "items": 120
+        },
+        {
+          "name": "county:shared-hit",
+          "ms": 57.62067600002047,
+          "items": 120
+        },
+        {
+          "name": "neighbor:shared-hit",
+          "ms": 31.545584000006784,
+          "items": 120
+        },
+        {
+          "name": "specialty:shared-hit",
+          "ms": 29.38158599997405,
+          "items": 4
+        }
+      ]
+    },
+    "report": "REPORT RequestId: 6db154c7-20cf-414f-ac5d-ac12444f0611\tDuration: 63715.12 ms\tBilled Duration: 63716 ms\tMemory Size: 1536 MB\tMax Memory Used: 490 MB\t",
+    "error": null
+  },
+  {
+    "run": 2,
+    "result": {
+      "variant": "baseline",
+      "memory": "1536",
+      "requests": 364,
+      "misses": 39,
+      "results": [
+        {
+          "name": "national",
+          "ms": 9702.537492999982,
+          "requests": 49,
+          "items": 120,
+          "signature": "dcc24cfbece43c16efbdae18b0ee08da79fb7593eef4b142a1f9edde79c2fb23"
+        },
+        {
+          "name": "national:memory-hit",
+          "ms": 0.038509000034537166,
+          "items": 120
+        },
+        {
+          "name": "state",
+          "ms": 9013.791900000011,
+          "requests": 71,
+          "items": 120,
+          "signature": "711aac004db74b81f67f5e91fbafa57335d30f438a1ca78f2d8af204c4107574"
+        },
+        {
+          "name": "state:memory-hit",
+          "ms": 0.03910000005271286,
+          "items": 120
+        },
+        {
+          "name": "county",
+          "ms": 10023.380037999945,
+          "requests": 62,
+          "items": 120,
+          "signature": "cfd5fa15e7c30c8bcba577ff4802d80870f266d178379b32cb6d3b40a3ff92b8"
+        },
+        {
+          "name": "county:memory-hit",
+          "ms": 14.126312000036705,
+          "items": 120
+        },
+        {
+          "name": "neighbor",
+          "ms": 10313.258717999968,
+          "requests": 69,
+          "items": 120,
+          "signature": "f702ee7fda2bfddbe7cd11da00b9d8942087dc76c194dbf395bcccd84f76d417"
+        },
+        {
+          "name": "neighbor:memory-hit",
+          "ms": 4.049760999972932,
+          "items": 120
+        },
+        {
+          "name": "specialty",
+          "ms": 24484.076652000018,
+          "requests": 113,
+          "items": 4,
+          "signature": "4518756d377f7fc16aa56b5955fb21ae87c85ab81446e5e3eafc4ba6e7bc8726"
+        },
+        {
+          "name": "specialty:memory-hit",
+          "ms": 0.021560000022873282,
+          "items": 4
+        },
+        {
+          "name": "national:shared-hit",
+          "ms": 44.266242999990936,
+          "items": 120
+        },
+        {
+          "name": "state:shared-hit",
+          "ms": 59.38342399999965,
+          "items": 120
+        },
+        {
+          "name": "county:shared-hit",
+          "ms": 33.59894400002668,
+          "items": 120
+        },
+        {
+          "name": "neighbor:shared-hit",
+          "ms": 33.10781399998814,
+          "items": 120
+        },
+        {
+          "name": "specialty:shared-hit",
+          "ms": 25.240491000004113,
+          "items": 4
+        }
+      ]
+    },
+    "report": "REPORT RequestId: e25c01d4-0e10-4a45-8efc-ead6dcf0685d\tDuration: 63755.54 ms\tBilled Duration: 63756 ms\tMemory Size: 1536 MB\tMax Memory Used: 490 MB\t",
+    "error": null
+  },
+  {
+    "run": 3,
+    "result": {
+      "variant": "baseline",
+      "memory": "1536",
+      "requests": 364,
+      "misses": 39,
+      "results": [
+        {
+          "name": "national",
+          "ms": 9784.020562999998,
+          "requests": 49,
+          "items": 120,
+          "signature": "dcc24cfbece43c16efbdae18b0ee08da79fb7593eef4b142a1f9edde79c2fb23"
+        },
+        {
+          "name": "national:memory-hit",
+          "ms": 0.030979999981354922,
+          "items": 120
+        },
+        {
+          "name": "state",
+          "ms": 9010.741555999964,
+          "requests": 71,
+          "items": 120,
+          "signature": "711aac004db74b81f67f5e91fbafa57335d30f438a1ca78f2d8af204c4107574"
+        },
+        {
+          "name": "state:memory-hit",
+          "ms": 0.03625499998452142,
+          "items": 120
+        },
+        {
+          "name": "county",
+          "ms": 10015.00341200002,
+          "requests": 62,
+          "items": 120,
+          "signature": "cfd5fa15e7c30c8bcba577ff4802d80870f266d178379b32cb6d3b40a3ff92b8"
+        },
+        {
+          "name": "county:memory-hit",
+          "ms": 4.138855000026524,
+          "items": 120
+        },
+        {
+          "name": "neighbor",
+          "ms": 10378.569392999983,
+          "requests": 69,
+          "items": 120,
+          "signature": "f702ee7fda2bfddbe7cd11da00b9d8942087dc76c194dbf395bcccd84f76d417"
+        },
+        {
+          "name": "neighbor:memory-hit",
+          "ms": 4.529554999957327,
+          "items": 120
+        },
+        {
+          "name": "specialty",
+          "ms": 24514.088876999973,
+          "requests": 113,
+          "items": 4,
+          "signature": "4518756d377f7fc16aa56b5955fb21ae87c85ab81446e5e3eafc4ba6e7bc8726"
+        },
+        {
+          "name": "specialty:memory-hit",
+          "ms": 0.02459600003203377,
+          "items": 4
+        },
+        {
+          "name": "national:shared-hit",
+          "ms": 45.403733999992255,
+          "items": 120
+        },
+        {
+          "name": "state:shared-hit",
+          "ms": 51.8740140000009,
+          "items": 120
+        },
+        {
+          "name": "county:shared-hit",
+          "ms": 41.33372600004077,
+          "items": 120
+        },
+        {
+          "name": "neighbor:shared-hit",
+          "ms": 61.25932900002226,
+          "items": 120
+        },
+        {
+          "name": "specialty:shared-hit",
+          "ms": 45.42039799998747,
+          "items": 4
+        }
+      ]
+    },
+    "report": "REPORT RequestId: eb42c487-6091-4932-b599-c9e82820dd4a\tDuration: 63961.11 ms\tBilled Duration: 63962 ms\tMemory Size: 1536 MB\tMax Memory Used: 490 MB\t",
+    "error": null
+  },
+  {
+    "run": 4,
+    "result": {
+      "variant": "baseline",
+      "memory": "1536",
+      "requests": 364,
+      "misses": 39,
+      "results": [
+        {
+          "name": "national",
+          "ms": 9666.233155000024,
+          "requests": 49,
+          "items": 120,
+          "signature": "dcc24cfbece43c16efbdae18b0ee08da79fb7593eef4b142a1f9edde79c2fb23"
+        },
+        {
+          "name": "national:memory-hit",
+          "ms": 0.03301499999361113,
+          "items": 120
+        },
+        {
+          "name": "state",
+          "ms": 8979.562682999996,
+          "requests": 71,
+          "items": 120,
+          "signature": "711aac004db74b81f67f5e91fbafa57335d30f438a1ca78f2d8af204c4107574"
+        },
+        {
+          "name": "state:memory-hit",
+          "ms": 0.03479100001277402,
+          "items": 120
+        },
+        {
+          "name": "county",
+          "ms": 9999.813381999964,
+          "requests": 62,
+          "items": 120,
+          "signature": "cfd5fa15e7c30c8bcba577ff4802d80870f266d178379b32cb6d3b40a3ff92b8"
+        },
+        {
+          "name": "county:memory-hit",
+          "ms": 14.169584000017494,
+          "items": 120
+        },
+        {
+          "name": "neighbor",
+          "ms": 10360.097571999999,
+          "requests": 69,
+          "items": 120,
+          "signature": "f702ee7fda2bfddbe7cd11da00b9d8942087dc76c194dbf395bcccd84f76d417"
+        },
+        {
+          "name": "neighbor:memory-hit",
+          "ms": 5.075265999999829,
+          "items": 120
+        },
+        {
+          "name": "specialty",
+          "ms": 24512.94017899997,
+          "requests": 113,
+          "items": 4,
+          "signature": "4518756d377f7fc16aa56b5955fb21ae87c85ab81446e5e3eafc4ba6e7bc8726"
+        },
+        {
+          "name": "specialty:memory-hit",
+          "ms": 0.029540000017732382,
+          "items": 4
+        },
+        {
+          "name": "national:shared-hit",
+          "ms": 39.17059300001711,
+          "items": 120
+        },
+        {
+          "name": "state:shared-hit",
+          "ms": 30.36960800003726,
+          "items": 120
+        },
+        {
+          "name": "county:shared-hit",
+          "ms": 31.44009599997662,
+          "items": 120
+        },
+        {
+          "name": "neighbor:shared-hit",
+          "ms": 33.81531700002961,
+          "items": 120
+        },
+        {
+          "name": "specialty:shared-hit",
+          "ms": 28.15384200005792,
+          "items": 4
+        }
+      ]
+    },
+    "report": "REPORT RequestId: fb10babf-d14c-4209-81da-5999dc846ea7\tDuration: 63705.07 ms\tBilled Duration: 63706 ms\tMemory Size: 1536 MB\tMax Memory Used: 490 MB\t",
+    "error": null
+  }
+]
