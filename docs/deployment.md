@@ -46,7 +46,7 @@ In AWS Console:
    - Category: `Continuous integration`
    - Template: `CI Build NodeJS`
 4. Choose your GitHub source through CodeConnections:
-   - Repository: `ErikBurdett/county-post-news-api`
+   - Repository: `PatriotsIA/county-post-news-api`
    - Branch: `main`
 5. Configure the Node.js build project.
 6. Make sure the build uses the repository `buildspec.yml`.
@@ -112,8 +112,12 @@ After the CI pipeline exists, edit it and add a deploy stage:
    - Template file: `packaged.yaml`
    - Stack name: `county-news-api`
    - Capabilities: `CAPABILITY_IAM` and `CAPABILITY_AUTO_EXPAND`
-   - Parameter overrides: set `UsdaMarsApiKey` to the USDA MARS key, `FredApiKey` to the FRED key, and `StripeSecretKey` to the Stripe secret key. Set `StripeCheckoutSuccessUrl` and `StripeCheckoutCancelUrl` to the deployed advertiser microsite URLs (the template defaults to `www.advertise.thecountypost.com`). Set `CorsOrigins` to include the complete advertiser microsite origin as well as any County Post frontend origins when it differs from the template default. Remove any legacy `MetalsApiKey` override: the metals ticker now uses the no-key Minted Metal endpoint configured in `template.yaml`.
-   - Atlas overrides: set `CensusApiKey` to a free Census API key, select the released ACS year with `AtlasCensusYear`, and confirm `AtlasSourceLocation`, `AtlasSourceVersion`, and `AtlasIngestionSchedule`.
+   - Credentials: store USDA, FRED, and Stripe keys as JSON fields `UsdaMarsApiKey`, `FredApiKey`, and `StripeSecretKey` in Secrets Manager `county-news-api/providers`. The template resolves them during deployment. `ApiProviderSecretId` accepts only the secret name/ARN, never key values. The CloudFormation deploy role needs `secretsmanager:GetSecretValue` for that exact secret ARN. After rotation, increment the non-secret `ApiProviderSecretRevision` to force the Lambda environment to refresh. Do not place credentials in pipeline overrides.
+   - Non-secret overrides: set `StripeCheckoutSuccessUrl` and `StripeCheckoutCancelUrl` to the deployed advertiser microsite URLs (the template defaults to `www.advertise.thecountypost.com`). Set `CorsOrigins` to include the complete advertiser microsite origin as well as any County Post frontend origins when it differs from the template default. Remove any legacy `MetalsApiKey` override: the metals ticker uses the no-key Minted Metal endpoint configured in `template.yaml`.
+   - Atlas credentials: store the Census API key in the standard SSM SecureString `/county-news-api/census-api-key`; `CensusApiKeyParameterName` takes its name, never its value. Atlas CodeBuild retrieves it at build start using its own role. Select the released ACS year with `AtlasCensusYear`, and confirm `AtlasSourceLocation`, `AtlasSourceVersion`, and `AtlasIngestionSchedule`.
+
+For an existing deployment with plaintext key overrides, follow the ordered
+[provider secret migration](provider-secrets-2026-09-23.md) before releasing this template.
 
 Do not point this deploy action at raw `template.yaml`. Raw `template.yaml` has `CodeUri: .`, which causes this error:
 
@@ -136,6 +140,7 @@ The ingestion project receives only:
 - list/location and object read/write permissions for `AtlasDataBucket` (no delete);
 - write access to its dedicated CloudWatch Logs group;
 - permission to publish the `CountyPost/Atlas` health metric.
+- `ssm:GetParameters` for the one Census SecureString, using the default AWS-managed SSM key (a custom KMS key would also require scoped decrypt permission).
 
 EventBridge receives only `codebuild:StartBuild` for that project. The API Lambda receives read-only atlas bucket access.
 
@@ -147,7 +152,7 @@ After the first stack deployment:
 4. Call `/v1/counties/arkansas/polk/atlas` and confirm `meta.version` matches the manifest.
 5. Verify `AtlasBuildFailureAlarm`, `AtlasScheduleFailureAlarm`, and `AtlasStaleDataAlarm` retain their ALARM and OK actions to `pia-operations-alerts`, whose confirmed email destination is `erik@patriotsinaction.com`.
 
-`CensusApiKey` is free but required for live Census Data API queries as of May 2026. Offline fixture ingestion does not need it. `FRED_API_KEY` is used by the API's development fallback and existing economic endpoint; FRED scheduled snapshot ingestion is not yet enabled.
+The Census key is free but required for live Census Data API queries as of May 2026. CodeBuild receives it through `CensusApiKeyParameterName`; local ingestion uses `CENSUS_API_KEY`. Offline fixture ingestion does not need it. `FRED_API_KEY` is used by the API's development fallback and existing economic endpoint; FRED scheduled snapshot ingestion is not yet enabled.
 
 To verify ingestion without network or AWS:
 
@@ -355,7 +360,7 @@ times the worker timeout and retention is four days.
 Allow the CloudFormation deploy role to manage only this stack's refresh queues.
 
 Set `EnableEdgeCache=true` in the pipeline's CloudFormation parameter overrides,
-preserving every existing override and secret. Deploy the committed, tested SAM
+preserving every existing non-secret override and secret-storage reference. Deploy the committed, tested SAM
 package through CodeBuild; validate with `sam validate --lint`. If AWS still
 rejects account verification, restore that parameter to false and deploy the
 queue/cache improvements while the verification is resolved.
