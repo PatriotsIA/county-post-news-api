@@ -1,4 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
+import { GetObjectCommand, PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import { clearCache } from "../src/cache.js";
 import { config } from "../src/config.js";
 import { buildFeedPlan } from "../src/feed-builders.js";
@@ -27,6 +28,9 @@ describe("county weather", () => {
     config.rainfallCacheTtlSeconds = defaults.rainfallCacheTtlSeconds;
     config.weatherTimeoutMs = defaults.weatherTimeoutMs;
     vi.restoreAllMocks();
+    vi.useRealTimers();
+    vi.unstubAllEnvs();
+    vi.unstubAllGlobals();
   });
 
   it("returns compact converted NWS weather with deduplicated severity-sorted point and zone alerts", async () => {
@@ -114,6 +118,36 @@ describe("county weather", () => {
     }
   });
 
+  it("shares fresh weather across cold instances but refuses expired alerts during an outage", async () => {
+    vi.useFakeTimers();
+    vi.stubEnv("FEED_CACHE_BUCKET", "test-cache");
+    const objects = new Map<string, string>();
+    vi.spyOn(S3Client.prototype, "send").mockImplementation(async (command: unknown) => {
+      if (command instanceof GetObjectCommand) {
+        const body = objects.get(command.input.Key!);
+        if (!body) throw new Error("NoSuchKey");
+        return { Body: { transformToString: async () => body } } as never;
+      }
+      if (command instanceof PutObjectCommand) objects.set(command.input.Key!, String(command.input.Body));
+      return {} as never;
+    });
+    vi.stubGlobal("fetch", createNwsFetch());
+    expect(JSON.parse((await weatherRequest()).body).alerts).toHaveLength(2);
+    clearCache();
+    const outage = vi.fn(async () => { throw new Error("provider offline"); });
+    vi.stubGlobal("fetch", outage);
+    expect(JSON.parse((await weatherRequest()).body).alerts).toHaveLength(2);
+    expect(outage).not.toHaveBeenCalled();
+    vi.advanceTimersByTime((config.weatherAlertsCacheTtlSeconds + 1) * 1000);
+    clearCache();
+    const response = await weatherRequest();
+    const body = JSON.parse(response.body);
+    expect(response.statusCode).toBe(200);
+    expect(body.alerts).toEqual([]);
+    expect(body.forecast).toHaveLength(1);
+    expect(body.warnings).toContain("Active alerts are temporarily unavailable.");
+  });
+
   it("reports weekly drought conditions separately from active NWS alerts", async () => {
     vi.stubGlobal("fetch", createNwsFetch({
       noAlerts: true,
@@ -194,7 +228,7 @@ describe("county weather", () => {
     expect(body.warnings).toContain("Fourteen-day precipitation history is temporarily unavailable.");
   });
 
-  it("requires the point mapping and returns 502 when all meaningful resources fail", async () => {
+  it("returns 502 when all resources fail but preserves independent data when point lookup fails", async () => {
     const allResourcesResponse = await withNwsFetch(
       createNwsFetch({ failAllResources: true }),
       weatherRequest,
@@ -206,10 +240,12 @@ describe("county weather", () => {
 
     clearCache();
     const pointResponse = await withNwsFetch(createNwsFetch({ failPoints: true }), weatherRequest);
-    expect(pointResponse.statusCode).toBe(502);
-    expect(JSON.parse(pointResponse.body).error).toBe(
-      "National Weather Service point lookup failed",
-    );
+    expect(pointResponse.statusCode).toBe(200);
+    const body = JSON.parse(pointResponse.body);
+    expect(body.meta.partial).toBe(true);
+    expect(body.forecast).toEqual([]);
+    expect(body.rainfallHistory.availableDays).toBeGreaterThan(0);
+    expect(body.warnings).toContain("Forecast location lookup is temporarily unavailable.");
   });
 
   it("returns 404 for an unknown county without calling NWS", async () => {

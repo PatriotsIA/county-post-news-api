@@ -5,6 +5,9 @@ export const config = {
   corsOrigins: parseCorsOrigins(process.env.CORS_ORIGINS || process.env.CORS_ORIGIN || "*"),
   cacheTtlSeconds: Number(process.env.CACHE_TTL_SECONDS || 30),
   requestTimeoutMs: Number(process.env.REQUEST_TIMEOUT_MS || 2500),
+  rssSourceCacheTtlSeconds: Number(process.env.RSS_SOURCE_CACHE_TTL_SECONDS || 60),
+  fredTimeoutMs: Number(process.env.FRED_TIMEOUT_MS || 6000),
+  marsTimeoutMs: Number(process.env.MARS_TIMEOUT_MS || 8000),
   /**
    * Total time the request path spends hunting og:image thumbnails. Lookups
    * that miss it continue in the background and land in the per-URL cache for

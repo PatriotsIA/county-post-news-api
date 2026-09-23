@@ -373,13 +373,15 @@ Post's origin; explicit additional origins remain configurable through
 
 Check `NewsApiThrottleAlarm`, `NewsApiExecutionFailureAlarm`,
 `FeedRefreshBacklogAlarm`, `FeedRefreshDeadLetterAlarm`, and
-`FeedWarmerFailureAlarm`. All eight stack alarms route ALARM and OK notifications
+`FeedWarmerFailureAlarm`, and `NewsApiHttpFailureAlarm`. All nine stack alarms route ALARM and OK notifications
 to `pia-operations-alerts`, whose confirmed email destination is
 `erik@patriotsinaction.com`; preserve these actions in future releases.
 Rollback the frontend URL to `NewsApiUrl` and rebuild before disabling the edge
 in a later stack deployment. Retain the shared cache and queue pipeline.
 
-See [the September 22 release runbook](news-reliability-2026-09-22.md) for the
-20-API / six-worker allocation, pipeline parameter preservation, release
-verification and rollback. The earlier [September 21 record](news-reliability-2026-09-21.md)
+See [the September 23 efficiency release](news-efficiency-2026-09-23.md) for the
+50-reader reservation, provider reliability, measured memory choices and rollback.
+The [September 22 release runbook](news-reliability-2026-09-22.md) documents the
+original 20-reader / six-worker allocation and pipeline parameter preservation.
+The earlier [September 21 record](news-reliability-2026-09-21.md)
 documents the retention-only mitigation and original backlog diagnosis.

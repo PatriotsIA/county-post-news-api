@@ -1,4 +1,4 @@
-import { cached } from "./cache.js";
+import { cachedShared } from "./cache.js";
 import { config } from "./config.js";
 import { getCounty } from "./geo.js";
 import type {
@@ -28,7 +28,14 @@ type PointsMapping = {
   gridX?: number;
   gridY?: number;
   timeZone?: string;
+  stale?: boolean;
 };
+
+function freshResource<T>(key: string, ttl: number, load: () => Promise<T>) {
+  // Share provider results across Lambda instances, but never serve expired
+  // forecasts or emergency alerts as current observations.
+  return cachedShared(key, ttl, load, { revalidate: true, staleTtlSeconds: ttl });
+}
 
 type AlertLoadResult = {
   alerts: WeatherAlert[];
@@ -70,13 +77,15 @@ export async function getCountyWeather(stateSlug: string, countySlug: string): P
   const pointsLink = apiUrl(`/points/${coordinate}`);
   let points: PointsMapping;
   try {
-    points = await cached(
+    points = await cachedShared<PointsMapping>(
       `weather:points:${coordinate}`,
       config.weatherPointsCacheTtlSeconds,
       async () => parsePoints(await fetchNwsJson(pointsLink), pointsLink),
+      { revalidate: true, staleTtlSeconds: 3 * 86400, staleIfError: previous => ({ ...previous, stale: true }) },
     );
-  } catch (error) {
-    throw asWeatherError(error, "National Weather Service point lookup failed");
+  } catch {
+    // Alerts by coordinate, drought and rainfall do not require a forecast grid.
+    points = { pointsLink, stale: true };
   }
 
   const tasks = {
@@ -102,6 +111,7 @@ export async function getCountyWeather(stateSlug: string, countySlug: string): P
   }
 
   const warnings: string[] = [];
+  if (points.stale) warnings.push("Forecast location lookup is temporarily unavailable.");
   if (forecastResult.status === "rejected") warnings.push("Forecast is temporarily unavailable.");
   if (hourlyResult.status === "rejected") warnings.push("Hourly forecast is temporarily unavailable.");
   if (observationResult.status === "rejected") warnings.push("Current observation is temporarily unavailable.");
@@ -199,7 +209,7 @@ async function loadRainfallHistory(county: CountySite): Promise<CountyRainfallHi
     "time-standard": "LST",
   }).toString();
 
-  return cached(
+  return freshResource(
     `weather:rainfall:${county.fips}:${requestedDays}`,
     config.rainfallCacheTtlSeconds,
     async () => {
@@ -252,7 +262,7 @@ async function loadRainfallHistory(county: CountySite): Promise<CountyRainfallHi
 
 async function loadDroughtCondition(county: CountySite): Promise<CountyDroughtCondition | undefined> {
   if (!county.fips) return undefined;
-  return cached(`weather:drought:${county.fips}`, config.droughtCacheTtlSeconds, async () => {
+  return freshResource(`weather:drought:${county.fips}`, config.droughtCacheTtlSeconds, async () => {
     const endDate = new Date();
     const startDate = new Date(endDate);
     startDate.setUTCDate(startDate.getUTCDate() - 28);
@@ -319,7 +329,7 @@ async function loadDroughtCondition(county: CountySite): Promise<CountyDroughtCo
 
 async function loadForecast(link: string | undefined, limit: number) {
   if (!link) throw new Error("NWS point response omitted a forecast link");
-  return cached(`weather:resource:${link}`, config.weatherResponseCacheTtlSeconds, async () => {
+  return freshResource(`weather:resource:${link}`, config.weatherResponseCacheTtlSeconds, async () => {
     const json = await fetchNwsJson(link);
     const periods = arrayValue(objectValue(json, "properties"), "periods");
     if (!periods) throw new Error("NWS forecast response omitted periods");
@@ -329,7 +339,7 @@ async function loadForecast(link: string | undefined, limit: number) {
 
 async function loadObservation(link: string | undefined) {
   if (!link) throw new Error("NWS point response omitted observation stations");
-  return cached(`weather:observation:${link}`, config.weatherResponseCacheTtlSeconds, async () => {
+  return freshResource(`weather:observation:${link}`, config.weatherResponseCacheTtlSeconds, async () => {
     const stations = await fetchNwsJson(link);
     const firstStation = arrayValue(stations, "features")?.map(asObject).find(Boolean);
     const stationLink = stringValue(firstStation, "@id") || stringValue(firstStation, "id");
@@ -356,7 +366,7 @@ async function loadAlerts(
   countyZone?: WeatherZone,
 ): Promise<AlertLoadResult> {
   const links = alertEndpointLinks(latitude, longitude, forecastZone, countyZone);
-  return cached(`weather:alerts:${links.join("|")}`, config.weatherAlertsCacheTtlSeconds, async () => {
+  return freshResource(`weather:alerts:${links.join("|")}`, config.weatherAlertsCacheTtlSeconds, async () => {
     const settled = await Promise.allSettled(links.map((link) => fetchNwsJson(link)));
     if (settled.every((result) => result.status === "rejected")) {
       throw new Error("All NWS alert resources failed");
@@ -559,7 +569,7 @@ async function fetchJson(url: string, sourceName: string, accept = "application/
       signal: controller.signal,
     });
     if (!response.ok) throw new Error(`${sourceName} request failed (${response.status})`);
-    return response.json();
+    return await response.json();
   } finally {
     clearTimeout(timeout);
   }
@@ -649,11 +659,6 @@ function countyPayload(county: CountySite) {
     stateSlug: county.state.slug,
     stateAbbr: county.state.abbr,
   };
-}
-
-function asWeatherError(error: unknown, message: string) {
-  if (error instanceof WeatherServiceError) return error;
-  return new WeatherServiceError(502, message);
 }
 
 function objectValue(object: JsonObject | undefined, key: string) {

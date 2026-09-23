@@ -5,11 +5,11 @@ Description: County Post News API on a low-cost Lambda Function URL.
 Parameters:
   NewsApiReservedConcurrency:
     Type: Number
-    Default: 20
+    Default: 50
     MinValue: 0
     MaxValue: 100
     Description: >-
-      Protect 20 reader API executions using the approved regional quota.
+      Protect 50 reader API executions using the approved regional quota.
       This is also an API ceiling. Zero removes the reservation; it does not
       disable the API. Keep at least 100 regional executions unreserved.
   FeedRefreshMaximumConcurrency:
@@ -87,6 +87,9 @@ Globals:
       Variables:
         CACHE_TTL_SECONDS: "300"
         REQUEST_TIMEOUT_MS: "3500"
+        RSS_SOURCE_CACHE_TTL_SECONDS: "60"
+        FRED_TIMEOUT_MS: "6000"
+        MARS_TIMEOUT_MS: "8000"
         DEFAULT_LIMIT: "120"
         MAX_LIMIT: "600"
         COUNTY_FALLBACK_MIN_ITEMS: "12"
@@ -423,6 +426,47 @@ Resources:
       Threshold: 900
       ComparisonOperator: GreaterThanThreshold
       TreatMissingData: notBreaching
+
+  NewsApiHttpFailureAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmActions:
+        - !Sub arn:${AWS::Partition}:sns:${AWS::Region}:${AWS::AccountId}:pia-operations-alerts
+      OKActions:
+        - !Sub arn:${AWS::Partition}:sns:${AWS::Region}:${AWS::AccountId}:pia-operations-alerts
+      AlarmDescription: Sustained reader HTTP failures including handled provider errors; inspect weather, FRED, cattle and feed logs.
+      EvaluationPeriods: 3
+      DatapointsToAlarm: 2
+      Threshold: 1
+      ComparisonOperator: GreaterThanThreshold
+      TreatMissingData: notBreaching
+      Metrics:
+        - Id: rate
+          Expression: "IF(requests >= 50 AND errors >= 5, 100 * errors / requests, 0)"
+          Label: Reader HTTP 5xx percent
+          ReturnData: true
+        - Id: errors
+          ReturnData: false
+          MetricStat:
+            Metric:
+              Namespace: AWS/Lambda
+              MetricName: Url5xxCount
+              Dimensions:
+                - Name: FunctionName
+                  Value: !Ref NewsApiFunction
+            Period: 300
+            Stat: Sum
+        - Id: requests
+          ReturnData: false
+          MetricStat:
+            Metric:
+              Namespace: AWS/Lambda
+              MetricName: UrlRequestCount
+              Dimensions:
+                - Name: FunctionName
+                  Value: !Ref NewsApiFunction
+            Period: 300
+            Stat: Sum
 
   FeedRefreshDeadLetterAlarm:
     Type: AWS::CloudWatch::Alarm

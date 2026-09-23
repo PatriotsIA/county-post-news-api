@@ -1,3 +1,4 @@
+import { clearCache } from "../src/cache.js";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { afterEach, describe, expect, it, vi } from "vitest";
@@ -13,6 +14,7 @@ function stubFetch(body: string) {
 }
 
 afterEach(() => {
+    clearCache();
   vi.unstubAllGlobals();
 });
 
