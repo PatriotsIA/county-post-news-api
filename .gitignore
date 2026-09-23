@@ -4,6 +4,7 @@ dist/
 .env
 coverage/
 .atlas-output/
+__pycache__/
 
 # Personal Claude Code settings (AWS profile, etc.)
 .claude/settings.local.json

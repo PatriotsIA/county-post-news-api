@@ -9,6 +9,7 @@ phases:
   pre_build:
     commands:
       - sam validate --lint
+      - python3 -m unittest discover -s tests/ops -p 'test_*.py'
       - npm run typecheck
       - npm test
   build:

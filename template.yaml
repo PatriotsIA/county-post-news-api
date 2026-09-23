@@ -31,20 +31,19 @@ Parameters:
     Type: String
     Default: "https://main.d2z6lt4e5q50in.amplifyapp.com,https://advertiser-preview.d2z6lt4e5q50in.amplifyapp.com,https://thecountypost.com,https://www.thecountypost.com,https://advertise.thecountypost.com,https://www.advertise.thecountypost.com,https://patriotsinaction.com,https://www.patriotsinaction.com"
     Description: Comma-separated browser origins allowed to call the API, without trailing slashes.
-  UsdaMarsApiKey:
+  ApiProviderSecretId:
     Type: String
-    NoEcho: true
-    Default: ""
-    Description: USDA MARS API key for the cattle and agriculture ticker.
-  FredApiKey:
+    Default: county-news-api/providers
+    Description: Secrets Manager name or ARN containing UsdaMarsApiKey, FredApiKey, and StripeSecretKey JSON fields. Never pass key values here.
+  ApiProviderSecretRevision:
     Type: String
-    NoEcho: true
-    Default: ""
-    Description: FRED API key for county economic data.
-  CensusApiKey:
+    Default: "1"
+    Description: Non-secret revision marker; change after rotating provider keys to refresh the Lambda environment.
+  CensusApiKeyParameterName:
     Type: String
-    NoEcho: true
-    Description: Free Census API key required by scheduled atlas ingestion.
+    Default: /county-news-api/census-api-key
+    AllowedPattern: '^/[a-zA-Z0-9_./-]+$'
+    Description: SSM SecureString parameter name read only by atlas ingestion; never pass a key value here.
   AtlasCensusYear:
     Type: String
     Default: "2024"
@@ -52,7 +51,7 @@ Parameters:
     Description: ACS 5-year release year to ingest.
   AtlasSourceLocation:
     Type: String
-    Default: "https://github.com/ErikBurdett/county-post-news-api.git"
+    Default: "https://github.com/PatriotsIA/county-post-news-api.git"
     Description: Git repository cloned by the independent atlas CodeBuild project.
   AtlasSourceVersion:
     Type: String
@@ -62,11 +61,6 @@ Parameters:
     Type: String
     Default: "rate(5 days)"
     Description: EventBridge schedule for validated atlas snapshot refreshes.
-  StripeSecretKey:
-    Type: String
-    NoEcho: true
-    Default: ""
-    Description: Stripe secret key used only to create hosted Checkout sessions.
   StripeCheckoutSuccessUrl:
     Type: String
     Default: "https://www.advertise.thecountypost.com/?checkout=success"
@@ -184,10 +178,11 @@ Resources:
         Variables:
           FEED_CACHE_BUCKET: !Ref FeedCacheBucket
           FEED_REFRESH_QUEUE_URL: !Ref FeedRefreshQueue
-          USDA_MARS_API_KEY: !Ref UsdaMarsApiKey
-          MARS_API_KEY: !Ref UsdaMarsApiKey
-          FRED_API_KEY: !Ref FredApiKey
-          STRIPE_SK_KEY: !Ref StripeSecretKey
+          USDA_MARS_API_KEY: !Sub "{{resolve:secretsmanager:${ApiProviderSecretId}:SecretString:UsdaMarsApiKey}}"
+          MARS_API_KEY: !Sub "{{resolve:secretsmanager:${ApiProviderSecretId}:SecretString:UsdaMarsApiKey}}"
+          FRED_API_KEY: !Sub "{{resolve:secretsmanager:${ApiProviderSecretId}:SecretString:FredApiKey}}"
+          STRIPE_SK_KEY: !Sub "{{resolve:secretsmanager:${ApiProviderSecretId}:SecretString:StripeSecretKey}}"
+          PROVIDER_SECRET_REVISION: !Ref ApiProviderSecretRevision
       FunctionUrlConfig:
         AuthType: NONE
 
@@ -634,6 +629,11 @@ Resources:
                 Condition:
                   StringEquals:
                     cloudwatch:namespace: CountyPost/Atlas
+              - Sid: ReadCensusApiKey
+                Effect: Allow
+                Action:
+                  - ssm:GetParameters
+                Resource: !Sub "arn:${AWS::Partition}:ssm:${AWS::Region}:${AWS::AccountId}:parameter${CensusApiKeyParameterName}"
 
   AtlasIngestionProject:
     Type: AWS::CodeBuild::Project
@@ -667,8 +667,8 @@ Resources:
             Type: PLAINTEXT
             Value: "86400"
           - Name: CENSUS_API_KEY
-            Type: PLAINTEXT
-            Value: !Ref CensusApiKey
+            Type: PARAMETER_STORE
+            Value: !Ref CensusApiKeyParameterName
       Source:
         Type: GITHUB
         Location: !Ref AtlasSourceLocation
