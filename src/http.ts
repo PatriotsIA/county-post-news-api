@@ -4,7 +4,7 @@ import { getFeed, getPage } from "./news-service.js";
 import { getReviewedCountySourceProfiles } from "./source-registry.js";
 import { topics } from "./feed-builders.js";
 import { getCattleTicker, getMetalsTicker, MarketServiceError } from "./markets-service.js";
-import { CheckoutError, createCheckoutSession } from "./stripe-service.js";
+import { CheckoutError, createCheckoutSession, quoteCheckout } from "./stripe-service.js";
 import { getCountyPopulation, PopulationError } from "./population-service.js";
 import { AdCreativeError, createAdCreativeUpload } from "./ad-creative-service.js";
 import { FredServiceError, getCountyFredData } from "./fred-service.js";
@@ -44,6 +44,8 @@ export async function handleRequest(request: ApiRequest): Promise<ApiResponse> {
       response = empty(204);
     } else if (request.method === "POST" && path === "/v1/advertising/creatives/upload") {
       response = json(201, await createAdCreativeUpload(parseJsonBody(request.body)), "no-store");
+    } else if (request.method === "POST" && path === "/v1/checkout/quotes") {
+      response = json(200, quoteCheckout(parseJsonBody(request.body)), "no-store");
     } else if (request.method === "POST" && path === "/v1/checkout/sessions") {
       response = json(201, await createCheckoutSession(parseJsonBody(request.body)), "no-store");
     } else if (request.method !== "GET") {

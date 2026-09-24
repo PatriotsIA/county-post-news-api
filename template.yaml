@@ -31,6 +31,10 @@ Parameters:
     Type: String
     Default: "https://main.d2z6lt4e5q50in.amplifyapp.com,https://advertiser-preview.d2z6lt4e5q50in.amplifyapp.com,https://thecountypost.com,https://www.thecountypost.com,https://advertise.thecountypost.com,https://www.advertise.thecountypost.com,https://patriotsinaction.com,https://www.patriotsinaction.com"
     Description: Comma-separated browser origins allowed to call the API, without trailing slashes.
+  AdvertiserCorsOrigins:
+    Type: String
+    Default: "https://advertise.patriotsinaction.com"
+    Description: Additional approved advertiser origins; preserves the existing reader CORS allowlist.
   ApiProviderSecretId:
     Type: String
     Default: county-news-api/providers
@@ -122,7 +126,7 @@ Globals:
         RECENCY_PRIMARY_DAYS: "60"
         RECENCY_SECONDARY_DAYS: "180"
         COUNTY_PLACE_QUERY_LIMIT: "4"
-        CORS_ORIGINS: !Ref CorsOrigins
+        CORS_ORIGINS: !Sub "${CorsOrigins},${AdvertiserCorsOrigins}"
         METALS_PROVIDER_URL: "https://mintedmetal.com/api/prices.json"
         METALS_CACHE_TTL_SECONDS: "900"
         FRED_CACHE_TTL_SECONDS: "21600"

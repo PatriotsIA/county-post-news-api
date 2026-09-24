@@ -230,6 +230,40 @@ describe("Stripe Checkout endpoint", () => {
     expect(JSON.parse(response.body).error).toBe("Checkout prices are determined by the County Post rate card.");
     expect(createSession).not.toHaveBeenCalled();
   });
+  it("uses PIA branding, return destinations and exact half-county cents in Stripe", async () => {
+    configureCheckout();
+    const response = await checkout({ brand: "patriots-in-action", scope: "county", placement: "color-card", billing: "monthly",
+      counties: [{stateSlug: "texas", countySlug: "loving"}, {stateSlug: "texas", countySlug: "potter"}],
+      customerEmail: "advertiser@example.com", businessName: "PIA advertiser" });
+    expect(response.statusCode).toBe(201);
+    expect(JSON.parse(response.body).amountCents).toBe(26250);
+    const session = createSession.mock.calls[0][0];
+    expect(session.success_url).toBe("https://advertise.patriotsinaction.com/?checkout=success");
+    expect(session.cancel_url).toBe("https://advertise.patriotsinaction.com/?checkout=cancelled");
+    expect(session.line_items[0].price_data.product_data.name).toBe("Patriots in Action — Local color card");
+    expect(session.metadata).toMatchObject({brand: "patriots-in-action", counties: "48301,48375"});
+    expect(session.subscription_data.metadata).toEqual(session.metadata);
+  });
+
+  it("supports PIA sections and preserves County Post's separate section catalog", async () => {
+    configureCheckout();
+    const body = { brand: "patriots-in-action", scope: "state", placement: "state-feed-sponsorship", billing: "annual", states: ["texas", "oklahoma"], feeds: ["pia-tv", "community-calendar"], customerEmail: "advertiser@example.com", businessName: "PIA advertiser" };
+    expect(JSON.parse((await checkout(body)).body).amountCents).toBe(13240000);
+    expect(createSession.mock.calls[0][0].metadata.feeds).toBe("pia-tv,community-calendar");
+    expect((await checkout({...body, brand: "the-county-post"})).statusCode).toBe(400);
+    expect((await checkout({...body, brand: "other"})).statusCode).toBe(400);
+    expect((await checkout({...body, feeds: ["sports"]})).statusCode).toBe(400);
+  });
+
+  it("quotes the same price without contacting Stripe or requiring a payment key", async () => {
+    config.stripeSecretKey = "";
+    const response = await handleRequest({ method: "POST", path: "/v1/checkout/quotes", query: new URLSearchParams(), body: JSON.stringify({brand: "patriots-in-action", scope: "county", placement: "color-card", billing: "annual", counties: [{stateSlug: "texas", countySlug: "potter"}, {stateSlug: "texas", countySlug: "loving"}], customerEmail: "advertiser@example.com", businessName: "PIA advertiser"}) });
+    expect(response.statusCode).toBe(200);
+    expect(response.headers["cache-control"]).toBe("no-store");
+    expect(JSON.parse(response.body)).toMatchObject({amountCents: 262500, brand: {name: "Patriots in Action"}});
+    expect(createSession).not.toHaveBeenCalled();
+  });
+
 });
 
 function configureCheckout() {

@@ -19,7 +19,12 @@ import { getState, getStateCountyCount } from "./geo.js";
 import { COUNTY_POPULATION_ESTIMATE_VINTAGE } from "./county-populations.js";
 import { getCountyPopulation, PopulationError } from "./population-service.js";
 
+export type AdvertiserBrand = "the-county-post" | "patriots-in-action";
+const piaFeeds = ["community-updates", "community-calendar", "pia-tv", "elections-resources", "weather"] as const;
+type AdvertisingFeed = SponsorableFeed | (typeof piaFeeds)[number];
+
 type CheckoutContact = {
+  brand: AdvertiserBrand;
   billing: BillingCadence;
   customerEmail: string;
   businessName: string;
@@ -50,7 +55,7 @@ type StateCheckoutRequest = CheckoutContact & {
   scope: "state";
   placement: StatePlacement;
   states: CheckoutState[];
-  feeds: SponsorableFeed[];
+  feeds: AdvertisingFeed[];
 };
 
 export type CheckoutRequest = CountyCheckoutRequest | StateCheckoutRequest;
@@ -84,14 +89,15 @@ export async function createCheckoutSession(payload: unknown): Promise<CheckoutR
   const stripe = new Stripe(config.stripeSecretKey);
   const product = checkoutProductDetails(request, cadenceLabel);
   const metadata = checkoutMetadata(request);
+  const brand = checkoutBrand(request.brand);
 
   try {
     const session = await stripe.checkout.sessions.create({
       mode: "subscription",
       customer_email: request.customerEmail,
       billing_address_collection: "auto",
-      success_url: config.checkoutSuccessUrl,
-      cancel_url: config.checkoutCancelUrl,
+      success_url: brand.successUrl,
+      cancel_url: brand.cancelUrl,
       line_items: [
         {
           quantity: 1,
@@ -100,7 +106,7 @@ export async function createCheckoutSession(payload: unknown): Promise<CheckoutR
             unit_amount: amountCents,
             recurring: { interval: request.billing === "annual" ? "year" : "month" },
             product_data: {
-              name: `The County Post — ${product.name}`,
+              name: `${brand.name} — ${product.name}`,
               description: product.description,
             },
           },
@@ -141,6 +147,8 @@ function parseCheckoutRequest(payload: unknown): CheckoutRequest {
 }
 
 function parseCheckoutContact(payload: Record<string, unknown>): CheckoutContact {
+  const brand = payload.brand ?? "the-county-post";
+  if (brand !== "the-county-post" && brand !== "patriots-in-action") throw new CheckoutError(400, "Choose a valid advertising brand.");
   const customerEmail = requiredText(payload.customerEmail, "A valid contact email is required.", 254);
   if (!emailPattern.test(customerEmail)) throw new CheckoutError(400, "A valid contact email is required.");
   const businessName = requiredText(payload.businessName, "A business name is required.", 120);
@@ -150,7 +158,7 @@ function parseCheckoutContact(payload: Record<string, unknown>): CheckoutContact
     throw new CheckoutError(400, "The creative upload reference is invalid.");
   }
 
-  return { billing: payload.billing as BillingCadence, customerEmail, businessName, referredBy, creativeAssetKey };
+  return { brand, billing: payload.billing as BillingCadence, customerEmail, businessName, referredBy, creativeAssetKey };
 }
 
 function parseCountyCheckout(payload: Record<string, unknown>, contact: CheckoutContact): CountyCheckoutRequest {
@@ -198,11 +206,11 @@ function parseStateCheckout(payload: Record<string, unknown>, contact: CheckoutC
     return { slug: state.slug, abbr: state.abbr, countyCount };
   });
 
-  const feeds = parseFeeds(payload.feeds, payload.placement);
+  const feeds = parseFeeds(payload.feeds, payload.placement, contact.brand);
   return { ...contact, scope: "state", placement: payload.placement, states, feeds };
 }
 
-function parseFeeds(value: unknown, placement: StatePlacement) {
+function parseFeeds(value: unknown, placement: StatePlacement, brand: AdvertiserBrand) {
   if (placement === "state-ad") {
     if (value !== undefined && (!Array.isArray(value) || value.length)) {
       throw new CheckoutError(400, "Feeds apply only to state feed sponsorships.");
@@ -212,8 +220,8 @@ function parseFeeds(value: unknown, placement: StatePlacement) {
   if (!Array.isArray(value) || !value.length) throw new CheckoutError(400, "Choose at least one feed to sponsor.");
 
   const feeds = value.map((feed) => {
-    if (!isSponsorableFeed(feed)) throw new CheckoutError(400, "Choose a valid feed sponsorship.");
-    return feed;
+    if (brand === "patriots-in-action" ? !piaFeeds.includes(feed as (typeof piaFeeds)[number]) : !isSponsorableFeed(feed)) throw new CheckoutError(400, "Choose a valid feed sponsorship.");
+    return feed as AdvertisingFeed;
   });
   if (new Set(feeds).size !== feeds.length) throw new CheckoutError(400, "Each feed can be selected only once.");
   return feeds;
@@ -236,19 +244,20 @@ function checkoutProductDetails(request: CheckoutRequest, cadenceLabel: string) 
     const countyCount = request.states.reduce((total, state) => total + state.countyCount, 0);
     const isSponsorship = request.placement === "state-feed-sponsorship";
     return {
-      name: isSponsorship ? "State feed sponsorship" : "State ad network",
+      name: isSponsorship ? (request.brand === "patriots-in-action" ? "State section sponsorship" : "State feed sponsorship") : "State ad network",
       description: `${request.states.length} state ${request.states.length === 1 ? "network" : "networks"}, ${countyCount} county editions${isSponsorship ? `, ${request.feeds.length} sponsored ${request.feeds.length === 1 ? "feed" : "feeds"}` : ""}, ${cadenceLabel}.`,
     };
   }
 
   return {
-    name: request.placement === "color-card" ? "Local color card" : "Feed sponsorship",
+    name: request.placement === "color-card" ? "Local color card" : request.brand === "patriots-in-action" ? "Section sponsorship" : "Feed sponsorship",
     description: `${request.counties.length} county ${request.counties.length === 1 ? "placement" : "placements"}, ${cadenceLabel}.`,
   };
 }
 
 function checkoutMetadata(request: CheckoutRequest): Record<string, string> {
   const shared = {
+    brand: request.brand,
     businessName: request.businessName,
     scope: request.scope,
     placement: request.placement,
@@ -272,6 +281,7 @@ function checkoutMetadata(request: CheckoutRequest): Record<string, string> {
   return {
     ...shared,
     countyCount: String(request.counties.length),
+    counties: request.counties.map((county) => getCountyPopulation(county.stateSlug, county.countySlug).fips).join(","),
     populationEstimateVintage: String(COUNTY_POPULATION_ESTIMATE_VINTAGE),
   };
 }
@@ -303,3 +313,20 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 }
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+function checkoutBrand(brand: AdvertiserBrand) {
+  return brand === "patriots-in-action"
+    ? { name: "Patriots in Action", successUrl: "https://advertise.patriotsinaction.com/?checkout=success", cancelUrl: "https://advertise.patriotsinaction.com/?checkout=cancelled" }
+    : { name: "The County Post", successUrl: config.checkoutSuccessUrl, cancelUrl: config.checkoutCancelUrl };
+}
+
+/** Read-only validation uses the same authoritative calculation as Stripe. */
+export function quoteCheckout(payload: unknown) {
+  const request = parseCheckoutRequest(payload);
+  const monthlyCents = calculateMonthlyAmount(request);
+  return {
+    amountCents: monthlyCents * (request.billing === "annual" ? ANNUAL_BILLED_MONTHS : 1),
+    currency: "usd", billing: request.billing, brand: checkoutBrand(request.brand),
+    metadata: checkoutMetadata(request),
+  };
+}
