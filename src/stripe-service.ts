@@ -30,6 +30,7 @@ type CheckoutContact = {
   businessName: string;
   referredBy?: string;
   creativeAssetKey?: string;
+  bannerCreativeAssetKey?: string;
 };
 
 type CheckoutCounty = {
@@ -135,7 +136,7 @@ export async function createCheckoutSession(payload: unknown): Promise<CheckoutR
 function parseCheckoutRequest(payload: unknown): CheckoutRequest {
   if (!isRecord(payload)) throw new CheckoutError(400, "Checkout details must be a JSON object.");
   if ("amount" in payload || "price" in payload || "unitAmount" in payload) {
-    throw new CheckoutError(400, "Checkout prices are determined by the County Post rate card.");
+    throw new CheckoutError(400, "Checkout prices are determined by the published rate card.");
   }
   if (!isBillingCadence(payload.billing)) throw new CheckoutError(400, "Choose monthly or annual billing.");
 
@@ -143,7 +144,7 @@ function parseCheckoutRequest(payload: unknown): CheckoutRequest {
   const scope = payload.scope ?? (Array.isArray(payload.counties) ? "county" : undefined);
   if (scope === "county") return parseCountyCheckout(payload, contact);
   if (scope === "state") return parseStateCheckout(payload, contact);
-  throw new CheckoutError(400, "Choose county or state reach for the County Post Marketing Campaign.");
+  throw new CheckoutError(400, "Choose county or state reach for your campaign.");
 }
 
 function parseCheckoutContact(payload: Record<string, unknown>): CheckoutContact {
@@ -157,8 +158,12 @@ function parseCheckoutContact(payload: Record<string, unknown>): CheckoutContact
   if (creativeAssetKey !== undefined && !isAdCreativeAssetKey(creativeAssetKey)) {
     throw new CheckoutError(400, "The creative upload reference is invalid.");
   }
+  const bannerCreativeAssetKey = payload.bannerCreativeAssetKey;
+  if (bannerCreativeAssetKey !== undefined && !isAdCreativeAssetKey(bannerCreativeAssetKey)) {
+    throw new CheckoutError(400, "The banner upload reference is invalid.");
+  }
 
-  return { brand, billing: payload.billing as BillingCadence, customerEmail, businessName, referredBy, creativeAssetKey };
+  return { brand, billing: payload.billing as BillingCadence, customerEmail, businessName, referredBy, creativeAssetKey, bannerCreativeAssetKey };
 }
 
 function parseCountyCheckout(payload: Record<string, unknown>, contact: CheckoutContact): CountyCheckoutRequest {
@@ -265,6 +270,7 @@ function checkoutMetadata(request: CheckoutRequest): Record<string, string> {
     requiresSalesReview: "true",
     ...(request.referredBy ? { referredBy: request.referredBy } : {}),
     ...(request.creativeAssetKey ? { creativeAssetKey: request.creativeAssetKey } : {}),
+    ...(request.bannerCreativeAssetKey ? { bannerCreativeAssetKey: request.bannerCreativeAssetKey } : {}),
   };
 
   if (request.scope === "state") {

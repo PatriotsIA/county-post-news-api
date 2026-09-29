@@ -536,6 +536,7 @@ Resources:
               - https://www.thecountypost.com
               - https://advertise.thecountypost.com
               - https://www.advertise.thecountypost.com
+              - https://advertise.patriotsinaction.com
             MaxAge: 300
 
   AtlasDataBucket:

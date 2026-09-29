@@ -227,21 +227,25 @@ describe("Stripe Checkout endpoint", () => {
     });
 
     expect(response.statusCode).toBe(400);
-    expect(JSON.parse(response.body).error).toBe("Checkout prices are determined by the County Post rate card.");
+    expect(JSON.parse(response.body).error).toBe("Checkout prices are determined by the published rate card.");
     expect(createSession).not.toHaveBeenCalled();
   });
   it("uses PIA branding, return destinations and exact half-county cents in Stripe", async () => {
     configureCheckout();
     const response = await checkout({ brand: "patriots-in-action", scope: "county", placement: "color-card", billing: "monthly",
       counties: [{stateSlug: "texas", countySlug: "loving"}, {stateSlug: "texas", countySlug: "potter"}],
-      customerEmail: "advertiser@example.com", businessName: "PIA advertiser" });
+      customerEmail: "advertiser@example.com", businessName: "PIA advertiser",
+      creativeAssetKey: "ad-creatives/2026-09-29/11111111-1111-4111-8111-111111111111.png",
+      bannerCreativeAssetKey: "ad-creatives/2026-09-29/22222222-2222-4222-8222-222222222222.jpg" });
     expect(response.statusCode).toBe(201);
     expect(JSON.parse(response.body).amountCents).toBe(26250);
     const session = createSession.mock.calls[0][0];
     expect(session.success_url).toBe("https://advertise.patriotsinaction.com/?checkout=success");
     expect(session.cancel_url).toBe("https://advertise.patriotsinaction.com/?checkout=cancelled");
     expect(session.line_items[0].price_data.product_data.name).toBe("Patriots in Action — Local color card");
-    expect(session.metadata).toMatchObject({brand: "patriots-in-action", counties: "48301,48375"});
+    expect(session.metadata).toMatchObject({brand: "patriots-in-action", counties: "48301,48375",
+      creativeAssetKey: "ad-creatives/2026-09-29/11111111-1111-4111-8111-111111111111.png",
+      bannerCreativeAssetKey: "ad-creatives/2026-09-29/22222222-2222-4222-8222-222222222222.jpg"});
     expect(session.subscription_data.metadata).toEqual(session.metadata);
   });
 
