@@ -112,7 +112,7 @@ The county weather endpoint resolves the known county FIPS and centroid, then us
 
 The County Data Atlas endpoints read validated, immutable county snapshots through an S3 `manifest/current.json` pointer. The overview includes every registered domain with explicit availability; a known sparse domain returns an empty partial document rather than invented values. Until a published object exists, local development truthfully falls back to bundled Census population and optional live FRED economy metrics. See `docs/county-data-atlas.md`.
 
-`POST /v1/advertising/creatives/upload` accepts an advertised JPG or PNG file name, MIME type, and byte size and returns a 15-minute S3 presigned POST form. The browser uploads the creative directly to a private, encrypted S3 bucket before Stripe Checkout starts. Stripe Checkout itself does not support file-upload fields. The resulting private asset key is attached to the Checkout Session for the sales team.
+`POST /v1/advertising/creatives/upload` accepts an advertised JPG, PNG, WebP or GIF file name, MIME type, and byte size and returns a 15-minute S3 presigned POST form. The browser uploads the creative directly to a private, encrypted S3 bucket before Stripe Checkout starts. Stripe Checkout itself does not support file-upload fields. The resulting private asset key is attached to the Checkout Session for the sales team.
 
 ## Local Development
 

@@ -60,11 +60,11 @@ describe("advertising creative upload endpoint", () => {
       method: "POST",
       path: "/v1/advertising/creatives/upload",
       query: new URLSearchParams(),
-      body: JSON.stringify({ fileName: "my-ad.gif", contentType: "image/gif", size: 400_000 }),
+      body: JSON.stringify({ fileName: "my-ad.svg", contentType: "image/svg+xml", size: 400_000 }),
     });
 
     expect(response.statusCode).toBe(400);
-    expect(JSON.parse(response.body).error).toBe("Creative must be a JPG or PNG image.");
+    expect(JSON.parse(response.body).error).toBe("Creative must be a JPG, PNG, WebP or GIF image.");
     expect(createPresignedPost).not.toHaveBeenCalled();
   });
 });

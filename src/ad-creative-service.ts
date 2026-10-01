@@ -6,6 +6,8 @@ import { config } from "./config.js";
 const supportedCreativeTypes = {
   "image/jpeg": "jpg",
   "image/png": "png",
+  "image/webp": "webp",
+  "image/gif": "gif",
 } as const;
 
 export class AdCreativeError extends Error {
@@ -25,7 +27,7 @@ export async function createAdCreativeUpload(payload: unknown) {
   const contentType = payload.contentType;
   const size = payload.size;
   if (typeof contentType !== "string" || !(contentType in supportedCreativeTypes)) {
-    throw new AdCreativeError(400, "Creative must be a JPG or PNG image.");
+    throw new AdCreativeError(400, "Creative must be a JPG, PNG, WebP or GIF image.");
   }
   if (typeof size !== "number" || !Number.isSafeInteger(size) || size < 1 || size > config.advertisingCreativeMaxBytes) {
     throw new AdCreativeError(400, `Creative files must be smaller than ${Math.floor(config.advertisingCreativeMaxBytes / 1024 / 1024)} MB.`);
@@ -57,7 +59,7 @@ export async function createAdCreativeUpload(payload: unknown) {
 }
 
 export function isAdCreativeAssetKey(value: unknown): value is string {
-  return typeof value === "string" && /^ad-creatives\/\d{4}-\d{2}-\d{2}\/[0-9a-f-]{36}\.(jpg|png)$/.test(value);
+  return typeof value === "string" && /^ad-creatives\/\d{4}-\d{2}-\d{2}\/[0-9a-f-]{36}\.(jpg|png|webp|gif)$/.test(value);
 }
 
 function requiredText(value: unknown, message: string, maxLength: number) {
