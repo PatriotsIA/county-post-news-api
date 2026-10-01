@@ -9,6 +9,9 @@ type MintedMetalResponse = {
   updatedAt?: string;
   metals?: Partial<Record<MetalName, {
     price?: number;
+    previousPrice?: number;
+    fixedAt?: string;
+    sourceLabel?: string;
     currency?: string;
     unit?: string;
   }>>;
@@ -27,6 +30,9 @@ export type MetalsTickerResponse = {
     key: MetalName;
     label: string;
     price: number;
+    previousPrice?: number;
+    fixedAt?: string;
+    sourceLabel?: string;
   }>;
 };
 
@@ -97,8 +103,14 @@ export function getMetalsTicker() {
       const data = (await response.json()) as MintedMetalResponse;
       const items = metalNames.flatMap((key) => {
         const metal = data.metals?.[key];
-        return typeof metal?.price === "number"
-          ? [{ key, label: key[0].toUpperCase() + key.slice(1), price: metal.price }]
+        return positivePrice(metal?.price) && (!metal?.currency || metal.currency === "USD") &&
+          (!metal?.unit || ["troy oz", "troy ounce"].includes(metal.unit))
+          ? [{
+            key, label: key[0].toUpperCase() + key.slice(1), price: metal!.price!,
+            ...(positivePrice(metal?.previousPrice) ? { previousPrice: metal!.previousPrice } : {}),
+            ...(validDate(metal?.fixedAt) ? { fixedAt: metal!.fixedAt } : {}),
+            ...(typeof metal?.sourceLabel === "string" ? { sourceLabel: metal.sourceLabel.slice(0, 100) } : {}),
+          }]
           : [];
       });
       if (items.length !== metalNames.length) {
@@ -109,7 +121,7 @@ export function getMetalsTicker() {
       const ticker = {
         currency: firstMetal?.currency || "USD",
         unit: firstMetal?.unit || "troy oz",
-        updatedAt: data.updatedAt,
+        updatedAt: validDate(data.updatedAt) ? data.updatedAt : undefined,
         provider: {
           name: "Minted Metal",
           url: "https://mintedmetal.com",
@@ -124,6 +136,14 @@ export function getMetalsTicker() {
       throw new MarketServiceError(502, "Metals price provider is unavailable.");
     }
   });
+}
+
+function positivePrice(value: unknown): value is number {
+  return typeof value === "number" && Number.isFinite(value) && value > 0;
+}
+
+function validDate(value: unknown): value is string {
+  return typeof value === "string" && Number.isFinite(Date.parse(value));
 }
 
 export function getCattleTicker() {

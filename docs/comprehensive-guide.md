@@ -108,7 +108,7 @@ sequenceDiagram
 | `GET /v1/pages/national` | Multiple national sections. | National homepage load. |
 | `GET /v1/pages/states/:stateSlug` | Multiple state sections. | State page load. |
 | `GET /v1/pages/counties/:stateSlug/:countySlug` | Multiple county sections. | County page load. |
-| `GET /v1/markets/metals` | Cached LBMA benchmark precious-metal prices via Minted Metal. | Top ticker. |
+| `GET /v1/markets/metals` | Cached LBMA benchmark prices with optional previous prices and fixing times via Minted Metal. | `/itm-trading` price tracker. |
 | `GET /v1/markets/cattle` | Feeder/slaughter cattle prices from USDA MARS. | Top ticker. |
 | `GET /v1/counties/:stateSlug/:countySlug/weather` | NWS observation, forecast, hourly forecast, deduplicated point/zone alerts, and weekly USDM drought conditions. | Dedicated county weather page and navigation notices. |
 
