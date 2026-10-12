@@ -206,7 +206,6 @@ const gdelt = {
 };
 
 const defaultCorsOrigins = [...config.corsOrigins];
-const defaultMetalsProviderUrl = config.metalsProviderUrl;
 const defaultUsdaMarsApiKey = config.usdaMarsApiKey;
 const defaultFredApiKey = config.fredApiKey;
 const defaultCountyMarketTierEnabled = config.countyMarketTierEnabled;
@@ -222,7 +221,6 @@ describe("handleRequest", () => {
   afterEach(() => {
     clearCache();
     config.corsOrigins = [...defaultCorsOrigins];
-    config.metalsProviderUrl = defaultMetalsProviderUrl;
     config.usdaMarsApiKey = defaultUsdaMarsApiKey;
     config.fredApiKey = defaultFredApiKey;
     config.countyMarketTierEnabled = defaultCountyMarketTierEnabled;
@@ -291,37 +289,21 @@ describe("handleRequest", () => {
     }
   });
 
-  it("returns cached no-key LBMA benchmark metal prices through the server-side provider", async () => {
-    vi.stubGlobal(
-      "fetch",
-      vi.fn(async () =>
-        new Response(
-          JSON.stringify({
-            updatedAt: "2026-08-06T18:00:00.000Z",
-            metals: {
-              gold: { price: 3400.5, currency: "USD", unit: "troy oz" },
-              silver: { price: 38.2, currency: "USD", unit: "troy oz" },
-              platinum: { price: 1400, currency: "USD", unit: "troy oz" },
-              palladium: { price: 1125, currency: "USD", unit: "troy oz" },
-            },
-          }),
-          { status: 200, headers: { "content-type": "application/json" } },
-        ),
-      ),
-    );
-
+  it("returns spot prices with a short CDN TTL through the server-side provider", async () => {
+    const prices = { XAU: 3400.5, XAG: 38.2, XPT: 1400, XPD: 1125 };
+    vi.stubGlobal("fetch", vi.fn(async (url: string) => {
+      const symbol = url.split("/").pop() as keyof typeof prices;
+      return Response.json({ symbol, currency: "USD", price: prices[symbol], updatedAt: new Date().toISOString() });
+    }));
     const response = await handleRequest({ method: "GET", path: "/v1/markets/metals", query: new URLSearchParams() });
-
     expect(response.statusCode).toBe(200);
+    expect(response.headers["cache-control"]).toBe("public, max-age=15, s-maxage=15");
     expect(JSON.parse(response.body)).toMatchObject({
-      currency: "USD",
-      unit: "troy oz",
-      provider: { name: "Minted Metal", url: "https://mintedmetal.com" },
+      currency: "USD", unit: "troy oz", priceType: "spot",
+      provider: { name: "Gold-API.com", url: "https://gold-api.com" },
       items: [
-        { key: "gold", price: 3400.5 },
-        { key: "silver", price: 38.2 },
-        { key: "platinum", price: 1400 },
-        { key: "palladium", price: 1125 },
+        { key: "gold", price: 3400.5 }, { key: "silver", price: 38.2 },
+        { key: "platinum", price: 1400 }, { key: "palladium", price: 1125 },
       ],
     });
   });

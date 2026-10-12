@@ -66,7 +66,6 @@ export const config = {
   maxRssUrlsPerFeed: Number(process.env.MAX_RSS_URLS_PER_FEED || 30),
   maxArticleQueriesPerFeed: Number(process.env.MAX_ARTICLE_QUERIES_PER_FEED || 10),
   googleNewsRssSearch: "https://news.google.com/rss/search",
-  metalsProviderUrl: process.env.METALS_PROVIDER_URL || "https://mintedmetal.com/api/prices.json",
   metalsCacheTtlSeconds: Number(process.env.METALS_CACHE_TTL_SECONDS || 900),
   usdaMarsApiKey: process.env.USDA_MARS_API_KEY || process.env.MARS_API_KEY || "",
   fredApiKey: process.env.FRED_API_KEY || "",

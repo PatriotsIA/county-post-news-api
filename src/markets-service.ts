@@ -1,42 +1,9 @@
-import { cached, cachedShared } from "./cache.js";
+import { cachedShared } from "./cache.js";
 import { config } from "./config.js";
 
-const metalNames = ["gold", "silver", "platinum", "palladium"] as const;
-
-type MetalName = (typeof metalNames)[number];
-
-type MintedMetalResponse = {
-  updatedAt?: string;
-  metals?: Partial<Record<MetalName, {
-    price?: number;
-    previousPrice?: number;
-    fixedAt?: string;
-    sourceLabel?: string;
-    currency?: string;
-    unit?: string;
-  }>>;
-};
-
-export type MetalsTickerResponse = {
-  currency: string;
-  unit: string;
-  updatedAt?: string;
-  provider: {
-    name: string;
-    url: string;
-  };
-  stale?: boolean;
-  items: Array<{
-    key: MetalName;
-    label: string;
-    price: number;
-    previousPrice?: number;
-    fixedAt?: string;
-    sourceLabel?: string;
-  }>;
-};
-
-let lastMetalsTicker: MetalsTickerResponse | undefined;
+export { getMetalsTicker, type MetalsTickerResponse } from "./metals-service.js";
+export { MarketServiceError } from "./market-error.js";
+import { MarketServiceError } from "./market-error.js";
 
 type MarsReportResponse = {
   results?: MarsReportRow[];
@@ -79,72 +46,6 @@ export type CattleTickerResponse = {
   fetchedAt?: string;
   partial?: boolean;
 };
-
-export class MarketServiceError extends Error {
-  constructor(
-    readonly statusCode: number,
-    message: string,
-  ) {
-    super(message);
-  }
-}
-
-export function getMetalsTicker() {
-  return cached("markets:metals:usd:toz", config.metalsCacheTtlSeconds, async () => {
-    try {
-      const response = await fetch(config.metalsProviderUrl, {
-        headers: { accept: "application/json" },
-        signal: AbortSignal.timeout(config.requestTimeoutMs),
-      });
-      if (!response.ok) {
-        throw new MarketServiceError(502, "Metals price provider is unavailable.");
-      }
-
-      const data = (await response.json()) as MintedMetalResponse;
-      const items = metalNames.flatMap((key) => {
-        const metal = data.metals?.[key];
-        return positivePrice(metal?.price) && (!metal?.currency || metal.currency === "USD") &&
-          (!metal?.unit || ["troy oz", "troy ounce"].includes(metal.unit))
-          ? [{
-            key, label: key[0].toUpperCase() + key.slice(1), price: metal!.price!,
-            ...(positivePrice(metal?.previousPrice) ? { previousPrice: metal!.previousPrice } : {}),
-            ...(validDate(metal?.fixedAt) ? { fixedAt: metal!.fixedAt } : {}),
-            ...(typeof metal?.sourceLabel === "string" ? { sourceLabel: metal.sourceLabel.slice(0, 100) } : {}),
-          }]
-          : [];
-      });
-      if (items.length !== metalNames.length) {
-        throw new MarketServiceError(502, "Metals price provider returned incomplete data.");
-      }
-
-      const firstMetal = data.metals?.gold;
-      const ticker = {
-        currency: firstMetal?.currency || "USD",
-        unit: firstMetal?.unit || "troy oz",
-        updatedAt: validDate(data.updatedAt) ? data.updatedAt : undefined,
-        provider: {
-          name: "Minted Metal",
-          url: "https://mintedmetal.com",
-        },
-        items,
-      };
-      lastMetalsTicker = ticker;
-      return ticker;
-    } catch (error) {
-      if (lastMetalsTicker) return { ...lastMetalsTicker, stale: true };
-      if (error instanceof MarketServiceError) throw error;
-      throw new MarketServiceError(502, "Metals price provider is unavailable.");
-    }
-  });
-}
-
-function positivePrice(value: unknown): value is number {
-  return typeof value === "number" && Number.isFinite(value) && value > 0;
-}
-
-function validDate(value: unknown): value is string {
-  return typeof value === "string" && Number.isFinite(Date.parse(value));
-}
 
 export function getCattleTicker() {
   if (!config.usdaMarsApiKey) {

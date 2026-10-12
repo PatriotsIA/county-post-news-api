@@ -127,7 +127,6 @@ Globals:
         RECENCY_SECONDARY_DAYS: "180"
         COUNTY_PLACE_QUERY_LIMIT: "4"
         CORS_ORIGINS: !Sub "${CorsOrigins},${AdvertiserCorsOrigins}"
-        METALS_PROVIDER_URL: "https://mintedmetal.com/api/prices.json"
         METALS_CACHE_TTL_SECONDS: "900"
         FRED_CACHE_TTL_SECONDS: "21600"
         NWS_API_BASE: "https://api.weather.gov"

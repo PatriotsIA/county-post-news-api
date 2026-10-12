@@ -108,7 +108,7 @@ sequenceDiagram
 | `GET /v1/pages/national` | Multiple national sections. | National homepage load. |
 | `GET /v1/pages/states/:stateSlug` | Multiple state sections. | State page load. |
 | `GET /v1/pages/counties/:stateSlug/:countySlug` | Multiple county sections. | County page load. |
-| `GET /v1/markets/metals` | Cached LBMA benchmark prices with optional previous prices and fixing times via Minted Metal. | `/itm-trading` price tracker. |
+| `GET /v1/markets/metals` | Shared Gold-API.com spot snapshots, quote timestamps and previous saved quotes. | Market Desk and `/itm-trading` tools. |
 | `GET /v1/markets/cattle` | Feeder/slaughter cattle prices from USDA MARS. | Top ticker. |
 | `GET /v1/counties/:stateSlug/:countySlug/weather` | NWS observation, forecast, hourly forecast, deduplicated point/zone alerts, and weekly USDM drought conditions. | Dedicated county weather page and navigation notices. |
 
@@ -252,7 +252,7 @@ Page endpoints aggregate several sections. To avoid overloading Lambda with too 
 | `MAX_ARTICLE_QUERIES_PER_FEED` | `6` | GDELT query cap per section. |
 | `DEFAULT_LIMIT` | `48` | Default returned items per section. |
 | `MAX_LIMIT` | `200` | Hard returned item cap. |
-| `METALS_PROVIDER_URL` | Minted Metal endpoint | No-key CC BY/LBMA benchmark provider for `/v1/markets/metals`. |
+| `FEED_CACHE_BUCKET` (metals) | Required when hosted | Atomic shared refresh lease, cooldown, last-good spot snapshot; see `docs/metals-spot.md`. |
 | `USDA_MARS_API_KEY` | unset | Server-side USDA MARS key for `/v1/markets/cattle`; `MARS_API_KEY` is accepted locally as an alias. |
 | `WEATHER_POINTS_CACHE_TTL_SECONDS` | `86400` | Long-lived NWS point-to-grid and zone mapping. |
 | `WEATHER_RESPONSE_CACHE_TTL_SECONDS` | `600` | Forecast and current-observation cache. |

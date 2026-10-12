@@ -96,7 +96,7 @@ export async function handleRequest(request: ApiRequest): Promise<ApiResponse> {
       } else if (parts[1] === "pages") {
         response = await handlePage(parts.slice(2), request.query);
       } else if (parts[1] === "markets" && parts[2] === "metals" && parts.length === 3) {
-        response = json(200, await getMetalsTicker());
+        response = json(200, await getMetalsTicker(), "public, max-age=15, s-maxage=15");
       } else if (parts[1] === "markets" && parts[2] === "cattle" && parts.length === 3) {
         const cattle = await getCattleTicker();
         response = json(200, cattle, cattle.stale || cattle.partial ? "public, max-age=60, s-maxage=60" : `public, max-age=${config.metalsCacheTtlSeconds}, s-maxage=${config.metalsCacheTtlSeconds}, stale-if-error=3600`);

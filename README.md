@@ -196,8 +196,8 @@ Copy `.env.example` into your environment provider or shell:
 - `ARTICLE_IMAGE_LOOKUP_LIMIT`: max article pages scraped for missing images per feed, production default `4`.
 - `MAX_RSS_URLS_PER_FEED`: RSS/provider URL cap per section, default `18`.
 - `MAX_ARTICLE_QUERIES_PER_FEED`: article-search query cap per section, default `6`.
-- `METALS_PROVIDER_URL`: no-key Minted Metal JSON endpoint for CC BY, LBMA benchmark metal prices. Default `https://mintedmetal.com/api/prices.json`.
-- `METALS_CACHE_TTL_SECONDS`: shared metal benchmark cache duration, default `900`. Do not poll the upstream provider more often than every 15 minutes.
+- `METALS_CACHE_TTL_SECONDS`: retained for the cattle cache, default `900`. Gold-API.com spot prices use a fixed minimum 60-second shared cooldown, independent of this legacy setting.
+- Metals use only the four free Gold-API.com price endpoints, spaced 1.1 seconds apart. One S3 compare-and-swap state object (`feed-cache/markets-gold-api-v1.json`) coordinates all Lambda instances, retaining complete snapshots and shared retry backoff. S3 failures never fall through to uncoordinated provider requests. Hosted deployments require `FEED_CACHE_BUCKET`; standalone development can use process-local storage. See `docs/metals-spot.md`.
 - `USDA_MARS_API_KEY`: USDA MyMarketNews MARS API key for the cattle ticker. `MARS_API_KEY` is also accepted as a local alias.
 - `FRED_API_KEY`: FRED API key used only by the API for county economic data.
 - `FRED_CACHE_TTL_SECONDS`: county FRED response cache duration, default `21600` (six hours).
