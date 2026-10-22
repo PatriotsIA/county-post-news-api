@@ -54,6 +54,10 @@ type SharedEntry<T> = { storedAt: number; value: T; freshForSeconds?: number };
 export type SharedCacheOptions<T = unknown> = {
   /** Worker refresh: reuse only fresh shared data; rebuild stale or absent data. */
   forceFresh?: boolean;
+  /** Scheduled provider refresh: rebuild even fresh data, keeping it as the fallback. */
+  rebuild?: boolean;
+  /** Store under the provider prefix, which the bucket keeps for months rather than days. */
+  longLived?: boolean;
   /** Provider data: refresh expired snapshots inline, with optional bounded fallback. */
   revalidate?: boolean;
   /** How old a stored copy may be and still be served. */
@@ -98,7 +102,7 @@ export async function cachedShared<T>(
 ): Promise<T> {
   // Coalesce the S3 read and rebuild as well as the provider calls. A worker's
   // freshness requirement must never join a reader serving a stale snapshot.
-  const flightKey = `${key}:${options.forceFresh ? "worker" : options.revalidate ? "provider" : "reader"}`;
+  const flightKey = `${key}:${options.rebuild ? "rebuild" : options.forceFresh ? "worker" : options.revalidate ? "provider" : "reader"}`;
   const pending = sharedLoads.get(flightKey);
   if (pending) return pending as Promise<T>;
   const promise = loadShared(key, ttlSeconds, load, options);
@@ -115,17 +119,17 @@ async function loadShared<T>(key: string, ttlSeconds: number, load: () => Promis
 
   {
     const hit = cache.get(key);
-    if (!options.forceFresh && hit && hit.expiresAt > now) return hit.value as Promise<T>;
+    if (!options.forceFresh && !options.rebuild && hit && hit.expiresAt > now) return hit.value as Promise<T>;
 
     const bucket = sharedBucket();
     if (bucket) {
       try {
-        const object = await s3Cache().send(new GetObjectCommand({ Bucket: bucket, Key: sharedKey(key) }), { abortSignal: AbortSignal.timeout(2500) });
+        const object = await readSharedObject(bucket, key, options.longLived);
         const entry = JSON.parse((await object.Body?.transformToString()) || "") as SharedEntry<T>;
         const age = now - entry.storedAt;
         const freshTtlMs = Math.min(ttlSeconds, entry.freshForSeconds ?? ttlSeconds) * 1000;
         if (Number.isFinite(age) && age >= 0 && age < staleTtlMs) { previous = entry; rememberSnapshot(key, entry); }
-        if (Number.isFinite(age) && age >= 0 && age < (options.forceFresh || options.revalidate ? freshTtlMs : staleTtlMs)) {
+        if (!options.rebuild && Number.isFinite(age) && age >= 0 && age < (options.forceFresh || options.revalidate ? freshTtlMs : staleTtlMs)) {
           if (age >= freshTtlMs && options.onStale) {
             try { await options.onStale(); }
             catch (error) { console.warn(JSON.stringify({ event: "feed.refresh_enqueue_failed", key, error: String(error) })); }
@@ -172,7 +176,7 @@ async function loadShared<T>(key: string, ttlSeconds: number, load: () => Promis
       await s3Cache().send(
         new PutObjectCommand({
           Bucket: bucket,
-          Key: sharedKey(key),
+          Key: sharedKey(key, options.longLived),
           Body: JSON.stringify(snapshot),
           ContentType: "application/json",
         }), { abortSignal: AbortSignal.timeout(2500) },
@@ -188,6 +192,18 @@ async function loadShared<T>(key: string, ttlSeconds: number, load: () => Promis
   return resolved;
 }
 
-function sharedKey(key: string) {
-  return `feed-cache/${encodeURIComponent(key)}.json`;
+function sharedKey(key: string, longLived = false) {
+  return `${longLived ? "provider-cache" : "feed-cache"}/${encodeURIComponent(key)}.json`;
+}
+
+async function readSharedObject(bucket: string, key: string, longLived = false) {
+  const read = (objectKey: string) =>
+    s3Cache().send(new GetObjectCommand({ Bucket: bucket, Key: objectKey }), { abortSignal: AbortSignal.timeout(2500) });
+  try { return await read(sharedKey(key, longLived)); }
+  catch (error) {
+    // Long-lived entries used to be stored with the feeds. Those copies expire
+    // three days after the move, after which this second read always misses.
+    if (!longLived) throw error;
+    return read(sharedKey(key));
+  }
 }

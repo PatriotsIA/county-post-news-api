@@ -79,7 +79,25 @@ export class FredServiceError extends Error {
   }
 }
 
-export function getCountyFredData(county: CountySite): Promise<FredCountyResponse> {
+/**
+ * Why one series request failed, safe to log: an HTTP status, a non-JSON body
+ * (FRED's maintenance page is HTML served with 200), or an empty series.
+ */
+class FredFetchError extends Error {
+  constructor(
+    readonly reason: string,
+    message: string,
+  ) {
+    super(message);
+  }
+}
+
+/**
+ * County series are annual, so a stored copy stays fresh for a week and may be
+ * served for months while FRED is down. `rebuild` is the scheduled refresh in
+ * fred-refresh.ts, which renews each county's copy before readers need it.
+ */
+export function getCountyFredData(county: CountySite, options: { rebuild?: boolean } = {}): Promise<FredCountyResponse> {
   if (!config.fredApiKey) {
     throw new FredServiceError(503, "County economic data is not configured.");
   }
@@ -101,6 +119,7 @@ export function getCountyFredData(county: CountySite): Promise<FredCountyRespons
             fips,
             seriesId: definitions[index].seriesId,
             errorType: result.reason instanceof Error ? result.reason.name : "UnknownError",
+            reason: failureReason(result.reason),
           }),
         );
       }
@@ -132,7 +151,7 @@ export function getCountyFredData(county: CountySite): Promise<FredCountyRespons
       },
     };
   }, {
-    revalidate: true, staleTtlSeconds: 3 * 86400,
+    revalidate: true, rebuild: options.rebuild, longLived: true, staleTtlSeconds: config.fredStaleTtlSeconds,
     staleIfError: previous => ({ ...previous, meta: { ...previous.meta, stale: true } }),
     shouldReplace: (before, after) => (after as FredCountyResponse).metrics.length >= (before as FredCountyResponse).metrics.length,
     ttlForValue: value => value.meta.partial ? 300 : config.fredCacheTtlSeconds,
@@ -209,10 +228,13 @@ async function fetchFredMetric(definition: FredMetricDefinition): Promise<FredCo
     },
     signal: AbortSignal.timeout(config.fredTimeoutMs),
   });
-  const data = (await response.json().catch(() => ({}))) as FredObservationResponse;
   if (!response.ok) {
     // Do not log provider error bodies: they can contain authenticated URLs.
-    throw new Error(`FRED series ${definition.seriesId} returned HTTP ${response.status}.`);
+    throw new FredFetchError(`http-${response.status}`, `FRED series ${definition.seriesId} returned HTTP ${response.status}.`);
+  }
+  const data = (await response.json().catch(() => undefined)) as FredObservationResponse | undefined;
+  if (!data) {
+    throw new FredFetchError("not-json", `FRED series ${definition.seriesId} returned a body that is not JSON.`);
   }
 
   const observations = (data.observations || [])
@@ -223,7 +245,7 @@ async function fetchFredMetric(definition: FredMetricDefinition): Promise<FredCo
     .reverse();
   const latest = observations.at(-1);
   if (!latest) {
-    throw new Error(`FRED series ${definition.seriesId} returned no observations.`);
+    throw new FredFetchError("no-observations", `FRED series ${definition.seriesId} returned no observations.`);
   }
 
   const previous = observations.at(-2);
@@ -244,6 +266,12 @@ async function fetchFredMetric(definition: FredMetricDefinition): Promise<FredCo
           },
     observations,
   };
+}
+
+function failureReason(error: unknown) {
+  if (error instanceof FredFetchError) return error.reason;
+  if (error instanceof Error && error.name === "TimeoutError") return "timeout";
+  return "network";
 }
 
 function newestDate(values: string[]) {

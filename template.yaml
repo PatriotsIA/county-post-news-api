@@ -128,7 +128,8 @@ Globals:
         COUNTY_PLACE_QUERY_LIMIT: "4"
         CORS_ORIGINS: !Sub "${CorsOrigins},${AdvertiserCorsOrigins}"
         METALS_CACHE_TTL_SECONDS: "900"
-        FRED_CACHE_TTL_SECONDS: "21600"
+        FRED_CACHE_TTL_SECONDS: "604800"
+        FRED_STALE_TTL_SECONDS: "7776000"
         NWS_API_BASE: "https://api.weather.gov"
         NWS_USER_AGENT: "TheCountyPost/1.0 (https://thecountypost.com; contact@thecountypost.com)"
         WEATHER_POINTS_CACHE_TTL_SECONDS: "86400"
@@ -283,7 +284,14 @@ Resources:
         Rules:
           - Id: expire-cache-entries
             Status: Enabled
+            Prefix: feed-cache/
             ExpirationInDays: 3
+          # Provider snapshots (FRED) may be served for 90 days while their
+          # provider is down, so they must outlive that window.
+          - Id: expire-provider-snapshots
+            Status: Enabled
+            Prefix: provider-cache/
+            ExpirationInDays: 100
 
   FeedRefreshDeadLetterQueue:
     Type: AWS::SQS::Queue
@@ -365,6 +373,37 @@ Resources:
             Schedule: rate(5 minutes)
             Description: Queue bounded national, state, and county feed refreshes.
 
+  # Renews every county's stored FRED data on a rotation (src/fred-refresh.ts)
+  # so readers are served a stored copy instead of waiting on, or failing with,
+  # FRED itself.
+  FredRefreshFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: .
+      Handler: dist/src/fred-refresh.handler
+      Timeout: 60
+      MemorySize: 512
+      Policies:
+        - S3CrudPolicy:
+            BucketName: !Ref FeedCacheBucket
+      Environment:
+        Variables:
+          FEED_CACHE_BUCKET: !Ref FeedCacheBucket
+          FRED_API_KEY: !Sub "{{resolve:secretsmanager:${ApiProviderSecretId}:SecretString:FredApiKey}}"
+          PROVIDER_SECRET_REVISION: !Ref ApiProviderSecretRevision
+      Events:
+        RefreshSchedule:
+          Type: Schedule
+          Properties:
+            Schedule: rate(5 minutes)
+            Description: Renew two counties' stored FRED data.
+
+  FredRefreshLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub "/aws/lambda/${FredRefreshFunction}"
+      RetentionInDays: 30
+
   NewsApiThrottleAlarm:
     Type: AWS::CloudWatch::Alarm
     Properties:
@@ -432,7 +471,7 @@ Resources:
         - !Sub arn:${AWS::Partition}:sns:${AWS::Region}:${AWS::AccountId}:pia-operations-alerts
       OKActions:
         - !Sub arn:${AWS::Partition}:sns:${AWS::Region}:${AWS::AccountId}:pia-operations-alerts
-      AlarmDescription: Sustained reader HTTP failures including handled provider errors; inspect weather, FRED, cattle and feed logs.
+      AlarmDescription: Sustained reader HTTP 5xx failures that are not outside-provider outages (those go to ProviderOutageAlarm); inspect api.request errors in the NewsApiFunction logs.
       EvaluationPeriods: 3
       DatapointsToAlarm: 2
       Threshold: 1
@@ -440,9 +479,12 @@ Resources:
       TreatMissingData: notBreaching
       Metrics:
         - Id: rate
-          Expression: "IF(requests >= 50 AND errors >= 5, 100 * errors / requests, 0)"
-          Label: Reader HTTP 5xx percent
+          Expression: "IF(requests >= 50 AND apiErrors >= 5, 100 * apiErrors / requests, 0)"
+          Label: Reader HTTP 5xx percent, excluding provider outages
           ReturnData: true
+        - Id: apiErrors
+          Expression: "FILL(errors, 0) - FILL(fred, 0) - FILL(weather, 0) - FILL(markets, 0)"
+          ReturnData: false
         - Id: errors
           ReturnData: false
           MetricStat:
@@ -464,6 +506,121 @@ Resources:
                 - Name: FunctionName
                   Value: !Ref NewsApiFunction
             Period: 300
+            Stat: Sum
+        - Id: fred
+          ReturnData: false
+          MetricStat:
+            Metric:
+              Namespace: CountyNewsApi
+              MetricName: ProviderFailures
+              Dimensions:
+                - Name: Provider
+                  Value: fred
+                - Name: Source
+                  Value: reader
+            Period: 300
+            Stat: Sum
+        - Id: weather
+          ReturnData: false
+          MetricStat:
+            Metric:
+              Namespace: CountyNewsApi
+              MetricName: ProviderFailures
+              Dimensions:
+                - Name: Provider
+                  Value: weather
+                - Name: Source
+                  Value: reader
+            Period: 300
+            Stat: Sum
+        - Id: markets
+          ReturnData: false
+          MetricStat:
+            Metric:
+              Namespace: CountyNewsApi
+              MetricName: ProviderFailures
+              Dimensions:
+                - Name: Provider
+                  Value: markets
+                - Name: Source
+                  Value: reader
+            Period: 300
+            Stat: Sum
+
+  # One notification per outage of an outside provider (FRED, National Weather
+  # Service and drought/rain sources, USDA cattle and metals prices): it needs
+  # failures in three of four 15-minute periods and clears after about half an
+  # hour without them. Six failures per period is two FRED refresh runs failing
+  # outright, so one bad run or a few reader errors stay quiet.
+  ProviderOutageAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmActions:
+        - !Sub arn:${AWS::Partition}:sns:${AWS::Region}:${AWS::AccountId}:pia-operations-alerts
+      OKActions:
+        - !Sub arn:${AWS::Partition}:sns:${AWS::Region}:${AWS::AccountId}:pia-operations-alerts
+      AlarmDescription: An outside data provider has been failing for about 45 minutes. Readers get stored copies where they exist. Check the CountyNewsApi ProviderFailures metric's Provider dimension, then that provider's status and the fred.county.metric_failed reasons, before changing anything.
+      EvaluationPeriods: 4
+      DatapointsToAlarm: 3
+      Threshold: 6
+      ComparisonOperator: GreaterThanOrEqualToThreshold
+      TreatMissingData: notBreaching
+      Metrics:
+        - Id: failures
+          Expression: "FILL(fredReader, 0) + FILL(fredRefresh, 0) + FILL(weather, 0) + FILL(markets, 0)"
+          Label: Outside provider failures
+          ReturnData: true
+        - Id: fredReader
+          ReturnData: false
+          MetricStat:
+            Metric:
+              Namespace: CountyNewsApi
+              MetricName: ProviderFailures
+              Dimensions:
+                - Name: Provider
+                  Value: fred
+                - Name: Source
+                  Value: reader
+            Period: 900
+            Stat: Sum
+        - Id: fredRefresh
+          ReturnData: false
+          MetricStat:
+            Metric:
+              Namespace: CountyNewsApi
+              MetricName: ProviderFailures
+              Dimensions:
+                - Name: Provider
+                  Value: fred
+                - Name: Source
+                  Value: refresh
+            Period: 900
+            Stat: Sum
+        - Id: weather
+          ReturnData: false
+          MetricStat:
+            Metric:
+              Namespace: CountyNewsApi
+              MetricName: ProviderFailures
+              Dimensions:
+                - Name: Provider
+                  Value: weather
+                - Name: Source
+                  Value: reader
+            Period: 900
+            Stat: Sum
+        - Id: markets
+          ReturnData: false
+          MetricStat:
+            Metric:
+              Namespace: CountyNewsApi
+              MetricName: ProviderFailures
+              Dimensions:
+                - Name: Provider
+                  Value: markets
+                - Name: Source
+                  Value: reader
+            Period: 900
             Stat: Sum
 
   FeedRefreshDeadLetterAlarm:
