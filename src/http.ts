@@ -15,6 +15,7 @@ import {
 } from "./atlas-service.js";
 import { getCountyWeather, WeatherServiceError } from "./weather-service.js";
 import { getCountyPublicNotices } from "./public-notices/service.js";
+import { recordProviderFailures, type Provider } from "./metrics.js";
 import type { FeedScope, Topic } from "./types.js";
 
 export type ApiRequest = {
@@ -38,6 +39,7 @@ export async function handleRequest(request: ApiRequest): Promise<ApiResponse> {
   const path = normalizePath(request.path);
   let response: ApiResponse;
   let errorMessage: string | undefined;
+  let provider: Provider | undefined;
 
   try {
     if (request.method === "OPTIONS") {
@@ -67,7 +69,7 @@ export async function handleRequest(request: ApiRequest): Promise<ApiResponse> {
         response = json(
           200,
           economicData,
-          economicData.meta.stale || economicData.meta.partial ? "public, max-age=60, s-maxage=60" : `public, max-age=1800, s-maxage=${config.fredCacheTtlSeconds}, stale-if-error=86400`,
+          economicData.meta.stale || economicData.meta.partial ? "public, max-age=60, s-maxage=60" : `public, max-age=1800, s-maxage=${Math.min(config.fredCacheTtlSeconds, 86400)}, stale-if-error=86400`,
         );
       } else if (parts[1] === "counties" && parts[2] && parts[3] && parts[4] === "public-notices" && parts.length === 5) {
         const county = getCounty(parts[2], parts[3]);
@@ -118,11 +120,22 @@ export async function handleRequest(request: ApiRequest): Promise<ApiResponse> {
     const message = isExpectedError ? error.message : "Internal server error";
     const status = isExpectedError ? error.statusCode : 500;
     response = json(status, { error: message, durationMs: Date.now() - startedAt }, "no-store");
+    // An outside provider's outage is not an API fault. It is counted apart so
+    // the reader HTTP alarm can leave it to the provider outage alarm.
+    provider = status >= 500 ? providerOf(error) : undefined;
+    if (provider) recordProviderFailures(provider, "reader");
   }
 
   const corsResponse = withCorsHeaders(response, request.headers);
-  logRequest(request, path, corsResponse, Date.now() - startedAt, errorMessage);
+  logRequest(request, path, corsResponse, Date.now() - startedAt, errorMessage, provider);
   return corsResponse;
+}
+
+function providerOf(error: unknown): Provider | undefined {
+  if (error instanceof FredServiceError) return "fred";
+  if (error instanceof WeatherServiceError) return "weather";
+  if (error instanceof MarketServiceError) return "markets";
+  return undefined;
 }
 
 async function handleFeed(parts: string[], query: URLSearchParams) {
@@ -272,7 +285,7 @@ function allowedCorsOrigin(origin?: string) {
   return undefined;
 }
 
-function logRequest(request: ApiRequest, path: string, response: ApiResponse, durationMs: number, errorMessage?: string) {
+function logRequest(request: ApiRequest, path: string, response: ApiResponse, durationMs: number, errorMessage?: string, provider?: Provider) {
   const headers = normalizeHeaders(request.headers);
   const payload = {
     event: "api.request",
@@ -288,6 +301,7 @@ function logRequest(request: ApiRequest, path: string, response: ApiResponse, du
     remoteAddress: request.remoteAddress,
     requestId: request.requestId,
     error: errorMessage,
+    provider,
   };
 
   const line = JSON.stringify(payload);

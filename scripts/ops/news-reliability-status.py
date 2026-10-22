@@ -28,6 +28,7 @@ ALARM_IDS = (
     "NewsApiThrottleAlarm",
     "NewsApiExecutionFailureAlarm",
     "NewsApiHttpFailureAlarm",
+    "ProviderOutageAlarm",
 )
 
 

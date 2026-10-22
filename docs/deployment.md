@@ -377,8 +377,18 @@ Post's origin; explicit additional origins remain configurable through
 `FEED_EDGE_ORIGINS`. Existing CORS/API compatibility is preserved.
 
 Check `NewsApiThrottleAlarm`, `NewsApiExecutionFailureAlarm`,
-`FeedRefreshBacklogAlarm`, `FeedRefreshDeadLetterAlarm`, and
-`FeedWarmerFailureAlarm`, and `NewsApiHttpFailureAlarm`. All nine stack alarms route ALARM and OK notifications
+`FeedRefreshBacklogAlarm`, `FeedRefreshDeadLetterAlarm`,
+`FeedWarmerFailureAlarm`, `NewsApiHttpFailureAlarm`, and `ProviderOutageAlarm`.
+
+`NewsApiHttpFailureAlarm` counts reader 5xx responses other than outside-provider
+outages. The API reports those as the `CountyNewsApi` metric `ProviderFailures`
+(dimensions `Provider` = `fred`, `weather` or `markets`, and `Source` = `reader`
+or `refresh`). The alarm subtracts the reader count from `Url5xxCount`.
+`ProviderOutageAlarm` adds both sources. It needs six or more failures in three
+of four 15-minute periods, so an outage produces one ALARM and one OK
+notification rather than repeated flapping.
+
+All ten stack alarms route ALARM and OK notifications
 to `pia-operations-alerts`, whose confirmed email destination is
 `erik@patriotsinaction.com`; preserve these actions in future releases.
 Rollback the frontend URL to `NewsApiUrl` and rebuild before disabling the edge

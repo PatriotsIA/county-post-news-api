@@ -70,7 +70,9 @@ export const config = {
   usdaMarsApiKey: process.env.USDA_MARS_API_KEY || process.env.MARS_API_KEY || "",
   fredApiKey: process.env.FRED_API_KEY || "",
   fredApiUrl: "https://api.stlouisfed.org/fred",
-  fredCacheTtlSeconds: Number(process.env.FRED_CACHE_TTL_SECONDS || 21600),
+  fredCacheTtlSeconds: Number(process.env.FRED_CACHE_TTL_SECONDS || 604800),
+  /** How long a stored FRED copy may still be served while FRED is failing. */
+  fredStaleTtlSeconds: Number(process.env.FRED_STALE_TTL_SECONDS || 7776000),
   nwsApiBase: process.env.NWS_API_BASE || "https://api.weather.gov",
   nwsUserAgent:
     process.env.NWS_USER_AGENT ||
