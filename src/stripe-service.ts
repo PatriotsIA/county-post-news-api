@@ -1,4 +1,7 @@
 import Stripe from "stripe";
+import { CheckoutError } from "./checkout-error.js";
+import { createCountyPostCheckout } from "./county-post-payments.js";
+export { CheckoutError } from "./checkout-error.js";
 import {
   ANNUAL_BILLED_MONTHS,
   isBillingCadence,
@@ -70,30 +73,20 @@ export type CheckoutResponse = {
   requiresSalesReview: true;
 };
 
-export class CheckoutError extends Error {
-  constructor(
-    readonly statusCode: number,
-    message: string,
-  ) {
-    super(message);
-  }
-}
-
 export async function createCheckoutSession(payload: unknown): Promise<CheckoutResponse> {
-  if (!config.stripeSecretKey) throw new CheckoutError(503, "Payments are not configured.");
+  const request = parseCheckoutRequest(payload);
+  if (request.brand === "patriots-in-action" && !config.stripeSecretKey) throw new CheckoutError(503, "Payments are not configured.");
   if (!config.checkoutSuccessUrl || !config.checkoutCancelUrl) throw new CheckoutError(503, "Checkout return URLs are not configured.");
 
-  const request = parseCheckoutRequest(payload);
   const monthlyAmountCents = calculateMonthlyAmount(request);
   const amountCents = request.billing === "annual" ? monthlyAmountCents * ANNUAL_BILLED_MONTHS : monthlyAmountCents;
   const cadenceLabel = request.billing === "annual" ? "annual plan (12 months for the price of 10)" : "monthly plan";
-  const stripe = new Stripe(config.stripeSecretKey);
   const product = checkoutProductDetails(request, cadenceLabel);
   const metadata = checkoutMetadata(request);
   const brand = checkoutBrand(request.brand);
 
   try {
-    const session = await stripe.checkout.sessions.create({
+    const params: Stripe.Checkout.SessionCreateParams = {
       mode: "subscription",
       customer_email: request.customerEmail,
       billing_address_collection: "auto",
@@ -115,7 +108,10 @@ export async function createCheckoutSession(payload: unknown): Promise<CheckoutR
       ],
       metadata,
       subscription_data: { metadata },
-    });
+    };
+    const session = request.brand === "the-county-post"
+      ? await createCountyPostCheckout({ requestId: (payload as Record<string, unknown>).checkoutRequestId, params, amountCents })
+      : await new Stripe(config.stripeSecretKey).checkout.sessions.create(params);
 
     if (!session.url) throw new CheckoutError(502, "Stripe did not return a checkout URL.");
 

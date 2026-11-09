@@ -112,7 +112,8 @@ After the CI pipeline exists, edit it and add a deploy stage:
    - Template file: `packaged.yaml`
    - Stack name: `county-news-api`
    - Capabilities: `CAPABILITY_IAM` and `CAPABILITY_AUTO_EXPAND`
-   - Credentials: store USDA, FRED, and Stripe keys as JSON fields `UsdaMarsApiKey`, `FredApiKey`, and `StripeSecretKey` in Secrets Manager `county-news-api/providers`. The template resolves them during deployment. `ApiProviderSecretId` accepts only the secret name/ARN, never key values. The CloudFormation deploy role needs `secretsmanager:GetSecretValue` for that exact secret ARN. After rotation, increment the non-secret `ApiProviderSecretRevision` to force the Lambda environment to refresh. Do not place credentials in pipeline overrides.
+   - Credentials: store USDA, FRED, and the **Patriots in Action** Stripe key as JSON fields `UsdaMarsApiKey`, `FredApiKey`, and `StripeSecretKey` in Secrets Manager `county-news-api/providers`. Keep this legacy Stripe key separate from County Post. The template resolves them during deployment. `ApiProviderSecretId` accepts only the secret name/ARN, never key values. The CloudFormation deploy role needs `secretsmanager:GetSecretValue` for that exact secret ARN. After rotation, increment the non-secret `ApiProviderSecretRevision` to force the Lambda environment to refresh. Do not place credentials in pipeline overrides.
+   - County Post payments: `CountyPostStripeSecretId=county-post/stripe-api` and `CountyPostStripeWebhookSecretId=county-post/advertising-stripe-webhook` reference dedicated raw-string secrets in us-east-2. Grant the deploy role read access to those exact ARNs and table-management access to `county-news-api-advertising-payments`. Increment `CountyPostStripeRevision` after rotation. County Post never falls back to the PIA key.
    - Non-secret overrides: set `StripeCheckoutSuccessUrl` and `StripeCheckoutCancelUrl` to the deployed advertiser microsite URLs (the template defaults to `www.advertise.thecountypost.com`). Set `CorsOrigins` to include the complete advertiser microsite origin as well as any County Post frontend origins when it differs from the template default. Remove any legacy `MetalsApiKey` override: the metals ticker uses the no-key Minted Metal endpoint configured in `template.yaml`.
    - Atlas credentials: store the Census API key in the standard SSM SecureString `/county-news-api/census-api-key`; `CensusApiKeyParameterName` takes its name, never its value. Atlas CodeBuild retrieves it at build start using its own role. Select the released ACS year with `AtlasCensusYear`, and confirm `AtlasSourceLocation`, `AtlasSourceVersion`, and `AtlasIngestionSchedule`.
 
@@ -400,3 +401,42 @@ The [September 22 release runbook](news-reliability-2026-09-22.md) documents the
 original 20-reader / six-worker allocation and pipeline parameter preservation.
 The earlier [September 21 record](news-reliability-2026-09-21.md)
 documents the retention-only mitigation and original backlog diagnosis.
+
+## County Post advertising payment operations
+
+The advertising application uses the County Post Stripe account, also used by
+Classifieds, with independent webhook destinations and ledgers. Advertising uses
+`https://d2vo13idhuovzg.cloudfront.net/v1/checkout/webhook`, pinned to API version
+`2026-07-29.dahlia`. Subscribe to `ADVERTISING_WEBHOOK_EVENTS` in
+`src/county-post-payments.ts`. Store the returned signing secret directly in
+Secrets Manager; enable delivery after the backend is healthy. CloudFront's
+AllViewerExceptHostHeader policy preserves Stripe-Signature and raw POST bodies.
+Never use Classifieds' signing secret here or change account-wide API settings.
+
+The encrypted, retained DynamoDB ledger has point-in-time recovery. It persists
+quotes before creating Stripe sessions, conditionally claims opaque request IDs,
+and saves the Stripe session reference. Retries use the same parameters and
+idempotency key. Ambiguous attempts over 23 hours old require finance review;
+only a confirmed expired session permits the browser to start a new attempt.
+The public status endpoint returns no contact details and rechecks the provider,
+mode, amount, currency and ownership before reporting payment. Webhook receipts
+are signed, application-scoped and deduplicated; receipt storage failures cause
+Stripe to retry. The payment-failure alarm uses the existing operations topic
+(delivered to erik@patriotsinaction.com), independently of news traffic volume.
+
+County Post advertising staff continues to review inventory and creative before
+publication. The pre-checkout email is a campaign request, not payment proof.
+Staff must check paid sessions and recurring invoices in the County Post Stripe
+Dashboard, match saved order/session IDs and creative references, and handle
+cancellations, refunds, disputes and failed renewals there before changing ad
+placements. Advertising is monthly/annual recurring billing; Classifieds uses
+one-time posting fees. No webhook automatically publishes an advertising slot.
+Do not bypass owner approval rules on agent-tagged Stripe keys.
+
+November 9 sandbox acceptance used the owner's `county-post/stripe-test` key,
+isolated local applications, a temporary AWS ledger and Stripe CLI forwarding.
+Real hosted Checkout completed for both products; signed events returned 200,
+replays produced no duplicate Classifieds publication/payment, staff rejection
+refunded the posting fee, and the advertising subscription was refunded and
+cancelled. Temporary resources were removed. No real cards were charged.
+PIA routing and all existing server-owned pricing tests remain covered.

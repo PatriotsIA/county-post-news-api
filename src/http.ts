@@ -5,6 +5,7 @@ import { getReviewedCountySourceProfiles } from "./source-registry.js";
 import { topics } from "./feed-builders.js";
 import { getCattleTicker, getMetalsTicker, MarketServiceError } from "./markets-service.js";
 import { CheckoutError, createCheckoutSession, quoteCheckout } from "./stripe-service.js";
+import { advertisingCheckoutStatus, receiveAdvertisingWebhook } from "./county-post-payments.js";
 import { getCountyPopulation, PopulationError } from "./population-service.js";
 import { AdCreativeError, createAdCreativeUpload } from "./ad-creative-service.js";
 import { FredServiceError, getCountyFredData } from "./fred-service.js";
@@ -15,7 +16,7 @@ import {
 } from "./atlas-service.js";
 import { getCountyWeather, WeatherServiceError } from "./weather-service.js";
 import { getCountyPublicNotices } from "./public-notices/service.js";
-import { recordProviderFailures, type Provider } from "./metrics.js";
+import { recordPaymentFailure, recordProviderFailures, type Provider } from "./metrics.js";
 import type { FeedScope, Topic } from "./types.js";
 
 export type ApiRequest = {
@@ -46,6 +47,11 @@ export async function handleRequest(request: ApiRequest): Promise<ApiResponse> {
       response = empty(204);
     } else if (request.method === "POST" && path === "/v1/advertising/creatives/upload") {
       response = json(201, await createAdCreativeUpload(parseJsonBody(request.body)), "no-store");
+    } else if (request.method === "POST" && path === "/v1/checkout/webhook") {
+      await receiveAdvertisingWebhook(request.body || "", normalizeHeaders(request.headers)["stripe-signature"]);
+      response = json(200, { received: true }, "no-store");
+    } else if (request.method === "POST" && path === "/v1/checkout/status") {
+      response = json(200, await advertisingCheckoutStatus(parseJsonBody(request.body)), "no-store");
     } else if (request.method === "POST" && path === "/v1/checkout/quotes") {
       response = json(200, quoteCheckout(parseJsonBody(request.body)), "no-store");
     } else if (request.method === "POST" && path === "/v1/checkout/sessions") {
@@ -119,7 +125,10 @@ export async function handleRequest(request: ApiRequest): Promise<ApiResponse> {
       error instanceof AtlasServiceError;
     const message = isExpectedError ? error.message : "Internal server error";
     const status = isExpectedError ? error.statusCode : 500;
-    response = json(status, { error: message, durationMs: Date.now() - startedAt }, "no-store");
+    response = json(status, { error: message, ...(error instanceof CheckoutError && error.code ? { code: error.code } : {}), durationMs: Date.now() - startedAt }, "no-store");
+    if (status >= 500 && path.startsWith("/v1/checkout/")) {
+      recordPaymentFailure();
+    }
     // An outside provider's outage is not an API fault. It is counted apart so
     // the reader HTTP alarm can leave it to the provider outage alarm.
     provider = status >= 500 ? providerOf(error) : undefined;
@@ -287,20 +296,21 @@ function allowedCorsOrigin(origin?: string) {
 
 function logRequest(request: ApiRequest, path: string, response: ApiResponse, durationMs: number, errorMessage?: string, provider?: Provider) {
   const headers = normalizeHeaders(request.headers);
+  const paymentRoute = path.startsWith("/v1/checkout/");
   const payload = {
     event: "api.request",
     ok: response.statusCode < 400,
     method: request.method,
     path,
-    query: request.query.toString(),
+    query: paymentRoute ? undefined : request.query.toString(),
     statusCode: response.statusCode,
     durationMs,
     origin: headers.origin,
-    referer: headers.referer,
+    referer: paymentRoute ? undefined : headers.referer,
     userAgent: headers["user-agent"],
     remoteAddress: request.remoteAddress,
     requestId: request.requestId,
-    error: errorMessage,
+    error: paymentRoute && errorMessage ? "Payment request failed" : errorMessage,
     provider,
   };
 

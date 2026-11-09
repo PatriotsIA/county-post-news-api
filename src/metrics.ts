@@ -9,6 +9,14 @@ const NAMESPACE = "CountyNewsApi";
 
 export type Provider = "fred" | "weather" | "markets";
 
+export function recordPaymentFailure() {
+  if (!process.env.AWS_LAMBDA_FUNCTION_NAME) return;
+  process.stdout.write(`${JSON.stringify({
+    _aws: { Timestamp: Date.now(), CloudWatchMetrics: [{ Namespace: NAMESPACE, Dimensions: [[]],
+      Metrics: [{ Name: "PaymentFailures", Unit: "Count" }] }] }, PaymentFailures: 1,
+  })}\n`);
+}
+
 /**
  * An outside data provider failed. `reader` counts error responses sent to
  * readers; `refresh` counts scheduled refreshes that kept an older copy or

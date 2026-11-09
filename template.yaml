@@ -43,6 +43,18 @@ Parameters:
     Type: String
     Default: "1"
     Description: Non-secret revision marker; change after rotating provider keys to refresh the Lambda environment.
+  CountyPostStripeSecretId:
+    Type: String
+    Default: county-post/stripe-api
+    Description: County Post account API secret name; separate from the PIA provider key.
+  CountyPostStripeWebhookSecretId:
+    Type: String
+    Default: county-post/advertising-stripe-webhook
+    Description: Advertising endpoint signing secret name. Never pass credential values.
+  CountyPostStripeRevision:
+    Type: String
+    Default: "1"
+    Description: Increment after rotating County Post payment secrets.
   CensusApiKeyParameterName:
     Type: String
     Default: /county-news-api/census-api-key
@@ -156,6 +168,23 @@ Conditions:
   ReserveNewsApiConcurrency: !Not [!Equals [!Ref NewsApiReservedConcurrency, "0"]]
 
 Resources:
+  AdvertisingPaymentsTable:
+    Type: AWS::DynamoDB::Table
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      TableName: !Sub "${AWS::StackName}-advertising-payments"
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      SSESpecification:
+        SSEEnabled: true
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: true
   NewsApiFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -166,6 +195,8 @@ Resources:
         - !Ref NewsApiReservedConcurrency
         - !Ref AWS::NoValue
       Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref AdvertisingPaymentsTable
         - S3WritePolicy:
             BucketName: !Ref AdvertisingCreativeBucket
         - S3ReadPolicy:
@@ -186,6 +217,11 @@ Resources:
           MARS_API_KEY: !Sub "{{resolve:secretsmanager:${ApiProviderSecretId}:SecretString:UsdaMarsApiKey}}"
           FRED_API_KEY: !Sub "{{resolve:secretsmanager:${ApiProviderSecretId}:SecretString:FredApiKey}}"
           STRIPE_SK_KEY: !Sub "{{resolve:secretsmanager:${ApiProviderSecretId}:SecretString:StripeSecretKey}}"
+          COUNTY_POST_STRIPE_SECRET_KEY: !Sub "{{resolve:secretsmanager:${CountyPostStripeSecretId}:SecretString}}"
+          COUNTY_POST_STRIPE_WEBHOOK_SECRET: !Sub "{{resolve:secretsmanager:${CountyPostStripeWebhookSecretId}:SecretString}}"
+          COUNTY_POST_STRIPE_LIVE_MODE: "true"
+          COUNTY_POST_STRIPE_REVISION: !Ref CountyPostStripeRevision
+          ADVERTISING_PAYMENTS_TABLE: !Ref AdvertisingPaymentsTable
           PROVIDER_SECRET_REVISION: !Ref ApiProviderSecretRevision
       FunctionUrlConfig:
         AuthType: NONE
@@ -546,6 +582,23 @@ Resources:
                   Value: reader
             Period: 300
             Stat: Sum
+
+  AdvertisingPaymentFailureAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmActions:
+        - !Sub arn:${AWS::Partition}:sns:${AWS::Region}:${AWS::AccountId}:pia-operations-alerts
+      OKActions:
+        - !Sub arn:${AWS::Partition}:sns:${AWS::Region}:${AWS::AccountId}:pia-operations-alerts
+      AlarmDescription: Advertising checkout, verification or webhook processing failed. Check Stripe and the saved order before retrying; payment errors must not wait for reader traffic thresholds.
+      Namespace: CountyNewsApi
+      MetricName: PaymentFailures
+      Statistic: Sum
+      Period: 300
+      EvaluationPeriods: 1
+      Threshold: 0
+      ComparisonOperator: GreaterThanThreshold
+      TreatMissingData: notBreaching
 
   # One notification per outage of an outside provider (FRED, National Weather
   # Service and drought/rain sources, USDA cattle and metals prices): it needs
