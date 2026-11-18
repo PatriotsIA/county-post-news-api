@@ -16,6 +16,7 @@ import {
 } from "./atlas-service.js";
 import { getCountyWeather, WeatherServiceError } from "./weather-service.js";
 import { getCountyPublicNotices } from "./public-notices/service.js";
+import { getFeaturedVideos } from "./video-service.js";
 import { recordPaymentFailure, recordProviderFailures, type Provider } from "./metrics.js";
 import type { FeedScope, Topic } from "./types.js";
 
@@ -103,6 +104,9 @@ export async function handleRequest(request: ApiRequest): Promise<ApiResponse> {
         response = await handleFeed(parts.slice(2), request.query);
       } else if (parts[1] === "pages") {
         response = await handlePage(parts.slice(2), request.query);
+      } else if (parts[1] === "videos" && parts[2] === "featured" && parts.length === 3) {
+        // Short browser cache: live status changes within a minute of a stream starting or ending.
+        response = json(200, await getFeaturedVideos(), "public, max-age=60, s-maxage=60");
       } else if (parts[1] === "markets" && parts[2] === "metals" && parts.length === 3) {
         response = json(200, await getMetalsTicker(), "public, max-age=15, s-maxage=15");
       } else if (parts[1] === "markets" && parts[2] === "cattle" && parts.length === 3) {

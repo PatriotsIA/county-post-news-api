@@ -67,6 +67,14 @@ export const config = {
   maxArticleQueriesPerFeed: Number(process.env.MAX_ARTICLE_QUERIES_PER_FEED || 10),
   googleNewsRssSearch: "https://news.google.com/rss/search",
   metalsCacheTtlSeconds: Number(process.env.METALS_CACHE_TTL_SECONDS || 900),
+  /** Featured video desk: recent uploads change slowly; live status is checked often so the desk opens soon after a stream starts. */
+  videoFeedTtlSeconds: Number(process.env.VIDEO_FEED_TTL_SECONDS || 900),
+  videoLiveTtlSeconds: Number(process.env.VIDEO_LIVE_TTL_SECONDS || 60),
+  /** The stand-in news stream (Newsmax2) changes rarely and never opens the desk. */
+  videoStandbyTtlSeconds: Number(process.env.VIDEO_STANDBY_TTL_SECONDS || 300),
+  videoTimeoutMs: Number(process.env.VIDEO_TIMEOUT_MS || 8000),
+  /** Optional. Vimeo has no public live signal, so Patriots in Action TV's live check needs an API token. */
+  vimeoAccessToken: process.env.VIMEO_ACCESS_TOKEN || "",
   usdaMarsApiKey: process.env.USDA_MARS_API_KEY || process.env.MARS_API_KEY || "",
   fredApiKey: process.env.FRED_API_KEY || "",
   fredApiUrl: "https://api.stlouisfed.org/fred",
