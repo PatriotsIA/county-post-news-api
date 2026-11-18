@@ -203,7 +203,58 @@ export function parseYouTubeFeed(xml: string, channelId: string = ITM.id): Featu
 }
 
 async function findYouTubeLive(): Promise<LiveStream | null> {
-  return parseYouTubeLivePage(await fetchText(`https://www.youtube.com/channel/${ITM_YOUTUBE_CHANNEL_ID}/live`));
+  const page = await fetchText(`https://www.youtube.com/channel/${ITM_YOUTUBE_CHANNEL_ID}/live`);
+  const stream = parseYouTubeLivePage(page);
+  if (stream) return stream;
+  // The /live page points at a broadcast, but YouTube has held back its player details from this
+  // server: ask the channel's Live tab whether it is on the air, and oEmbed whether it may be embedded.
+  const pointsAt = page.match(/<link rel="canonical" href="https:\/\/www\.youtube\.com\/watch\?v=([\w-]{11})"/)?.[1];
+  const described = describeYouTubePage(page);
+  if (!pointsAt || described.playability === "OK") return null;
+  const tab = await fetchText(`https://www.youtube.com/channel/${ITM_YOUTUBE_CHANNEL_ID}/streams`);
+  const confirmed = parseYouTubeLiveTab(tab, /./).includes(pointsAt) ? await youTubeOEmbed(pointsAt) : null;
+  if (confirmed) return youTubeLiveStream(pointsAt, ITM.id, confirmed.title);
+  logEvent("videos.live_unconfirmed", { channelId: ITM.id, videoId: pointsAt, live: described, tab: describeYouTubePage(tab) });
+  return null;
+}
+
+/**
+ * YouTube's oEmbed answer, which it gives only for a public video that may be
+ * embedded. Unlike a watch page it is meant for servers, so it still answers
+ * when YouTube holds a page's player details back from one.
+ */
+async function youTubeOEmbed(videoId: string): Promise<{ title?: string } | null> {
+  const url = new URL("https://www.youtube.com/oembed");
+  url.searchParams.set("url", `https://www.youtube.com/watch?v=${videoId}`);
+  url.searchParams.set("format", "json");
+  const response = await fetch(url, { headers: { "user-agent": USER_AGENT }, signal: AbortSignal.timeout(config.videoTimeoutMs) });
+  if (!response.ok) return null;
+  const body = (await response.json().catch(() => null)) as { title?: unknown } | null;
+  return body && typeof body === "object" ? { title: typeof body.title === "string" ? decodeHtml(body.title) : undefined } : null;
+}
+
+function youTubeLiveStream(videoId: string, channelId: string, title?: string): LiveStream {
+  return {
+    channelId,
+    platform: "youtube",
+    videoId,
+    title,
+    watchUrl: `https://www.youtube.com/watch?v=${videoId}`,
+    embedUrl: youTubeEmbed(videoId, { autoplay: true, muted: true }),
+  };
+}
+
+/** What a YouTube page held, for the log when a check finds nothing: never its content. */
+export function describeYouTubePage(html: string) {
+  return {
+    bytes: html.length,
+    watchCanonical: /<link rel="canonical" href="https:\/\/www\.youtube\.com\/watch\?v=/.test(html),
+    cards: (html.match(/"(?:lockupViewModel|videoRenderer)":\{/g) ?? []).length,
+    liveBadges: (html.match(/THUMBNAIL_OVERLAY_BADGE_STYLE_LIVE|BADGE_STYLE_TYPE_LIVE_NOW/g) ?? []).length,
+    playability: html.match(/"playabilityStatus":\{"status":"([A-Z_]+)"/)?.[1],
+    botCheck: /confirm you(?:’|&#39;|'|\\u2019)re not a bot/i.test(html),
+    consent: /consent\.(?:youtube|google)\.com/.test(html),
+  };
 }
 
 /**
@@ -234,10 +285,19 @@ export function parseYouTubeLivePage(html: string, channelId: string = ITM.id): 
 
 async function findStandbyLive(): Promise<LiveStream | null> {
   const tab = await fetchText(`https://www.youtube.com/channel/${STANDBY_YOUTUBE_CHANNEL_ID}/streams`);
-  for (const videoId of parseYouTubeLiveTab(tab, STANDBY_TITLE).slice(0, 2)) {
-    const stream = parseYouTubeLivePage(await fetchText(`https://www.youtube.com/watch?v=${videoId}`), STANDBY.id);
+  const candidates = parseYouTubeLiveTab(tab, STANDBY_TITLE).slice(0, 2);
+  const tried: Record<string, unknown>[] = [];
+  for (const videoId of candidates) {
+    const watch = await fetchText(`https://www.youtube.com/watch?v=${videoId}`).catch(() => "");
+    const stream = parseYouTubeLivePage(watch, STANDBY.id);
     if (stream?.videoId === videoId) return stream;
+    // YouTube can hold a watch page's player details back from a server. The Live tab has already
+    // marked this stream as on the air, so oEmbed saying it may be embedded is enough to show it.
+    const confirmed = await youTubeOEmbed(videoId).catch(() => null);
+    if (confirmed) return youTubeLiveStream(videoId, STANDBY.id, confirmed.title);
+    tried.push({ videoId, watch: describeYouTubePage(watch) });
   }
+  logEvent("videos.standby_not_found", { channelId: STANDBY.id, tab: describeYouTubePage(tab), candidates: candidates.length, tried });
   return null;
 }
 
@@ -392,6 +452,10 @@ function decodeHtml(value: string) {
     .replace(/&#(\d+);/g, (_, code) => String.fromCodePoint(Number(code)))
     .replace(/&#x([0-9a-f]+);/gi, (_, code) => String.fromCodePoint(parseInt(code, 16)))
     .replace(/&quot;/g, "\"").replace(/&#39;|&apos;/g, "'").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&amp;/g, "&");
+}
+
+function logEvent(event: string, details: Record<string, unknown>) {
+  console.warn(JSON.stringify({ event, ...details }));
 }
 
 function logFailure(event: string, error: unknown, channelId?: string) {

@@ -192,3 +192,66 @@ it("keeps answering when a channel fails, and checks Vimeo live status once a to
   expect(body.live.map((stream: { channelId: string }) => stream.channelId)).toEqual(["patriots-in-action-tv"]);
   expect(body.liveUnchecked).toEqual(["itm-trading"]);
 });
+
+// A watch page as YouTube serves it to some servers: the page, but no player details.
+const withheldWatch = (videoId: string) =>
+  `<html><head><link rel="canonical" href="https://www.youtube.com/watch?v=${videoId}"></head>
+  <script>var ytInitialPlayerResponse = {"playabilityStatus":{"status":"LOGIN_REQUIRED","reason":"Sign in to confirm you’re not a bot"}};</script></html>`;
+
+it("confirms Newsmax2 through oEmbed when YouTube holds the watch page's player details back", async () => {
+  const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+  const fetcher = vi.fn(async (input: string | URL) => {
+    const url = String(input);
+    if (url.includes("feeds/videos.xml")) return new Response(youTubeFeed);
+    if (url.includes("videos/rss")) return new Response(vimeoFeed);
+    if (url.endsWith("/live")) return new Response(livePage("https://www.youtube.com/channel/UCom1i7_NVeSUNyJyuR_NbMQ", ""));
+    if (url.endsWith("/streams")) return new Response(newsmaxTab);
+    if (url.includes("/watch?v=NEWSMAX2ON1")) return new Response(withheldWatch("NEWSMAX2ON1"));
+    if (url.startsWith("https://www.youtube.com/oembed?") && url.includes("NEWSMAX2ON1")) {
+      return Response.json({ title: "NEWSMAX2 LIVE | Real News for Real People", type: "video" });
+    }
+    return new Response("unexpected", { status: 500 });
+  });
+  vi.stubGlobal("fetch", fetcher);
+  const body = JSON.parse((await handleRequest({ method: "GET", path: "/v1/videos/featured", query: new URLSearchParams() })).body);
+  expect(body.standby.stream).toEqual({
+    channelId: "newsmax2", platform: "youtube", videoId: "NEWSMAX2ON1", title: "NEWSMAX2 LIVE | Real News for Real People",
+    watchUrl: "https://www.youtube.com/watch?v=NEWSMAX2ON1",
+    embedUrl: "https://www.youtube-nocookie.com/embed/NEWSMAX2ON1?rel=0&playsinline=1&autoplay=1&mute=1",
+  });
+  expect(warn.mock.calls.some(([line]) => String(line).includes("videos.standby_not_found"))).toBe(false);
+});
+
+it("shows no stand-in when oEmbed refuses it, and logs what YouTube sent instead", async () => {
+  const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+  vi.stubGlobal("fetch", vi.fn(async (input: string | URL) => {
+    const url = String(input);
+    if (url.includes("feeds/videos.xml")) return new Response(youTubeFeed);
+    if (url.includes("videos/rss")) return new Response(vimeoFeed);
+    if (url.endsWith("/live")) return new Response(livePage("https://www.youtube.com/channel/UCom1i7_NVeSUNyJyuR_NbMQ", ""));
+    if (url.endsWith("/streams")) return new Response(newsmaxTab);
+    if (url.includes("/watch?v=")) return new Response(withheldWatch("NEWSMAX2ON1"));
+    if (url.startsWith("https://www.youtube.com/oembed?")) return new Response("Unauthorized", { status: 401 });
+    return new Response("unexpected", { status: 500 });
+  }));
+  const body = JSON.parse((await handleRequest({ method: "GET", path: "/v1/videos/featured", query: new URLSearchParams() })).body);
+  expect(body.standby).toBeUndefined();
+  const logged = warn.mock.calls.map(([line]) => String(line)).find((line) => line.includes("videos.standby_not_found"));
+  expect(JSON.parse(logged!)).toMatchObject({ candidates: 1, tab: { liveBadges: 2 }, tried: [{ videoId: "NEWSMAX2ON1", watch: { playability: "LOGIN_REQUIRED", botCheck: true } }] });
+});
+
+it("confirms ITM Trading live through its Live tab and oEmbed when the /live page's player details are held back", async () => {
+  const itmTab = newsmaxTab.replace(/NEWSMAX2ON1/g, "ITMLIVEVID1");
+  vi.stubGlobal("fetch", vi.fn(async (input: string | URL) => {
+    const url = String(input);
+    if (url.includes("feeds/videos.xml")) return new Response(youTubeFeed);
+    if (url.includes("videos/rss")) return new Response(vimeoFeed);
+    if (url.endsWith("UCom1i7_NVeSUNyJyuR_NbMQ/live")) return new Response(withheldWatch("ITMLIVEVID1"));
+    if (url.endsWith("UCom1i7_NVeSUNyJyuR_NbMQ/streams")) return new Response(itmTab);
+    if (url.startsWith("https://www.youtube.com/oembed?") && url.includes("ITMLIVEVID1")) return Response.json({ title: "Gold &amp; Silver Live Q&amp;A" });
+    return new Response("unexpected", { status: 500 });
+  }));
+  const body = JSON.parse((await handleRequest({ method: "GET", path: "/v1/videos/featured", query: new URLSearchParams() })).body);
+  expect(body.live).toEqual([expect.objectContaining({ channelId: "itm-trading", videoId: "ITMLIVEVID1", title: "Gold & Silver Live Q&A" })]);
+  expect(body.standby).toBeUndefined();
+});
