@@ -29,7 +29,7 @@ Parameters:
       cache and queued refreshes also work with this disabled.
   CorsOrigins:
     Type: String
-    Default: "https://main.d2z6lt4e5q50in.amplifyapp.com,https://advertiser-preview.d2z6lt4e5q50in.amplifyapp.com,https://thecountypost.com,https://www.thecountypost.com,https://advertise.thecountypost.com,https://www.advertise.thecountypost.com,https://patriotsinaction.com,https://www.patriotsinaction.com"
+    Default: "https://main.d2z6lt4e5q50in.amplifyapp.com,https://advertiser-preview.d2z6lt4e5q50in.amplifyapp.com,https://thecountypost.com,https://www.thecountypost.com,https://advertise.thecountypost.com,https://www.advertise.thecountypost.com,https://patriotsinaction.com,https://www.patriotsinaction.com,https://classifieds.thecountypost.com,https://staging-classifieds.thecountypost.com"
     Description: Comma-separated browser origins allowed to call the API, without trailing slashes.
   AdvertiserCorsOrigins:
     Type: String
